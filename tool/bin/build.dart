@@ -141,7 +141,7 @@ void _buildSass({bool skipUpToDate = false}) {
   for (var source in Glob("asset/*.scss").listSync()) {
     var scssPath = p.normalize(source.path);
     var cssPath =
-        p.join("site", p.basenameWithoutExtension(source.path) + ".css");
+        p.join("docs", p.basenameWithoutExtension(source.path) + ".css");
 
     if (skipUpToDate && _isUpToDate(cssPath, scssPath, moduleModified)) {
       continue;
@@ -168,7 +168,7 @@ Future<void> _runServer() async {
     }
 
     try {
-      var contents = await File(p.join("site", filePath)).readAsBytes();
+      var contents = await File(p.join("docs", filePath)).readAsBytes();
       return shelf.Response.ok(contents, headers: {
         HttpHeaders.contentTypeHeader: mimeFromExtension(extension)
       });

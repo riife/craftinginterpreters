@@ -36,7 +36,7 @@ class Page {
   String get markdownPath => p.join("book", "$fileName.md");
 
   /// The path to this page's generated HTML file.
-  String get htmlPath => p.join("site", "$fileName.html");
+  String get htmlPath => p.join("docs", "$fileName.html");
 
   /// Whether this page is a chapter page, as opposed to a part.
   bool get isChapter => part != null;
