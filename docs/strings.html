@@ -37,11 +37,12 @@
 <h3><a href="#top">Strings<small>19</small></a></h3>
 
 <ul>
-    <li><a href="#values-and-objects"><small>19.1</small> Values and Objects</a></li>
-    <li><a href="#struct-inheritance"><small>19.2</small> Struct Inheritance</a></li>
-    <li><a href="#strings"><small>19.3</small> Strings</a></li>
-    <li><a href="#operations-on-strings"><small>19.4</small> Operations on Strings</a></li>
-    <li><a href="#freeing-objects"><small>19.5</small> Freeing Objects</a></li>
+    <li><a href="#values-and-objects--值与对象"><small>19.1</small> Values and Objects  值与对象</a></li>
+    <li><a href="#struct-inheritance--结构体继承"><small>19.2</small> Struct Inheritance  结构体继承</a></li>
+    <li><a href="#strings--字符串"><small>19.3</small> Strings  字符串</a></li>
+    <li><a href="#operations-on-strings--字符串操作"><small>19.4</small> Operations on Strings  字符串操作</a></li>
+    <li><a href="#freeing-objects--释放对象"><small>19.5</small> Freeing Objects  释放对象</a></li>
+    <li><a href="#习题"><small>19.6</small> 习题</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>String Encoding</a></li>
@@ -69,11 +70,12 @@
 <h3><a href="#top">Strings<small>19</small></a></h3>
 
 <ul>
-    <li><a href="#values-and-objects"><small>19.1</small> Values and Objects</a></li>
-    <li><a href="#struct-inheritance"><small>19.2</small> Struct Inheritance</a></li>
-    <li><a href="#strings"><small>19.3</small> Strings</a></li>
-    <li><a href="#operations-on-strings"><small>19.4</small> Operations on Strings</a></li>
-    <li><a href="#freeing-objects"><small>19.5</small> Freeing Objects</a></li>
+    <li><a href="#values-and-objects--值与对象"><small>19.1</small> Values and Objects  值与对象</a></li>
+    <li><a href="#struct-inheritance--结构体继承"><small>19.2</small> Struct Inheritance  结构体继承</a></li>
+    <li><a href="#strings--字符串"><small>19.3</small> Strings  字符串</a></li>
+    <li><a href="#operations-on-strings--字符串操作"><small>19.4</small> Operations on Strings  字符串操作</a></li>
+    <li><a href="#freeing-objects--释放对象"><small>19.5</small> Freeing Objects  释放对象</a></li>
+    <li><a href="#习题"><small>19.6</small> 习题</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>String Encoding</a></li>
@@ -98,17 +100,20 @@
 <p>&ldquo;Ah? A small aversion to menial labor?&rdquo; The doctor cocked an eyebrow.
 &ldquo;Understandable, but misplaced. One should treasure those hum-drum
 tasks that keep the body occupied but leave the mind and heart unfettered.&rdquo;</p>
-<p><cite>Tad Williams, <em>The Dragonbone Chair</em></cite></p>
+<p><cite>Tad Williams, <em>The Dragonbone Chair</em></cite>
+“啊？对琐碎的劳动有点反感？”医生挑了挑眉毛，“可以理解，但这是错误的。一个人应该珍惜那些让身体忙碌，但让思想和心灵不受束缚的琐碎工作。”（泰德-威廉姆斯，《龙骨椅》）</p>
 </blockquote>
 <p>Our little VM can represent three types of values right now: numbers, Booleans,
 and <code>nil</code>. Those types have two important things in common: they&rsquo;re immutable
 and they&rsquo;re small. Numbers are the largest, and they still fit into two 64-bit
 words. That&rsquo;s a small enough price that we can afford to pay it for all values,
-even Booleans and nils which don&rsquo;t need that much space.</p>
+even Booleans and nils which don&rsquo;t need that much space.
+我们的小虚拟机现在可以表示三种类型的值：数字，布尔值和<code>nil</code>。这些类型有两个重要的共同点：它们是不可变的，它们很小。数字是最大的，而它仍可以被2个64比特的字容纳。这是一个足够小的代价，我们可以为所有值都支付这个代价，即使是不需要那么多空间的布尔值和nil。</p>
 <p>Strings, unfortunately, are not so petite. There&rsquo;s no maximum length for a
 string. Even if we were to artificially cap it at some contrived limit like
 <span name="pascal">255</span> characters, that&rsquo;s still too much memory to spend
-on every single value.</p>
+on every single value.
+不幸的是，字符串就没有这么小了。一个字符串没有最大的长度，即使我们人为地将其限制在255个字符，这对于每个单独的值来说仍然花费了太多的内存。</p>
 <aside name="pascal">
 <p>UCSD Pascal, one of the first implementations of Pascal, had this exact limit.
 Instead of using a terminating null byte to indicate the end of the string like
@@ -118,21 +123,25 @@ byte to store the length, strings couldn&rsquo;t be any longer than 255 characte
 <p>We need a way to support values whose sizes vary, sometimes greatly. This is
 exactly what dynamic allocation on the heap is designed for. We can allocate as
 many bytes as we need. We get back a pointer that we&rsquo;ll use to keep track of the
-value as it flows through the VM.</p>
-<h2><a href="#values-and-objects" id="values-and-objects"><small>19&#8202;.&#8202;1</small>Values and Objects</a></h2>
+value as it flows through the VM.
+我们需要一种方法来支持那些大小变化（有时变化很大）的值。这正是堆上动态分配的设计目的。我们可以根据需要分配任意多的字节。我们会得到一个指针，当值在虚拟机中流动时，我们会用该指针来跟踪它。</p>
+<h2><a href="#values-and-objects--值与对象" id="values-and-objects--值与对象"><small>19&#8202;.&#8202;1</small>Values and Objects  值与对象</a></h2>
 <p>Using the heap for larger, variable-sized values and the stack for smaller,
 atomic ones leads to a two-level representation. Every Lox value that you can
 store in a variable or return from an expression will be a Value. For small,
 fixed-size types like numbers, the payload is stored directly inside the Value
-struct itself.</p>
+struct itself.
+将堆用于较大的、可变大小的值，将栈用于较小的、原子性的值，这就导致了两级表示形式。每个可以存储在变量中或从表达式返回的Lox值都是一个Value。对于小的、固定大小的类型（如数字），有效载荷直接存储在Value结构本身。</p>
 <p>If the object is larger, its data lives on the heap. Then the Value&rsquo;s payload is
 a <em>pointer</em> to that blob of memory. We&rsquo;ll eventually have a handful of
 heap-allocated types in clox: strings, instances, functions, you get the idea.
 Each type has its own unique data, but there is also state they all share that
-<a href="garbage-collection.html">our future garbage collector</a> will use to manage their memory.</p><img src="image/strings/value.png" class="wide" alt="Field layout of number and obj values." />
+<a href="garbage-collection.html">our future garbage collector</a> will use to manage their memory.
+如果对象比较大，它的数据就驻留在堆中。那么Value的有效载荷就是指向那块内存的一个指针。我们最终会在clox中拥有一些堆分配的类型：字符串、实例、函数，你懂的。每个类型都有自己独特的数据，但它们也有共同的状态，我们未来的垃圾收集器会用这些状态来管理它们的内存。</p><img src="image/strings/value.png" class="wide" alt="Field layout of number and obj values." />
 <p>We&rsquo;ll call this common representation <span name="short">&ldquo;Obj&rdquo;</span>. Each Lox
 value whose state lives on the heap is an Obj. We can thus use a single new
-ValueType case to refer to all heap-allocated types.</p>
+ValueType case to refer to all heap-allocated types.
+我们将这个共同的表示形式称为“Obj”。每个状态位于堆上的Lox值都是一个Obj。因此，我们可以使用一个新的ValueType来指代所有堆分配的类型。</p>
 <aside name="short">
 <p>&ldquo;Obj&rdquo; is short for &ldquo;object&rdquo;, natch.</p>
 </aside>
@@ -145,7 +154,8 @@ in enum <em>ValueType</em></div>
 <div class="source-file-narrow"><em>value.h</em>, in enum <em>ValueType</em></div>
 
 <p>When a Value&rsquo;s type is <code>VAL_OBJ</code>, the payload is a pointer to the heap memory,
-so we add another case to the union for that.</p>
+so we add another case to the union for that.
+当Value的类型是<code>VAL_OBJ</code>时，有效载荷是一个指向堆内存的指针，因此我们在联合体中为其添加另一种情况。</p>
 <div class="codehilite"><pre class="insert-before">    double number;
 </pre><div class="source-file"><em>value.h</em><br>
 in struct <em>Value</em></div>
@@ -155,7 +165,8 @@ in struct <em>Value</em></div>
 <div class="source-file-narrow"><em>value.h</em>, in struct <em>Value</em></div>
 
 <p>As we did with the other value types, we crank out a couple of helpful macros
-for working with Obj values.</p>
+for working with Obj values.
+正如我们对其它值类型所做的那样，我们提供了几个有用的宏来处理Obj值。</p>
 <div class="codehilite"><pre class="insert-before">#define IS_NUMBER(value)  ((value).type == VAL_NUMBER)
 </pre><div class="source-file"><em>value.h</em><br>
 add after struct <em>Value</em></div>
@@ -166,7 +177,8 @@ add after struct <em>Value</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>value.h</em>, add after struct <em>Value</em></div>
 
-<p>This evaluates to <code>true</code> if the given Value is an Obj. If so, we can use this:</p>
+<p>This evaluates to <code>true</code> if the given Value is an Obj. If so, we can use this:
+如果给定的Value是一个Obj，则该值计算结果为<code>true</code>。如果这样，我们可以使用这个：</p>
 <div class="codehilite"><pre class="insert-before">#define IS_OBJ(value)     ((value).type == VAL_OBJ)
 
 </pre><div class="source-file"><em>value.h</em></div>
@@ -175,7 +187,8 @@ add after struct <em>Value</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>value.h</em></div>
 
-<p>It extracts the Obj pointer from the value. We can also go the other way.</p>
+<p>It extracts the Obj pointer from the value. We can also go the other way.
+它会从值中提取Obj指针。我们也可以反其道而行之。</p>
 <div class="codehilite"><pre class="insert-before">#define NUMBER_VAL(value) ((Value){VAL_NUMBER, {.number = value}})
 </pre><div class="source-file"><em>value.h</em></div>
 <pre class="insert"><span class="a">#define OBJ_VAL(object)   ((Value){VAL_OBJ, {.obj = (Obj*)object}})</span>
@@ -185,13 +198,15 @@ typedef struct {
 </pre></div>
 <div class="source-file-narrow"><em>value.h</em></div>
 
-<p>This takes a bare Obj pointer and wraps it in a full Value.</p>
-<h2><a href="#struct-inheritance" id="struct-inheritance"><small>19&#8202;.&#8202;2</small>Struct Inheritance</a></h2>
+<p>This takes a bare Obj pointer and wraps it in a full Value.
+该方法会接受一个Obj指针，并将其包装成一个完整的Value。</p>
+<h2><a href="#struct-inheritance--结构体继承" id="struct-inheritance--结构体继承"><small>19&#8202;.&#8202;2</small>Struct Inheritance  结构体继承</a></h2>
 <p>Every heap-allocated value is an Obj, but <span name="objs">Objs</span> are
 not all the same. For strings, we need the array of characters. When we get to
 instances, they will need their data fields. A function object will need its
 chunk of bytecode. How do we handle different payloads and sizes? We can&rsquo;t use
-another union like we did for Value since the sizes are all over the place.</p>
+another union like we did for Value since the sizes are all over the place.
+每个堆分配的值都是一个Obj，但Obj并不都是一样的。对于字符串，我们需要字符数组。等我们有了实例，它们需要自己的数据字段。一个函数对象需要的是其字节码块。我们如何处理不同的有效载荷和大小？我们不能像Value那样使用另一个联合体，因为这些大小各不相同。</p>
 <aside name="objs">
 <p>No, I don&rsquo;t know how to pronounce &ldquo;objs&rdquo; either. Feels like there should be a
 vowel in there somewhere.</p>
@@ -207,11 +222,13 @@ of object it is<span class="em">&mdash;</span>string, instance, etc. Following t
 Instead of a union with cases for each type, each type is its own separate
 struct. The tricky part is how to treat these structs uniformly since C has no
 concept of inheritance or polymorphism. I&rsquo;ll explain that soon, but first lets
-get the preliminary stuff out of the way.</p>
+get the preliminary stuff out of the way.
+与带标签的联合体一样，每个Obj开头都是一个标签字段，用于识别它是什么类型的对象——字符串、实例，等等。接下来是有效载荷字段。每种类型都有自己单独的结构，而不是各类型结构的联合体。棘手的部分是如何统一处理这些结构，因为C没有继承或多态的概念。我很快就会对此进行解释，但是首先让我们先弄清楚一些基本的东西。</p>
 <p>The name &ldquo;Obj&rdquo; itself refers to a struct that contains the state shared across
 all object types. It&rsquo;s sort of like the &ldquo;base class&rdquo; for objects. Because of
 some cyclic dependencies between values and objects, we forward-declare it in
-the &ldquo;value&rdquo; module.</p>
+the &ldquo;value&rdquo; module.
+“Obj”这个名称本身指的是一个结构体，它包含所有对象类型共享的状态。它有点像对象的“基类”。由于值和对象之间存在一些循环依赖关系，我们在“value”模块中对其进行前置声明。</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;common.h&quot;
 
 </pre><div class="source-file"><em>value.h</em></div>
@@ -221,7 +238,8 @@ the &ldquo;value&rdquo; module.</p>
 </pre></div>
 <div class="source-file-narrow"><em>value.h</em></div>
 
-<p>And the actual definition is in a new module.</p>
+<p>And the actual definition is in a new module.
+实际的定义是在一个新的模块中。</p>
 <div class="codehilite"><div class="source-file"><em>object.h</em><br>
 create new file</div>
 <pre><span class="a">#ifndef clox_object_h</span>
@@ -239,7 +257,8 @@ create new file</div>
 <div class="source-file-narrow"><em>object.h</em>, create new file</div>
 
 <p>Right now, it contains only the type tag. Shortly, we&rsquo;ll add some other
-bookkeeping information for memory management. The type enum is this:</p>
+bookkeeping information for memory management. The type enum is this:
+现在，它只包含一个类型标记。不久之后，我们将为内存管理添加一些其它的簿记信息。类型枚举如下：</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;value.h&quot;
 </pre><div class="source-file"><em>object.h</em></div>
 <pre class="insert">
@@ -256,7 +275,8 @@ struct Obj {
 <p>Obviously, that will be more useful in later chapters after we add more
 heap-allocated types. Since we&rsquo;ll be accessing these tag types frequently, it&rsquo;s
 worth making a little macro that extracts the object type tag from a given
-Value.</p>
+Value.
+显然，等我们在后面的章节中添加了更多的堆分配类型之后，这个枚举会更有用。因为我们会经常访问这些标记类型，所以有必要编写一个宏，从给定的Value中提取对象类型标签。</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;value.h&quot;
 </pre><div class="source-file"><em>object.h</em></div>
 <pre class="insert">
@@ -268,9 +288,11 @@ typedef enum {
 </pre></div>
 <div class="source-file-narrow"><em>object.h</em></div>
 
-<p>That&rsquo;s our foundation.</p>
+<p>That&rsquo;s our foundation.
+这是我们的基础。</p>
 <p>Now, let&rsquo;s build strings on top of it. The payload for strings is defined in a
-separate struct. Again, we need to forward-declare it.</p>
+separate struct. Again, we need to forward-declare it.
+现在，让我们在其上建立字符串。字符串的有效载荷定义在一个单独的结构体中。同样，我们需要对其进行前置声明。</p>
 <div class="codehilite"><pre class="insert-before">typedef struct Obj Obj;
 </pre><div class="source-file"><em>value.h</em></div>
 <pre class="insert"><span class="k">typedef</span> <span class="k">struct</span> <span class="t">ObjString</span> <span class="t">ObjString</span>;
@@ -280,7 +302,8 @@ typedef enum {
 </pre></div>
 <div class="source-file-narrow"><em>value.h</em></div>
 
-<p>The definition lives alongside Obj.</p>
+<p>The definition lives alongside Obj.
+这个定义与Obj是并列的。</p>
 <div class="codehilite"><pre class="insert-before">};
 </pre><div class="source-file"><em>object.h</em><br>
 add after struct <em>Obj</em></div>
@@ -301,16 +324,19 @@ add after struct <em>Obj</em></div>
 heap-allocated array so that we set aside only as much room as needed for each
 string. We also store the number of bytes in the array. This isn&rsquo;t strictly
 necessary but lets us tell how much memory is allocated for the string without
-walking the character array to find the null terminator.</p>
+walking the character array to find the null terminator.
+字符串对象中包含一个字符数组。这些字符存储在一个单独的、由堆分配的数组中，这样我们就可以按需为每个字符串留出空间。我们还会保存数组中的字节数。这并不是严格必需的，但可以让我们迅速知道为字符串分配了多少内存，而不需要遍历字符数组寻找空结束符。</p>
 <p>Because ObjString is an Obj, it also needs the state all Objs share. It
 accomplishes that by having its first field be an Obj. C specifies that struct
 fields are arranged in memory in the order that they are declared. Also, when
 you nest structs, the inner struct&rsquo;s fields are expanded right in place. So the
-memory for Obj and for ObjString looks like this:</p><img src="image/strings/obj.png" alt="The memory layout for the fields in Obj and ObjString." />
+memory for Obj and for ObjString looks like this:
+因为ObjString是一个Obj，它也需要所有Obj共有的状态。它通过将第一个字段置为Obj来实现这一点。C语言规定，结构体的字段在内存中是按照它们的声明顺序排列的。此外，当结构体嵌套时，内部结构体的字段会在适当的位置展开。所以Obj和ObjString的内存看起来是这样的：</p><img src="image/strings/obj.png" alt="The memory layout for the fields in Obj and ObjString." />
 <p>Note how the first bytes of ObjString exactly line up with Obj. This is not a
 coincidence<span class="em">&mdash;</span>C <span name="spec">mandates</span> it. This is designed to
 enable a clever pattern: You can take a pointer to a struct and safely convert
-it to a pointer to its first field and back.</p>
+it to a pointer to its first field and back.
+注意ObjString的第一个字节是如何与Obj精确对齐的。这并非巧合——是C语言强制要求的。这是为实现一个巧妙的模式而设计的：你可以接受一个指向结构体的指针，并安全地将其转换为指向其第一个字段的指针，反之亦可。</p>
 <aside name="spec">
 <p>The key part of the spec is:</p>
 <blockquote>
@@ -327,12 +353,14 @@ structure object, but not at its beginning.</p>
 <code>type</code> field from it. Every ObjString &ldquo;is&rdquo; an Obj in the OOP sense of &ldquo;is&rdquo;. When
 we later add other object types, each struct will have an Obj as its first
 field. Any code that wants to work with all objects can treat them as base
-<code>Obj*</code> and ignore any other fields that may happen to follow.</p>
+<code>Obj*</code> and ignore any other fields that may happen to follow.
+给定一个<code>ObjString*</code>，你可以安全地将其转换为<code>Obj*</code>，然后访问其中的<code>type</code>字段。每个ObjString“是”一个Obj，这里的“是”指OOP意义上的“是”。等我们稍后添加其它对象类型时，每个结构体都会有一个Obj作为其第一个字段。任何代码若想要面向所有对象，都可以把它们当做基础的<code>Obj*</code>，并忽略后面可能出现的任何其它字段。</p>
 <p>You can go in the other direction too. Given an <code>Obj*</code>, you can &ldquo;downcast&rdquo; it to
 an <code>ObjString*</code>. Of course, you need to ensure that the <code>Obj*</code> pointer you have
 does point to the <code>obj</code> field of an actual ObjString. Otherwise, you are
 unsafely reinterpreting random bits of memory. To detect that such a cast is
-safe, we add another macro.</p>
+safe, we add another macro.
+你也能反向操作。给定一个<code>Obj*</code>，你可以将其“向下转换”为一个<code>ObjString*</code>。当然，你需要确保你的<code>Obj*</code>指针确实指向一个实际的ObjString中的<code>obj</code>字段。否则，你就会不安全地重新解释内存中的随机比特位。为了检测这种类型转换是否安全，我们再添加另一个宏。</p>
 <div class="codehilite"><pre class="insert-before">#define OBJ_TYPE(value)        (AS_OBJ(value)-&gt;type)
 </pre><div class="source-file"><em>object.h</em></div>
 <pre class="insert">
@@ -345,7 +373,8 @@ typedef enum {
 <div class="source-file-narrow"><em>object.h</em></div>
 
 <p>It takes a Value, not a raw <code>Obj*</code> because most code in the VM works with
-Values. It relies on this inline function:</p>
+Values. It relies on this inline function:
+它接受一个Value，而不是原始的<code>Obj*</code>，因为虚拟机中的大多数代码都使用Value。它依赖于这个内联函数：</p>
 <div class="codehilite"><pre class="insert-before">};
 
 </pre><div class="source-file"><em>object.h</em><br>
@@ -362,15 +391,19 @@ add after struct <em>ObjString</em></div>
 different about this one compared to the others? Right, it&rsquo;s because the body
 uses <code>value</code> twice. A macro is expanded by inserting the argument <em>expression</em>
 every place the parameter name appears in the body. If a macro uses a parameter
-more than once, that expression gets evaluated multiple times.</p>
+more than once, that expression gets evaluated multiple times.
+突击测试：为什么不直接把这个函数体放在宏中？与其它函数相比，这个函数有什么不同？对，这是因为函数体使用了两次<code>value</code>。宏的展开方式是在主体中形参名称出现的每个地方插入实参<em>表达式</em>。如果一个宏中使用某个参数超过一次，则该表达式就会被求值多次。</p>
 <p>That&rsquo;s bad if the expression has side effects. If we put the body of
-<code>isObjType()</code> into the macro definition and then you did, say,</p>
+<code>isObjType()</code> into the macro definition and then you did, say,
+如果这个表达式有副作用，那就不好了。如果我们把<code>isObjType()</code>的主体放到宏的定义中，假设你这么使用
+那么它就会从堆栈中弹出两个值！使用函数可以解决这个问题。</p>
 <div class="codehilite"><pre><span class="a">IS_STRING</span>(<span class="a">POP</span>())
 </pre></div>
 <p>then it would pop two values off the stack! Using a function fixes that.</p>
 <p>As long as we ensure that we set the type tag correctly whenever we create an
 Obj of some type, this macro will tell us when it&rsquo;s safe to cast a value to a
-specific object type. We can do that using these:</p>
+specific object type. We can do that using these:
+只要我们确保在创建某种类型的Obj时正确设置了类型标签，这个宏就会告诉我们何时将一个值转换为特定的对象类型是安全的。我们可以用下面这些函数来做转换：</p>
 <div class="codehilite"><pre class="insert-before">#define IS_STRING(value)       isObjType(value, OBJ_STRING)
 </pre><div class="source-file"><em>object.h</em></div>
 <pre class="insert">
@@ -386,11 +419,13 @@ typedef enum {
 <p>These two macros take a Value that is expected to contain a pointer to a valid
 ObjString on the heap. The first one returns the <code>ObjString*</code> pointer. The
 second one steps through that to return the character array itself, since that&rsquo;s
-often what we&rsquo;ll end up needing.</p>
-<h2><a href="#strings" id="strings"><small>19&#8202;.&#8202;3</small>Strings</a></h2>
+often what we&rsquo;ll end up needing.
+这两个宏会接受一个Value，其中应当包含一个指向堆上的有效ObjString指针。第一个函数返回 <code>ObjString*</code> 指针。第二个函数更进一步返回了字符数组本身，因为这往往是我们最终需要的。</p>
+<h2><a href="#strings--字符串" id="strings--字符串"><small>19&#8202;.&#8202;3</small>Strings  字符串</a></h2>
 <p>OK, our VM can now represent string values. It&rsquo;s time to add strings to the
 language itself. As usual, we begin in the front end. The lexer already
-tokenizes string literals, so it&rsquo;s the parser&rsquo;s turn.</p>
+tokenizes string literals, so it&rsquo;s the parser&rsquo;s turn.
+好了，我们的虚拟机现在可以表示字符串值了。现在是时候向语言本身添加字符串了。像往常一样，我们从前端开始。词法解析器已经将字符串字面量标识化了，所以现在轮到解析器了。</p>
 <div class="codehilite"><pre class="insert-before">  [TOKEN_IDENTIFIER]    = {NULL,     NULL,   PREC_NONE},
 </pre><div class="source-file"><em>compiler.c</em><br>
 replace 1 line</div>
@@ -399,7 +434,8 @@ replace 1 line</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, replace 1 line</div>
 
-<p>When the parser hits a string token, it calls this parse function:</p>
+<p>When the parser hits a string token, it calls this parse function:
+当解析器遇到一个字符串标识时，会调用这个解析函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>number</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">string</span>() {
@@ -412,12 +448,14 @@ add after <em>number</em>()</div>
 <p>This takes the string&rsquo;s characters <span name="escape">directly</span> from the
 lexeme. The <code>+ 1</code> and <code>- 2</code> parts trim the leading and trailing quotation marks.
 It then creates a string object, wraps it in a Value, and stuffs it into the
-constant table.</p>
+constant table.
+这里直接从词素中获取字符串的字符。<code>+1</code>和<code>-2</code>部分去除了开头和结尾的引号。然后，它创建了一个字符串对象，将其包装为一个Value，并塞入常量表中。</p>
 <aside name="escape">
 <p>If Lox supported string escape sequences like <code>\n</code>, we&rsquo;d translate those here.
 Since it doesn&rsquo;t, we can take the characters as they are.</p>
 </aside>
-<p>To create the string, we use <code>copyString()</code>, which is declared in <code>object.h</code>.</p>
+<p>To create the string, we use <code>copyString()</code>, which is declared in <code>object.h</code>.
+为了创建字符串，我们使用了在<code>object.h</code>中声明的<code>copyString()</code>。</p>
 <div class="codehilite"><pre class="insert-before">};
 
 </pre><div class="source-file"><em>object.h</em><br>
@@ -428,7 +466,8 @@ add after struct <em>ObjString</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>object.h</em>, add after struct <em>ObjString</em></div>
 
-<p>The compiler module needs to include that.</p>
+<p>The compiler module needs to include that.
+编译器模块需要引入它。</p>
 <div class="codehilite"><pre class="insert-before">#define clox_compiler_h
 
 </pre><div class="source-file"><em>compiler.h</em></div>
@@ -438,7 +477,8 @@ add after struct <em>ObjString</em></div>
 <div class="source-file-narrow"><em>compiler.h</em></div>
 
 <p>Our &ldquo;object&rdquo; module gets an implementation file where we define the new
-function.</p>
+function.
+我们的“object”模块有了一个实现文件，我们在其中定义新函数。</p>
 <div class="codehilite"><div class="source-file"><em>object.c</em><br>
 create new file</div>
 <pre><span class="a">#include &lt;stdio.h&gt;</span>
@@ -461,7 +501,8 @@ create new file</div>
 <p>First, we allocate a new array on the heap, just big enough for the string&rsquo;s
 characters and the trailing <span name="terminator">terminator</span>, using
 this low-level macro that allocates an array with a given element type and
-count:</p>
+count:
+首先，我们在堆上分配一个新数组，其大小刚好可以容纳字符串中的字符和末尾的结束符，使用这个底层宏来分配一个具有给定元素类型和数量的数组：</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;common.h&quot;
 
 </pre><div class="source-file"><em>memory.h</em></div>
@@ -473,7 +514,8 @@ count:</p>
 <div class="source-file-narrow"><em>memory.h</em></div>
 
 <p>Once we have the array, we copy over the characters from the lexeme and
-terminate it.</p>
+terminate it.
+有了数组以后，就把词素中的字符复制过来并终止。</p>
 <aside name="terminator" class="bottom">
 <p>We need to terminate the string ourselves because the lexeme points at a range
 of characters inside the monolithic source string and isn&rsquo;t terminated.</p>
@@ -486,12 +528,15 @@ a terminated string.</p>
 characters in the source string. Some ObjStrings will be created dynamically at
 runtime as a result of string operations like concatenation. Those strings
 obviously need to dynamically allocate memory for the characters, which means
-the string needs to <em>free</em> that memory when it&rsquo;s no longer needed.</p>
+the string needs to <em>free</em> that memory when it&rsquo;s no longer needed.
+你可能想知道为什么ObjString不能直接执行源字符串中的原始字符。由于连接等字符串操作，一些ObjString会在运行时被动态创建。这些字符串显然需要为字符动态分配内存，这也意味着该字符串不再需要这些内存时，要<em>释放</em>它们。</p>
 <p>If we had an ObjString for a string literal, and tried to free its character
 array that pointed into the original source code string, bad things would
 happen. So, for literals, we preemptively copy the characters over to the heap.
-This way, every ObjString reliably owns its character array and can free it.</p>
-<p>The real work of creating a string object happens in this function:</p>
+This way, every ObjString reliably owns its character array and can free it.
+如果我们有一个ObjString存储字符串字面量，并且试图释放其中指向原始的源代码字符串的字符数组，糟糕的事情就会发生。因此，对于字面量，我们预先将字符复制到堆中。这样一来，每个ObjString都能可靠地拥有自己的字符数组，并可以释放它。</p>
+<p>The real work of creating a string object happens in this function:
+创建字符串对象的真正工作发生在这个函数中：</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;vm.h&quot;
 
 </pre><div class="source-file"><em>object.c</em></div>
@@ -506,7 +551,8 @@ This way, every ObjString reliably owns its character array and can free it.</p>
 
 <p>It creates a new ObjString on the heap and then initializes its fields. It&rsquo;s
 sort of like a constructor in an OOP language. As such, it first calls the &ldquo;base
-class&rdquo; constructor to initialize the Obj state, using a new macro.</p>
+class&rdquo; constructor to initialize the Obj state, using a new macro.
+它在堆上创建一个新的ObjString，然后初始化其字段。这有点像OOP语言中的构建函数。因此，它首先调用“基类”的构造函数来初始化Obj状态，使用了一个新的宏。</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;vm.h&quot;
 </pre><div class="source-file"><em>object.c</em></div>
 <pre class="insert">
@@ -521,7 +567,8 @@ static ObjString* allocateString(char* chars, int length) {
 
 <p><span name="factored">Like</span> the previous macro, this exists mainly to
 avoid the need to redundantly cast a <code>void*</code> back to the desired type. The
-actual functionality is here:</p>
+actual functionality is here:
+跟前面的宏一样，这个宏的存在主要是为了避免重复地将<code>void*</code>转换回期望的类型。实际的功能在这里：</p>
 <aside name="factored">
 <p>I admit this chapter has a sea of helper functions and macros to wade through. I
 try to keep the code nicely factored, but that leads to a scattering of tiny
@@ -546,19 +593,22 @@ static ObjString* allocateString(char* chars, int length) {
 <p>It allocates an object of the given size on the heap. Note that the size is
 <em>not</em> just the size of Obj itself. The caller passes in the number of bytes so
 that there is room for the extra payload fields needed by the specific object
-type being created.</p>
+type being created.
+它在堆上分配了一个给定大小的对象。注意，这个大小<em>不仅仅</em>是Obj本身的大小。调用者传入字节数，以便为被创建的对象类型留出额外的载荷字段所需的空间。</p>
 <p>Then it initializes the Obj state<span class="em">&mdash;</span>right now, that&rsquo;s just the type tag. This
 function returns to <code>allocateString()</code>, which finishes initializing the ObjString
 fields. <span name="viola"><em>Voilà</em></span>, we can compile and execute string
-literals.</p>
+literals.
+然后它初始化Obj状态——现在这只是个类型标签。这个函数会返回到 <code>allocateString()</code>，它来完成对ObjString字段的初始化。就是这样，我们可以编译和执行字符串字面量了。</p>
 <aside name="viola"><img src="image/strings/viola.png" class="above" alt="A viola." />
 <p>Don&rsquo;t get &ldquo;voilà&rdquo; confused with &ldquo;viola&rdquo;. One means &ldquo;there it is&rdquo; and the other
 is a string instrument, the middle child between a violin and a cello. Yes, I
 did spend two hours drawing a viola just to mention that.</p>
 </aside>
-<h2><a href="#operations-on-strings" id="operations-on-strings"><small>19&#8202;.&#8202;4</small>Operations on Strings</a></h2>
+<h2><a href="#operations-on-strings--字符串操作" id="operations-on-strings--字符串操作"><small>19&#8202;.&#8202;4</small>Operations on Strings  字符串操作</a></h2>
 <p>Our fancy strings are there, but they don&rsquo;t do much of anything yet. A good
-first step is to make the existing print code not barf on the new value type.</p>
+first step is to make the existing print code not barf on the new value type.
+我们的花哨的字符串已经就位了，但是它们还没有发挥什么作用。一个好的第一步是使现有的打印代码不要排斥新的值类型。</p>
 <div class="codehilite"><pre class="insert-before">    case VAL_NUMBER: printf(&quot;%g&quot;, AS_NUMBER(value)); break;
 </pre><div class="source-file"><em>value.c</em><br>
 in <em>printValue</em>()</div>
@@ -568,7 +618,8 @@ in <em>printValue</em>()</div>
 <div class="source-file-narrow"><em>value.c</em>, in <em>printValue</em>()</div>
 
 <p>If the value is a heap-allocated object, it defers to a helper function over in
-the &ldquo;object&rdquo; module.</p>
+the &ldquo;object&rdquo; module.
+如果该值是一个堆分配的对象，它会调用“object”模块中的一个辅助函数。</p>
 <div class="codehilite"><pre class="insert-before">ObjString* copyString(const char* chars, int length);
 </pre><div class="source-file"><em>object.h</em><br>
 add after <em>copyString</em>()</div>
@@ -579,7 +630,8 @@ static inline bool isObjType(Value value, ObjType type) {
 </pre></div>
 <div class="source-file-narrow"><em>object.h</em>, add after <em>copyString</em>()</div>
 
-<p>The implementation looks like this:</p>
+<p>The implementation looks like this:
+其实现如下：</p>
 <div class="codehilite"><div class="source-file"><em>object.c</em><br>
 add after <em>copyString</em>()</div>
 <pre><span class="t">void</span> <span class="i">printObject</span>(<span class="t">Value</span> <span class="i">value</span>) {
@@ -594,18 +646,21 @@ add after <em>copyString</em>()</div>
 
 <p>We have only a single object type now, but this function will sprout additional
 switch cases in later chapters. For string objects, it simply <span
-name="term-2">prints</span> the character array as a C string.</p>
+name="term-2">prints</span> the character array as a C string.
+我们现在只有一个对象类型，但是这个函数在后续的章节中会出现更多case分支。对于字符串对象，只是简单地将字符数组作为C字符串打印出来。</p>
 <aside name="term-2">
 <p>I told you terminating the string would come in handy.</p>
 </aside>
-<p>The equality operators also need to gracefully handle strings. Consider:</p>
+<p>The equality operators also need to gracefully handle strings. Consider:
+相等运算符也需要优雅地处理字符串。考虑一下：</p>
 <div class="codehilite"><pre><span class="s">&quot;string&quot;</span> == <span class="s">&quot;string&quot;</span>
 </pre></div>
 <p>These are two separate string literals. The compiler will make two separate
 calls to <code>copyString()</code>, create two distinct ObjString objects and store them as
 two constants in the chunk. They are different objects in the heap. But our
 users (and thus we) expect strings to have value equality. The above expression
-should evaluate to <code>true</code>. That requires a little special support.</p>
+should evaluate to <code>true</code>. That requires a little special support.
+这是两个独立的字符串字面量。编译器会对<code>copyString()</code>进行两次单独的调用，创建两个不同的ObjString对象，并将它们作为两个常量存储在字节码块中。它们是堆中的不同对象。但是我们的用户（也就是我们）希望字符串的值是相等的。上面的表达式计算结果应该是<code>true</code>。这需要一点特殊的支持。</p>
 <div class="codehilite"><pre class="insert-before">    case VAL_NUMBER: return AS_NUMBER(a) == AS_NUMBER(b);
 </pre><div class="source-file"><em>value.c</em><br>
 in <em>valuesEqual</em>()</div>
@@ -624,9 +679,11 @@ in <em>valuesEqual</em>()</div>
 arrays contain the same characters, regardless of whether they are two separate
 objects or the exact same one. This does mean that string equality is slower
 than equality on other types since it has to walk the whole string. We&rsquo;ll revise
-that <a href="hash-tables.html">later</a>, but this gives us the right semantics for now.</p>
+that <a href="hash-tables.html">later</a>, but this gives us the right semantics for now.
+如果两个值都是字符串，那么当它们的字符数组中包含相同的字符时，它们就是相等的，不管它们是两个独立的对象还是完全相同的一个对象。这确实意味着字符串相等比其它类型的相等要慢，因为它必须遍历整个字符串。我们稍后会对此进行修改，但目前这为我们提供了正确的语义。</p>
 <p>Finally, in order to use <code>memcmp()</code> and the new stuff in the &ldquo;object&rdquo; module, we
-need a couple of includes. Here:</p>
+need a couple of includes. Here:
+最后，为了使用<code>memcmp()</code>和“object”模块中的新内容，我们需要一些引入。这里：</p>
 <div class="codehilite"><pre class="insert-before">#include &lt;stdio.h&gt;
 </pre><div class="source-file"><em>value.c</em></div>
 <pre class="insert"><span class="a">#include &lt;string.h&gt;</span>
@@ -636,7 +693,8 @@ need a couple of includes. Here:</p>
 </pre></div>
 <div class="source-file-narrow"><em>value.c</em></div>
 
-<p>And here:</p>
+<p>And here:
+还有这里：</p>
 <div class="codehilite"><pre class="insert-before">#include &lt;string.h&gt;
 
 </pre><div class="source-file"><em>value.c</em></div>
@@ -645,16 +703,18 @@ need a couple of includes. Here:</p>
 </pre></div>
 <div class="source-file-narrow"><em>value.c</em></div>
 
-<h3><a href="#concatenation" id="concatenation"><small>19&#8202;.&#8202;4&#8202;.&#8202;1</small>Concatenation</a></h3>
+<h3><a href="#concatenation--连接" id="concatenation--连接"><small>19&#8202;.&#8202;4&#8202;.&#8202;1</small>Concatenation  连接</a></h3>
 <p>Full-grown languages provide lots of operations for working with strings<span class="em">&mdash;</span>access to individual characters, the string&rsquo;s length, changing case, splitting,
 joining, searching, etc. When you implement your language, you&rsquo;ll likely want
-all that. But for this book, we keep things <em>very</em> minimal.</p>
+all that. But for this book, we keep things <em>very</em> minimal.
+成熟的语言都提供了很多处理字符串的操作——访问单个字符、字符串长度、改变大小写、分割、连接、搜索等。当你实现自己的语言时，你可能会想要所有这些。但是在本书中，我们还是让事情保持简单。</p>
 <p>The only interesting operation we support on strings is <code>+</code>. If you use that
 operator on two string objects, it produces a new string that&rsquo;s a concatenation
 of the two operands. Since Lox is dynamically typed, we can&rsquo;t tell which
 behavior is needed at compile time because we don&rsquo;t know the types of the
 operands until runtime. Thus, the <code>OP_ADD</code> instruction dynamically inspects the
-operands and chooses the right operation.</p>
+operands and chooses the right operation.
+我们对字符串支持的唯一有趣的操作是<code>+</code>。如果你在两个字符串对象上使用这个操作符，它会产生一个新的字符串，是两个操作数的连接。由于Lox是动态类型的，因此我们在编译时无法判断需要哪种行为，因为我们在运行时才知道操作数的类型。因此，<code>OP_ADD</code>指令会动态地检查操作数，并选择正确的操作。</p>
 <div class="codehilite"><pre class="insert-before">      case OP_LESS:     BINARY_OP(BOOL_VAL, &lt;); break;
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()<br>
@@ -679,7 +739,8 @@ replace 1 line</div>
 
 <p>If both operands are strings, it concatenates. If they&rsquo;re both numbers, it adds
 them. Any other <span name="convert">combination</span> of operand types is a
-runtime error.</p>
+runtime error.
+如果两个操作数都是字符串，则连接。如果都是数字，则相加。任何其它操作数类型的组合都是一个运行时错误。</p>
 <aside name="convert" class="bottom">
 <p>This is more conservative than most languages. In other languages, if one
 operand is a string, the other can be any type and it will be implicitly
@@ -687,7 +748,8 @@ converted to a string before concatenating the two.</p>
 <p>I think that&rsquo;s a fine feature, but would require writing tedious &ldquo;convert to
 string&rdquo; code for each type, so I left it out of Lox.</p>
 </aside>
-<p>To concatenate strings, we define a new function.</p>
+<p>To concatenate strings, we define a new function.
+为了连接字符串，我们定义一个新函数。</p>
 <div class="codehilite"><div class="source-file"><em>vm.c</em><br>
 add after <em>isFalsey</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">concatenate</span>() {
@@ -709,8 +771,10 @@ add after <em>isFalsey</em>()</div>
 <p>It&rsquo;s pretty verbose, as C code that works with strings tends to be. First, we
 calculate the length of the result string based on the lengths of the operands.
 We allocate a character array for the result and then copy the two halves in. As
-always, we carefully ensure the string is terminated.</p>
-<p>In order to call <code>memcpy()</code>, the VM needs an include.</p>
+always, we carefully ensure the string is terminated.
+这是相当繁琐的，因为处理字符串的C语言代码往往是这样。首先，我们根据操作数的长度计算结果字符串的长度。我们为结果分配一个字符数组，然后将两个部分复制进去。与往常一样，我们要小心地确保这个字符串被终止了。</p>
+<p>In order to call <code>memcpy()</code>, the VM needs an include.
+为了调用<code>memcpy()</code>，虚拟机需要引入头文件。</p>
 <div class="codehilite"><pre class="insert-before">#include &lt;stdio.h&gt;
 </pre><div class="source-file"><em>vm.c</em></div>
 <pre class="insert"><span class="a">#include &lt;string.h&gt;</span>
@@ -721,7 +785,8 @@ always, we carefully ensure the string is terminated.</p>
 <div class="source-file-narrow"><em>vm.c</em></div>
 
 <p>Finally, we produce an ObjString to contain those characters. This time we use a
-new function, <code>takeString()</code>.</p>
+new function, <code>takeString()</code>.
+最后，我们生成一个ObjString来包含这些字符。这次我们使用一个新函数<code>takeString()</code>。</p>
 <div class="codehilite"><pre class="insert-before">};
 
 </pre><div class="source-file"><em>object.h</em><br>
@@ -731,7 +796,8 @@ add after struct <em>ObjString</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>object.h</em>, add after struct <em>ObjString</em></div>
 
-<p>The implementation looks like this:</p>
+<p>The implementation looks like this:
+其实现如下：</p>
 <div class="codehilite"><div class="source-file"><em>object.c</em><br>
 add after <em>allocateString</em>()</div>
 <pre><span class="t">ObjString</span>* <span class="i">takeString</span>(<span class="t">char</span>* <span class="i">chars</span>, <span class="t">int</span> <span class="i">length</span>) {
@@ -744,12 +810,15 @@ add after <em>allocateString</em>()</div>
 characters you pass in. Instead, it conservatively creates a copy of the
 characters on the heap that the ObjString can own. That&rsquo;s the right thing for
 string literals where the passed-in characters are in the middle of the source
-string.</p>
+string.
+前面的<code>copyString()</code>函数假定它<em>不能</em>拥有传入的字符的所有权。相对地，它保守地在堆上创建了一个ObjString可以拥有的字符的副本。对于传入的字符位于源字符串中间的字面量来说，这样做是正确的。</p>
 <p>But, for concatenation, we&rsquo;ve already dynamically allocated a character array on
 the heap. Making another copy of that would be redundant (and would mean
 <code>concatenate()</code> has to remember to free its copy). Instead, this function claims
-ownership of the string you give it.</p>
-<p>As usual, stitching this functionality together requires a couple of includes.</p>
+ownership of the string you give it.
+但是，对于连接，我们已经在堆上动态地分配了一个字符数组。再做一个副本是多余的（而且意味着<code>concatenate()</code>必须记得释放它的副本）。相反，这个函数要求拥有传入字符串的所有权。</p>
+<p>As usual, stitching this functionality together requires a couple of includes.
+通常，将这个功能拼接在一起需要引入一些头文件。</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;debug.h&quot;
 </pre><div class="source-file"><em>vm.c</em></div>
 <pre class="insert"><span class="a">#include &quot;object.h&quot;</span>
@@ -758,13 +827,15 @@ ownership of the string you give it.</p>
 </pre></div>
 <div class="source-file-narrow"><em>vm.c</em></div>
 
-<h2><a href="#freeing-objects" id="freeing-objects"><small>19&#8202;.&#8202;5</small>Freeing Objects</a></h2>
-<p>Behold this innocuous-seeming expression:</p>
+<h2><a href="#freeing-objects--释放对象" id="freeing-objects--释放对象"><small>19&#8202;.&#8202;5</small>Freeing Objects  释放对象</a></h2>
+<p>Behold this innocuous-seeming expression:
+看看这个看似无害的表达式：</p>
 <div class="codehilite"><pre><span class="s">&quot;st&quot;</span> + <span class="s">&quot;ri&quot;</span> + <span class="s">&quot;ng&quot;</span>
 </pre></div>
 <p>When the compiler chews through this, it allocates an ObjString for each of
 those three string literals and stores them in the chunk&rsquo;s constant table and
-generates this <span name="stack">bytecode</span>:</p>
+generates this <span name="stack">bytecode</span>:
+当编译器在处理这个表达式时，会为这三个字符串字面量分别分配一个ObjString，将它们存储到字节码块的常量表中，并生成这个字节码：</p>
 <aside name="stack">
 <p>Here&rsquo;s what the stack looks like after each instruction:</p><img src="image/strings/stack.png" alt="The state of the stack at each instruction." />
 </aside>
@@ -779,15 +850,18 @@ generates this <span name="stack">bytecode</span>:</p>
 <code>OP_ADD</code> pops those and concatenates them. That dynamically allocates a new
 <code>"stri"</code> string on the heap. The VM pushes that and then pushes the <code>"ng"</code>
 constant. The last <code>OP_ADD</code> pops <code>"stri"</code> and <code>"ng"</code>, concatenates them, and
-pushes the result: <code>"string"</code>. Great, that&rsquo;s what we expect.</p>
+pushes the result: <code>"string"</code>. Great, that&rsquo;s what we expect.
+前两条指令将<code>"st"</code>和<code>"ri"</code>压入栈中。然后<code>OP_ADD</code>将它们弹出并连接。这会在堆上动态分配一个新的<code>"stri"</code>字符串。虚拟机将它压入栈中，然后压入<code>"ng"</code>常量。最后一个<code>OP_ADD</code>会弹出<code>"stri"</code>和<code>"ng"</code>，将它们连接起来，并将结果<code>"string"</code>压入栈。很好，这就是我们所期望的。</p>
 <p>But, wait. What happened to that <code>"stri"</code> string? We dynamically allocated it,
 then the VM discarded it after concatenating it with <code>"ng"</code>. We popped it from
 the stack and no longer have a reference to it, but we never freed its memory.
-We&rsquo;ve got ourselves a classic memory leak.</p>
+We&rsquo;ve got ourselves a classic memory leak.
+但是，请等一下。那个<code>"stri"</code>字符串怎么样了？我们动态分配了它，然后虚拟机在将其与<code>"ng"</code>连接后丢弃了它。我们把它从栈中弹出，不再持有对它的引用，但是我们从未释放它的内存。我们遇到了典型的内存泄露。</p>
 <p>Of course, it&rsquo;s perfectly fine for the <em>Lox program</em> to forget about
 intermediate strings and not worry about freeing them. Lox automatically manages
 memory on the user&rsquo;s behalf. The responsibility to manage memory doesn&rsquo;t
-<em>disappear</em>. Instead, it falls on our shoulders as VM implementers.</p>
+<em>disappear</em>. Instead, it falls on our shoulders as VM implementers.
+当然，Lox程序完全可以忘记中间的字符串，也不必担心释放它们。Lox代表用户自动管理内存。管理内存的责任并没有<em>消失</em>，相反，它落到了我们这些虚拟机实现者的肩上。</p>
 <p>The full <span name="borrowed">solution</span> is a <a href="garbage-collection.html">garbage collector</a> that
 reclaims unused memory while the program is running. We&rsquo;ve got some other stuff
 to get in place before we&rsquo;re ready to tackle that project. Until then, we are
@@ -811,14 +885,17 @@ crosscutting concern that touches the entire codebase.</p>
 sure the VM can still find every allocated object even if the Lox program itself
 no longer references them. There are many sophisticated techniques that advanced
 memory managers use to allocate and track memory for objects. We&rsquo;re going to
-take the simplest practical approach.</p>
+take the simplest practical approach.
+今天我们至少应该做到最基本的一点：确保虚拟机可以找到每一个分配的对象，即使Lox程序本身不再引用它们，从而避免<em>泄露</em>内存。高级内存管理程序会使用很多复杂的技术来分配和跟踪对象的内存。我们将采取最简单的实用方法。</p>
 <p>We&rsquo;ll create a linked list that stores every Obj. The VM can traverse that
 list to find every single object that has been allocated on the heap, whether or
-not the user&rsquo;s program or the VM&rsquo;s stack still has a reference to it.</p>
+not the user&rsquo;s program or the VM&rsquo;s stack still has a reference to it.
+我们会创建一个链表存储每个Obj。虚拟机可以遍历这个列表，找到在堆上分配的每一个对象，无论用户的程序或虚拟机的堆栈是否仍然有对它的引用。</p>
 <p>We could define a separate linked list node struct but then we&rsquo;d have to
 allocate those too. Instead, we&rsquo;ll use an <strong>intrusive list</strong><span class="em">&mdash;</span>the Obj struct
 itself will be the linked list node. Each Obj gets a pointer to the next Obj in
-the chain.</p>
+the chain.
+我们可以定义一个单独的链表节点结构体，但那样我们也必须分配这些节点。相反，我们会使用<strong>侵入式列表</strong>——Obj结构体本身将作为链表节点。每个Obj都有一个指向链中下一个Obj的指针。</p>
 <div class="codehilite"><pre class="insert-before">struct Obj {
   ObjType type;
 </pre><div class="source-file"><em>object.h</em><br>
@@ -828,7 +905,8 @@ in struct <em>Obj</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>object.h</em>, in struct <em>Obj</em></div>
 
-<p>The VM stores a pointer to the head of the list.</p>
+<p>The VM stores a pointer to the head of the list.
+VM存储一个指向表头的指针。</p>
 <div class="codehilite"><pre class="insert-before">  Value* stackTop;
 </pre><div class="source-file"><em>vm.h</em><br>
 in struct <em>VM</em></div>
@@ -837,7 +915,8 @@ in struct <em>VM</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>vm.h</em>, in struct <em>VM</em></div>
 
-<p>When we first initialize the VM, there are no allocated objects.</p>
+<p>When we first initialize the VM, there are no allocated objects.
+当我们第一次初始化VM时，没有分配的对象。</p>
 <div class="codehilite"><pre class="insert-before">  resetStack();
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>initVM</em>()</div>
@@ -846,7 +925,8 @@ in <em>initVM</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>initVM</em>()</div>
 
-<p>Every time we allocate an Obj, we insert it in the list.</p>
+<p>Every time we allocate an Obj, we insert it in the list.
+每当我们分配一个Obj时，就将其插入到列表中。</p>
 <div class="codehilite"><pre class="insert-before">  object-&gt;type = type;
 </pre><div class="source-file"><em>object.c</em><br>
 in <em>allocateObject</em>()</div>
@@ -860,9 +940,11 @@ in <em>allocateObject</em>()</div>
 
 <p>Since this is a singly linked list, the easiest place to insert it is as the
 head. That way, we don&rsquo;t need to also store a pointer to the tail and keep it
-updated.</p>
+updated.
+由于这是一个单链表，所以最容易插入的地方是头部。这样，我们就不需要同时存储一个指向尾部的指针并保持对其更新。</p>
 <p>The &ldquo;object&rdquo; module is directly using the global <code>vm</code> variable from the &ldquo;vm&rdquo;
-module, so we need to expose that externally.</p>
+module, so we need to expose that externally.
+“object”模块直接使用了“vm”模块的<code>vm</code>变量，所以我们需要将该变量公开到外部。</p>
 <div class="codehilite"><pre class="insert-before">} InterpretResult;
 
 </pre><div class="source-file"><em>vm.h</em><br>
@@ -875,9 +957,11 @@ add after enum <em>InterpretResult</em></div>
 
 <p>Eventually, the garbage collector will free memory while the VM is still
 running. But, even then, there will usually be unused objects still lingering in
-memory when the user&rsquo;s program completes. The VM should free those too.</p>
+memory when the user&rsquo;s program completes. The VM should free those too.
+最终，垃圾收集器会在虚拟机仍在运行时释放内存。但是，即便如此，当用户的程序完成时，通常仍会有未使用的对象驻留在内存中。VM也应该释放这些对象。</p>
 <p>There&rsquo;s no sophisticated logic for that. Once the program is done, we can free
-<em>every</em> object. We can and should implement that now.</p>
+<em>every</em> object. We can and should implement that now.
+这方面没有什么复杂的逻辑。一旦程序完成，我们就可以释放<em>每个</em>对象。我们现在可以也应该实现它。</p>
 <div class="codehilite"><pre class="insert-before">void freeVM() {
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>freeVM</em>()</div>
@@ -898,7 +982,8 @@ add after <em>reallocate</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>memory.h</em>, add after <em>reallocate</em>()</div>
 
-<p>Here&rsquo;s how we free the objects:</p>
+<p>Here&rsquo;s how we free the objects:
+下面是释放对象的方法：</p>
 <div class="codehilite"><div class="source-file"><em>memory.c</em><br>
 add after <em>reallocate</em>()</div>
 <pre><span class="t">void</span> <span class="i">freeObjects</span>() {
@@ -913,7 +998,8 @@ add after <em>reallocate</em>()</div>
 <div class="source-file-narrow"><em>memory.c</em>, add after <em>reallocate</em>()</div>
 
 <p>This is a CS 101 textbook implementation of walking a linked list and freeing
-its nodes. For each node, we call:</p>
+its nodes. For each node, we call:
+这是CS 101教科书中关于遍历链表并释放其节点的实现。对于每个节点，我们调用：</p>
 <div class="codehilite"><div class="source-file"><em>memory.c</em><br>
 add after <em>reallocate</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">freeObject</span>(<span class="t">Obj</span>* <span class="i">object</span>) {
@@ -932,7 +1018,8 @@ add after <em>reallocate</em>()</div>
 <p>We aren&rsquo;t only freeing the Obj itself. Since some object types also allocate
 other memory that they own, we also need a little type-specific code to handle
 each object type&rsquo;s special needs. Here, that means we free the character array
-and then free the ObjString. Those both use one last memory management macro.</p>
+and then free the ObjString. Those both use one last memory management macro.
+我们不仅释放了Obj本身。因为有些对象类型还分配了它们所拥有的其它内存，我们还需要一些特定于类型的代码来处理每种对象类型的特殊需求。在这里，这意味着我们释放字符数组，然后释放ObjString。它们都使用了最后一个内存管理宏。</p>
 <div class="codehilite"><pre class="insert-before">    (type*)reallocate(NULL, 0, sizeof(type) * (count))
 </pre><div class="source-file"><em>memory.h</em></div>
 <pre class="insert">
@@ -945,14 +1032,17 @@ and then free the ObjString. Those both use one last memory management macro.</p
 <div class="source-file-narrow"><em>memory.h</em></div>
 
 <p>It&rsquo;s a tiny <span name="free">wrapper</span> around <code>reallocate()</code> that
-&ldquo;resizes&rdquo; an allocation down to zero bytes.</p>
+&ldquo;resizes&rdquo; an allocation down to zero bytes.
+这是围绕<code>reallocate()</code>的一个小包装，可以将分配的内存“调整”为零字节。
+Using <code>reallocate()</code> to free memory might seem pointless. Why not just call <code>free()</code>? Later, this will help the VM track how much memory is still being used. If all allocation and freeing goes through <code>reallocate()</code>, it’s easy to keep a running count of the number of bytes of allocated memory.</p>
 <aside name="free">
 <p>Using <code>reallocate()</code> to free memory might seem pointless. Why not just call
 <code>free()</code>? Later, this will help the VM track how much memory is still being
 used. If all allocation and freeing goes through <code>reallocate()</code>, it&rsquo;s easy to
 keep a running count of the number of bytes of allocated memory.</p>
 </aside>
-<p>As usual, we need an include to wire everything together.</p>
+<p>As usual, we need an include to wire everything together.
+像往常一样，我们需要一个include将所有东西连接起来</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;common.h&quot;
 </pre><div class="source-file"><em>memory.h</em></div>
 <pre class="insert"><span class="a">#include &quot;object.h&quot;</span>
@@ -962,7 +1052,8 @@ keep a running count of the number of bytes of allocated memory.</p>
 </pre></div>
 <div class="source-file-narrow"><em>memory.h</em></div>
 
-<p>Then in the implementation file:</p>
+<p>Then in the implementation file:
+然后是实现文件：</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;memory.h&quot;
 </pre><div class="source-file"><em>memory.c</em></div>
 <pre class="insert"><span class="a">#include &quot;vm.h&quot;</span>
@@ -976,7 +1067,35 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
 its mess before exiting. But it doesn&rsquo;t free any objects while the VM is
 running. Later, when it&rsquo;s possible to write longer-running Lox programs, the VM
 will eat more and more memory as it goes, not relinquishing a single byte until
-the entire program is done.</p>
+the entire program is done.
+这样一来，我们的虚拟机就不会再泄露内存了。像一个好的C程序一样，它会在退出之前进行清理。但在虚拟机运行时，它不会释放任何对象。稍后，当可以编写长时间运行的Lox程序时，虚拟机在运行过程中会消耗越来越多的内存，在整个程序完成之前不会释放任何一个字节。
+We won’t address that until we’ve added <a href="http://www.craftinginterpreters.com/garbage-collection.html">a real garbage collector</a>, but this is a big step. We now have the infrastructure to support a variety of different kinds of dynamically allocated objects. And we’ve used that to add strings to clox, one of the most used types in most programming languages. Strings in turn enable us to build another fundamental data type, especially in dynamic languages: the venerable <a href="http://www.craftinginterpreters.com/hash-tables.html">hash table</a>. But that’s for the next chapter . . .
+在添加真正的垃圾收集器之前，我们不会解决这个问题，但这是一个很大的进步。我们现在拥有了支持各种不同类型的动态分配对象的基础设施。我们利用这一点在clox中加入了字符串，这是大多数编程语言中最常用的类型之一。字符串反过来又使我们能够构建另一种基本的数据类型，尤其是在动态语言中：古老的哈希表。但这是下一章的内容了……
+: UCSD Pascal，Pascal最早的实现之一，就有这个确切的限制。Pascal字符串开头是长度值，而不是像C语言那样用一个终止的空字符表示字符串的结束。因为UCSD只使用一个字节来存储长度，所以字符串不能超过255个字符。
+: 当然，“Obj”是“对象（object）”的简称。
+: 语言规范中的关键部分是：<BR>$ 6.7.2.1 13<BR>在一个结构体对象中，非位域成员和位域所在的单元的地址按照它们被声明的顺序递增。一个指向结构对象的指针，经过适当转换后，指向其第一个成员（如果该成员是一个位域，则指向其所在的单元），反之亦然。在结构对象中可以有未命名的填充，但不允许在其开头。
+: 如果Lox支持像<code>\n</code>这样的字符串转义序列，我们会在这里对其进行转换。既然不支持，我们就可以原封不动地接受这些字符。
+: 我们需要自己终止字符串，因为词素指向整个源字符串中的一个字符范围，并且没有终止符。<BR>由于ObjString明确存储了长度，我们<em>可以</em>让字符数组不终止，但是在结尾处添加一个终止符只花费一个字节，并且可以让我们将字符数组传递给期望带终止符的C标准库函数。
+: 我承认这一章涉及了大量的辅助函数和宏。我试图让代码保持良好的分解，但这导致了一些分散的小函数。等我们以后重用它们时，将会得到回报。
+: 我说过，终止字符串会有用的。
+: 这比大多数语言都要保守。在其它语言中，如果一个操作数是字符串，另一个操作数可以是任何类型，在连接这两个操作数之前会隐式地转换为字符串。<BR>我认为这是一个很好的特性，但是需要为每种类型编写冗长的“转换为字符串”的代码，所以我在Lox中没有支持它。
+: 下面是每条指令执行后的堆栈：
+: 我见过很多人在实现看语言的大部分内容之后，才试图开始实现GC。对于在开发语言时通常会运行的那种玩具程序，实际上不会在程序结束之前耗尽内存，所以在需要GC之前，你可以开发出很多的特性。<BR>但是，这低估了以后添加垃圾收集器的难度。收集器必须确保它能够找到每一点仍在使用的内存，这样它就不会收集活跃数据。一个语言的实现可以在数百个地方存储对某个对象的引用。如果你不能找到所有这些地方，你就会遇到噩梦般的漏洞。<BR>我曾见过一些语言实现因为后来的GC太困难而夭折。如果你的语言需要GC，请尽快实现它。它是涉及整个代码库的横切关注点。
+: 使用<code>reallocate()</code>来释放内存似乎毫无意义。为什么不直接调用<code>free()</code>呢？稍后，这将帮助虚拟机跟踪仍在使用的内存数量。如果所有的分配和释放都通过<code>reallocate()</code>进行，那么就很容易对已分配的内存字节数进行记录。</p>
+<h2><a href="#习题" id="习题"><small>19&#8202;.&#8202;6</small>习题</a></h2>
+<ol>
+<li>
+<blockquote>
+<p>Each string requires two separate dynamic allocations—one for the ObjString and a second for the character array. Accessing the characters from a value requires two pointer indirections, which can be bad for performance. A more efficient solution relies on a technique called <strong><a href="https://en.wikipedia.org/wiki/Flexible_array_member">flexible array members</a></strong>. Use that to store the ObjString and its character array in a single contiguous allocation.
+每个字符串都需要两次单独的动态分配——一个是ObjString，另一个是字符数组。从一个值中访问字符需要两个指针间接访问，这对性能是不利的。一个更有效的解决方案是依靠一种名为<a href="https://en.wikipedia.org/wiki/Flexible_array_member"><strong>灵活数组成员</strong></a>的技术。用该方法将ObjString和它的字符数据存储在一个连续分配的内存中。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>When we create the ObjString for each string literal, we copy the characters onto the heap. That way, when the string is later freed, we know it is safe to free the characters too.</p>
+</blockquote>
+</li>
+</ol>
 <p>We won&rsquo;t address that until we&rsquo;ve added <a href="garbage-collection.html">a real garbage collector</a>, but this
 is a big step. We now have the infrastructure to support a variety of different
 kinds of dynamically allocated objects. And we&rsquo;ve used that to add strings to
@@ -1002,7 +1121,15 @@ to free the characters too.</p>
 on very constrained devices. Instead, we could keep track of which
 ObjStrings own their character array and which are &ldquo;constant strings&rdquo; that
 just point back to the original source string or some other non-freeable
-location. Add support for this.</p>
+location. Add support for this.
+当我们为每个字符串字面量创建ObjString时，会将字符复制到堆中。这样，当字符串后来被释放时，我们知道释放这些字符也是安全的。
+这是一个简单但是会浪费一下内存的方法，这在非常受限的设备上可能是一个问题。相反，我们可以追踪哪些ObjString拥有自己的字符数组，哪些是“常量字符串”，只是指向原始的源字符串或其它不可释放的位置。添加对此的支持。</p>
+</li>
+<li>
+<blockquote>
+<p>If Lox was your language, what would you have it do when a user tries to use <code>+</code> with one string operand and the other some other type? Justify your choice. What do other languages do?
+如果Lox是你的语言，当用户试图用一个字符串操作数使用<code>+</code>，而另一个操作数是其它类型时，你会让它做什么？证明你的选择是正确的，其它的语言是怎么做的？</p>
+</blockquote>
 </li>
 <li>
 <p>If Lox was your language, what would you have it do when a user tries to use

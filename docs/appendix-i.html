@@ -37,8 +37,8 @@
 <h3><a href="#top">Appendix I<small>A1</small></a></h3>
 
 <ul>
-    <li><a href="#syntax-grammar"><small>A1.1</small> Syntax Grammar</a></li>
-    <li><a href="#lexical-grammar"><small>A1.2</small> Lexical Grammar</a></li>
+    <li><a href="#syntax-grammar--语法"><small>A1.1</small> Syntax Grammar  语法</a></li>
+    <li><a href="#lexical-grammar--词法"><small>A1.2</small> Lexical Grammar  词法</a></li>
 </ul>
 
 
@@ -63,8 +63,8 @@
 <h3><a href="#top">Appendix I<small>A1</small></a></h3>
 
 <ul>
-    <li><a href="#syntax-grammar"><small>A1.1</small> Syntax Grammar</a></li>
-    <li><a href="#lexical-grammar"><small>A1.2</small> Lexical Grammar</a></li>
+    <li><a href="#syntax-grammar--语法"><small>A1.1</small> Syntax Grammar  语法</a></li>
+    <li><a href="#lexical-grammar--词法"><small>A1.2</small> Lexical Grammar  词法</a></li>
 </ul>
 
 
@@ -84,16 +84,19 @@
 
 <p>Here is a complete grammar for Lox. The chapters that introduce each part of the
 language include the grammar rules there, but this collects them all into one
-place.</p>
-<h2><a href="#syntax-grammar" id="syntax-grammar"><small>A1&#8202;.&#8202;1</small>Syntax Grammar</a></h2>
+place.
+这里有一份Lox的完整语法。介绍语言每个部分的章节中都包含对应的语法规则，但这里将它们全部收录在一起了。</p>
+<h2><a href="#syntax-grammar--语法" id="syntax-grammar--语法"><small>A1&#8202;.&#8202;1</small>Syntax Grammar  语法</a></h2>
 <p>The syntactic grammar is used to parse the linear sequence of tokens into the
 nested syntax tree structure. It starts with the first rule that matches an
-entire Lox program (or a single REPL entry).</p>
+entire Lox program (or a single REPL entry).
+语法用于将词法标识（token）的线性序列解析为嵌套的语法树结构。它从匹配整个Lox程序（或单条REPL输入）的第一个规则开始。</p>
 <div class="codehilite"><pre><span class="i">program</span>        → <span class="i">declaration</span>* <span class="t">EOF</span> ;
 </pre></div>
-<h3><a href="#declarations" id="declarations"><small>A1&#8202;.&#8202;1&#8202;.&#8202;1</small>Declarations</a></h3>
+<h3><a href="#declarations--声明" id="declarations--声明"><small>A1&#8202;.&#8202;1&#8202;.&#8202;1</small>Declarations  声明</a></h3>
 <p>A program is a series of declarations, which are the statements that bind new
-identifiers or any of the other statement types.</p>
+identifiers or any of the other statement types.
+一个程序就是一系列的声明，也就是绑定新标识符或其它statement类型的语句。</p>
 <div class="codehilite"><pre><span class="i">declaration</span>    → <span class="i">classDecl</span>
                | <span class="i">funDecl</span>
                | <span class="i">varDecl</span>
@@ -104,9 +107,10 @@ identifiers or any of the other statement types.</p>
 <span class="i">funDecl</span>        → <span class="s">&quot;fun&quot;</span> <span class="i">function</span> ;
 <span class="i">varDecl</span>        → <span class="s">&quot;var&quot;</span> <span class="t">IDENTIFIER</span> ( <span class="s">&quot;=&quot;</span> <span class="i">expression</span> )? <span class="s">&quot;;&quot;</span> ;
 </pre></div>
-<h3><a href="#statements" id="statements"><small>A1&#8202;.&#8202;1&#8202;.&#8202;2</small>Statements</a></h3>
+<h3><a href="#statements--语句" id="statements--语句"><small>A1&#8202;.&#8202;1&#8202;.&#8202;2</small>Statements  语句</a></h3>
 <p>The remaining statement rules produce side effects, but do not introduce
-bindings.</p>
+bindings.
+其余的语句规则会产生副作用，但不会引入绑定。</p>
 <div class="codehilite"><pre><span class="i">statement</span>      → <span class="i">exprStmt</span>
                | <span class="i">forStmt</span>
                | <span class="i">ifStmt</span>
@@ -127,12 +131,14 @@ bindings.</p>
 <span class="i">block</span>          → <span class="s">&quot;{&quot;</span> <span class="i">declaration</span>* <span class="s">&quot;}&quot;</span> ;
 </pre></div>
 <p>Note that <code>block</code> is a statement rule, but is also used as a nonterminal in a
-couple of other rules for things like function bodies.</p>
-<h3><a href="#expressions" id="expressions"><small>A1&#8202;.&#8202;1&#8202;.&#8202;3</small>Expressions</a></h3>
+couple of other rules for things like function bodies.
+请注意，<code>block</code>是一个语句规则，但在其它规则中也作为非终止符使用，用于表示函数体等内容。</p>
+<h3><a href="#expressions--表达式" id="expressions--表达式"><small>A1&#8202;.&#8202;1&#8202;.&#8202;3</small>Expressions  表达式</a></h3>
 <p>Expressions produce values. Lox has a number of unary and binary operators with
 different levels of precedence. Some grammars for languages do not directly
 encode the precedence relationships and specify that elsewhere. Here, we use a
-separate rule for each precedence level to make it explicit.</p>
+separate rule for each precedence level to make it explicit.
+表达式会产生值。Lox有许多具有不同优先级的一元或二元运算符。一些语言的语法中没有直接编码优先级关系，而是在其它地方指定。在这里，我们为每个优先级使用单独的规则，使其明确。</p>
 <div class="codehilite"><pre><span class="i">expression</span>     → <span class="i">assignment</span> ;
 
 <span class="i">assignment</span>     → ( <span class="i">call</span> <span class="s">&quot;.&quot;</span> )? <span class="t">IDENTIFIER</span> <span class="s">&quot;=&quot;</span> <span class="i">assignment</span>
@@ -151,17 +157,19 @@ separate rule for each precedence level to make it explicit.</p>
                | <span class="t">NUMBER</span> | <span class="t">STRING</span> | <span class="t">IDENTIFIER</span> | <span class="s">&quot;(&quot;</span> <span class="i">expression</span> <span class="s">&quot;)&quot;</span>
                | <span class="s">&quot;super&quot;</span> <span class="s">&quot;.&quot;</span> <span class="t">IDENTIFIER</span> ;
 </pre></div>
-<h3><a href="#utility-rules" id="utility-rules"><small>A1&#8202;.&#8202;1&#8202;.&#8202;4</small>Utility rules</a></h3>
+<h3><a href="#utility-rules--实用规则" id="utility-rules--实用规则"><small>A1&#8202;.&#8202;1&#8202;.&#8202;4</small>Utility rules  实用规则</a></h3>
 <p>In order to keep the above rules a little cleaner, some of the grammar is
-split out into a few reused helper rules.</p>
+split out into a few reused helper rules.
+为了使上面的规则更简洁一点，一些语法被拆分为几个重复使用的辅助规则。</p>
 <div class="codehilite"><pre><span class="i">function</span>       → <span class="t">IDENTIFIER</span> <span class="s">&quot;(&quot;</span> <span class="i">parameters</span>? <span class="s">&quot;)&quot;</span> <span class="i">block</span> ;
 <span class="i">parameters</span>     → <span class="t">IDENTIFIER</span> ( <span class="s">&quot;,&quot;</span> <span class="t">IDENTIFIER</span> )* ;
 <span class="i">arguments</span>      → <span class="i">expression</span> ( <span class="s">&quot;,&quot;</span> <span class="i">expression</span> )* ;
 </pre></div>
-<h2><a href="#lexical-grammar" id="lexical-grammar"><small>A1&#8202;.&#8202;2</small>Lexical Grammar</a></h2>
+<h2><a href="#lexical-grammar--词法" id="lexical-grammar--词法"><small>A1&#8202;.&#8202;2</small>Lexical Grammar  词法</a></h2>
 <p>The lexical grammar is used by the scanner to group characters into tokens.
 Where the syntax is <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context free</a>, the lexical grammar is <a href="https://en.wikipedia.org/wiki/Regular_grammar">regular</a><span class="em">&mdash;</span>note
-that there are no recursive rules.</p>
+that there are no recursive rules.
+词法被扫描器用来将字符分组为词法标识（token）。语法是<a href="https://en.wikipedia.org/wiki/Context-free_grammar">上下文无关</a>的，词法是<a href="https://en.wikipedia.org/wiki/Regular_grammar">正则</a>的——注意这里没有递归规则。</p>
 <div class="codehilite"><pre><span class="t">NUMBER</span>         → <span class="t">DIGIT</span>+ ( <span class="s">&quot;.&quot;</span> <span class="t">DIGIT</span>+ )? ;
 <span class="t">STRING</span>         → <span class="s">&quot;</span><span class="e">\&quot;</span><span class="s">&quot;</span> &lt;<span class="i">any</span> <span class="i">char</span> <span class="i">except</span> <span class="s">&quot;</span><span class="e">\&quot;</span><span class="s">&quot;</span>&gt;* <span class="s">&quot;</span><span class="e">\&quot;</span><span class="s">&quot;</span> ;
 <span class="t">IDENTIFIER</span>     → <span class="t">ALPHA</span> ( <span class="t">ALPHA</span> | <span class="t">DIGIT</span> )* ;

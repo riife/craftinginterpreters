@@ -37,13 +37,13 @@
 <h3><a href="#top">Compiling Expressions<small>17</small></a></h3>
 
 <ul>
-    <li><a href="#single-pass-compilation"><small>17.1</small> Single-Pass Compilation</a></li>
-    <li><a href="#parsing-tokens"><small>17.2</small> Parsing Tokens</a></li>
-    <li><a href="#emitting-bytecode"><small>17.3</small> Emitting Bytecode</a></li>
-    <li><a href="#parsing-prefix-expressions"><small>17.4</small> Parsing Prefix Expressions</a></li>
-    <li><a href="#parsing-infix-expressions"><small>17.5</small> Parsing Infix Expressions</a></li>
-    <li><a href="#a-pratt-parser"><small>17.6</small> A Pratt Parser</a></li>
-    <li><a href="#dumping-chunks"><small>17.7</small> Dumping Chunks</a></li>
+    <li><a href="#single-pass-compilation--单遍编译"><small>17.1</small> Single-Pass Compilation  单遍编译</a></li>
+    <li><a href="#parsing-tokens--解析标识"><small>17.2</small> Parsing Tokens  解析标识</a></li>
+    <li><a href="#emitting-bytecode--发出字节码"><small>17.3</small> Emitting Bytecode  发出字节码</a></li>
+    <li><a href="#parsing-prefix-expressions--解析前缀表达式"><small>17.4</small> Parsing Prefix Expressions  解析前缀表达式</a></li>
+    <li><a href="#parsing-infix-expressions--解析中缀表达式"><small>17.5</small> Parsing Infix Expressions  解析中缀表达式</a></li>
+    <li><a href="#a-pratt-parser--pratt解析器"><small>17.6</small> A Pratt Parser  Pratt解析器</a></li>
+    <li><a href="#dumping-chunks--转储字节码块"><small>17.7</small> Dumping Chunks  转储字节码块</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>It&#x27;s Just Parsing</a></li>
@@ -71,13 +71,13 @@
 <h3><a href="#top">Compiling Expressions<small>17</small></a></h3>
 
 <ul>
-    <li><a href="#single-pass-compilation"><small>17.1</small> Single-Pass Compilation</a></li>
-    <li><a href="#parsing-tokens"><small>17.2</small> Parsing Tokens</a></li>
-    <li><a href="#emitting-bytecode"><small>17.3</small> Emitting Bytecode</a></li>
-    <li><a href="#parsing-prefix-expressions"><small>17.4</small> Parsing Prefix Expressions</a></li>
-    <li><a href="#parsing-infix-expressions"><small>17.5</small> Parsing Infix Expressions</a></li>
-    <li><a href="#a-pratt-parser"><small>17.6</small> A Pratt Parser</a></li>
-    <li><a href="#dumping-chunks"><small>17.7</small> Dumping Chunks</a></li>
+    <li><a href="#single-pass-compilation--单遍编译"><small>17.1</small> Single-Pass Compilation  单遍编译</a></li>
+    <li><a href="#parsing-tokens--解析标识"><small>17.2</small> Parsing Tokens  解析标识</a></li>
+    <li><a href="#emitting-bytecode--发出字节码"><small>17.3</small> Emitting Bytecode  发出字节码</a></li>
+    <li><a href="#parsing-prefix-expressions--解析前缀表达式"><small>17.4</small> Parsing Prefix Expressions  解析前缀表达式</a></li>
+    <li><a href="#parsing-infix-expressions--解析中缀表达式"><small>17.5</small> Parsing Infix Expressions  解析中缀表达式</a></li>
+    <li><a href="#a-pratt-parser--pratt解析器"><small>17.6</small> A Pratt Parser  Pratt解析器</a></li>
+    <li><a href="#dumping-chunks--转储字节码块"><small>17.7</small> Dumping Chunks  转储字节码块</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>It&#x27;s Just Parsing</a></li>
@@ -101,16 +101,20 @@
 <blockquote>
 <p>In the middle of the journey of our life I found myself within a dark woods
 where the straight way was lost.</p>
-<p><cite>Dante Alighieri, <em>Inferno</em></cite></p>
+<p><cite>Dante Alighieri, <em>Inferno</em></cite>
+方吾生之半路，恍余处乎幽林，失正轨而迷误。（但丁，《地狱》）
+【译者注：这里引用的是大名鼎鼎的《神曲》，所以我也直接引用了钱稻孙先生的译文】</p>
 </blockquote>
 <p>This chapter is exciting for not one, not two, but <em>three</em> reasons. First, it
 provides the final segment of our VM&rsquo;s execution pipeline. Once in place, we can
-plumb the user&rsquo;s source code from scanning all the way through to executing it.</p><img src="image/compiling-expressions/pipeline.png" alt="Lowering the 'compiler' section of pipe between 'scanner' and 'VM'." />
+plumb the user&rsquo;s source code from scanning all the way through to executing it.
+这一章令人激动，原因不止一个，也不止两个，而是三个。首先，它补齐了虚拟机执行管道的最后一段。一旦到位，我们就可以处理用户的源代码，从扫描一直到执行。</p><img src="image/compiling-expressions/pipeline.png" alt="Lowering the 'compiler' section of pipe between 'scanner' and 'VM'." />
 <p>Second, we get to write an actual, honest-to-God <em>compiler</em>. It parses source
 code and outputs a low-level series of binary instructions. Sure, it&rsquo;s <span
 name="wirth">bytecode</span> and not some chip&rsquo;s native instruction set, but
 it&rsquo;s way closer to the metal than jlox was. We&rsquo;re about to be real language
-hackers.</p>
+hackers.
+第二，我们要编写一个真正的<em>编译器</em>。它会解析源代码并输出低级的二进制指令序列。当然，它是字节码，而不是某个芯片的原生指令集，但它比jlox更接近于硬件。我们即将成为真正的语言黑客了。</p>
 <aside name="wirth">
 <p>Bytecode was good enough for Niklaus Wirth, and no one questions his street
 cred.</p>
@@ -119,7 +123,8 @@ cred.</p>
 absolute favorite algorithms: Vaughan Pratt&rsquo;s &ldquo;top-down operator precedence
 parsing&rdquo;. It&rsquo;s the most elegant way I know to parse expressions. It gracefully
 handles prefix operators, postfix, infix, <em>mixfix</em>, any kind of <em>-fix</em> you got.
-It deals with precedence and associativity without breaking a sweat. I love it.</p>
+It deals with precedence and associativity without breaking a sweat. I love it.
+第三，也是最后一个，我可以向你们展示我们最喜欢的算法之一：Vaughan Pratt的“自顶向下算符优先解析”。这是我所知道的解析表达的最优雅的方法。它可以优雅地处理前缀、后缀、中缀、多元运算符，以及任何类型的运算符。它能处理优先级和结合性，而且毫不费力。我喜欢它。</p>
 <aside name="pratt">
 <p>Pratt parsers are a sort of oral tradition in industry. No compiler or language
 book I&rsquo;ve read teaches them. Academia is very focused on generated parsers, and
@@ -132,7 +137,8 @@ this old front end<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 <p>As usual, before we get to the fun stuff, we&rsquo;ve got some preliminaries to work
 through. You have to eat your vegetables before you get dessert. First, let&rsquo;s
 ditch that temporary scaffolding we wrote for testing the scanner and replace it
-with something more useful.</p>
+with something more useful.
+与往常一样，在我们开始真正有趣的工作之前，还有一些准备工作需要做。在得到甜点之前，你得先吃点蔬菜。首先，让我们抛弃我们为测试扫描器而编写的临时脚手架，用更有效的东西来替换它。</p>
 <div class="codehilite"><pre class="insert-before">InterpretResult interpret(const char* source) {
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>interpret</em>()<br>
@@ -160,10 +166,13 @@ replace 2 lines</div>
 take the user&rsquo;s program and fill up the chunk with bytecode. At least, that&rsquo;s
 what it will do if the program doesn&rsquo;t have any compile errors. If it does
 encounter an error, <code>compile()</code> returns <code>false</code> and we discard the unusable
-chunk.</p>
+chunk.
+我们创建一个新的空字节码块，并将其传递给编译器。编译器会获取用户的程序，并将字节码填充到该块中。至少在程序没有任何编译错误的情况下，它就会这么做。如果遇到错误，<code>compile()</code>方法会返回<code>false</code>，我们就会丢弃不可用的字节码块。</p>
 <p>Otherwise, we send the completed chunk over to the VM to be executed. When the
 VM finishes, we free the chunk and we&rsquo;re done. As you can see, the signature to
-<code>compile()</code> is different now.</p>
+<code>compile()</code> is different now.
+否则，我们将完整的字节码块发送到虚拟机中去执行。当虚拟机完成后，我们会释放该字节码块，这样就完成了。如你所见，现在<code>compile()</code>的签名已经不同了。
+<u><em>compiler.h，替换一行代码：</em></u></p>
 <div class="codehilite"><pre class="insert-before">#define clox_compiler_h
 
 </pre><div class="source-file"><em>compiler.h</em><br>
@@ -179,7 +188,8 @@ replace 1 line</div>
 
 <p>We pass in the chunk where the compiler will write the code, and then
 <code>compile()</code> returns whether or not compilation succeeded. We make the same
-change to the signature in the implementation.</p>
+change to the signature in the implementation.
+我们将字节码块传入，而编译器会向其中写入代码，如何<code>compile()</code>返回编译是否成功。我们在实现方法中对签名进行相同的修改。</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;scanner.h&quot;
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -192,7 +202,8 @@ replace 1 line</div>
 
 <p>That call to <code>initScanner()</code> is the only line that survives this chapter. Rip
 out the temporary code we wrote to test the scanner and replace it with these
-three lines:</p>
+three lines:
+对<code>initScanner()</code>的调用是本章中唯一保留下来的代码行。删除我们为测试扫描器而编写的临时代码，将其替换为以下三行：</p>
 <div class="codehilite"><pre class="insert-before">  initScanner(source);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>compile</em>()<br>
@@ -208,16 +219,19 @@ replace 13 lines</div>
 soon. Then we parse a single expression. We aren&rsquo;t going to do statements yet,
 so that&rsquo;s the only subset of the grammar we support. We&rsquo;ll revisit this when we
 <a href="global-variables.html">add statements in a few chapters</a>. After we compile the expression, we
-should be at the end of the source code, so we check for the sentinel EOF token.</p>
+should be at the end of the source code, so we check for the sentinel EOF token.
+对<code>advance()</code>的调用会在扫描器上“启动泵”。我们很快会看到它的作用。然后我们解析一个表达式。我们还不打算处理语句，所以表达式是我们支持的唯一的语法子集。等到我们在后面的章节中添加语句时，会重新审视这个问题。在编译表达式之后，我们应该处于源代码的末尾，所以我们要检查EOF标识。</p>
 <p>We&rsquo;re going to spend the rest of the chapter making this function work,
 especially that little <code>expression()</code> call. Normally, we&rsquo;d dive right into that
 function definition and work our way through the implementation from top to
-bottom.</p>
+bottom.
+我们将用本章的剩余时间让这个函数工作起来。尤其是那个小小的<code>expression()</code>调用。通常情况下，我们会直接进入函数定义，并从上到下地进行实现。</p>
 <p>This chapter is <span name="blog">different</span>. Pratt&rsquo;s parsing technique is
 remarkably simple once you have it all loaded in your head, but it&rsquo;s a little
 tricky to break into bite-sized pieces. It&rsquo;s recursive, of course, which is part
 of the problem. But it also relies on a big table of data. As we build up the
-algorithm, that table grows additional columns.</p>
+algorithm, that table grows additional columns.
+这一章则不同。Pratt的解析技术，你一旦理解了就非常简单，但是要把它分解成小块就比较麻烦了。当然，它是递归的，这也是问题的一部分。但它也依赖于一个很大的数据表。等我们构建算法时，这个表格会增加更多的列。</p>
 <aside name="blog">
 <p>If this chapter isn&rsquo;t clicking with you and you&rsquo;d like another take on the
 concepts, I wrote an article that teaches the same algorithm but using Java and
@@ -227,14 +241,16 @@ an object-oriented style: <a href="http://journal.stuffwithstuff.com/2011/03/19/
 table. So we&rsquo;re going to work our way into the core of the parser from the
 outside and cover all of the surrounding bits before we get to the juicy center.
 This will require a little more patience and mental scratch space than most
-chapters, but it&rsquo;s the best I could do.</p>
-<h2><a href="#single-pass-compilation" id="single-pass-compilation"><small>17&#8202;.&#8202;1</small>Single-Pass Compilation</a></h2>
+chapters, but it&rsquo;s the best I could do.
+我不想在每次扩展表时都要重新查看40多行代码。因此，我们要从外部进入解析器的核心，并在进入有趣的中心之前覆盖其外围的所有部分。与大多数章节相比，这将需要更多的耐心和思考空间，但这是我能做到的最好的了。</p>
+<h2><a href="#single-pass-compilation--单遍编译" id="single-pass-compilation--单遍编译"><small>17&#8202;.&#8202;1</small>Single-Pass Compilation  单遍编译</a></h2>
 <p>A compiler has roughly two jobs. It parses the user&rsquo;s source code to understand
 what it means. Then it takes that knowledge and outputs low-level instructions
 that produce the same semantics. Many languages split those two roles into two
 separate <span name="passes">passes</span> in the implementation. A parser
 produces an AST<span class="em">&mdash;</span>just like jlox does<span class="em">&mdash;</span>and then a code generator traverses
-the AST and outputs target code.</p>
+the AST and outputs target code.
+一个编译器大约有两项工作。它会解析用户的源代码以理解其含义。然后，它利用这些知识并输出产生相同语义的低级指令。许多语言在实现中将这两个角色分成两遍独立的执行部分。一个解析器生成AST——就像jlox那样——还有一个代码生成器遍历AST并输出目标代码。</p>
 <aside name="passes">
 <p>In fact, most sophisticated optimizing compilers have a heck of a lot more than
 two passes. Determining not just <em>what</em> optimization passes to have, but how to
@@ -246,12 +262,14 @@ area of research&rdquo; and a &ldquo;dark art&rdquo;.</p>
 one. Back in the day, language hackers did this because computers literally
 didn&rsquo;t have enough memory to store an entire source file&rsquo;s AST. We&rsquo;re doing it
 because it keeps our compiler simpler, which is a real asset when programming in
-C.</p>
+C.
+在clox中，我们采用了一种老派的方法，将这两遍处理合而为一。在过去，语言黑客们这样做是因为计算机没有足够的内存来存储整个源文件的AST。我们这样做是因为它使我们的编译器更简单，这是用C语言编程时的真正优势。</p>
 <p>Single-pass compilers like we&rsquo;re going to build don&rsquo;t work well for all
 languages. Since the compiler has only a peephole view into the user&rsquo;s program
 while generating code, the language must be designed such that you don&rsquo;t need
 much surrounding context to understand a piece of syntax. Fortunately, tiny,
-dynamically typed Lox is <span name="lox">well-suited</span> to that.</p>
+dynamically typed Lox is <span name="lox">well-suited</span> to that.
+像我们要构建的单遍编译器并不是对所有语言都有效。因为编译器在生产代码时只能“管窥”用户的程序，所以语言必须设计成不需要太多外围的上下文环境就能理解一段语法。幸运的是，微小的、动态类型的Lox非常适合这种情况。</p>
 <aside name="lox">
 <p>Not that this should come as much of a surprise. I did design the language
 specifically for this book after all.</p><img src="image/compiling-expressions/keyhole.png" alt="Peering through a keyhole at 'var x;'" />
@@ -260,13 +278,16 @@ specifically for this book after all.</p><img src="image/compiling-expressions/k
 functionality you&rsquo;ll recognize from jlox for parsing<span class="em">&mdash;</span>consuming tokens,
 matching expected token types, etc. And it also has functions for code gen<span class="em">&mdash;</span>emitting bytecode and adding constants to the destination chunk. (And it means
 I&rsquo;ll use &ldquo;parsing&rdquo; and &ldquo;compiling&rdquo; interchangeably throughout this and later
-chapters.)</p>
+chapters.)
+在实践中，这意味着我们的“编译器”C模块具有你在jlox中认识到的解析功能——消费标识，匹配期望的标识类型，等等。而且它还具有代码生成的功能——生成字节码和向目标块中添加常量。（这也意味着我会在本章和后面的章节中交替使用“解析”和“编译”。）</p>
 <p>We&rsquo;ll build the parsing and code generation halves first. Then we&rsquo;ll stitch them
 together with the code in the middle that uses Pratt&rsquo;s technique to parse Lox&rsquo;s
-particular grammar and output the right bytecode.</p>
-<h2><a href="#parsing-tokens" id="parsing-tokens"><small>17&#8202;.&#8202;2</small>Parsing Tokens</a></h2>
+particular grammar and output the right bytecode.
+我们首先分别构建解析和代码生成两个部分。然后，我们会用中间代码将它们缝合在一起，该代码使用Pratt的技术来解析Lox 的语法并输出正确的字节码。</p>
+<h2><a href="#parsing-tokens--解析标识" id="parsing-tokens--解析标识"><small>17&#8202;.&#8202;2</small>Parsing Tokens  解析标识</a></h2>
 <p>First up, the front half of the compiler. This function&rsquo;s name should sound
-familiar.</p>
+familiar.
+首先是编译器的前半部分。这个函数的名字听起来应该很熟悉。</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;scanner.h&quot;
 </pre><div class="source-file"><em>compiler.c</em></div>
 <pre class="insert">
@@ -287,13 +308,16 @@ familiar.</p>
 <p>Just like in jlox, it steps forward through the token stream. It asks the
 scanner for the next token and stores it for later use. Before doing that, it
 takes the old <code>current</code> token and stashes that in a <code>previous</code> field. That will
-come in handy later so that we can get at the lexeme after we match a token.</p>
+come in handy later so that we can get at the lexeme after we match a token.
+就像在jlox中一样，该函数向前通过标识流。它会向扫描器请求下一个词法标识，并将其存储起来以供后面使用。在此之前，它会获取旧的<code>current</code>标识，并将其存储在<code>previous</code>字段中。这在以后会派上用场，让我们可以在匹配到标识之后获得词素。</p>
 <p>The code to read the next token is wrapped in a loop. Remember, clox&rsquo;s scanner
 doesn&rsquo;t report lexical errors. Instead, it creates special <em>error tokens</em> and
-leaves it up to the parser to report them. We do that here.</p>
+leaves it up to the parser to report them. We do that here.
+读取下一个标识的代码被包在一个循环中。记住，clox的扫描器不会报告词法错误。相反地，它创建了一个特殊的<em>错误标识</em>，让解析器来报告这些错误。我们这里就是这样做的。</p>
 <p>We keep looping, reading tokens and reporting the errors, until we hit a
 non-error one or reach the end. That way, the rest of the parser sees only valid
-tokens. The current and previous token are stored in this struct:</p>
+tokens. The current and previous token are stored in this struct:
+我们不断地循环，读取标识并报告错误，直到遇到一个没有错误的标识或者到达标识流终点。这样一来，解析器的其它部分只能看到有效的标记。当前和之前的标记被存储在下面的结构体中：</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;scanner.h&quot;
 </pre><div class="source-file"><em>compiler.c</em></div>
 <pre class="insert">
@@ -312,10 +336,12 @@ static void advance() {
 
 <p>Like we did in other modules, we have a single global variable of this struct
 type so we don&rsquo;t need to pass the state around from function to function in the
-compiler.</p>
-<h3><a href="#handling-syntax-errors" id="handling-syntax-errors"><small>17&#8202;.&#8202;2&#8202;.&#8202;1</small>Handling syntax errors</a></h3>
+compiler.
+就像我们在其它模块中所做的那样，我们维护一个这种结构体类型的单一全局变量，所以我们不需要在编译器中将状态从一个函数传递到另一个函数。</p>
+<h3><a href="#handling-syntax-errors--处理语法错误" id="handling-syntax-errors--处理语法错误"><small>17&#8202;.&#8202;2&#8202;.&#8202;1</small>Handling syntax errors  处理语法错误</a></h3>
 <p>If the scanner hands us an error token, we need to actually tell the user. That
-happens using this:</p>
+happens using this:
+如果扫描器交给我们一个错误标识，我们必须明确地告诉用户。这就需要使用下面的语句：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after variable <em>parser</em></div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">errorAtCurrent</span>(<span class="k">const</span> <span class="t">char</span>* <span class="i">message</span>) {
@@ -327,7 +353,8 @@ add after variable <em>parser</em></div>
 <p>We pull the location out of the current token in order to tell the user where
 the error occurred and forward it to <code>errorAt()</code>. More often, we&rsquo;ll report an
 error at the location of the token we just consumed, so we give the shorter name
-to this other function:</p>
+to this other function:
+我们从当前标识中提取位置信息，以便告诉用户错误发生在哪里，并将其转发给<code>errorAt()</code>。更常见的情况是，我们会在刚刚消费的令牌的位置报告一个错误，所以我们给另一个函数取了一个更短的名字：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after variable <em>parser</em></div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">error</span>(<span class="k">const</span> <span class="t">char</span>* <span class="i">message</span>) {
@@ -336,7 +363,8 @@ add after variable <em>parser</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after variable <em>parser</em></div>
 
-<p>The actual work happens here:</p>
+<p>The actual work happens here:
+实际的工作发生在这里：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after variable <em>parser</em></div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">errorAt</span>(<span class="t">Token</span>* <span class="i">token</span>, <span class="k">const</span> <span class="t">char</span>* <span class="i">message</span>) {
@@ -359,7 +387,8 @@ add after variable <em>parser</em></div>
 <p>First, we print where the error occurred. We try to show the lexeme if it&rsquo;s
 human-readable. Then we print the error message itself. After that, we set this
 <code>hadError</code> flag. That records whether any errors occurred during compilation.
-This field also lives in the parser struct.</p>
+This field also lives in the parser struct.
+首先，我们打印出错误发生的位置。如果词素是人类可读的，我们就尽量显示词素。然后我们打印错误信息。之后，我们设置这个<code>hadError</code>标志。该标志记录了编译过程中是否有任何错误发生。这个字段也存在于解析器结构体中。</p>
 <div class="codehilite"><pre class="insert-before">  Token previous;
 </pre><div class="source-file"><em>compiler.c</em><br>
 in struct <em>Parser</em></div>
@@ -369,7 +398,8 @@ in struct <em>Parser</em></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in struct <em>Parser</em></div>
 
 <p>Earlier I said that <code>compile()</code> should return <code>false</code> if an error occurred. Now
-we can make it do that.</p>
+we can make it do that.
+前面我说过，如果发生错误，<code>compile()</code>应该返回<code>false</code>。现在我们可以这样做：</p>
 <div class="codehilite"><pre class="insert-before">  consume(TOKEN_EOF, &quot;Expect end of expression.&quot;);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>compile</em>()</div>
@@ -381,12 +411,14 @@ in <em>compile</em>()</div>
 <p>I&rsquo;ve got another flag to introduce for error handling. We want to avoid error
 cascades. If the user has a mistake in their code and the parser gets confused
 about where it is in the grammar, we don&rsquo;t want it to spew out a whole pile of
-meaningless knock-on errors after the first one.</p>
+meaningless knock-on errors after the first one.
+我还要引入另一个用于错误处理的标志。我们想要避免错误的级联效应。如果用户在他们的代码中犯了一个错误，而解析器又不理解它在语法中的含义，我们不希望解析器在第一个错误之后，又抛出一大堆无意义的连带错误。</p>
 <p>We fixed that in jlox using panic mode error recovery. In the Java interpreter,
 we threw an exception to unwind out of all of the parser code to a point where
 we could skip tokens and resynchronize. We don&rsquo;t have <span
 name="setjmp">exceptions</span> in C. Instead, we&rsquo;ll do a little smoke and
-mirrors. We add a flag to track whether we&rsquo;re currently in panic mode.</p>
+mirrors. We add a flag to track whether we&rsquo;re currently in panic mode.
+我们在jlox中使用紧急模式错误恢复来解决这个问题。在Java解释器中，我们抛出一个异常，跳出解析器代码直到可以跳过标识并重新同步。我们在C语言中没有异常。相反，我们会做一些欺骗性行为。我们添加一个标志来跟踪当前是否在紧急模式中。</p>
 <aside name="setjmp">
 <p>There is <code>setjmp()</code> and <code>longjmp()</code>, but I&rsquo;d rather not go there. Those make it
 too easy to leak memory, forget to maintain invariants, or otherwise have a Very
@@ -400,7 +432,8 @@ in struct <em>Parser</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in struct <em>Parser</em></div>
 
-<p>When an error occurs, we set it.</p>
+<p>When an error occurs, we set it.
+当出现错误时，我们为其赋值。</p>
 <div class="codehilite"><pre class="insert-before">static void errorAt(Token* token, const char* message) {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>errorAt</em>()</div>
@@ -412,7 +445,13 @@ in <em>errorAt</em>()</div>
 <p>After that, we go ahead and keep compiling as normal as if the error never
 occurred. The bytecode will never get executed, so it&rsquo;s harmless to keep on
 trucking. The trick is that while the panic mode flag is set, we simply suppress
-any other errors that get detected.</p>
+any other errors that get detected.
+之后，我们继续进行编译，就像错误从未发生过一样。字节码永远不会被执行，所以继续运行也是无害的。诀窍在于，虽然设置了紧急模式标志，但我们只是简单地屏蔽了检测到的其它错误。</p>
+<ul>
+<li></li>
+</ul>
+<p>There’s a good chance the parser will go off in the weeds, but the user won’t know because the errors all get swallowed. Panic mode ends when the parser reaches a synchronization point. For Lox, we chose statement boundaries, so when we later add those to our compiler, we’ll clear the flag there.
+解析器很有可能会崩溃，但是用户不会知道，因为错误都会被吞掉。当解析器到达一个同步点时，紧急模式就结束了。对于Lox，我们选择了语句作为边界，所以当我们稍后将语句添加到编译器时，将会清除该标志。</p>
 <div class="codehilite"><pre class="insert-before">static void errorAt(Token* token, const char* message) {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>errorAt</em>()</div>
@@ -425,7 +464,8 @@ in <em>errorAt</em>()</div>
 know because the errors all get swallowed. Panic mode ends when the parser
 reaches a synchronization point. For Lox, we chose statement boundaries, so when
 we later add those to our compiler, we&rsquo;ll clear the flag there.</p>
-<p>These new fields need to be initialized.</p>
+<p>These new fields need to be initialized.
+这些新字段需要被初始化。</p>
 <div class="codehilite"><pre class="insert-before">  initScanner(source);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>compile</em>()</div>
@@ -438,7 +478,8 @@ in <em>compile</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>compile</em>()</div>
 
-<p>And to display the errors, we need a standard header.</p>
+<p>And to display the errors, we need a standard header.
+为了展示这些错误，我们需要一个标准的头文件。</p>
 <div class="codehilite"><pre class="insert-before">#include &lt;stdio.h&gt;
 </pre><div class="source-file"><em>compiler.c</em></div>
 <pre class="insert"><span class="a">#include &lt;stdlib.h&gt;</span>
@@ -448,7 +489,8 @@ in <em>compile</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em></div>
 
-<p>There&rsquo;s one last parsing function, another old friend from jlox.</p>
+<p>There&rsquo;s one last parsing function, another old friend from jlox.
+还有最后一个解析函数，是jlox中的另一个老朋友。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>advance</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">consume</span>(<span class="t">TokenType</span> <span class="i">type</span>, <span class="k">const</span> <span class="t">char</span>* <span class="i">message</span>) {
@@ -464,12 +506,15 @@ add after <em>advance</em>()</div>
 
 <p>It&rsquo;s similar to <code>advance()</code> in that it reads the next token. But it also
 validates that the token has an expected type. If not, it reports an error. This
-function is the foundation of most syntax errors in the compiler.</p>
-<p>OK, that&rsquo;s enough on the front end for now.</p>
-<h2><a href="#emitting-bytecode" id="emitting-bytecode"><small>17&#8202;.&#8202;3</small>Emitting Bytecode</a></h2>
+function is the foundation of most syntax errors in the compiler.
+它类似于<code>advance()</code>，都是读取下一个标识。但它也会验证标识是否具有预期的类型。如果不是，则报告错误。这个函数是编译器中大多数语法错误的基础。</p>
+<p>OK, that&rsquo;s enough on the front end for now.
+好了，关于前端的介绍就到此为止。</p>
+<h2><a href="#emitting-bytecode--发出字节码" id="emitting-bytecode--发出字节码"><small>17&#8202;.&#8202;3</small>Emitting Bytecode  发出字节码</a></h2>
 <p>After we parse and understand a piece of the user&rsquo;s program, the next step is to
 translate that to a series of bytecode instructions. It starts with the easiest
-possible step: appending a single byte to the chunk.</p>
+possible step: appending a single byte to the chunk.
+在我们解析并理解了用户的一段程序之后，下一步是将其转换为一系列字节码指令。它从最简单的步骤开始：向块中追加一个字节。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>consume</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">emitByte</span>(<span class="t">uint8_t</span> <span class="i">byte</span>) {
@@ -481,9 +526,11 @@ add after <em>consume</em>()</div>
 <p>It&rsquo;s hard to believe great things will flow through such a simple function. It
 writes the given byte, which may be an opcode or an operand to an instruction.
 It sends in the previous token&rsquo;s line information so that runtime errors are
-associated with that line.</p>
+associated with that line.
+很难相信伟大的东西会流经这样一个简单的函数。它将给定的字节写入一个指令，该字节可以是操作码或操作数。它会发送前一个标记的行信息，以便将运行时错误与该行关联起来。</p>
 <p>The chunk that we&rsquo;re writing gets passed into <code>compile()</code>, but it needs to make
-its way to <code>emitByte()</code>. To do that, we rely on this intermediary function:</p>
+its way to <code>emitByte()</code>. To do that, we rely on this intermediary function:
+我们正在写入的字节码块被传递给<code>compile()</code>，但是它也需要进入<code>emitByte()</code>中。要做到这一点，我们依靠这个中间函数：</p>
 <div class="codehilite"><pre class="insert-before">Parser parser;
 </pre><div class="source-file"><em>compiler.c</em><br>
 add after variable <em>parser</em></div>
@@ -500,8 +547,10 @@ add after variable <em>parser</em></div>
 <p>Right now, the chunk pointer is stored in a module-level variable like we store
 other global state. Later, when we start compiling user-defined functions, the
 notion of &ldquo;current chunk&rdquo; gets more complicated. To avoid having to go back and
-change a lot of code, I encapsulate that logic in the <code>currentChunk()</code> function.</p>
-<p>We initialize this new module variable before we write any bytecode:</p>
+change a lot of code, I encapsulate that logic in the <code>currentChunk()</code> function.
+现在，chunk指针存储在一个模块级变量中，就像我们存储其它全局状态一样。以后，当我们开始编译用户定义的函数时，“当前块”的概念会变得更加复杂。为了避免到时候需要回头修改大量代码，我把这个逻辑封装在<code>currentChunk()</code>函数中。</p>
+<p>We initialize this new module variable before we write any bytecode:
+在写入任何字节码之前，我们先初始化这个新的模块变量：</p>
 <div class="codehilite"><pre class="insert-before">bool compile(const char* source, Chunk* chunk) {
   initScanner(source);
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -513,7 +562,8 @@ in <em>compile</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>compile</em>()</div>
 
-<p>Then, at the very end, when we&rsquo;re done compiling the chunk, we wrap things up.</p>
+<p>Then, at the very end, when we&rsquo;re done compiling the chunk, we wrap things up.
+然后，在最后，当我们编译完字节码块后，对全部内容做个了结。</p>
 <div class="codehilite"><pre class="insert-before">  consume(TOKEN_EOF, &quot;Expect end of expression.&quot;);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>compile</em>()</div>
@@ -522,7 +572,8 @@ in <em>compile</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>compile</em>()</div>
 
-<p>That calls this:</p>
+<p>That calls this:
+会调用下面的函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>emitByte</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">endCompiler</span>() {
@@ -534,7 +585,8 @@ add after <em>emitByte</em>()</div>
 <p>In this chapter, our VM deals only with expressions. When you run clox, it will
 parse, compile, and execute a single expression, then print the result. To print
 that value, we are temporarily using the <code>OP_RETURN</code> instruction. So we have the
-compiler add one of those to the end of the chunk.</p>
+compiler add one of those to the end of the chunk.
+在本章中，我们的虚拟机只处理表达式。当你运行clox时，它会解析、编译并执行一个表达式，然后打印结果。为了打印这个值，我们暂时使用<code>OP_RETURN</code>指令。我们让编译器在块的模块添加一条这样的指令。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>emitByte</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">emitReturn</span>() {
@@ -543,7 +595,8 @@ add after <em>emitByte</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after <em>emitByte</em>()</div>
 
-<p>While we&rsquo;re here in the back end we may as well make our lives easier.</p>
+<p>While we&rsquo;re here in the back end we may as well make our lives easier.
+既然已经在编写后端，不妨让我们的工作更轻松一点。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>emitByte</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">emitBytes</span>(<span class="t">uint8_t</span> <span class="i">byte1</span>, <span class="t">uint8_t</span> <span class="i">byte2</span>) {
@@ -554,11 +607,14 @@ add after <em>emitByte</em>()</div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after <em>emitByte</em>()</div>
 
 <p>Over time, we&rsquo;ll have enough cases where we need to write an opcode followed by
-a one-byte operand that it&rsquo;s worth defining this convenience function.</p>
-<h2><a href="#parsing-prefix-expressions" id="parsing-prefix-expressions"><small>17&#8202;.&#8202;4</small>Parsing Prefix Expressions</a></h2>
+a one-byte operand that it&rsquo;s worth defining this convenience function.
+随着时间的推移，我们将遇到很多的情况中需要写一个操作码，后面跟一个单字节的操作数，因此值得定义这个便利的函数。</p>
+<h2><a href="#parsing-prefix-expressions--解析前缀表达式" id="parsing-prefix-expressions--解析前缀表达式"><small>17&#8202;.&#8202;4</small>Parsing Prefix Expressions  解析前缀表达式</a></h2>
 <p>We&rsquo;ve assembled our parsing and code generation utility functions. The missing
-piece is the code in the middle that connects those together.</p><img src="image/compiling-expressions/mystery.png" alt="Parsing functions on the left, bytecode emitting functions on the right. What goes in the middle?" />
-<p>The only step in <code>compile()</code> that we have left to implement is this function:</p>
+piece is the code in the middle that connects those together.
+我们已经组装了解析和生成代码的工具函数。缺失的部分就是将它们连接在一起的的中间代码。</p><img src="image/compiling-expressions/mystery.png" alt="Parsing functions on the left, bytecode emitting functions on the right. What goes in the middle?" />
+<p>The only step in <code>compile()</code> that we have left to implement is this function:
+<code>compile()</code>中唯一还未实现的步骤就是这个函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>endCompiler</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">expression</span>() {
@@ -568,27 +624,36 @@ add after <em>endCompiler</em>()</div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after <em>endCompiler</em>()</div>
 
 <p>We aren&rsquo;t ready to implement every kind of expression in Lox yet. Heck, we don&rsquo;t
-even have Booleans. For this chapter, we&rsquo;re only going to worry about four:</p>
+even have Booleans. For this chapter, we&rsquo;re only going to worry about four:
+我们还没有准备好在Lox中实现每一种表达式。见鬼，我们甚至还没有布尔值。在本章中，我们只考虑四个问题：</p>
 <ul>
 <li>Number literals: <code>123</code></li>
 <li>Parentheses for grouping: <code>(123)</code></li>
 <li>Unary negation: <code>-123</code></li>
 <li>The Four Horsemen of the Arithmetic: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code></li>
+<li>数值字面量：<code>123</code></li>
+<li>用于分组的括号：<code>(123)</code></li>
+<li>一元取负：<code>-123</code></li>
+<li>算术运算四骑士：<code>+</code>、<code>-</code>、<code>*</code>、<code>/</code></li>
 </ul>
 <p>As we work through the functions to compile each of those kinds of expressions,
 we&rsquo;ll also assemble the requirements for the table-driven parser that calls
-them.</p>
-<h3><a href="#parsers-for-tokens" id="parsers-for-tokens"><small>17&#8202;.&#8202;4&#8202;.&#8202;1</small>Parsers for tokens</a></h3>
+them.
+当我们通过函数编译每种类型的表达式时，我们也会对调用这些表达式的表格驱动的解析器的要求进行汇总。</p>
+<h3><a href="#parsers-for-tokens--标识解析器" id="parsers-for-tokens--标识解析器"><small>17&#8202;.&#8202;4&#8202;.&#8202;1</small>Parsers for tokens  标识解析器</a></h3>
 <p>For now, let&rsquo;s focus on the Lox expressions that are each only a single token.
 In this chapter, that&rsquo;s just number literals, but there will be more later. Here&rsquo;s
-how we can compile them:</p>
+how we can compile them:
+现在，让我们把注意力集中在仅有三个标识的Lox表达式上。在本章中，这只包括数值字面量，但后面会有更多。下面是我们如何编译它们：</p>
 <p>We map each token type to a different kind of expression. We define a function
 for each expression that outputs the appropriate bytecode. Then we build an
 array of function pointers. The indexes in the array correspond to the
 <code>TokenType</code> enum values, and the function at each index is the code to compile
-an expression of that token type.</p>
+an expression of that token type.
+我们将每种标识类型映射到不同类型的表达式。我们为每个表达式定义一个函数，该函数会输出对应的字节码。然后我们构建一个函数指针的数组。数组中的索引对应于<code>TokenType</code>枚举值，每个索引处的函数是编译该标识类型的表达式的代码。</p>
 <p>To compile number literals, we store a pointer to the following function at the
-<code>TOKEN_NUMBER</code> index in the array.</p>
+<code>TOKEN_NUMBER</code> index in the array.
+为了编译数值字面量，我们在数组的<code>TOKEN_NUMBER</code>索引处存储一个指向下面函数的指针，</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>endCompiler</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">number</span>() {
@@ -601,7 +666,8 @@ add after <em>endCompiler</em>()</div>
 <p>We assume the token for the number literal has already been consumed and is
 stored in <code>previous</code>. We take that lexeme and use the C standard library to
 convert it to a double value. Then we generate the code to load that value using
-this function:</p>
+this function:
+我们假定数值字面量标识已经被消耗了，并被存储在<code>previous</code>中。我们获取该词素，并使用C标准库将其转换为一个double值。然后我们用下面的函数生成加载该double值的字节码：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>emitReturn</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">emitConstant</span>(<span class="t">Value</span> <span class="i">value</span>) {
@@ -612,7 +678,8 @@ add after <em>emitReturn</em>()</div>
 
 <p>First, we add the value to the constant table, then we emit an <code>OP_CONSTANT</code>
 instruction that pushes it onto the stack at runtime. To insert an entry in the
-constant table, we rely on:</p>
+constant table, we rely on:
+首先，我们将值添加到常量表中，然后我们发出一条<code>OP_CONSTANT</code>指令，在运行时将其压入栈中。要在常量表中插入一条数据，我们需要依赖：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>emitReturn</em>()</div>
 <pre><span class="k">static</span> <span class="t">uint8_t</span> <span class="i">makeConstant</span>(<span class="t">Value</span> <span class="i">value</span>) {
@@ -632,7 +699,8 @@ add after <em>emitReturn</em>()</div>
 constant table and returns its index. The new function&rsquo;s job is mostly to make
 sure we don&rsquo;t have too many constants. Since the <code>OP_CONSTANT</code> instruction uses
 a single byte for the index operand, we can store and load only up to <span
-name="256">256</span> constants in a chunk.</p>
+name="256">256</span> constants in a chunk.
+大部分的工作发生在<code>addConstant()</code>中，我们在前面的章节中定义了这个函数。它将给定的值添加到字节码块的常量表的末尾，并返回其索引。这个新函数的工作主要是确保我们没有太多常量。由于<code>OP_CONSTANT</code>指令使用单个字节来索引操作数，所以我们在一个块中最多只能存储和加载256个常量。</p>
 <aside name="256">
 <p>Yes, that limit is pretty low. If this were a full-sized language
 implementation, we&rsquo;d want to add another instruction like <code>OP_CONSTANT_16</code> that
@@ -643,16 +711,19 @@ clox, but you&rsquo;ll want your VMs to scale to larger programs.</p>
 </aside>
 <p>That&rsquo;s basically all it takes. Provided there is some suitable code that
 consumes a <code>TOKEN_NUMBER</code> token, looks up <code>number()</code> in the function pointer
-array, and then calls it, we can now compile number literals to bytecode.</p>
-<h3><a href="#parentheses-for-grouping" id="parentheses-for-grouping"><small>17&#8202;.&#8202;4&#8202;.&#8202;2</small>Parentheses for grouping</a></h3>
+array, and then calls it, we can now compile number literals to bytecode.
+这基本就是所有的事情了。只要有了这些合适的代码，能够消耗一个<code>TOKEN_NUMBER</code>标识，在函数指针数组中查找<code>number()</code>方法，然后调用它，我们现在就可以将数值字面量编译为字节码。</p>
+<h3><a href="#parentheses-for-grouping--括号分组" id="parentheses-for-grouping--括号分组"><small>17&#8202;.&#8202;4&#8202;.&#8202;2</small>Parentheses for grouping  括号分组</a></h3>
 <p>Our as-yet-imaginary array of parsing function pointers would be great if every
 expression was only a single token long. Alas, most are longer. However, many
 expressions <em>start</em> with a particular token. We call these <em>prefix</em> expressions.
 For example, when we&rsquo;re parsing an expression and the current token is <code>(</code>, we
-know we must be looking at a parenthesized grouping expression.</p>
+know we must be looking at a parenthesized grouping expression.
+如果每个表达式只有一个标识，那我们这个尚未成型的解析函数指针数组就很好处理了。不幸的是，大多数表达式都比较长。然而，许多表达式以一个特定的标识<em>开始</em>。我们称之为<em>前缀</em>表达式。举例来说，当我们解析一个表达式，而当前标识是<code>(</code>，我们就知道当前处理的一定是一个带括号的分组表达式。</p>
 <p>It turns out our function pointer array handles those too. The parsing function
 for an expression type can consume any additional tokens that it wants to, just
-like in a regular recursive descent parser. Here&rsquo;s how parentheses work:</p>
+like in a regular recursive descent parser. Here&rsquo;s how parentheses work:
+事实证明，我们的函数指针数组也能处理这些。一个表达式类型的解析函数可以消耗任何它需要的标识，就像在常规的递归下降解析器中一样。下面是小括号的工作原理：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>endCompiler</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">grouping</span>() {
@@ -664,7 +735,8 @@ add after <em>endCompiler</em>()</div>
 
 <p>Again, we assume the initial <code>(</code> has already been consumed. We <span
 name="recursive">recursively</span> call back into <code>expression()</code> to compile the
-expression between the parentheses, then parse the closing <code>)</code> at the end.</p>
+expression between the parentheses, then parse the closing <code>)</code> at the end.
+同样，我们假定初始的<code>(</code>已经被消耗了。我们递归地调用<code>expression()</code>来编译括号之间的表达式，然后解析结尾的<code>)</code>。</p>
 <aside name="recursive">
 <p>A Pratt parser isn&rsquo;t a recursive <em>descent</em> parser, but it&rsquo;s still recursive.
 That&rsquo;s to be expected since the grammar itself is recursive.</p>
@@ -674,9 +746,11 @@ expression. Its sole function is syntactic<span class="em">&mdash;</span>it lets
 lower-precedence expression where a higher precedence is expected. Thus, it has
 no runtime semantics on its own and therefore doesn&rsquo;t emit any bytecode. The
 inner call to <code>expression()</code> takes care of generating bytecode for the
-expression inside the parentheses.</p>
-<h3><a href="#unary-negation" id="unary-negation"><small>17&#8202;.&#8202;4&#8202;.&#8202;3</small>Unary negation</a></h3>
-<p>Unary minus is also a prefix expression, so it works with our model too.</p>
+expression inside the parentheses.
+就后端而言，分组表达式实际上没有任何意义。它的唯一功能是语法上的——它允许你在需要高优先级的地方插入一个低优先级的表达式。因此，它本身没有运行时语法，也就不会发出任何字节码。对<code>expression()</code>的内部调用负责为括号内的表达式生成字节码。</p>
+<h3><a href="#unary-negation--一元取负" id="unary-negation--一元取负"><small>17&#8202;.&#8202;4&#8202;.&#8202;3</small>Unary negation  一元取负</a></h3>
+<p>Unary minus is also a prefix expression, so it works with our model too.
+一元减号也是一个前缀表达式，因此也适用于我们的模型。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>number</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">unary</span>() {
@@ -697,14 +771,22 @@ add after <em>number</em>()</div>
 <p>The leading <code>-</code> token has been consumed and is sitting in <code>parser.previous</code>. We
 grab the token type from that to note which unary operator we&rsquo;re dealing with.
 It&rsquo;s unnecessary right now, but this will make more sense when we use this same
-function to compile the <code>!</code> operator in <a href="types-of-values.html">the next chapter</a>.</p>
+function to compile the <code>!</code> operator in <a href="types-of-values.html">the next chapter</a>.
+前导的<code>-</code>标识已经被消耗掉了，并被放在<code>parser.previous</code>中。我们从中获取标识类型，以了解当前正在处理的是哪个一元运算符。现在还没必要这样做，但当下一章中我们使用这个函数来编译<code>!</code>时，这将会更有意义。</p>
 <p>As in <code>grouping()</code>, we recursively call <code>expression()</code> to compile the operand.
 After that, we emit the bytecode to perform the negation. It might seem a little
 weird to write the negate instruction <em>after</em> its operand&rsquo;s bytecode since the
-<code>-</code> appears on the left, but think about it in terms of order of execution:</p>
+<code>-</code> appears on the left, but think about it in terms of order of execution:
+就像在<code>grouping()</code>中一样，我们会递归地调用<code>expression()</code>来编译操作数。之后，我们发出字节码执行取负运算。因为<code>-</code>出现在左边，将取负指令放在其操作数的<em>后面</em>似乎有点奇怪，但是从执行顺序的角度来考虑：</p>
 <ol>
 <li>
 <p>We evaluate the operand first which leaves its value on the stack.</p>
+</li>
+<li>
+<p>首先计算操作数，并将其值留在堆栈中。</p>
+</li>
+<li>
+<p>然后弹出该值，对其取负，并将结果压入栈中。</p>
 </li>
 <li>
 <p>Then we pop that value, negate it, and push the result.</p>
@@ -713,7 +795,8 @@ weird to write the negate instruction <em>after</em> its operand&rsquo;s bytecod
 <p>So the <code>OP_NEGATE</code> instruction should be emitted <span name="line">last</span>.
 This is part of the compiler&rsquo;s job<span class="em">&mdash;</span>parsing the program in the order it
 appears in the source code and rearranging it into the order that execution
-happens.</p>
+happens.
+所以<code>OP_NEGATE</code>指令应该是最后发出的。这也是编译器工作的一部分——按照源代码中的顺序对程序进行解析，并按照执行的顺序对其重新排序。</p>
 <aside name="line">
 <p>Emitting the <code>OP_NEGATE</code> instruction after the operands does mean that the
 current token when the bytecode is written is <em>not</em> the <code>-</code> token. That mostly
@@ -731,23 +814,27 @@ that into <code>emitByte()</code>, but I wanted to keep things simple for the bo
 <p>There is one problem with this code, though. The <code>expression()</code> function it
 calls will parse any expression for the operand, regardless of precedence. Once
 we add binary operators and other syntax, that will do the wrong thing.
-Consider:</p>
+Consider:
+不过，这段代码有一个问题。它所调用的<code>expression()</code>函数会解析操作数中的任何表达式，而不考虑优先级。一旦我们加入二元运算符和其它语法，就会出错。考虑一下：</p>
 <div class="codehilite"><pre>-<span class="i">a</span>.<span class="i">b</span> + <span class="i">c</span>;
 </pre></div>
 <p>Here, the operand to <code>-</code> should be just the <code>a.b</code> expression, not the entire
 <code>a.b + c</code>. But if <code>unary()</code> calls <code>expression()</code>, the latter will happily chew
 through all of the remaining code including the <code>+</code>. It will erroneously treat
-the <code>-</code> as lower precedence than the <code>+</code>.</p>
+the <code>-</code> as lower precedence than the <code>+</code>.
+在这里<code>-</code>的操作数应该只是<code>a.b</code>表达式，而不是整个<code>a.b+c</code>。但如果<code>unary()</code>调用<code>expression()</code>，后者会愉快地处理包括<code>+</code>在内的所有剩余代码。它会错误地把<code>-</code>视为比<code>+</code>的优先级低。</p>
 <p>When parsing the operand to unary <code>-</code>, we need to compile only expressions at a
 certain precedence level or higher. In jlox&rsquo;s recursive descent parser we
 accomplished that by calling into the parsing method for the lowest-precedence
 expression we wanted to allow (in this case, <code>call()</code>). Each method for parsing
 a specific expression also parsed any expressions of higher precedence too, so
-that included the rest of the precedence table.</p>
+that included the rest of the precedence table.
+当解析一元<code>-</code>的操作数时，只需要编译具有某一优先级或更高优先级的表达式。在jlox的递归下降解析器中，我们通过调用我们想要允许的最低优先级的表达式的解析方法（在本例中是<code>call()</code>）来实现这一点。每个解析特定表达式的方法也会解析任何优先级更高的表达式，也就是包括优先级表的其余部分。</p>
 <p>The parsing functions like <code>number()</code> and <code>unary()</code> here in clox are different.
 Each only parses exactly one type of expression. They don&rsquo;t cascade to include
 higher-precedence expression types too. We need a different solution, and it
-looks like this:</p>
+looks like this:
+clox中的<code>number()</code>和<code>unary()</code>这样的解析函数是不同的。每个函数只解析一种类型的表达式。它们不会级联处理更高优先级的表达式类型。我们需要一个不同的解决方案，看起来是这样的：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>unary</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">parsePrecedence</span>(<span class="t">Precedence</span> <span class="i">precedence</span>) {
@@ -761,7 +848,8 @@ any expression at the given precedence level or higher. We have some other setup
 to get through before we can write the body of this function, but you can
 probably guess that it will use that table of parsing function pointers I&rsquo;ve
 been talking about. For now, don&rsquo;t worry too much about how it works. In order
-to take the &ldquo;precedence&rdquo; as a parameter, we define it numerically.</p>
+to take the &ldquo;precedence&rdquo; as a parameter, we define it numerically.
+这个函数（一旦实现）从当前的标识开始，解析给定优先级或更高优先级的任何表达式。在编写这个函数的主体之前，我们还有一些其它的设置要完成，但你可能也猜得到，它会使用我一直在谈论的解析函数指针列表。现在，还不用太担心它的如何工作的。为了把“优先级”作为一个参数，我们用数值来定义它。</p>
 <div class="codehilite"><pre class="insert-before">} Parser;
 </pre><div class="source-file"><em>compiler.c</em><br>
 add after struct <em>Parser</em></div>
@@ -789,16 +877,19 @@ Parser parser;
 <p>These are all of Lox&rsquo;s precedence levels in order from lowest to highest. Since
 C implicitly gives successively larger numbers for enums, this means that
 <code>PREC_CALL</code> is numerically larger than <code>PREC_UNARY</code>. For example, say the
-compiler is sitting on a chunk of code like:</p>
+compiler is sitting on a chunk of code like:
+这些是Lox中的所有优先级，按照从低到高的顺序排列。由于C语言会隐式地为枚举赋值连续递增的数字，这就意味着<code>PREC_CALL</code>在数值上比<code>PREC_UNARY</code>要大。举例来说，假设编译器正在处理这样的代码：</p>
 <div class="codehilite"><pre>-<span class="i">a</span>.<span class="i">b</span> + <span class="i">c</span>
 </pre></div>
 <p>If we call <code>parsePrecedence(PREC_ASSIGNMENT)</code>, then it will parse the entire
 expression because <code>+</code> has higher precedence than assignment. If instead we
 call <code>parsePrecedence(PREC_UNARY)</code>, it will compile the <code>-a.b</code> and stop there.
 It doesn&rsquo;t keep going through the <code>+</code> because the addition has lower precedence
-than unary operators.</p>
+than unary operators.
+如果我们调用<code>parsePrecedence(PREC_ASSIGNMENT)</code>，那么它就会解析整个表达式，因为<code>+</code>的优先级高于赋值。如果我们调用<code>parsePrecedence(PREC_UNARY)</code>，它就会编译<code>-a.b</code>并停止。它不会径直解析<code>+</code>，因为加法的优先级比一元取负运算符要低。</p>
 <p>With this function in hand, it&rsquo;s a snap to fill in the missing body for
-<code>expression()</code>.</p>
+<code>expression()</code>.
+有了这个函数，我们就可以轻松地填充<code>expression()</code>的缺失部分。</p>
 <div class="codehilite"><pre class="insert-before">static void expression() {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>expression</em>()<br>
@@ -810,7 +901,8 @@ replace 1 line</div>
 
 <p>We simply parse the lowest precedence level, which subsumes all of the
 higher-precedence expressions too. Now, to compile the operand for a unary
-expression, we call this new function and limit it to the appropriate level:</p>
+expression, we call this new function and limit it to the appropriate level:
+我们只需要解析最低优先级，它也包含了所有更高优先级的表达式。现在，为了编译一元表达式的操作数，我们调用这个新函数并将其限制在适当的优先级：</p>
 <div class="codehilite"><pre class="insert-before">  // Compile the operand.
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>unary</em>()<br>
@@ -825,21 +917,25 @@ replace 1 line</div>
 <p>We use the unary operator&rsquo;s own <code>PREC_UNARY</code> precedence to permit <span
 name="useful">nested</span> unary expressions like <code>!!doubleNegative</code>. Since
 unary operators have pretty high precedence, that correctly excludes things like
-binary operators. Speaking of which<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
+binary operators. Speaking of which<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
+我们使用一元运算符本身的<code>PREC_UNARY</code>优先级来允许嵌套的一元表达式，如<code>!!doubleNegative</code>。因为一元运算符的优先级很高，所以正确地排除了二元运算符之类的东西。说到这一点……</p>
 <aside name="useful">
 <p>Not that nesting unary expressions is particularly useful in Lox. But other
 languages let you do it, so we do too.</p>
 </aside>
-<h2><a href="#parsing-infix-expressions" id="parsing-infix-expressions"><small>17&#8202;.&#8202;5</small>Parsing Infix Expressions</a></h2>
+<h2><a href="#parsing-infix-expressions--解析中缀表达式" id="parsing-infix-expressions--解析中缀表达式"><small>17&#8202;.&#8202;5</small>Parsing Infix Expressions  解析中缀表达式</a></h2>
 <p>Binary operators are different from the previous expressions because they are
 <em>infix</em>. With the other expressions, we know what we are parsing from the very
 first token. With infix expressions, we don&rsquo;t know we&rsquo;re in the middle of a
 binary operator until <em>after</em> we&rsquo;ve parsed its left operand and then stumbled
-onto the operator token in the middle.</p>
-<p>Here&rsquo;s an example:</p>
+onto the operator token in the middle.
+二元运算符与之前的表达式不同，因为它们是中缀的。对于其它表达式，我们从第一个标识就知道我们在解析什么，对于中缀表达式，只有在解析了左操作数并发现了中间的运算符时，才知道自己正在处理二元运算符。</p>
+<p>Here&rsquo;s an example:
+下面是一个例子：</p>
 <div class="codehilite"><pre><span class="n">1</span> + <span class="n">2</span>
 </pre></div>
-<p>Let&rsquo;s walk through trying to compile it with what we know so far:</p>
+<p>Let&rsquo;s walk through trying to compile it with what we know so far:
+让我们用目前已知的逻辑走一遍，试着编译一下它：</p>
 <ol>
 <li>
 <p>We call <code>expression()</code>. That in turn calls
@@ -860,13 +956,16 @@ expression, so it needs to keep going somehow. Fortunately, the parser is right
 where we need it to be. Now that we&rsquo;ve compiled the leading number expression,
 the next token is <code>+</code>. That&rsquo;s the exact token that <code>parsePrecedence()</code> needs to
 detect that we&rsquo;re in the middle of an infix expression and to realize that the
-expression we already compiled is actually an operand to that.</p>
+expression we already compiled is actually an operand to that.
+现在怎么办？对 <code>parsePrecedence()</code>的调用应该要消费整个加法表达式，所以它需要以某种方式继续进行解析。幸运的是，解析器就在我们需要它的地方。现在我们已经编译了前面的数字表达式，下一个标识就是<code>+</code>。这正是<code>parsePrecedence()</code>用于判断我们是否在处理中缀表达式所需的标识，并意识到我们已经编译的表达式实际上是中缀表达式的操作数。</p>
 <p>So this hypothetical array of function pointers doesn&rsquo;t just list functions to
 parse expressions that start with a given token. Instead, it&rsquo;s a <em>table</em> of
 function pointers. One column associates prefix parser functions with token
-types. The second column associates infix parser functions with token types.</p>
+types. The second column associates infix parser functions with token types.
+所以，这个假定的函数指针数组，不只是列出用于解析以指定标识开头的表达式的函数。相反，这个一个函数指针的<em>表格</em>。一列将前缀解析函数与标识类型关联起来，第二列将中缀解析函数与标识类型相关联。</p>
 <p>The function we will use as the infix parser for <code>TOKEN_PLUS</code>, <code>TOKEN_MINUS</code>,
-<code>TOKEN_STAR</code>, and <code>TOKEN_SLASH</code> is this:</p>
+<code>TOKEN_STAR</code>, and <code>TOKEN_SLASH</code> is this:
+我们将使用下面的函数作为<code>TOKEN_PLUS</code>， <code>TOKEN_MINUS</code>，<code>TOKEN_STAR</code>和<code>TOKEN_SLASH</code> 的中缀解析函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>endCompiler</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">binary</span>() {
@@ -888,31 +987,38 @@ add after <em>endCompiler</em>()</div>
 <p>When a prefix parser function is called, the leading token has already been
 consumed. An infix parser function is even more <em>in medias res</em><span class="em">&mdash;</span>the entire
 left-hand operand expression has already been compiled and the subsequent infix
-operator consumed.</p>
+operator consumed.
+当前缀解析函数被调用时，前缀标识已经被消耗了。中缀解析函数被调用时，情况更进一步——整个左操作数已经被编译，而随后的中缀操作符也已经被消耗掉。</p>
 <p>The fact that the left operand gets compiled first works out fine. It means at
 runtime, that code gets executed first. When it runs, the value it produces will
-end up on the stack. That&rsquo;s right where the infix operator is going to need it.</p>
+end up on the stack. That&rsquo;s right where the infix operator is going to need it.
+首先左操作数已经被编译的事实是很好的。这意味着在运行时，其代码已经被执行了。当它运行时，它产生的值最终进入栈中。而这正是中缀操作符需要它的地方。</p>
 <p>Then we come here to <code>binary()</code> to handle the rest of the arithmetic operators.
 This function compiles the right operand, much like how <code>unary()</code> compiles its
 own trailing operand. Finally, it emits the bytecode instruction that performs
-the binary operation.</p>
+the binary operation.
+然后我们使用<code>binary()</code>来处理算术操作符的其余部分。这个函数会编译右边的操作数，就像<code>unary()</code>编译自己的尾操作数那样。最后，它会发出执行对应二元运算的字节码指令。</p>
 <p>When run, the VM will execute the left and right operand code, in that order,
 leaving their values on the stack. Then it executes the instruction for the
 operator. That pops the two values, computes the operation, and pushes the
-result.</p>
+result.
+当运行时，虚拟机会按顺序执行左、右操作数的代码，将它们的值留在栈上。然后它会执行操作符的指令。这时，会从栈中弹出这两个值，计算结果，并将结果推入栈中。</p>
 <p>The code that probably caught your eye here is that <code>getRule()</code> line. When we
 parse the right-hand operand, we again need to worry about precedence. Take an
-expression like:</p>
+expression like:
+这里可能会引起你注意的代码是<code>getRule()</code>这一行。当我们解析右操作数时，我们又一次需要考虑优先级的问题。以下面这个表达式为例：</p>
 <div class="codehilite"><pre><span class="n">2</span> * <span class="n">3</span> + <span class="n">4</span>
 </pre></div>
 <p>When we parse the right operand of the <code>*</code> expression, we need to just capture
 <code>3</code>, and not <code>3 + 4</code>, because <code>+</code> is lower precedence than <code>*</code>. We could define
 a separate function for each binary operator. Each would call
-<code>parsePrecedence()</code> and pass in the correct precedence level for its operand.</p>
+<code>parsePrecedence()</code> and pass in the correct precedence level for its operand.
+当我们解析<code>*</code>表达式的右操作数时，我们只需要获取<code>3</code>，而不是<code>3+4</code>，因为<code>+</code>的优先级比<code>*</code>低。我们可以为每个二元运算符定义一个单独的函数。每个函数都会调用 <code>parsePrecedence()</code> 并传入正确的优先级来解析其操作数。</p>
 <p>But that&rsquo;s kind of tedious. Each binary operator&rsquo;s right-hand operand precedence
 is one level <span name="higher">higher</span> than its own. We can look that up
 dynamically with this <code>getRule()</code> thing we&rsquo;ll get to soon. Using that, we call
-<code>parsePrecedence()</code> with one level higher than this operator&rsquo;s level.</p>
+<code>parsePrecedence()</code> with one level higher than this operator&rsquo;s level.
+但这有点乏味。每个二元运算符的右操作数的优先级都比自己高一级。我们可以通过<code>getRule()</code>动态地查找，我们很快就会讲到。有了它，我们就可以使用比当前运算符高一级的优先级来调用<code>parsePrecedence()</code>。</p>
 <aside name="higher">
 <p>We use one <em>higher</em> level of precedence for the right operand because the binary
 operators are left-associative. Given a series of the <em>same</em> operator, like:</p>
@@ -933,12 +1039,14 @@ our operator was <em>right</em>-associative, this would be wrong. Given:</p>
 the current operator.</p>
 </aside>
 <p>This way, we can use a single <code>binary()</code> function for all binary operators even
-though they have different precedences.</p>
-<h2><a href="#a-pratt-parser" id="a-pratt-parser"><small>17&#8202;.&#8202;6</small>A Pratt Parser</a></h2>
+though they have different precedences.
+这样，我们就可以对所有的二元运算符使用同一个<code>binary()</code>函数，即使它们的优先级各不相同。</p>
+<h2><a href="#a-pratt-parser--pratt解析器" id="a-pratt-parser--pratt解析器"><small>17&#8202;.&#8202;6</small>A Pratt Parser  Pratt解析器</a></h2>
 <p>We now have all of the pieces and parts of the compiler laid out. We have a
 function for each grammar production: <code>number()</code>, <code>grouping()</code>, <code>unary()</code>, and
 <code>binary()</code>. We still need to implement <code>parsePrecedence()</code>, and <code>getRule()</code>. We
-also know we need a table that, given a token type, lets us find</p>
+also know we need a table that, given a token type, lets us find
+现在我们已经排列好了编译器的所有部分。对于每个语法生成式都有对应的函数：<code>number()</code>，<code>grouping()</code>，<code>unary()</code> 和 <code>binary()</code>。我们仍然需要实现 <code>parsePrecedence()</code>和<code>getRule()</code>。我们还知道，我们需要一个表格，给定一个标识类型，可以从中找到：</p>
 <ul>
 <li>
 <p>the function to compile a prefix expression starting with a token of that
@@ -958,7 +1066,8 @@ that token as an operator.</p>
 given token because all prefix operators in Lox have the same precedence.</p>
 </aside>
 <p>We wrap these three properties in a little struct which represents a single row
-in the parser table.</p>
+in the parser table.
+我们将这三个属性封装在一个小结构体中，该结构体表示解析器表格中的一行。</p>
 <div class="codehilite"><pre class="insert-before">} Precedence;
 </pre><div class="source-file"><em>compiler.c</em><br>
 add after enum <em>Precedence</em></div>
@@ -976,7 +1085,8 @@ Parser parser;
 <div class="source-file-narrow"><em>compiler.c</em>, add after enum <em>Precedence</em></div>
 
 <p>That ParseFn type is a simple <span name="typedef">typedef</span> for a function
-type that takes no arguments and returns nothing.</p>
+type that takes no arguments and returns nothing.
+这个ParseFn类型是一个简单的函数类型定义，这类函数不需要任何参数且不返回任何内容。</p>
 <aside name="typedef" class="bottom">
 <p>C&rsquo;s syntax for function pointer types is so bad that I always hide it behind a
 typedef. I understand the intent behind the syntax<span class="em">&mdash;</span>the whole &ldquo;declaration
@@ -995,7 +1105,8 @@ typedef struct {
 <div class="source-file-narrow"><em>compiler.c</em>, add after enum <em>Precedence</em></div>
 
 <p>The table that drives our whole parser is an array of ParseRules. We&rsquo;ve been
-talking about it forever, and finally you get to see it.</p>
+talking about it forever, and finally you get to see it.
+驱动整个解析器的表格是一个ParserRule的数组。我们讨论了这么久，现在你终于可以看到它了。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>unary</em>()</div>
 <pre><span class="t">ParseRule</span> <span class="i">rules</span>[] = {
@@ -1053,15 +1164,20 @@ indexes by hand.</p>
 <p>You can see how <code>grouping</code> and <code>unary</code> are slotted into the prefix parser column
 for their respective token types. In the next column, <code>binary</code> is wired up to
 the four arithmetic infix operators. Those infix operators also have their
-precedences set in the last column.</p>
+precedences set in the last column.
+你可以看到<code>grouping</code>和<code>unary</code>是如何被插入到它们各自标识类型对应的前缀解析器列中的。在下一列中，<code>binary</code>被连接到四个算术中缀操作符上。这些中缀操作符的优先级也设置在最后一列。</p>
 <p>Aside from those, the rest of the table is full of <code>NULL</code> and <code>PREC_NONE</code>. Most
 of those empty cells are because there is no expression associated with those
 tokens. You can&rsquo;t start an expression with, say, <code>else</code>, and <code>}</code> would make for
-a pretty confusing infix operator.</p>
+a pretty confusing infix operator.
+除此之外，表格的其余部分都是<code>NULL</code>和<code>PREC_NONE</code>。这些空的单元格中大部分是因为没有与这些标识相关联的表达式。比如说，你不能用<code>else</code>作为表达式开头，而<code>}</code>如果作为中缀操作符也会变得很混乱。</p>
 <p>But, also, we haven&rsquo;t filled in the entire grammar yet. In later chapters, as we
 add new expression types, some of these slots will get functions in them. One of
 the things I like about this approach to parsing is that it makes it very easy
-to see which tokens are in use by the grammar and which are available.</p>
+to see which tokens are in use by the grammar and which are available.
+但是，我们还没有填入整个语法。在后面的章节中，当我们添加新的表达式类型时，其中一些槽会插入函数。我喜欢这种解析方法的一点是，它使我们很容易看到哪些标识被语法使用，以及哪些标识是可用的。
+Now that we have the table, we are finally ready to write the code that uses it. This is where our Pratt parser comes to life. The easiest function to define is <code>getRule()</code>.
+我们现在有了这个表格，终于准备好编写使用它的代码了。这就是我们的Pratt解析器发挥作用的地方。最容易定义的函数是<code>getRule()</code>。</p>
 <p>Now that we have the table, we are finally ready to write the code that uses it.
 This is where our Pratt parser comes to life. The easiest function to define is
 <code>getRule()</code>.</p>
@@ -1077,12 +1193,14 @@ add after <em>parsePrecedence</em>()</div>
 up the precedence of the current operator. This function exists solely to handle
 a declaration cycle in the C code. <code>binary()</code> is defined <em>before</em> the rules
 table so that the table can store a pointer to it. That means the body of
-<code>binary()</code> cannot access the table directly.</p>
+<code>binary()</code> cannot access the table directly.
+它只是简单地返回指定索引处的规则。<code>binary()</code>调用该函数来查询当前操作符的优先级。这个函数的存在只是为了处理C代码中的声明循环。<code>binary()</code>在规则表之前定义，以便规则表中可以存储指向它的指针。这也就意味着<code>binary()</code>的函数体不能直接访问表格。</p>
 <p>Instead, we wrap the lookup in a function. That lets us forward declare
 <code>getRule()</code> before the definition of <code>binary()</code>, and <span
 name="forward">then</span> <em>define</em> <code>getRule()</code> after the table. We&rsquo;ll need a
 couple of other forward declarations to handle the fact that our grammar is
-recursive, so let&rsquo;s get them all out of the way.</p>
+recursive, so let&rsquo;s get them all out of the way.
+相反地，我们将查询封装在一个函数中。这样我们可以在<code>binary()</code>函数定义之前声明<code>getRule()</code>，然后在表格之后<em>定义</em><code>getRule()</code>。我们还需要一些其它的前置声明来处理语法的递归，所以让我们一次性全部理出来。</p>
 <aside name="forward">
 <p>This is what happens when you write your VM in a language that was designed to
 be compiled on a PDP-11.</p>
@@ -1103,11 +1221,13 @@ add after <em>endCompiler</em>()</div>
 
 <p>If you&rsquo;re following along and implementing clox yourself, pay close attention to
 the little annotations that tell you where to put these code snippets. Don&rsquo;t
-worry, though, if you get it wrong, the C compiler will be happy to tell you.</p>
-<h3><a href="#parsing-with-precedence" id="parsing-with-precedence"><small>17&#8202;.&#8202;6&#8202;.&#8202;1</small>Parsing with precedence</a></h3>
+worry, though, if you get it wrong, the C compiler will be happy to tell you.
+如果你正在跟随本文实现自己的clox，请密切注意那些告诉你代码片段应该加在哪里的小注释。不过不用担心，如果你弄错了，C编译器会很乐意告诉你。</p>
+<h3><a href="#parsing-with-precedence--带优先级解析" id="parsing-with-precedence--带优先级解析"><small>17&#8202;.&#8202;6&#8202;.&#8202;1</small>Parsing with precedence  带优先级解析</a></h3>
 <p>Now we&rsquo;re getting to the fun stuff. The maestro that orchestrates all of the
 parsing functions we&rsquo;ve defined is <code>parsePrecedence()</code>. Let&rsquo;s start with parsing
-prefix expressions.</p>
+prefix expressions.
+现在，我们要开始做有趣的事情了。我们定义的所有解析函数的协调者是 <code>parsePrecedence()</code>。让我们从解析前缀表达式开始。</p>
 <div class="codehilite"><pre class="insert-before">static void parsePrecedence(Precedence precedence) {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>parsePrecedence</em>()<br>
@@ -1126,12 +1246,14 @@ replace 1 line</div>
 
 <p>We read the next token and look up the corresponding ParseRule. If there is no
 prefix parser, then the token must be a syntax error. We report that and return
-to the caller.</p>
+to the caller.
+我们读取下一个标识并查找对应的ParseRule。如果没有前缀解析器，那么这个标识一定是语法错误。我们会报告这个错误并返回给调用方。</p>
 <p>Otherwise, we call that prefix parse function and let it do its thing. That
 prefix parser compiles the rest of the prefix expression, consuming any other
 tokens it needs, and returns back here. Infix expressions are where it gets
 interesting since precedence comes into play. The implementation is remarkably
-simple.</p>
+simple.
+否则，我们就调用前缀解析函数，让它做自己的事情。该前缀解析器会编译表达式的其余部分，消耗它需要的任何其它标识，然后返回这里。中缀表达式是比较有趣的地方，因为优先级开始发挥作用了。这个实现非常简单。</p>
 <div class="codehilite"><pre class="insert-before">  prefixRule();
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>parsePrecedence</em>()</div>
@@ -1151,12 +1273,14 @@ beginning of <code>parsePrecedence()</code>, we look up a prefix parser for the 
 token. The first token is <em>always</em> going to belong to some kind of prefix
 expression, by definition. It may turn out to be nested as an operand inside one
 or more infix expressions, but as you read the code from left to right, the
-first token you hit always belongs to a prefix expression.</p>
+first token you hit always belongs to a prefix expression.
+这就是全部内容了，真的。下面是整个函数的工作原理：在<code>parsePrecedence()</code>的开头，我们会为当前标识查找对应的前缀解析器。根据定义，第一个标识<em>总是</em>属于某种前缀表达式。它可能作为一个操作数嵌套在一个或多个中缀表达式中，但是当你从左到右阅读代码时，你碰到的第一个标识总是属于一个前缀表达式。</p>
 <p>After parsing that, which may consume more tokens, the prefix expression is
 done. Now we look for an infix parser for the next token. If we find one, it
 means the prefix expression we already compiled might be an operand for it. But
 only if the call to <code>parsePrecedence()</code> has a <code>precedence</code> that is low enough to
-permit that infix operator.</p>
+permit that infix operator.
+解析之后（可能会消耗更多的标识），前缀表达式就完成了。现在我们要为下一个标识寻找一个中缀解析器。如果我们找到了，就意味着我们刚刚编译的前缀表达式可能是它的一个操作数。但前提是调用 <code>parsePrecedence()</code> 时传入的<code>precedence</code>允许该中缀操作符。</p>
 <p>If the next token is too low precedence, or isn&rsquo;t an infix operator at all,
 we&rsquo;re done. We&rsquo;ve parsed as much expression as we can. Otherwise, we consume the
 operator and hand off control to the infix parser we found. It consumes whatever
@@ -1165,11 +1289,13 @@ other tokens it needs (usually the right operand) and returns back to
 also a valid infix operator that can take the entire preceding expression as its
 operand. We keep looping like that, crunching through infix operators and their
 operands until we hit a token that isn&rsquo;t an infix operator or is too low
-precedence and stop.</p>
+precedence and stop.
+如果下一个标识的优先级太低，或者根本不是一个中缀操作符，我们就结束了。我们已经尽可能多地解析了表达式。否则，我们就消耗操作符，并将控制权移交给我们发现的中缀解析器。它会消耗所需要的其它标识（通常是右操作数）并返回到<code>parsePrecedence()</code>。然后我们再次循环，并查看<em>下一个</em>标识符是否也是一个有效的中缀操作符，且该操作符可以把前面的整个表达式作为其操作数。我们就这样一直循环下去，直到遇见一个不是中缀操作符或优先级太低的标识，然后停止。</p>
 <p>That&rsquo;s a lot of prose, but if you really want to mind meld with Vaughan Pratt
 and fully understand the algorithm, step through the parser in your debugger as
 it works through some expressions. Maybe a picture will help. There&rsquo;s only a
-handful of functions, but they are marvelously intertwined:</p>
+handful of functions, but they are marvelously intertwined:
+这是一篇冗长的文章，但是如果你真的想与Vaughan Pratt心意相通，完全理解这个算法，你可以让解析器处理一些表达式，然后在调试器中逐步查看解析器。也许图片会有帮助，只有少数几个函数，但它们奇妙地交织在一起。</p>
 <p><span name="connections"></span></p>
 <p><img src="image/compiling-expressions/connections.png" alt="The various parsing
 functions and how they call each other." /></p>
@@ -1183,14 +1309,17 @@ functions.</p>
 <p>Later, we&rsquo;ll need to tweak the code in this chapter to handle assignment. But,
 otherwise, what we wrote covers all of our expression compiling needs for the
 rest of the book. We&rsquo;ll plug additional parsing functions into the table when we
-add new kinds of expressions, but <code>parsePrecedence()</code> is complete.</p>
-<h2><a href="#dumping-chunks" id="dumping-chunks"><small>17&#8202;.&#8202;7</small>Dumping Chunks</a></h2>
+add new kinds of expressions, but <code>parsePrecedence()</code> is complete.
+稍后，我们在处理赋值的时候需要调整本章中的代码。但是，除此之外，我们所写的内容涵盖了本书中其余部分所有表达式编译的需求。在添加新的表达式类型时，我们会在表格中插入额外的解析函数，但是 <code>parsePrecedence()</code> 是完整的。</p>
+<h2><a href="#dumping-chunks--转储字节码块" id="dumping-chunks--转储字节码块"><small>17&#8202;.&#8202;7</small>Dumping Chunks  转储字节码块</a></h2>
 <p>While we&rsquo;re here in the core of our compiler, we should put in some
 instrumentation. To help debug the generated bytecode, we&rsquo;ll add support for
 dumping the chunk once the compiler finishes. We had some temporary logging
 earlier when we hand-authored the chunk. Now we&rsquo;ll put in some real code so that
-we can enable it whenever we want.</p>
-<p>Since this isn&rsquo;t for end users, we hide it behind a flag.</p>
+we can enable it whenever we want.
+既然我们已经进入了编译器的核心，我们就应该加入一些工具。为了有助于调试生成的字节码，我们会增加对编译器完成后转储字节码块的支持。在之前我们手工编写字节码块时，进行了一些临时的日志记录。现在，我们要填入一些实际的代码，以便我们可以随时启用它。</p>
+<p>Since this isn&rsquo;t for end users, we hide it behind a flag.
+因为这不是为终端用户准备的，所以我们把它隐藏在一个标志后面。</p>
 <div class="codehilite"><pre class="insert-before">#include &lt;stdint.h&gt;
 
 </pre><div class="source-file"><em>common.h</em></div>
@@ -1200,7 +1329,8 @@ we can enable it whenever we want.</p>
 <div class="source-file-narrow"><em>common.h</em></div>
 
 <p>When that flag is defined, we use our existing &ldquo;debug&rdquo; module to print out the
-chunk&rsquo;s bytecode.</p>
+chunk&rsquo;s bytecode.
+当这个标志被定义后，我们使用现有的“debug”模块打印出块中的字节码。</p>
 <div class="codehilite"><pre class="insert-before">  emitReturn();
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>endCompiler</em>()</div>
@@ -1216,8 +1346,10 @@ in <em>endCompiler</em>()</div>
 <p>We do this only if the code was free of errors. After a syntax error, the
 compiler keeps on going but it&rsquo;s in kind of a weird state and might produce
 broken code. That&rsquo;s harmless because it won&rsquo;t get executed, but we&rsquo;ll just
-confuse ourselves if we try to read it.</p>
-<p>Finally, to access <code>disassembleChunk()</code>, we need to include its header.</p>
+confuse ourselves if we try to read it.
+只有在代码没有错误的情况下，我们才会这样做。在出现语法错误后，编译器会继续运行，但它会处于一种奇怪的状态，可能会产生错误的代码。不过这是无害的，因为它不会被执行，但如果我们试图阅读它，只会把我们弄糊涂。</p>
+<p>Finally, to access <code>disassembleChunk()</code>, we need to include its header.
+最后，为了访问<code>disassembleChunk()</code>，我们需要包含它的头文件。</p>
 <div class="codehilite"><pre class="insert-before">#include &quot;scanner.h&quot;
 </pre><div class="source-file"><em>compiler.c</em></div>
 <pre class="insert">
@@ -1233,11 +1365,24 @@ typedef struct {
 
 <p>We made it! This was the last major section to install in our VM&rsquo;s compilation
 and execution pipeline. Our interpreter doesn&rsquo;t <em>look</em> like much, but inside it
-is scanning, parsing, compiling to bytecode, and executing.</p>
+is scanning, parsing, compiling to bytecode, and executing.
+我们成功了！这是我们的虚拟机的编译和执行管道中需要安装的最后一个主要部分。我们的解释器<em>看起来</em>不大，但它内部有扫描、解析、编译字节码并执行。</p>
 <p>Fire up the VM and type in an expression. If we did everything right, it should
 calculate and print the result. We now have a very over-engineered arithmetic
 calculator. We have a lot of language features to add in the coming chapters,
-but the foundation is in place.</p>
+but the foundation is in place.
+启动虚拟机，输入一个表达式。如果我们所有操作都正确，它应该会计算并打印结果。我们现在有了一个过度设计的算术计算器。在接下来的章节中，我们还好添加很多语言特性，但是基础已经准备好了。
+: 如果你对这一章不感兴趣，而你又希望从另一个角度了解这些概念，我写过一篇文章讲授了同样的算法，但使用了Java和面向对象的风格：<a href="http://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/">“Pratt Parsing: Expression Parsing Made Easy”</a>
+: 事实上，大多数复杂的优化编译器都不止两遍执行过程。不仅要确定需要进行哪些优化，还要确定如何安排它们的顺序——因为优化往往以复杂的方式相互作用——这是介于“开放的研究领域”和“黑暗的艺术”之间的问题。
+: 有<code>setjmp()</code>和<code>longjmp()</code>，但我不想使用它们。这些使我们很容易泄漏内存、忘记维护不变量，或者说寝食难安。
+: 确实，这个限制是很低的。如果这是一个完整的语言实现，我们应该添加另一个指令，比如<code>OP_CONSTANT_16</code>，将索引存储为两字节的操作数，这样就可以在需要时处理更多的常量。支持这个指令的代码不是特别有启发性，所以我在clox中省略了它，但你会希望你的虚拟机能够扩展成更大的程序。
+: Pratt解析器不是递归下降解析器，但它仍然是递归的。这是意料之中的，因为语法本身是递归的。
+: 在操作数之后发出<code>OP_NEGATE</code>确实意味着写入字节码时的当前标识不是<code>-</code>标识。但这并不重要，除了我们使用标识中的行号与指令相关联。这意味着，如果你有一个多行的取负表达式，比如<BR> <BR>那么运行时错误会报告在错误的代码行上。这里，它将在第2行显示错误，而<code>-</code>是在第一行。一个更稳健的方法是在编译器操作数之前存储标识中的行号，然后将其传递给<code>emitByte()</code>，当我想在本书中尽量保持简单。
+: 我们对右操作数使用高一级的优先级，因为二元操作符是左结合的。给出一系列相同的运算符，如：<br><code>1+2+3+4</code><br>我们想这样解析它：<br><code>((1+2)+3)+4</code><br>因此，当解析第一个<code>+</code>的右侧操作数时，我们希望消耗<code>2</code>，但不消耗其余部分，所以我们使用比<code>+</code>高一个优先级的操作数。但如果我们的操作符是右结合的，这就错了。考虑一下：<br><code>a=b=c=d</code><br>因为赋值是右结合的，我们希望将其解析为：<br><code>a=(b=(c=d))</code><br>为了实现这一点，我们会使用与当前操作符<em>相同</em>的优先级来调用<code>parsePrecedence()</code>。
+: 我们不需要跟踪以指定标识开头的前缀表达式的优先级，因为Lox中的所有前缀操作符都有相同的优先级。
+: C语言中函数指针类型的语法非常糟糕，所以我总是把它隐藏在类型定义之后。我理解这种语法背后的意图——整个“声明反映使用”之类的——但我认为这是一个失败的语法实验。
+: 现在明白我所说的“不想每次需要新列时都重新审视这个表格”是什么意思了吧？这就是个野兽。也许你没有见过C语言数组字面量中的<code>[TOKEN_DOT]=</code>语法，这是C99指定的初始化器语法。这比手动计算数组索引要清楚得多。
+: 箭头连接一个函数与其直接调用的另一个函数，箭头连接表格中的指针与解析函数。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -1248,14 +1393,27 @@ parser functions stored in the table. Take this (strange) expression:</p>
 <div class="codehilite"><pre>(-<span class="n">1</span> + <span class="n">2</span>) * <span class="n">3</span> - -<span class="n">4</span>
 </pre></div>
 <p>Write a trace of how those functions are called. Show the order they are
-called, which calls which, and the arguments passed to them.</p>
+called, which calls which, and the arguments passed to them.
+写一下关于这些函数如何被调用的追踪信息。显示它们被调用的顺序，哪个调用哪个，以及传递给它们的参数。</p>
+</li>
+<li>
+<blockquote>
+<p>The ParseRule row for <code>TOKEN_MINUS</code> has both prefix and infix function pointers. That’s because <code>-</code> is both a prefix operator (unary negation) and an infix one (subtraction).</p>
+</blockquote>
 </li>
 <li>
 <p>The ParseRule row for <code>TOKEN_MINUS</code> has both prefix and infix function
 pointers. That&rsquo;s because <code>-</code> is both a prefix operator (unary negation) and
 an infix one (subtraction).</p>
 <p>In the full Lox language, what other tokens can be used in both prefix and
-infix positions? What about in C or in another language of your choice?</p>
+infix positions? What about in C or in another language of your choice?
+<code>TOKEN_MINUS</code>的ParseRule行同时具有前缀和中缀函数指针。这是因为<code>-</code>既是前缀操作符（一元取负），也是一个中缀操作符（减法）。
+在完整的Lox语言中，还有哪些标识可以同时用于前缀和中缀位置？在C语言或你选择的其它语言中呢？</p>
+</li>
+<li>
+<blockquote>
+<p>You might be wondering about complex “mixfix” expressions that have more than two operands separated by tokens. C’s conditional or “ternary” operator, <code>?:</code>, is a widely known one.</p>
+</blockquote>
 </li>
 <li>
 <p>You might be wondering about complex &ldquo;mixfix&rdquo; expressions that have more
@@ -1263,7 +1421,9 @@ than two operands separated by tokens. C&rsquo;s conditional or &ldquo;ternary&r
 operator, <code>?:</code>, is a widely known one.</p>
 <p>Add support for that operator to the compiler. You don&rsquo;t have to generate
 any bytecode, just show how you would hook it up to the parser and handle
-the operands.</p>
+the operands.
+你可能会好奇负责的“多元”表达式，他有两个以上的操作数，操作数之间由标识分开。C语言中的条件运算符或“三元”运算符<code>?:</code>就是一个广为人知的多元操作符。
+向编译器中添加对该运算符的支持。你不需要生成任何字节码，只需要展示如何将其连接到解析器中并处理操作数。</p>
 </li>
 </ol>
 </div>

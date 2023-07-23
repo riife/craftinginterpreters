@@ -37,10 +37,10 @@
 <h3><a href="#top">Representing Code<small>5</small></a></h3>
 
 <ul>
-    <li><a href="#context-free-grammars"><small>5.1</small> Context-Free Grammars</a></li>
-    <li><a href="#implementing-syntax-trees"><small>5.2</small> Implementing Syntax Trees</a></li>
-    <li><a href="#working-with-trees"><small>5.3</small> Working with Trees</a></li>
-    <li><a href="#a-not-very-pretty-printer"><small>5.4</small> A (Not Very) Pretty Printer</a></li>
+    <li><a href="#context-free-grammars--上下文无关语法"><small>5.1</small> Context-Free Grammars  上下文无关语法</a></li>
+    <li><a href="#implementing-syntax-trees--实现语法树"><small>5.2</small> Implementing Syntax Trees  实现语法树</a></li>
+    <li><a href="#working-with-trees--处理树结构"><small>5.3</small> Working with Trees  处理树结构</a></li>
+    <li><a href="#a-not-very-pretty-printer--一个（不是很）漂亮的打印器"><small>5.4</small> A (Not Very) Pretty Printer  一个（不是很）漂亮的打印器</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
 </ul>
@@ -67,10 +67,10 @@
 <h3><a href="#top">Representing Code<small>5</small></a></h3>
 
 <ul>
-    <li><a href="#context-free-grammars"><small>5.1</small> Context-Free Grammars</a></li>
-    <li><a href="#implementing-syntax-trees"><small>5.2</small> Implementing Syntax Trees</a></li>
-    <li><a href="#working-with-trees"><small>5.3</small> Working with Trees</a></li>
-    <li><a href="#a-not-very-pretty-printer"><small>5.4</small> A (Not Very) Pretty Printer</a></li>
+    <li><a href="#context-free-grammars--上下文无关语法"><small>5.1</small> Context-Free Grammars  上下文无关语法</a></li>
+    <li><a href="#implementing-syntax-trees--实现语法树"><small>5.2</small> Implementing Syntax Trees  实现语法树</a></li>
+    <li><a href="#working-with-trees--处理树结构"><small>5.3</small> Working with Trees  处理树结构</a></li>
+    <li><a href="#a-not-very-pretty-printer--一个（不是很）漂亮的打印器"><small>5.4</small> A (Not Very) Pretty Printer  一个（不是很）漂亮的打印器</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
 </ul>
@@ -93,7 +93,8 @@
 <blockquote>
 <p>To dwellers in a wood, almost every species of tree has its voice as well as
 its feature.
-<cite>Thomas Hardy, <em>Under the Greenwood Tree</em></cite></p>
+<cite>Thomas Hardy, <em>Under the Greenwood Tree</em></cite>
+对于森林中的居民来说，几乎每一种树都有它的声音和特点。</p>
 </blockquote>
 <p>In the <a href="scanning.html">last chapter</a>, we took the raw source code as a string and
 transformed it into a slightly higher-level representation: a series of tokens.
@@ -103,7 +104,8 @@ transforms them yet again, into an even richer, more complex representation.</p>
 subject of this chapter. Along the way, we&rsquo;ll <span name="boring">cover</span>
 some theory around formal grammars, feel the difference between functional and
 object-oriented programming, go over a couple of design patterns, and do some
-metaprogramming.</p>
+metaprogramming.
+在我们能够输出这种表示形式之前，我们需要先对其进行定义。这就是本章的主题。在这一过程中，我们将围绕形式化语法进行一些理论讲解，感受函数式编程和面向对象编程的区别，会介绍几种设计模式，并进行一些元编程。</p>
 <aside name="boring">
 <p>I was so worried about this being one of the most boring chapters in the book
 that I kept stuffing more fun ideas into it until I ran out of room.</p>
@@ -113,17 +115,26 @@ code. It should be simple for the parser to produce and easy for the
 interpreter to consume. If you haven&rsquo;t written a parser or interpreter yet,
 those requirements aren&rsquo;t exactly illuminating. Maybe your intuition can help.
 What is your brain doing when you play the part of a <em>human</em> interpreter? How do
-you mentally evaluate an arithmetic expression like this:</p>
+you mentally evaluate an arithmetic expression like this:
+在做这些事情之前，我们先关注一下主要目标——代码的表示形式。它应该易于解析器生成，也易于解释器使用。如果您还没有编写过解析器或解释器，那么这样的需求描述并不能很好地说明问题。也许你的直觉可以帮助你。当你扮演一个<em>人类</em>解释器的角色时，你的大脑在做什么？你如何在心里计算这样的算术表达式：</p>
 <div class="codehilite"><pre><span class="n">1</span> + <span class="n">2</span> * <span class="n">3</span> - <span class="n">4</span>
 </pre></div>
 <p>Because you understand the order of operations<span class="em">&mdash;</span>the old &ldquo;<a href="https://en.wikipedia.org/wiki/Order_of_operations#Mnemonics">Please Excuse My
 Dear Aunt Sally</a>&rdquo; stuff<span class="em">&mdash;</span>you know that the multiplication is evaluated
 before the addition or subtraction. One way to visualize that precedence is
 using a tree. Leaf nodes are numbers, and interior nodes are operators with
-branches for each of their operands.</p>
+branches for each of their operands.
+因为你已经理解了操作的顺序——以前的“<a href="https://en.wikipedia.org/wiki/Order_of_operations#Mnemonics">Please Excuse My Dear Aunt Sally</a>”之类，你知道乘法在加减操作之前执行。有一种方法可以将这种优先级进行可视化，那就是使用树。叶子节点是数字，内部节点是运算符，它们的每个操作数都对应一个分支。</p>
 <p>In order to evaluate an arithmetic node, you need to know the numeric values of
 its subtrees, so you have to evaluate those first. That means working your way
-from the leaves up to the root<span class="em">&mdash;</span>a <em>post-order</em> traversal:</p>
+from the leaves up to the root<span class="em">&mdash;</span>a <em>post-order</em> traversal:
+要想计算一个算术节点，你需要知道它的子树的数值，所以你必须先计算子树的结果。这意味着要从叶节点一直计算到根节点——<em>后序</em>遍历：</p>
+<ul>
+<li>A.从完整的树开始，先计算最下面的操作<code>2*3</code>；</li>
+<li>B.现在计算<code>+</code>；</li>
+<li>C.接下来，计算<code>-</code>；</li>
+<li>D.最终得到答案。</li>
+</ul>
 <p><span name="tree-steps"></span></p><img src="image/representing-code/tree-evaluate.png" alt="Evaluating the tree from the bottom up." />
 <aside name="tree-steps">
 <p>A. Starting with the full tree, evaluate the bottom-most operation, <code>2 * 3</code>.</p>
@@ -135,7 +146,8 @@ from the leaves up to the root<span class="em">&mdash;</span>a <em>post-order</e
 easily. Given a tree, you can evaluate it without breaking a sweat. So it
 intuitively seems like a workable representation of our code is a <span
 name="only">tree</span> that matches the grammatical structure<span class="em">&mdash;</span>the operator
-nesting<span class="em">&mdash;</span>of the language.</p>
+nesting<span class="em">&mdash;</span>of the language.
+如果我给你一个算术表达式，你可以很容易地画出这样的树；给你一棵树，你也可以毫不费力地进行计算。因此，从直观上看，我们的代码的一种可行的表示形式是一棵与语言的语法结构（运算符嵌套）相匹配的树。</p>
 <aside name="only">
 <p>That&rsquo;s not to say a tree is the <em>only</em> possible representation of our code. In
 <a href="a-bytecode-virtual-machine.html">Part III</a>, we&rsquo;ll generate bytecode, another representation that isn&rsquo;t as
@@ -145,12 +157,14 @@ human friendly but is closer to the machine.</p>
 grammars in the last chapter, there is a long ton of theory around syntactic
 grammars. We&rsquo;re going into that theory a little more than we did when scanning
 because it turns out to be a useful tool throughout much of the interpreter.
-We start by moving one level up the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
-<h2><a href="#context-free-grammars" id="context-free-grammars"><small>5&#8202;.&#8202;1</small>Context-Free Grammars</a></h2>
+We start by moving one level up the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
+那么我们需要更精确地了解这个语法是什么。就像上一章的词汇语法一样，围绕句法语法也有一大堆理论。我们要比之前处理扫描时投入更多精力去研究这个理论，因为它在整个解释器的很多地方都是一个有用的工具。我们先从<a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">乔姆斯基谱系</a>中往上升一级……</p>
+<h2><a href="#context-free-grammars--上下文无关语法" id="context-free-grammars--上下文无关语法"><small>5&#8202;.&#8202;1</small>Context-Free Grammars  上下文无关语法</a></h2>
 <p>In the last chapter, the formalism we used for defining the lexical grammar<span class="em">&mdash;</span>the rules for how characters get grouped into tokens<span class="em">&mdash;</span>was called a <em>regular
 language</em>. That was fine for our scanner, which emits a flat sequence of tokens.
 But regular languages aren&rsquo;t powerful enough to handle expressions which can
-nest arbitrarily deeply.</p>
+nest arbitrarily deeply.
+在上一章中，我们用来定义词法语法（字符如何被分组为词法标记的规则）的形式体系，被称为<em>正则语言</em>。这对于我们的扫描器来说没什么问题，因为它输出的是一个扁平的词法标记序列。但正则语言还不够强大，无法处理可以任意深度嵌套的表达式。</p>
 <p>We need a bigger hammer, and that hammer is a <strong>context-free grammar</strong>
 (<strong>CFG</strong>). It&rsquo;s the next heaviest tool in the toolbox of
 <strong><a href="https://en.wikipedia.org/wiki/Formal_grammar">formal grammars</a></strong>. A formal grammar takes a set of atomic pieces it calls
@@ -160,8 +174,15 @@ its &ldquo;alphabet&rdquo;. Then it defines a (usually infinite) set of &ldquo;s
 from lexical to syntactic grammars. In our scanner&rsquo;s grammar, the alphabet
 consists of individual characters and the strings are the valid lexemes<span class="em">&mdash;</span>roughly &ldquo;words&rdquo;. In the syntactic grammar we&rsquo;re talking about now, we&rsquo;re at a
 different level of granularity. Now each &ldquo;letter&rdquo; in the alphabet is an entire
-token and a &ldquo;string&rdquo; is a sequence of <em>tokens</em><span class="em">&mdash;</span>an entire expression.</p>
-<p>Oof. Maybe a table will help:</p><table>
+token and a &ldquo;string&rdquo; is a sequence of <em>tokens</em><span class="em">&mdash;</span>an entire expression.
+我这里使用引号是因为当你从词法转到文法语法时，这些术语会让你有点困惑。在我们的扫描器词法中，alphabet（字母表）由单个字符组成，strings（字符串）是有效的词素（粗略的说，就是“单词”）。在现在讨论的句法语法中，我们处于一个不同的粒度水平。现在，字母表中的一个“letters（字符）”是一个完整的词法标记，而“strings（字符串）”是一个词法标记系列——一个完整的表达式。</p>
+<p>Oof. Maybe a table will help:
+嗯，使用表格可能更有助于理解：
+| Terminology&lt;br/>术语 | | Lexical grammar 词法 | Syntactic grammar 语法 |
+| | | | |
+| The “alphabet” is . . . <br />字母表 | → | Characters<br />字符 | Tokens<br />词法标记 |
+| A “string” is . . . <br />字符串 | → | Lexeme or token<br />词素或词法标记 | Expression<br />表达式 |
+| It&rsquo;s implemented by the . . . <br />实现 | → | Scanner<br />扫描器 | Parser<br />解析器 |</p><table>
 <thead>
 <tr>
   <td>Terminology</td>
@@ -194,22 +215,26 @@ token and a &ldquo;string&rdquo; is a sequence of <em>tokens</em><span class="em
 <p>A formal grammar&rsquo;s job is to specify which strings are valid and which aren&rsquo;t.
 If we were defining a grammar for English sentences, &ldquo;eggs are tasty for
 breakfast&rdquo; would be in the grammar, but &ldquo;tasty breakfast for are eggs&rdquo; would
-probably not.</p>
-<h3><a href="#rules-for-grammars" id="rules-for-grammars"><small>5&#8202;.&#8202;1&#8202;.&#8202;1</small>Rules for grammars</a></h3>
+probably not.
+形式化语法的工作是指定哪些字符串有效，哪些无效。如果我们要为英语句子定义一个语法，&ldquo;eggs are tasty for breakfast &ldquo;会包含在语法中，但 &ldquo;tasty breakfast for are eggs &ldquo;可能不会。</p>
+<h3><a href="#rules-for-grammars--语法规则" id="rules-for-grammars--语法规则"><small>5&#8202;.&#8202;1&#8202;.&#8202;1</small>Rules for grammars  语法规则</a></h3>
 <p>How do we write down a grammar that contains an infinite number of valid
 strings? We obviously can&rsquo;t list them all out. Instead, we create a finite set
 of rules. You can think of them as a game that you can &ldquo;play&rdquo; in one of two
-directions.</p>
+directions.
+我们如何写下一个包含无限多有效字符串的语法?我们显然无法一一列举出来。相反，我们创建了一组有限的规则。你可以把它们想象成一场你可以朝两个方向“玩”的游戏。</p>
 <p>If you start with the rules, you can use them to <em>generate</em> strings that are in
 the grammar. Strings created this way are called <strong>derivations</strong> because each is
 <em>derived</em> from the rules of the grammar. In each step of the game, you pick a
 rule and follow what it tells you to do. Most of the lingo around formal
 grammars comes from playing them in this direction. Rules are called
-<strong>productions</strong> because they <em>produce</em> strings in the grammar.</p>
+<strong>productions</strong> because they <em>produce</em> strings in the grammar.
+如果你从规则入手，你可以用它们<em>生成</em>语法中的字符串。以这种方式创建的字符串被称为<strong>推导式</strong>（派生式），因为每个字符串都是从语法规则中<em>推导</em>出来的。在游戏的每一步中，你都要选择一条规则，然后按照它告诉你的去做。围绕形式化语法的大部分语言都倾向这种方式。规则被称为<strong>生成式</strong>，因为它们生成了语法中的字符串。</p>
 <p>Each production in a context-free grammar has a <strong>head</strong><span class="em">&mdash;</span>its <span
 name="name">name</span><span class="em">&mdash;</span>and a <strong>body</strong>, which describes what it generates. In
 its pure form, the body is simply a list of symbols. Symbols come in two
-delectable flavors:</p>
+delectable flavors:
+上下文无关语法中的每个生成式都有一个<strong>头部</strong>（其名称）和描述其生成内容的<strong>主体</strong>。在纯粹的形式上看，主体只是一系列符号。符号有两种：</p>
 <aside name="name">
 <p>Restricting heads to a single symbol is a defining feature of context-free
 grammars. More powerful formalisms like <strong><a href="https://en.wikipedia.org/wiki/Unrestricted_grammar">unrestricted grammars</a></strong> allow a
@@ -233,24 +258,28 @@ the grammar composes.</p>
 </ul>
 <p>There is one last refinement: you may have multiple rules with the same name.
 When you reach a nonterminal with that name, you are allowed to pick any of the
-rules for it, whichever floats your boat.</p>
+rules for it, whichever floats your boat.
+还有最后一个细节：你可以有多个同名的规则。当你遇到一个该名字的非终止符时，你可以为它选择任何一条规则，随您喜欢。</p>
 <p>To make this concrete, we need a <span name="turtles">way</span> to write down
 these production rules. People have been trying to crystallize grammar all the
 way back to Pāṇini&rsquo;s <em>Ashtadhyayi</em>, which codified Sanskrit grammar a mere
 couple thousand years ago. Not much progress happened until John Backus and
 company needed a notation for specifying ALGOL 58 and came up with
 <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form"><strong>Backus-Naur form</strong></a> (<strong>BNF</strong>). Since then, nearly everyone uses some
-flavor of BNF, tweaked to their own tastes.</p>
+flavor of BNF, tweaked to their own tastes.
+为了让这个规则具体化，我们需要一种方式来写下这些生成规则。人们一直试图将语法具体化，可以追溯到Pāṇini的<em>Ashtadhyayi</em>，他在几千年前编纂了梵文语法。直到约翰-巴库斯（John Backus）和公司需要一个声明ALGOL 58的符号，并提出了<a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form">巴科斯范式</a>（<strong>BNF</strong>），才有了很大的进展。从那时起，几乎每个人都在使用BNF的某种变形，并根据自己的需要进行了调整。</p>
 <p>I tried to come up with something clean. Each rule is a name, followed by an
 arrow (<code>→</code>), followed by a sequence of symbols, and finally ending with a
 semicolon (<code>;</code>). Terminals are quoted strings, and nonterminals are lowercase
-words.</p>
+words.
+我试图提出一个简单的形式。 每个规则都是一个名称，后跟一个箭头（<code>→</code>），后跟一系列符号，最后以分号（<code>;</code>）结尾。 终止符是带引号的字符串，非终止符是小写的单词。</p>
 <aside name="turtles">
 <p>Yes, we need to define a syntax to use for the rules that define our syntax.
 Should we specify that <em>metasyntax</em> too? What notation do we use for <em>it?</em> It&rsquo;s
 languages all the way down!</p>
 </aside>
-<p>Using that, here&rsquo;s a grammar for <span name="breakfast">breakfast</span> menus:</p>
+<p>Using that, here&rsquo;s a grammar for <span name="breakfast">breakfast</span> menus:
+以此为基础，下面是一个早餐菜单语法：</p>
 <aside name="breakfast">
 <p>Yes, I really am going to be using breakfast examples throughout this entire
 book. Sorry.</p>
@@ -277,15 +306,18 @@ book. Sorry.</p>
 <p>We can use this grammar to generate random breakfasts. Let&rsquo;s play a round and
 see how it works. By age-old convention, the game starts with the first rule in
 the grammar, here <code>breakfast</code>. There are three productions for that, and we
-randomly pick the first one. Our resulting string looks like:</p>
+randomly pick the first one. Our resulting string looks like:
+我们可以使用这个语法来随机生成早餐。我们来玩一轮，看看它是如何工作的。按照老规矩，游戏从语法中的第一个规则开始，这里是<code>breakfast</code>。它有三个生成式，我们随机选择第一个。我们得到的字符串是这样的：</p>
 <div class="codehilite"><pre>protein &quot;with&quot; breakfast &quot;on the side&quot;
 </pre></div>
 <p>We need to expand that first nonterminal, <code>protein</code>, so we pick a production for
-that. Let&rsquo;s pick:</p>
+that. Let&rsquo;s pick:
+我们需要展开第一个非终止符，<code>protein</code>，所有我们要选择它对应的一个生成式。我们选：</p>
 <div class="codehilite"><pre><span class="i">protein</span> → <span class="i">cooked</span> <span class="s">&quot;eggs&quot;</span> ;
 </pre></div>
 <p>Next, we need a production for <code>cooked</code>, and so we pick <code>"poached"</code>. That&rsquo;s a
-terminal, so we add that. Now our string looks like:</p>
+terminal, so we add that. Now our string looks like:
+接下来，我们需要 <code>cooked</code>的生成式，我们选择 <code>"poached"</code>。这是一个终止符，我们加上它。现在我们的字符串是这样的：</p>
 <div class="codehilite"><pre>&quot;poached&quot; &quot;eggs&quot; &quot;with&quot; breakfast &quot;on the side&quot;
 </pre></div>
 <p>The next non-terminal is <code>breakfast</code> again. The first <code>breakfast</code> production we
@@ -293,7 +325,8 @@ chose recursively refers back to the <code>breakfast</code> rule. Recursion in t
 is a good sign that the language being defined is context-free instead of
 regular. In particular, recursion where the recursive nonterminal has
 productions on <span name="nest">both</span> sides implies that the language is
-not regular.</p>
+not regular.
+下一个非终止符还是<code>breakfast</code> ，我们开始选择的<code>breakfast</code> 生成式递归地指向了<code>breakfast</code> 规则。语法中的递归是一个很好的标志，表明所定义的语言是上下文无关的，而不是正则的。特别是，递归非终止符两边都有生成式的递归，意味着语言不是正则的。</p>
 <aside name="nest">
 <p>Imagine that we&rsquo;ve recursively expanded the <code>breakfast</code> rule here several times,
 like &ldquo;bacon with bacon with bacon with<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo; In order to complete the string
@@ -307,21 +340,58 @@ string has the same number of <code>with</code> and <code>on the side</code> par
 yielding all manner of breakfasts like &ldquo;bacon with sausage with scrambled eggs
 with bacon<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo; We won&rsquo;t though. This time we&rsquo;ll pick <code>bread</code>. There are three
 rules for that, each of which contains only a terminal. We&rsquo;ll pick &ldquo;English
-muffin&rdquo;.</p>
+muffin&rdquo;.
+我们可以不断选择<code>breakfast</code> 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon . . . ”，【存疑，按照规则设置，这里应该不会出现以bacon开头的字符串，原文可能有误】但我们不会这样做。这一次我们选择<code>bread</code>。有三个对应的规则，每个规则只包含一个终止符。我们选 &ldquo;English muffin&rdquo;。</p>
 <p>With that, every nonterminal in the string has been expanded until it finally
-contains only terminals and we&rsquo;re left with:</p><img src="image/representing-code/breakfast.png" alt='"Playing" the grammar to generate a string.' />
-<p>Throw in some ham and Hollandaise, and you&rsquo;ve got eggs Benedict.</p>
+contains only terminals and we&rsquo;re left with:
+这样一来，字符串中的每一个非终止符都被展开了，直到最后只包含终止符，我们就剩下：</p><img src="image/representing-code/breakfast.png" alt='"Playing" the grammar to generate a string.' />
+<p>Throw in some ham and Hollandaise, and you&rsquo;ve got eggs Benedict.
+再加上一些火腿和荷兰酱，你就得到了松饼蛋。</p>
 <p>Any time we hit a rule that had multiple productions, we just picked one
 arbitrarily. It is this flexibility that allows a short number of grammar rules
 to encode a combinatorially larger set of strings. The fact that a rule can
 refer to itself<span class="em">&mdash;</span>directly or indirectly<span class="em">&mdash;</span>kicks it up even more, letting us
-pack an infinite number of strings into a finite grammar.</p>
-<h3><a href="#enhancing-our-notation" id="enhancing-our-notation"><small>5&#8202;.&#8202;1&#8202;.&#8202;2</small>Enhancing our notation</a></h3>
+pack an infinite number of strings into a finite grammar.
+每当我们遇到具有多个结果的规则时，我们都只是随意选择了一个。 正是这种灵活性允许用少量的语法规则来编码出组合性更强的字符串集。一个规则可以直接或间接地引用它自己，这就更提高了它的灵活性，让我们可以将无限多的字符串打包到一个有限的语法中。</p>
+<h3><a href="#enhancing-our-notation--增强符号" id="enhancing-our-notation--增强符号"><small>5&#8202;.&#8202;1&#8202;.&#8202;2</small>Enhancing our notation  增强符号</a></h3>
 <p>Stuffing an infinite set of strings in a handful of rules is pretty fantastic,
 but let&rsquo;s take it further. Our notation works, but it&rsquo;s tedious. So, like any
 good language designer, we&rsquo;ll sprinkle a little syntactic sugar on top<span class="em">&mdash;</span>some
 extra convenience notation. In addition to terminals and nonterminals, we&rsquo;ll
-allow a few other kinds of expressions in the body of a rule:</p>
+allow a few other kinds of expressions in the body of a rule:
+在少量的规则中可以填充无限多的字符串是相当奇妙的，但是我们可以更进一步。我们的符号是可行的，但有点乏味。所以，就像所有优秀的语言设计者一样，我们会在上面撒一些语法糖。除了终止符和非终止符之外，我们还允许在规则的主体中使用一些其他类型的表达式：</p>
+<ul>
+<li>
+<blockquote>
+<p>Instead of repeating the rule name each time we want to add another production for it, we’ll allow a series of productions separated by a pipe (<code>|</code>).
+我们将允许一系列由管道符(<code>|</code>)分隔的生成式，避免在每次在添加另一个生成式时重复规则名称。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>Further, we’ll allow parentheses for grouping and then allow <code>|</code> within that to select one from a series of options within the middle of a production.
+此外，我们允许用括号进行分组，然后在分组中可以用<code>|</code>表示从一系列生成式中选择一个。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>Using recursion to support repeated sequences of symbols has a certain appealing purity, but it’s kind of a chore to make a separate named sub-rule each time we want to loop. So, we also use a postfix <code>*</code> to allow the previous symbol or group to be repeated zero or more times.
+使用递归来支持符号的重复序列有一定的吸引力，但每次我们要循环的时候，都要创建一个单独的命名子规则，有点繁琐。所以，我们也使用后缀<code>*</code>来允许前一个符号或组重复零次或多次。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>A postfix <code>+</code> is similar, but requires the preceding production to appear at least once.
+后缀<code>+</code>与此类似，但要求前面的生成式至少出现一次。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>A postfix <code>?</code> is for an optional production. The thing before it can appear zero or one time, but not more.
+后缀<code>？</code>表示可选生成式，它之前的生成式可以出现零次或一次，但不能出现多次。</p>
+</blockquote>
+</li>
+</ul>
 <ul>
 <li>
 <p>Instead of repeating the rule name each time we want to add another
@@ -365,7 +435,8 @@ zero or one time, but not more.</p>
 </pre></div>
 </li>
 </ul>
-<p>With all of those syntactic niceties, our breakfast grammar condenses down to:</p>
+<p>With all of those syntactic niceties, our breakfast grammar condenses down to:
+有了所有这些语法上的技巧，我们的早餐语法浓缩为：</p>
 <div class="codehilite"><pre><span class="i">breakfast</span> → <span class="i">protein</span> ( <span class="s">&quot;with&quot;</span> <span class="i">breakfast</span> <span class="s">&quot;on the side&quot;</span> )?
           | <span class="i">bread</span> ;
 
@@ -383,20 +454,50 @@ single characters.</p>
 Lox&rsquo;s grammar. As you work on programming languages, you&rsquo;ll find that
 context-free grammars (using this or <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a> or some other notation) help you
 crystallize your informal syntax design ideas. They are also a handy medium for
-communicating with other language hackers about syntax.</p>
+communicating with other language hackers about syntax.
+在本书的其余部分中，我们将使用这种表示法来精确地描述Lox的语法。当您使用编程语言时，您会发现上下文无关的语法(使用此语法或<a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a>或其他一些符号)可以帮助您将非正式的语法设计思想具体化。它们也是与其他语言黑客交流语法的方便媒介。</p>
 <p>The rules and productions we define for Lox are also our guide to the tree data
 structure we&rsquo;re going to implement to represent code in memory. Before we can do
 that, we need an actual grammar for Lox, or at least enough of one for us to get
-started.</p>
-<h3><a href="#a-grammar-for-lox-expressions" id="a-grammar-for-lox-expressions"><small>5&#8202;.&#8202;1&#8202;.&#8202;3</small>A Grammar for Lox expressions</a></h3>
+started.
+我们为Lox定义的规则和生成式也是我们将要实现的树数据结构（用于表示内存中的代码）的指南。 在此之前，我们需要为Lox编写一个实际的语法，或者至少要有一个足够上手的语法。</p>
+<h3><a href="#a-grammar-for-lox-expressions--lox表达式语法" id="a-grammar-for-lox-expressions--lox表达式语法"><small>5&#8202;.&#8202;1&#8202;.&#8202;3</small>A Grammar for Lox expressions  Lox表达式语法</a></h3>
 <p>In the previous chapter, we did Lox&rsquo;s entire lexical grammar in one fell swoop.
 Every keyword and bit of punctuation is there. The syntactic grammar is larger,
 and it would be a real bore to grind through the entire thing before we actually
-get our interpreter up and running.</p>
+get our interpreter up and running.
+在上一章中，我们一气呵成地完成了Lox的全部词汇语法，包括每一个关键词和标点符号。但句法语法的规模更大，如果在我们真正启动并运行解释器之前，就要把整个语法啃完，那就太无聊了。</p>
 <p>Instead, we&rsquo;ll crank through a subset of the language in the next couple of
 chapters. Once we have that mini-language represented, parsed, and interpreted,
 then later chapters will progressively add new features to it, including the new
-syntax. For now, we are going to worry about only a handful of expressions:</p>
+syntax. For now, we are going to worry about only a handful of expressions:
+相反，我们将在接下来的几章中摸索该语言的一个子集。一旦我们可以对这个迷你语言进行表示、解析和解释，那么在之后的章节中将逐步为它添加新的特性，包括新的语法。现在，我们只关心几个表达式：</p>
+<ul>
+<li>
+<blockquote>
+<p><strong>Literals.</strong> Numbers, strings, Booleans, and <code>nil</code>.
+<strong>字面量</strong>。数字、字符串、布尔值以及<code>nil</code>。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p><strong>Unary expressions.</strong> A prefix <code>!</code> to perform a logical not, and <code>-</code> to negate a number.
+<strong>一元表达式</strong>。前缀<code>!</code>执行逻辑非运算，<code>-</code>对数字求反。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p><strong>Binary expressions.</strong> The infix arithmetic (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>) and logic operators (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>) we know and love.
+<strong>二元表达式</strong>。我们已经知道的中缀算术符（<code>+，-，*，/</code>）和逻辑运算符（<code>==，！=，&lt;，&lt;=，&gt;，&gt; =</code>）。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p><strong>Parentheses.</strong> A pair of <code>(</code> and <code>)</code> wrapped around an expression.
+<strong>括号</strong>。表达式前后的一对<code>（</code>和<code>）</code>。</p>
+</blockquote>
+</li>
+</ul>
 <ul>
 <li>
 <p><strong>Literals.</strong> Numbers, strings, Booleans, and <code>nil</code>.</p>
@@ -413,10 +514,12 @@ operators (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</cod
 <p><strong>Parentheses.</strong> A pair of <code>(</code> and <code>)</code> wrapped around an expression.</p>
 </li>
 </ul>
-<p>That gives us enough syntax for expressions like:</p>
+<p>That gives us enough syntax for expressions like:
+这已经为表达式提供了足够的语法，例如：</p>
 <div class="codehilite"><pre><span class="n">1</span> - (<span class="n">2</span> * <span class="n">3</span>) &lt; <span class="n">4</span> == <span class="k">false</span>
 </pre></div>
-<p>Using our handy dandy new notation, here&rsquo;s a grammar for those:</p>
+<p>Using our handy dandy new notation, here&rsquo;s a grammar for those:
+使用我们的新符号，下面是语法的表示：</p>
 <div class="codehilite"><pre><span class="i">expression</span>     → <span class="i">literal</span>
                | <span class="i">unary</span>
                | <span class="i">binary</span>
@@ -433,20 +536,23 @@ operators (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</cod
 to quoted strings for terminals that match exact lexemes, we <code>CAPITALIZE</code>
 terminals that are a single lexeme whose text representation may vary. <code>NUMBER</code>
 is any number literal, and <code>STRING</code> is any string literal. Later, we&rsquo;ll do the
-same for <code>IDENTIFIER</code>.</p>
+same for <code>IDENTIFIER</code>.
+这里有一点额外的元语法。除了与精确词素相匹配的终止符会加引号外，我们还对表示单一词素的终止符进行<code>大写化</code>，这些词素的文本表示方式可能会有所不同。<code>NUMBER</code>是任何数字字面量，<code>STRING</code>是任何字符串字面量。稍后，我们将对<code>IDENTIFIER</code>进行同样的处理。</p>
 <p>This grammar is actually ambiguous, which we&rsquo;ll see when we get to parsing it.
-But it&rsquo;s good enough for now.</p>
+But it&rsquo;s good enough for now.
+这个语法实际上是有歧义的，我们在解析它时就会看到这一点。但现在这已经足够了。</p>
 <aside name="play">
 <p>If you&rsquo;re so inclined, try using this grammar to generate a few expressions like
 we did with the breakfast grammar before. Do the resulting expressions look
 right to you? Can you make it generate anything wrong like <code>1 + / 3</code>?</p>
 </aside>
-<h2><a href="#implementing-syntax-trees" id="implementing-syntax-trees"><small>5&#8202;.&#8202;2</small>Implementing Syntax Trees</a></h2>
+<h2><a href="#implementing-syntax-trees--实现语法树" id="implementing-syntax-trees--实现语法树"><small>5&#8202;.&#8202;2</small>Implementing Syntax Trees  实现语法树</a></h2>
 <p>Finally, we get to write some code. That little expression grammar is our
 skeleton. Since the grammar is recursive<span class="em">&mdash;</span>note how <code>grouping</code>, <code>unary</code>, and
 <code>binary</code> all refer back to <code>expression</code><span class="em">&mdash;</span>our data structure will form a tree.
 Since this structure represents the syntax of our language, it&rsquo;s called a <span
-name="ast"><strong>syntax tree</strong></span>.</p>
+name="ast"><strong>syntax tree</strong></span>.
+最后，我们要写一些代码。这个小小的表达式语法就是我们的骨架。由于语法是递归的——请注意<code>grouping</code>, <code>unary</code>, 和 <code>binary</code> 都是指回<code>expression</code>的——我们的数据结构将形成一棵树。因为这个结构代表了我们语言的语法，所以叫做<strong>语法树</strong>。</p>
 <aside name="ast">
 <p>In particular, we&rsquo;re defining an <strong>abstract syntax tree</strong> (<strong>AST</strong>). In a
 <strong>parse tree</strong>, every single grammar production becomes a node in the tree. An
@@ -456,21 +562,24 @@ AST elides productions that aren&rsquo;t needed by later phases.</p>
 distinguish the different kinds<span class="em">&mdash;</span>think the number <code>123</code> versus the string
 <code>"123"</code><span class="em">&mdash;</span>we included a simple TokenType enum. Syntax trees are not so <span
 name="token-data">homogeneous</span>. Unary expressions have a single operand,
-binary expressions have two, and literals have none.</p>
+binary expressions have two, and literals have none.
+我们的扫描器使用一个单一的 Token 类来表示所有类型的词素。为了区分不同的种类——想想数字 <code>123</code> 和字符串 <code>"123"</code>——我们创建了一个简单的 TokenType 枚举。语法树并不是那么同质的。一元表达式只有一个操作数，二元表达式有两个操作数，而字面量则没有。</p>
 <p>We <em>could</em> mush that all together into a single Expression class with an
 arbitrary list of children. Some compilers do. But I like getting the most out
 of Java&rsquo;s type system. So we&rsquo;ll define a base class for expressions. Then, for
 each kind of expression<span class="em">&mdash;</span>each production under <code>expression</code><span class="em">&mdash;</span>we create a
 subclass that has fields for the nonterminals specific to that rule. This way,
 we get a compile error if we, say, try to access the second operand of a unary
-expression.</p>
+expression.
+我们<em>可以</em>将所有这些内容整合到一个包含任意子类列表的 Expression 类中。有些编译器会这么做。但我希望充分利用Java的类型系统。所以我们将为表达式定义一个基类。然后，对于每一种表达式——<code>expression</code>下的每一个生成式——我们创建一个子类，这个子类有该规则所特有的非终止符字段。这样，如果试图访问一元表达式的第二个操作数，就会得到一个编译错误。</p>
 <aside name="token-data">
 <p>Tokens aren&rsquo;t entirely homogeneous either. Tokens for literals store the value,
 but other kinds of lexemes don&rsquo;t need that state. I have seen scanners that use
 different classes for literals and other kinds of lexemes, but I figured I&rsquo;d
 keep things simpler.</p>
 </aside>
-<p>Something like this:</p>
+<p>Something like this:
+类似这样：</p>
 <div class="codehilite"><pre><span class="k">package</span> <span class="i">com.craftinginterpreters.lox</span>;
 
 <span class="k">abstract</span> <span class="k">class</span> <span class="t">Expr</span> {<span name="expr"> </span>
@@ -496,38 +605,46 @@ ubiquitous that I may as well start getting you used to them now.</p>
 </aside>
 <p>Expr is the base class that all expression classes inherit from. As you can see
 from <code>Binary</code>, the subclasses are nested inside of it. There&rsquo;s no technical need
-for this, but it lets us cram all of the classes into a single Java file.</p>
-<h3><a href="#disoriented-objects" id="disoriented-objects"><small>5&#8202;.&#8202;2&#8202;.&#8202;1</small>Disoriented objects</a></h3>
+for this, but it lets us cram all of the classes into a single Java file.
+Expr是所有表达式类继承的基类。从<code>Binary</code>中可以看到，子类都嵌套在它的内部。这在技术上没有必要，但它允许我们将所有类都塞进一个Java文件中。</p>
+<h3><a href="#disoriented-objects--非面向对象" id="disoriented-objects--非面向对象"><small>5&#8202;.&#8202;2&#8202;.&#8202;1</small>Disoriented objects  非面向对象</a></h3>
 <p>You&rsquo;ll note that, much like the Token class, there aren&rsquo;t any methods here. It&rsquo;s
 a dumb structure. Nicely typed, but merely a bag of data. This feels strange in
-an object-oriented language like Java. Shouldn&rsquo;t the class <em>do stuff</em>?</p>
+an object-oriented language like Java. Shouldn&rsquo;t the class <em>do stuff</em>?
+你会注意到，（表达式类）像Token类一样，其中没有任何方法。这是一个很愚蠢的结构，巧妙的类型封装，但仅仅是一包数据。这在Java这样的面向对象语言中会有些奇怪，难道类不是应该<em>做一些事情</em>吗？</p>
 <p>The problem is that these tree classes aren&rsquo;t owned by any single domain. Should
 they have methods for parsing since that&rsquo;s where the trees are created? Or
 interpreting since that&rsquo;s where they are consumed? Trees span the border between
-those territories, which means they are really owned by <em>neither</em>.</p>
+those territories, which means they are really owned by <em>neither</em>.
+问题在于这些树类不属于任何单个的领域。树是在解析的时候创建的，难道类中应该有解析对应的方法？或者因为树结构在解释的时候被消费，其中是不是要提供解释相关的方法？树跨越了这些领域之间的边界，这意味着它们实际上不属于任何一方。</p>
 <p>In fact, these types exist to enable the parser and interpreter to
 <em>communicate</em>. That lends itself to types that are simply data with no
 associated behavior. This style is very natural in functional languages like
 Lisp and ML where <em>all</em> data is separate from behavior, but it feels odd in
-Java.</p>
+Java.
+事实上，这些类型的存在是为了让解析器和解释器能够<em>进行交流</em>。这就适合于那些只是简单的数据而没有相关行为的类型。这种风格在Lisp和ML这样的函数式语言中是非常自然的，因为在这些语言中，<em>所有的</em>数据和行为都是分开的，但是在Java中感觉很奇怪。</p>
 <p>Functional programming aficionados right now are jumping up to exclaim &ldquo;See!
 Object-oriented languages are a bad fit for an interpreter!&rdquo; I won&rsquo;t go that
 far. You&rsquo;ll recall that the scanner itself was admirably suited to
 object-orientation. It had all of the mutable state to keep track of where it
 was in the source code, a well-defined set of public methods, and a handful of
-private helpers.</p>
+private helpers.
+函数式编程的爱好者们现在都跳起来惊呼：“看吧！面向对象的语言不适合作为解释器！”我不会那么过分的。您可能还记得，扫描器本身非常适合面向对象。它包含所有的可变状态来跟踪其在源代码中的位置、一组定义良好的公共方法和少量的私有辅助方法。</p>
 <p>My feeling is that each phase or part of the interpreter works fine in an
 object-oriented style. It is the data structures that flow between them that are
-stripped of behavior.</p>
-<h3><a href="#metaprogramming-the-trees" id="metaprogramming-the-trees"><small>5&#8202;.&#8202;2&#8202;.&#8202;2</small>Metaprogramming the trees</a></h3>
+stripped of behavior.
+我的感觉是，在面向对象的风格下，解释器的每个阶段或部分都能正常工作。只不过在它们之间流动的数据结构剥离了行为。</p>
+<h3><a href="#metaprogramming-the-trees--节点树元编程" id="metaprogramming-the-trees--节点树元编程"><small>5&#8202;.&#8202;2&#8202;.&#8202;2</small>Metaprogramming the trees  节点树元编程</a></h3>
 <p>Java can express behavior-less classes, but I wouldn&rsquo;t say that it&rsquo;s
 particularly great at it. Eleven lines of code to stuff three fields in an
 object is pretty tedious, and when we&rsquo;re all done, we&rsquo;re going to have 21 of
-these classes.</p>
+these classes.
+Java可以表达无行为的类，但很难说它特别擅长。用11行代码在一个对象中填充3个字段是相当乏味的，当我们全部完成后，我们将有21个这样的类。</p>
 <p>I don&rsquo;t want to waste your time or my ink writing all that down. Really, what is
 the essence of each subclass? A name, and a list of typed fields. That&rsquo;s it.
 We&rsquo;re smart language hackers, right? Let&rsquo;s <span
-name="automate">automate</span>.</p>
+name="automate">automate</span>.
+我不想浪费你的时间或我的墨水把这些都写下来。真的，每个子类的本质是什么?一个名称和一个字段列表而已。我们是聪明的语言黑客，对吧?我们把它自动化。</p>
 <aside name="automate">
 <p>Picture me doing an awkward robot dance when you read that. &ldquo;AU-TO-MATE.&rdquo;</p>
 </aside>
@@ -535,9 +652,11 @@ name="automate">automate</span>.</p>
 constructor, and initializer, we&rsquo;ll hack together a <span
 name="python">script</span> that does it for us. It has a description of each
 tree type<span class="em">&mdash;</span>its name and fields<span class="em">&mdash;</span>and it prints out the Java code needed to
-define a class with that name and state.</p>
+define a class with that name and state.
+与其繁琐地手写每个类的定义、字段声明、构造函数和初始化器，我们一起编写一个脚本来完成任务。 它具有每种树类型（名称和字段）的描述，并打印出定义具有该名称和状态的类所需的Java代码。</p>
 <p>This script is a tiny Java command-line app that generates a file named
-&ldquo;Expr.java&rdquo;:</p>
+&ldquo;Expr.java&rdquo;:
+该脚本是一个微型Java命令行应用程序，它生成一个名为“ Expr.java”的文件：</p>
 <aside name="python">
 <p>I got the idea of scripting the syntax tree classes from Jim Hugunin, creator of
 Jython and IronPython.</p>
@@ -569,9 +688,11 @@ create new file</div>
 script isn&rsquo;t part of the interpreter itself. It&rsquo;s a tool <em>we</em>, the people
 hacking on the interpreter, run ourselves to generate the syntax tree classes.
 When it&rsquo;s done, we treat &ldquo;Expr.java&rdquo; like any other file in the implementation.
-We are merely automating how that file gets authored.</p>
+We are merely automating how that file gets authored.
+注意，这个文件在另一个包中，是<code>.tool</code>而不是<code>.lox</code>。这个脚本并不是解释器本身的一部分，它是一个工具，我们这种编写解释器的人，通过运行该脚本来生成语法树类。完成后，我们把“Expr.java”与实现中的其它文件进行相同的处理。我们只是自动化了文件的生成方式。</p>
 <p>To generate the classes, it needs to have some description of each type and its
-fields.</p>
+fields.
+为了生成类，还需要对每种类型及其字段进行一些描述。</p>
 <div class="codehilite"><pre class="insert-before">    String outputDir = args[0];
 </pre><div class="source-file"><em>tool/GenerateAst.java</em><br>
 in <em>main</em>()</div>
@@ -587,8 +708,10 @@ in <em>main</em>()</div>
 
 <p>For brevity&rsquo;s sake, I jammed the descriptions of the expression types into
 strings. Each is the name of the class followed by <code>:</code> and the list of fields,
-separated by commas. Each field has a type and a name.</p>
-<p>The first thing <code>defineAst()</code> needs to do is output the base Expr class.</p>
+separated by commas. Each field has a type and a name.
+为简便起见，我将表达式类型的描述放入了字符串中。 每一项都包括类的名称，后跟<code>：</code>和以逗号分隔的字段列表。 每个字段都有一个类型和一个名称。</p>
+<p>The first thing <code>defineAst()</code> needs to do is output the base Expr class.
+<code>defineAst()</code>需要做的第一件事是输出基类Expr。</p>
 <div class="codehilite"><div class="source-file"><em>tool/GenerateAst.java</em><br>
 add after <em>main</em>()</div>
 <pre>  <span class="k">private</span> <span class="k">static</span> <span class="t">void</span> <span class="i">defineAst</span>(
@@ -612,8 +735,10 @@ add after <em>main</em>()</div>
 <p>When we call this, <code>baseName</code> is &ldquo;Expr&rdquo;, which is both the name of the class and
 the name of the file it outputs. We pass this as an argument instead of
 hardcoding the name because we&rsquo;ll add a separate family of classes later for
-statements.</p>
-<p>Inside the base class, we define each subclass.</p>
+statements.
+我们调用这个函数时，<code>baseName</code>是“Expr”，它既是类的名称，也是它输出的文件的名称。我们将它作为参数传递，而不是对名称进行硬编码，因为稍后我们将为语句添加一个单独的类族。</p>
+<p>Inside the base class, we define each subclass.
+在基类内部，我们定义每个子类。</p>
 <div class="codehilite"><pre class="insert-before">    writer.println(&quot;abstract class &quot; + baseName + &quot; {&quot;);
 
 </pre><div class="source-file"><em>tool/GenerateAst.java</em><br>
@@ -633,7 +758,8 @@ in <em>defineAst</em>()</div>
 It only runs on the exact set of class definitions we give it. Robustness ain&rsquo;t
 a priority.</p>
 </aside>
-<p>That code, in turn, calls:</p>
+<p>That code, in turn, calls:
+这段代码依次调用：</p>
 <div class="codehilite"><div class="source-file"><em>tool/GenerateAst.java</em><br>
 add after <em>defineAst</em>()</div>
 <pre>  <span class="k">private</span> <span class="k">static</span> <span class="t">void</span> <span class="i">defineType</span>(
@@ -667,22 +793,26 @@ add after <em>defineAst</em>()</div>
 
 <p>There we go. All of that glorious Java boilerplate is done. It declares each
 field in the class body. It defines a constructor for the class with parameters
-for each field and initializes them in the body.</p>
+for each field and initializes them in the body.
+好了。所有的Java模板都完成了。它在类体中声明了每个字段。它为类定义了一个构造函数，为每个字段提供参数，并在类体中对其初始化。</p>
 <p>Compile and run this Java program now and it <span name="longer">blasts</span>
 out a new &ldquo;.java&rdquo; file containing a few dozen lines of code. That file&rsquo;s
-about to get even longer.</p>
+about to get even longer.
+现在编译并运行这个Java程序，它会生成一个新的“. Java”文件，其中包含几十行代码。那份文件还会变得更长。</p>
 <aside name="longer">
 <p><a href="appendix-ii.html">Appendix II</a> contains the code generated by this script once we&rsquo;ve finished
 implementing jlox and defined all of its syntax tree nodes.</p>
 </aside>
-<h2><a href="#working-with-trees" id="working-with-trees"><small>5&#8202;.&#8202;3</small>Working with Trees</a></h2>
+<h2><a href="#working-with-trees--处理树结构" id="working-with-trees--处理树结构"><small>5&#8202;.&#8202;3</small>Working with Trees  处理树结构</a></h2>
 <p>Put on your imagination hat for a moment. Even though we aren&rsquo;t there yet,
 consider what the interpreter will do with the syntax trees. Each kind of
 expression in Lox behaves differently at runtime. That means the interpreter
 needs to select a different chunk of code to handle each expression type. With
 tokens, we can simply switch on the TokenType. But we don&rsquo;t have a &ldquo;type&rdquo; enum
-for the syntax trees, just a separate Java class for each one.</p>
-<p>We could write a long chain of type tests:</p>
+for the syntax trees, just a separate Java class for each one.
+先想象一下吧。尽管我们还没有到那一步，但请考虑一下解释器将如何处理语法树。Lox中的每种表达式在运行时的行为都不一样。这意味着解释器需要选择不同的代码块来处理每种表达式类型。对于词法标记，我们可以简单地根据<code>TokenType</code>进行转换。但是我们并没有为语法树设置一个 &ldquo;type &ldquo;枚举，只是为每个语法树单独设置一个Java类。</p>
+<p>We could write a long chain of type tests:
+我们可以编写一长串类型测试：</p>
 <div class="codehilite"><pre><span class="k">if</span> (<span class="i">expr</span> <span class="k">instanceof</span> <span class="t">Expr</span>.<span class="t">Binary</span>) {
   <span class="c">// ...</span>
 } <span class="k">else</span> <span class="k">if</span> (<span class="i">expr</span> <span class="k">instanceof</span> <span class="t">Expr</span>.<span class="t">Grouping</span>) {
@@ -692,12 +822,14 @@ for the syntax trees, just a separate Java class for each one.</p>
 <p>But all of those sequential type tests are slow. Expression types whose names
 are alphabetically later would take longer to execute because they&rsquo;d fall
 through more <code>if</code> cases before finding the right type. That&rsquo;s not my idea of an
-elegant solution.</p>
+elegant solution.
+但所有这些顺序类型测试都很慢。类型名称按字母顺序排列在后面的表达式，执行起来会花费更多的时间，因为在找到正确的类型之前，它们会遇到更多的<code>if</code>情况。这不是我认为的优雅解决方案。</p>
 <p>We have a family of classes and we need to associate a chunk of behavior with
 each one. The natural solution in an object-oriented language like Java is to
 put those behaviors into methods on the classes themselves. We could add an
 abstract <span name="interpreter-pattern"><code>interpret()</code></span> method on Expr
-which each subclass would then implement to interpret itself.</p>
+which each subclass would then implement to interpret itself.
+我们有一个类族，我们需要将一组行为与每个类关联起来。在Java这样的面向对象语言中，最自然的解决方案是将这些行为放入类本身的方法中。我们可以在Expr上添加一个抽象的<code>interpret()</code>方法，然后每个子类都要实现这个方法来解释自己。</p>
 <aside name="interpreter-pattern">
 <p>This exact thing is literally called the <a href="https://en.wikipedia.org/wiki/Interpreter_pattern">&ldquo;Interpreter pattern&rdquo;</a> in
 <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>, by Erich
@@ -707,30 +839,37 @@ Gamma, et al.</p>
 these tree classes span a few domains. At the very least, both the parser and
 interpreter will mess with them. As <a href="resolving-and-binding.html">you&rsquo;ll see later</a>, we need to
 do name resolution on them. If our language was statically typed, we&rsquo;d have a
-type checking pass.</p>
+type checking pass.
+这对于小型项目来说还行，但它的扩展性很差。就像我之前提到的，这些树类跨越了几个领域。至少，解析器和解释器都会对它们进行干扰。稍后您将看到，我们需要对它们进行名称解析。如果我们的语言是静态类型的，我们还需要做类型检查。</p>
 <p>If we added instance methods to the expression classes for every one of those
 operations, that would smush a bunch of different domains together. That
-violates <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a> and leads to hard-to-maintain code.</p>
-<h3><a href="#the-expression-problem" id="the-expression-problem"><small>5&#8202;.&#8202;3&#8202;.&#8202;1</small>The expression problem</a></h3>
+violates <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a> and leads to hard-to-maintain code.
+如果我们为每一个操作的表达式类中添加实例方法，就会将一堆不同的领域混在一起。这违反了<a href="https://en.wikipedia.org/wiki/Separation_of_concerns">关注点分离原则</a>，并会产生难以维护的代码。</p>
+<h3><a href="#the-expression-problem--表达式问题" id="the-expression-problem--表达式问题"><small>5&#8202;.&#8202;3&#8202;.&#8202;1</small>The expression problem  表达式问题</a></h3>
 <p>This problem is more fundamental than it may seem at first. We have a handful of
 types, and a handful of high-level operations like &ldquo;interpret&rdquo;. For each pair of
-type and operation, we need a specific implementation. Picture a table:</p><img src="image/representing-code/table.png" alt="A table where rows are labeled with expression classes, and columns are function names." />
+type and operation, we need a specific implementation. Picture a table:
+这个问题比起初看起来更基础。我们有一些类型，和一些高级操作，比如“解释”。对于每一对类型和操作，我们都需要一个特定的实现。画一个表:</p><img src="image/representing-code/table.png" alt="A table where rows are labeled with expression classes, and columns are function names." />
 <p>Rows are types, and columns are operations. Each cell represents the unique
-piece of code to implement that operation on that type.</p>
+piece of code to implement that operation on that type.
+行是类型，列是操作。每个单元格表示在该类型上实现该操作的唯一代码段。</p>
 <p>An object-oriented language like Java assumes that all of the code in one row
 naturally hangs together. It figures all the things you do with a type are
 likely related to each other, and the language makes it easy to define them
-together as methods inside the same class.</p><img src="image/representing-code/rows.png" alt="The table split into rows for each class." />
+together as methods inside the same class.
+像Java这样的面向对象的语言，假定一行中的所有代码都自然地挂在一起。它认为你对一个类型所做的所有事情都可能是相互关联的，而使用这类语言可以很容易将它们一起定义为同一个类里面的方法。</p><img src="image/representing-code/rows.png" alt="The table split into rows for each class." />
 <p>This makes it easy to extend the table by adding new rows. Simply define a new
 class. No existing code has to be touched. But imagine if you want to add a new
 <em>operation</em><span class="em">&mdash;</span>a new column. In Java, that means cracking open each of those
-existing classes and adding a method to it.</p>
+existing classes and adding a method to it.
+这种情况下，向表中加入新行来扩展列表是很容易的，简单地定义一个新类即可，不需要修改现有的代码。但是，想象一下，如果你要添加一个新操作（新的一列）。在Java中，这意味着要拆开已有的那些类并向其中添加方法。</p>
 <p>Functional paradigm languages in the <span name="ml">ML</span> family flip that
 around. There, you don&rsquo;t have classes with methods. Types and functions are
 totally distinct. To implement an operation for a number of different types, you
 define a single function. In the body of that function, you use <em>pattern
 matching</em><span class="em">&mdash;</span>sort of a type-based switch on steroids<span class="em">&mdash;</span>to implement the
-operation for each type all in one place.</p>
+operation for each type all in one place.
+ML家族中的函数式范型反过来了。在这些语言中，没有带方法的类，类型和函数是完全独立的。要为许多不同类型实现一个操作，只需定义一个函数。在该函数体中，您可以使用<em>模式匹配</em>（某种基于类型的switch操作）在同一个函数中实现每个类型对应的操作。</p>
 <aside name="ml">
 <p>ML, short for &ldquo;metalanguage&rdquo; was created by Robin Milner and friends and forms
 one of the main branches in the great programming language family tree. Its
@@ -740,18 +879,22 @@ bear a strong resemblance.</p>
 language designers today are still rediscovering them over forty years later.</p>
 </aside>
 <p>This makes it trivial to add new operations<span class="em">&mdash;</span>simply define another function
-that pattern matches on all of the types.</p><img src="image/representing-code/columns.png" alt="The table split into columns for each function." />
+that pattern matches on all of the types.
+这使得添加新操作非常简单——只需定义另一个与所有类型模式匹配的的函数即可。</p><img src="image/representing-code/columns.png" alt="The table split into columns for each function." />
 <p>But, conversely, adding a new type is hard. You have to go back and add a new
-case to all of the pattern matches in all of the existing functions.</p>
+case to all of the pattern matches in all of the existing functions.
+但是，反过来说，添加新类型是困难的。您必须回头向已有函数中的所有模式匹配添加一个新的case。</p>
 <p>Each style has a certain &ldquo;grain&rdquo; to it. That&rsquo;s what the paradigm name literally
 says<span class="em">&mdash;</span>an object-oriented language wants you to <em>orient</em> your code along the
 rows of types. A functional language instead encourages you to lump each
-column&rsquo;s worth of code together into a <em>function</em>.</p>
+column&rsquo;s worth of code together into a <em>function</em>.
+每种风格都有一定的 &ldquo;纹路&ldquo;。这就是范式名称的字面意思——面向对象的语言希望你按照类型的行来<em>组织</em>你的代码。而函数式语言则鼓励你把每一列的代码都归纳为一个<em>函数</em>。</p>
 <p>A bunch of smart language nerds noticed that neither style made it easy to add
 <em>both</em> rows and columns to the <span name="multi">table</span>. They called this
 difficulty the &ldquo;expression problem&rdquo; because<span class="em">&mdash;</span>like we are now<span class="em">&mdash;</span>they first ran
 into it when they were trying to figure out the best way to model expression
-syntax tree nodes in a compiler.</p>
+syntax tree nodes in a compiler.
+一群聪明的语言迷注意到，这两种风格都不容易向表格中添加行和列。他们称这个困难为“表达式问题”。就像我们现在一样，他们是在试图找出在编译器中建模表达式语法树节点的最佳方法时，第一次遇到了该问题。</p>
 <aside name="multi">
 <p>Languages with <em>multimethods</em>, like Common Lisp&rsquo;s CLOS, Dylan, and Julia do
 support adding both new types and operations easily. What they typically
@@ -761,27 +904,33 @@ sacrifice is either static type checking, or separate compilation.</p>
 programming tricks to try to knock that problem down but no perfect language has
 finished it off yet. In the meantime, the best we can do is try to pick a
 language whose orientation matches the natural architectural seams in the
-program we&rsquo;re writing.</p>
+program we&rsquo;re writing.
+人们已经抛出了各种各样的语言特性、设计模式和编程技巧，试图解决这个问题，但还没有一种完美的语言能够解决它。与此同时，我们所能做的就是尽量选择一种与我们正在编写的程序的自然架构相匹配的语言。</p>
 <p>Object-orientation works fine for many parts of our interpreter, but these tree
 classes rub against the grain of Java. Fortunately, there&rsquo;s a design pattern we
-can bring to bear on it.</p>
-<h3><a href="#the-visitor-pattern" id="the-visitor-pattern"><small>5&#8202;.&#8202;3&#8202;.&#8202;2</small>The Visitor pattern</a></h3>
+can bring to bear on it.
+面向对象在我们的解释器的许多部分都可以正常工作，但是这些树类与Java的本质背道而驰。 幸运的是，我们可以采用一种设计模式来解决这个问题。</p>
+<h3><a href="#the-visitor-pattern--访问者模式" id="the-visitor-pattern--访问者模式"><small>5&#8202;.&#8202;3&#8202;.&#8202;2</small>The Visitor pattern  访问者模式</a></h3>
 <p>The <strong>Visitor pattern</strong> is the most widely misunderstood pattern in all of
 <em>Design Patterns</em>, which is really saying something when you look at the
-software architecture excesses of the past couple of decades.</p>
+software architecture excesses of the past couple of decades.
+<strong>访问者模式</strong>是所有<em>设计模式</em>中最容易被误解的模式，当您回顾过去几十年的软件架构泛滥状况时，会发现确实如此。</p>
 <p>The trouble starts with terminology. The pattern isn&rsquo;t about &ldquo;visiting&rdquo;, and the
 &ldquo;accept&rdquo; method in it doesn&rsquo;t conjure up any helpful imagery either. Many think
 the pattern has to do with traversing trees, which isn&rsquo;t the case at all. We
 <em>are</em> going to use it on a set of classes that are tree-like, but that&rsquo;s a
-coincidence. As you&rsquo;ll see, the pattern works as well on a single object.</p>
+coincidence. As you&rsquo;ll see, the pattern works as well on a single object.
+问题出在术语上。这个模式不是关于“visiting（访问）”，它的 “accept”方法也没有让人产生任何有用的想象。许多人认为这种模式与遍历树有关，但事实并非如此。我们确实要在一组树结构的类上使用它，但这只是一个巧合。如您所见，该模式在单个对象上也可以正常使用。</p>
 <p>The Visitor pattern is really about approximating the functional style within an
 OOP language. It lets us add new columns to that table easily. We can define all
 of the behavior for a new operation on a set of types in one place, without
 having to touch the types themselves. It does this the same way we solve almost
-every problem in computer science: by adding a layer of indirection.</p>
+every problem in computer science: by adding a layer of indirection.
+访问者模式实际上近似于OOP语言中的函数式。它让我们可以很容易地向表中添加新的列。我们可以在一个地方定义针对一组类型的新操作的所有行为，而不必触及类型本身。这与我们解决计算机科学中几乎所有问题的方式相同：添加中间层。</p>
 <p>Before we apply it to our auto-generated Expr classes, let&rsquo;s walk through a
 simpler example. Say we have two kinds of pastries: <span
-name="beignet">beignets</span> and crullers.</p>
+name="beignet">beignets</span> and crullers.
+在将其应用到自动生成的Expr类之前，让我们先看一个更简单的例子。比方说我们有两种点心:Beignet(卷饼)和Cruller(油酥卷)。</p>
 <aside name="beignet">
 <p>A beignet (pronounced &ldquo;ben-yay&rdquo;, with equal emphasis on both syllables) is a
 deep-fried pastry in the same family as doughnuts. When the French colonized
@@ -804,7 +953,8 @@ previous night&rsquo;s revelry.</p>
 
 <p>We want to be able to define new pastry operations<span class="em">&mdash;</span>cooking them, eating them,
 decorating them, etc.<span class="em">&mdash;</span>without having to add a new method to each class every
-time. Here&rsquo;s how we do it. First, we define a separate interface.</p>
+time. Here&rsquo;s how we do it. First, we define a separate interface.
+我们希望能够定义新的糕点操作（烹饪，食用，装饰等），而不必每次都向每个类添加新方法。我们是这样做的。首先，我们定义一个单独的接口。</p>
 <div class="codehilite"><pre>  <span class="k">interface</span> <span class="t">PastryVisitor</span> {
     <span class="t">void</span> <span class="i">visitBeignet</span>(<span class="t">Beignet</span> <span class="i">beignet</span>);<span name="overload"> </span>
     <span class="t">void</span> <span class="i">visitCruller</span>(<span class="t">Cruller</span> <span class="i">cruller</span>);
@@ -822,15 +972,18 @@ shows you how to apply this pattern in languages that don&rsquo;t support overlo
 </aside>
 <p>Each operation that can be performed on pastries is a new class that implements
 that interface. It has a concrete method for each type of pastry. That keeps the
-code for the operation on both types all nestled snugly together in one class.</p>
+code for the operation on both types all nestled snugly together in one class.
+可以对糕点执行的每个操作都是实现该接口的新类。 它对每种类型的糕点都有具体的方法。 这样一来，针对两种类型的操作代码都紧密地嵌套在一个类中。</p>
 <p>Given some pastry, how do we route it to the correct method on the visitor based
-on its type? Polymorphism to the rescue! We add this method to Pastry:</p>
+on its type? Polymorphism to the rescue! We add this method to Pastry:
+给定一个糕点，我们如何根据其类型将其路由到访问者的正确方法？多态性拯救了我们！我们在Pastry中添加这个方法：</p>
 <div class="codehilite"><pre class="insert-before">  abstract class Pastry {
 </pre><pre class="insert">    <span class="k">abstract</span> <span class="t">void</span> <span class="i">accept</span>(<span class="t">PastryVisitor</span> <span class="i">visitor</span>);
 </pre><pre class="insert-after">  }
 </pre></div>
 
-<p>Each subclass implements it.</p>
+<p>Each subclass implements it.
+每个子类都需要实现该方法：</p>
 <div class="codehilite"><pre class="insert-before">  class Beignet extends Pastry {
 </pre><pre class="insert">    <span class="a">@Override</span>
     <span class="t">void</span> <span class="i">accept</span>(<span class="t">PastryVisitor</span> <span class="i">visitor</span>) {
@@ -851,21 +1004,25 @@ on its type? Polymorphism to the rescue! We add this method to Pastry:</p>
 <p>To perform an operation on a pastry, we call its <code>accept()</code> method and pass in
 the visitor for the operation we want to execute. The pastry<span class="em">&mdash;</span>the specific
 subclass&rsquo;s overriding implementation of <code>accept()</code><span class="em">&mdash;</span>turns around and calls the
-appropriate visit method on the visitor and passes <em>itself</em> to it.</p>
+appropriate visit method on the visitor and passes <em>itself</em> to it.
+要对糕点执行一个操作，我们就调用它的<code>accept()</code>方法，并将我们要执行的操作vistor作为参数传入该方法。pastry类——特定子类对<code>accept()</code>的重写实现——会反过来，在visitor上调用合适的visit方法，并将<em>自身</em>作为参数传入。</p>
 <p>That&rsquo;s the heart of the trick right there. It lets us use polymorphic dispatch
 on the <em>pastry</em> classes to select the appropriate method on the <em>visitor</em> class.
 In the table, each pastry class is a row, but if you look at all of the methods
-for a single visitor, they form a <em>column</em>.</p><img src="image/representing-code/visitor.png" alt="Now all of the cells for one operation are part of the same class, the visitor." />
+for a single visitor, they form a <em>column</em>.
+这就是这个技巧的核心所在。它让我们可以在<em>pastry</em>类上使用多态派遣，在<em>visitor</em>类上选择合适的方法。对应在表格中，每个pastry类都是一行，但如果你看一个visitor的所有方法，它们就会形成一<em>列</em>。</p><img src="image/representing-code/visitor.png" alt="Now all of the cells for one operation are part of the same class, the visitor." />
 <p>We added one <code>accept()</code> method to each class, and we can use it for as many
 visitors as we want without ever having to touch the pastry classes again. It&rsquo;s
-a clever pattern.</p>
-<h3><a href="#visitors-for-expressions" id="visitors-for-expressions"><small>5&#8202;.&#8202;3&#8202;.&#8202;3</small>Visitors for expressions</a></h3>
+a clever pattern.
+我们为每个类添加了一个<code>accept（）</code>方法，我们可以根据需要将其用于任意数量的访问者，而无需再次修改<em>pastry</em>类。 这是一个聪明的模式。</p>
+<h3><a href="#visitors-for-expressions--表达式访问者" id="visitors-for-expressions--表达式访问者"><small>5&#8202;.&#8202;3&#8202;.&#8202;3</small>Visitors for expressions  表达式访问者</a></h3>
 <p>OK, let&rsquo;s weave it into our expression classes. We&rsquo;ll also <span
 name="context">refine</span> the pattern a little. In the pastry example, the
 visit and <code>accept()</code> methods don&rsquo;t return anything. In practice, visitors often
 want to define operations that produce values. But what return type should
 <code>accept()</code> have? We can&rsquo;t assume every visitor class wants to produce the same
-type, so we&rsquo;ll use generics to let each implementation fill in a return type.</p>
+type, so we&rsquo;ll use generics to let each implementation fill in a return type.
+好的，让我们将它编入表达式类中。我们还要对这个模式进行一下完善。在糕点的例子中，visit和<code>accept()</code>方法没有返回任何东西。在实践中，访问者通常希望定义能够产生值的操作。但<code>accept()</code>应该具有什么返回类型呢？我们不能假设每个访问者类都想产生相同的类型，所以我们将使用泛型来让每个实现类自行填充一个返回类型。</p>
 <aside name="context">
 <p>Another common refinement is an additional &ldquo;context&rdquo; parameter that is passed to
 the visit methods and then sent back through as a parameter to <code>accept()</code>. That
@@ -873,7 +1030,8 @@ lets operations take an additional parameter. The visitors we&rsquo;ll define in
 book don&rsquo;t need that, so I omitted it.</p>
 </aside>
 <p>First, we define the visitor interface. Again, we nest it inside the base class
-so that we can keep everything in one file.</p>
+so that we can keep everything in one file.
+首先，我们定义访问者接口。同样，我们把它嵌套在基类中，以便将所有的内容都放在一个文件中。</p>
 <div class="codehilite"><pre class="insert-before">    writer.println(&quot;abstract class &quot; + baseName + &quot; {&quot;);
 
 </pre><div class="source-file"><em>tool/GenerateAst.java</em><br>
@@ -884,7 +1042,8 @@ in <em>defineAst</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>defineAst</em>()</div>
 
-<p>That function generates the visitor interface.</p>
+<p>That function generates the visitor interface.
+这个函数会生成visitor接口。</p>
 <div class="codehilite"><div class="source-file"><em>tool/GenerateAst.java</em><br>
 add after <em>defineAst</em>()</div>
 <pre>  <span class="k">private</span> <span class="k">static</span> <span class="t">void</span> <span class="i">defineVisitor</span>(
@@ -904,8 +1063,10 @@ add after <em>defineAst</em>()</div>
 
 <p>Here, we iterate through all of the subclasses and declare a visit method for
 each one. When we define new expression types later, this will automatically
-include them.</p>
-<p>Inside the base class, we define the abstract <code>accept()</code> method.</p>
+include them.
+在这里，我们遍历所有的子类，并为每个子类声明一个visit方法。当我们以后定义新的表达式类型时，会自动包含这些内容。</p>
+<p>Inside the base class, we define the abstract <code>accept()</code> method.
+在基类中，定义抽象 <code>accept()</code> 方法。</p>
 <div class="codehilite"><pre class="insert-before">      defineType(writer, baseName, className, fields);
     }
 </pre><div class="source-file"><em>tool/GenerateAst.java</em><br>
@@ -921,7 +1082,8 @@ in <em>defineAst</em>()</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>defineAst</em>()</div>
 
 <p>Finally, each subclass implements that and calls the right visit method for its
-own type.</p>
+own type.
+最后，每个子类都实现该方法，并调用其类型对应的visit方法。</p>
 <div class="codehilite"><pre class="insert-before">    writer.println(&quot;    }&quot;);
 </pre><div class="source-file"><em>tool/GenerateAst.java</em><br>
 in <em>defineType</em>()</div>
@@ -944,30 +1106,39 @@ in <em>defineType</em>()</div>
 with the classes or our generator script. Compile and run this generator script
 to output an updated &ldquo;Expr.java&rdquo; file. It contains a generated Visitor
 interface and a set of expression node classes that support the Visitor pattern
-using it.</p>
+using it.
+这下好了。现在我们可以在表达式上定义操作，而且无需对类或生成器脚本进行修改。编译并运行这个生成器脚本，输出一个更新后的 &ldquo;Expr.java &ldquo;文件。该文件中包含一个生成的Visitor接口和一组使用该接口支持Visitor模式的表达式节点类。</p>
 <p>Before we end this rambling chapter, let&rsquo;s implement that Visitor interface and
-see the pattern in action.</p>
-<h2><a href="#a-not-very-pretty-printer" id="a-not-very-pretty-printer"><small>5&#8202;.&#8202;4</small>A (Not Very) Pretty Printer</a></h2>
+see the pattern in action.
+在结束这杂乱的一章之前，我们先实现一下这个Visitor接口，看看这个模式的运行情况。</p>
+<h2><a href="#a-not-very-pretty-printer--一个（不是很）漂亮的打印器" id="a-not-very-pretty-printer--一个（不是很）漂亮的打印器"><small>5&#8202;.&#8202;4</small>A (Not Very) Pretty Printer  一个（不是很）漂亮的打印器</a></h2>
 <p>When we debug our parser and interpreter, it&rsquo;s often useful to look at a parsed
 syntax tree and make sure it has the structure we expect. We could inspect it in
-the debugger, but that can be a chore.</p>
+the debugger, but that can be a chore.
+当我们调试解析器和解释器时，查看解析后的语法树并确保其与期望的结构一致通常是很有用的。我们可以在调试器中进行检查，但那可能有点难。</p>
 <p>Instead, we&rsquo;d like some code that, given a syntax tree, produces an unambiguous
 string representation of it. Converting a tree to a string is sort of the
 opposite of a parser, and is often called &ldquo;pretty printing&rdquo; when the goal is to
-produce a string of text that is valid syntax in the source language.</p>
+produce a string of text that is valid syntax in the source language.
+相反，我们需要一些代码，在给定语法树的情况下，生成一个明确的字符串表示。将语法树转换为字符串是解析器的逆向操作，当我们的目标是产生一个在源语言中语法有效的文本字符串时，通常被称为 &ldquo;漂亮打印&ldquo;。</p>
 <p>That&rsquo;s not our goal here. We want the string to very explicitly show the nesting
 structure of the tree. A printer that returned <code>1 + 2 * 3</code> isn&rsquo;t super helpful
 if what we&rsquo;re trying to debug is whether operator precedence is handled
-correctly. We want to know if the <code>+</code> or <code>*</code> is at the top of the tree.</p>
+correctly. We want to know if the <code>+</code> or <code>*</code> is at the top of the tree.
+这不是我们的目标。我们希望字符串非常明确地显示树的嵌套结构。如果我们要调试的是操作符的优先级是否处理正确，那么返回<code>1 + 2 * 3</code>的打印器并没有什么用，我们想知道<code>+</code>或<code>*</code>是否在语法树的顶部。</p>
 <p>To that end, the string representation we produce isn&rsquo;t going to be Lox syntax.
 Instead, it will look a lot like, well, Lisp. Each expression is explicitly
-parenthesized, and all of its subexpressions and tokens are contained in that.</p>
-<p>Given a syntax tree like:</p><img src="image/representing-code/expression.png" alt="An example syntax tree." />
-<p>It produces:</p>
+parenthesized, and all of its subexpressions and tokens are contained in that.
+因此，我们生成的字符串表示形式不是Lox语法。相反，它看起来很像Lisp。每个表达式都被显式地括起来，并且它的所有子表达式和词法标记都包含在其中。</p>
+<p>Given a syntax tree like:
+给定一个语法树，如：</p><img src="image/representing-code/expression.png" alt="An example syntax tree." />
+<p>It produces:
+输出结果为：</p>
 <div class="codehilite"><pre>(* (- 123) (group 45.67))
 </pre></div>
 <p>Not exactly &ldquo;pretty&rdquo;, but it does show the nesting and grouping explicitly. To
-implement this, we define a new class.</p>
+implement this, we define a new class.
+不是很“漂亮”，但是它确实明确地展示了嵌套和分组。为了实现这一点，我们定义了一个新类。</p>
 <div class="codehilite"><div class="source-file"><em>lox/AstPrinter.java</em><br>
 create new file</div>
 <pre><span class="k">package</span> <span class="i">com.craftinginterpreters.lox</span>;
@@ -981,7 +1152,8 @@ create new file</div>
 <div class="source-file-narrow"><em>lox/AstPrinter.java</em>, create new file</div>
 
 <p>As you can see, it implements the visitor interface. That means we need visit
-methods for each of the expression types we have so far.</p>
+methods for each of the expression types we have so far.
+如你所见，它实现了visitor接口。这意味着我们需要为我们目前拥有的每一种表达式类型提供visit方法。</p>
 <div class="codehilite"><pre class="insert-before">    return expr.accept(this);
   }
 </pre><div class="source-file"><em>lox/AstPrinter.java</em><br>
@@ -1015,7 +1187,8 @@ add after <em>print</em>()</div>
 
 <p>Literal expressions are easy<span class="em">&mdash;</span>they convert the value to a string with a little
 check to handle Java&rsquo;s <code>null</code> standing in for Lox&rsquo;s <code>nil</code>. The other expressions
-have subexpressions, so they use this <code>parenthesize()</code> helper method:</p>
+have subexpressions, so they use this <code>parenthesize()</code> helper method:
+字面量表达式很简单——它们将值转换为一个字符串，并通过一个小检查用Java中的<code>null</code>代替Lox中的<code>nil</code>。其他表达式有子表达式，所以它们要使用<code>parenthesize()</code>这个辅助方法：</p>
 <div class="codehilite"><div class="source-file"><em>lox/AstPrinter.java</em><br>
 add after <em>visitUnaryExpr</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">String</span> <span class="i">parenthesize</span>(<span class="t">String</span> <span class="i">name</span>, <span class="t">Expr</span>... <span class="i">exprs</span>) {
@@ -1034,19 +1207,22 @@ add after <em>visitUnaryExpr</em>()</div>
 <div class="source-file-narrow"><em>lox/AstPrinter.java</em>, add after <em>visitUnaryExpr</em>()</div>
 
 <p>It takes a name and a list of subexpressions and wraps them all up in
-parentheses, yielding a string like:</p>
+parentheses, yielding a string like:
+它接收一个名称和一组子表达式作为参数，将它们全部包装在圆括号中，并生成一个如下的字符串：</p>
 <div class="codehilite"><pre>(+ 1 2)
 </pre></div>
 <p>Note that it calls <code>accept()</code> on each subexpression and passes in itself. This
 is the <span name="tree">recursive</span> step that lets us print an entire
-tree.</p>
+tree.
+请注意，它在每个子表达式上调用<code>accept()</code>并将自身传递进去。 这是递归步骤，可让我们打印整棵树。</p>
 <aside name="tree">
 <p>This recursion is also why people think the Visitor pattern itself has to do
 with trees.</p>
 </aside>
 <p>We don&rsquo;t have a parser yet, so it&rsquo;s hard to see this in action. For now, we&rsquo;ll
 hack together a little <code>main()</code> method that manually instantiates a tree and
-prints it.</p>
+prints it.
+我们还没有解析器，所以很难看到它的实际应用。现在，我们先使用一个<code>main()</code>方法来手动实例化一个树并打印它。</p>
 <div class="codehilite"><div class="source-file"><em>lox/AstPrinter.java</em><br>
 add after <em>parenthesize</em>()</div>
 <pre>  <span class="k">public</span> <span class="k">static</span> <span class="t">void</span> <span class="i">main</span>(<span class="t">String</span>[] <span class="i">args</span>) {
@@ -1063,7 +1239,8 @@ add after <em>parenthesize</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/AstPrinter.java</em>, add after <em>parenthesize</em>()</div>
 
-<p>If we did everything right, it prints:</p>
+<p>If we did everything right, it prints:
+如果我们都做对了，它就会打印：</p>
 <div class="codehilite"><pre>(* (- 123) (group 45.67))
 </pre></div>
 <p>You can go ahead and delete this method. We won&rsquo;t need it. Also, as we add new
@@ -1071,7 +1248,26 @@ syntax tree types, I won&rsquo;t bother showing the necessary visit methods for 
 in AstPrinter. If you want to (and you want the Java compiler to not yell at
 you), go ahead and add them yourself. It will come in handy in the next chapter
 when we start parsing Lox code into syntax trees. Or, if you don&rsquo;t care to
-maintain AstPrinter, feel free to delete it. We won&rsquo;t need it again.</p>
+maintain AstPrinter, feel free to delete it. We won&rsquo;t need it again.
+您可以继续删除这个方法，我们后面不再需要它了。另外，当我们添加新的语法树类型时，我不会在AstPrinter中展示它们对应的visit方法。如果你想这样做(并且希望Java编译器不会报错)，那么你可以自行添加这些方法。在下一章，当我们开始将Lox代码解析为语法树时，它将会派上用场。或者，如果你不想维护AstPrinter，可以随意删除它。我们不再需要它了。
+: 我非常担心这一章会成为这本书中最无聊的章节之一，所以我尽可能多地往里面塞入了很多有趣的想法。
+: 在美国，运算符优先级常缩写为<strong>PEMDAS</strong>，分别表示<em>P</em>arentheses(括号), <em>E</em>xponents(指数), <em>M</em>ultiplication/<em>D</em>ivision(乘除), <em>A</em>ddition/<em>S</em>ubtraction(加减)。为了便于记忆，将缩写词扩充为“<strong>Please Excuse My Dear Aunt Sally</strong>”。
+: 这并不是说树是我们代码的唯一可能的表示方式。在第三部分，我们将生成字节码，这是另一种对人类不友好但更接近机器的表示方式。
+: 将头部限制为单个符号是上下文无关语法的定义特性。更强大的形式，如<a href="https://en.wikipedia.org/wiki/Unrestricted_grammar">无限制文法</a>，允许在头部和主体中都包含一系列的符号。
+: 是的，我们需要为定义语法的规则定义一个语法。我们也应该指定这个元语法吗?我们用什么符号来表示它?从上到下都是语言
+: 想象一下，我们在这里递归扩展几次<code>breakfast</code>规则，比如 &ldquo;bacon with bacon with bacon with . . .&rdquo; ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 &ldquo;on the side &ldquo;词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达<em>重复</em>，但它们无法<em>统计</em>有多少重复，但是这（种跟踪）对于确保字符串的<code>with</code>和<code>on the side</code>部分的数量相同是必要的。
+: Scheme编程语言就是这样工作的。它根本没有内置的循环功能。相反，所有重复都用递归来表示。
+: 如果你愿意，可以尝试使用这个语法生成一些表达式，就像我们之前用早餐语法做的那样。生成的表达式你觉得对吗？你能让它生成任何错误的东西，比如1+/3吗？
+: 特别是，我们要定义一个<strong>抽象语法树（AST）</strong>。在<strong>解析树</strong>中，每一个语法生成式都成为树中的一个节点。AST省略了后面阶段不需要的生成式。
+: 词法单元也不是完全同质的。字面值的标记存储值，但其他类型的词素不需要该状态。我曾经见过一些扫描器使用不同的类来处理字面量和其他类型的词素，但我认为我应该把事情简单化。
+: 我尽量避免在代码中使用缩写，因为这会让不知道其含义的读者犯错误。但是在我所研究过的编译器中，“Expr”和“Stmt”是如此普遍，我最好现在就开始让您习惯它们。
+: 我从Jython和IronPython的创建者Jim Hugunin那里得到了编写语法树类脚本的想法。真正的脚本语言比Java更适合这种情况，但我尽量不向您提供太多的语言。
+: 这不是世界上最优雅的字符串操作代码，但也很好。它只在我们给它的类定义集上运行。稳健性不是优先考虑的问题。
+: 附录II包含了在我们完成jlox的实现并定义了它的所有语法树节点之后，这个脚本生成的代码。
+: 这就是Erich Gamma等人在《设计模式:可重用的面向对象软件的元素》一书中所谓的<a href="https://en.wikipedia.org/wiki/Interpreter_pattern">解释器模式</a>。
+: ML，是元语言(metalanguage)的简称，它是由Robin Milner和他的朋友们创建的，是伟大的编程语言家族的主要分支之一。它的子程序包括SML、Caml、OCaml、Haskell和F#。甚至Scala、Rust和Swift都有很强的相似性。就像Lisp一样，它也是那种充满了好点子的语言之一，即使在40多年后的今天，语言设计者仍然在重新发现它们。
+: 诸如Common Lisp的CLOS，Dylan和Julia这样的支持多方法(多分派)的语言都能轻松添加新类型和操作。它们通常牺牲的是静态类型检查或单独编译。
+: 在设计模式中，这两种方法的名字都叫<code>visit()</code>，很容易混淆，需要依赖重载来区分不同方法。这也导致一些读者认为正确的visit方法是在运行时根据其参数类型选择的。事实并非如此。与重写不同，重载是在编译时静态分派的。为每个方法使用不同的名称使分派更加明显，同时还向您展示了如何在不支持重载的语言中应用此模式。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -1090,7 +1286,9 @@ that notational sugar.</p>
 <p>The Visitor pattern lets you emulate the functional style in an
 object-oriented language. Devise a complementary pattern for a functional
 language. It should let you bundle all of the operations on one type
-together and let you define new types easily.</p>
+together and let you define new types easily.
+2、Visitor 模式让你可以在面向对象的语言中模仿函数式。为函数式语言设计一个互补的模式，该模式让你可以将一个类型上的所有操作捆绑在一起，并轻松扩展新的类型。
+(SML或Haskell是这个练习的理想选择，但Scheme或其它Lisp方言也可以。)</p>
 <p>(SML or Haskell would be ideal for this exercise, but Scheme or another Lisp
 works as well.)</p>
 </li>
@@ -1099,7 +1297,10 @@ works as well.)</p>
 operator are both placed before the operator, so <code>1 + 2</code> becomes <code>1 2 +</code>.
 Evaluation proceeds from left to right. Numbers are pushed onto an implicit
 stack. An arithmetic operator pops the top two numbers, performs the
-operation, and pushes the result. Thus, this:</p>
+operation, and pushes the result. Thus, this:
+3、在<a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">逆波兰表达式</a>(RPN)中，算术运算符的操作数都放在运算符之前，所以<code>1 + 2</code>变成了<code>1 2 +</code>。计算时从左到右进行，操作数被压入隐式栈。算术运算符弹出前两个数字，执行运算，并将结果推入栈中。因此,
+在RPN中变为了
+为我们的语法树类定义一个Vistor类，该类接受一个表达式，将其转换为RPN，并返回结果字符串。</p>
 <div class="codehilite"><pre>(<span class="n">1</span> + <span class="n">2</span>) * (<span class="n">4</span> - <span class="n">3</span>)
 </pre></div>
 <p>in RPN becomes:</p>

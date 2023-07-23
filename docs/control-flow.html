@@ -37,11 +37,11 @@
 <h3><a href="#top">Control Flow<small>9</small></a></h3>
 
 <ul>
-    <li><a href="#turing-machines-briefly"><small>9.1</small> Turing Machines (Briefly)</a></li>
-    <li><a href="#conditional-execution"><small>9.2</small> Conditional Execution</a></li>
-    <li><a href="#logical-operators"><small>9.3</small> Logical Operators</a></li>
-    <li><a href="#while-loops"><small>9.4</small> While Loops</a></li>
-    <li><a href="#for-loops"><small>9.5</small> For Loops</a></li>
+    <li><a href="#turing-machines-briefly--图灵机（简介）"><small>9.1</small> Turing Machines (Briefly)  图灵机（简介）</a></li>
+    <li><a href="#conditional-execution--条件执行"><small>9.2</small> Conditional Execution  条件执行</a></li>
+    <li><a href="#logical-operators--逻辑操作符"><small>9.3</small> Logical Operators  逻辑操作符</a></li>
+    <li><a href="#while-loops--while循环"><small>9.4</small> While Loops  While循环</a></li>
+    <li><a href="#for-loops--for循环"><small>9.5</small> For Loops  For循环</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>Spoonfuls of Syntactic Sugar</a></li>
@@ -69,11 +69,11 @@
 <h3><a href="#top">Control Flow<small>9</small></a></h3>
 
 <ul>
-    <li><a href="#turing-machines-briefly"><small>9.1</small> Turing Machines (Briefly)</a></li>
-    <li><a href="#conditional-execution"><small>9.2</small> Conditional Execution</a></li>
-    <li><a href="#logical-operators"><small>9.3</small> Logical Operators</a></li>
-    <li><a href="#while-loops"><small>9.4</small> While Loops</a></li>
-    <li><a href="#for-loops"><small>9.5</small> For Loops</a></li>
+    <li><a href="#turing-machines-briefly--图灵机（简介）"><small>9.1</small> Turing Machines (Briefly)  图灵机（简介）</a></li>
+    <li><a href="#conditional-execution--条件执行"><small>9.2</small> Conditional Execution  条件执行</a></li>
+    <li><a href="#logical-operators--逻辑操作符"><small>9.3</small> Logical Operators  逻辑操作符</a></li>
+    <li><a href="#while-loops--while循环"><small>9.4</small> While Loops  While循环</a></li>
+    <li><a href="#for-loops--for循环"><small>9.5</small> For Loops  For循环</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>Spoonfuls of Syntactic Sugar</a></li>
@@ -97,17 +97,20 @@
 <blockquote>
 <p>Logic, like whiskey, loses its beneficial effect when taken in too large
 quantities.</p>
-<p><cite>Edward John Moreton Drax Plunkett, Lord Dunsany</cite></p>
+<p><cite>Edward John Moreton Drax Plunkett, Lord Dunsany</cite>
+逻辑和威士忌一样，如果摄入太多，就会失去其有益的效果。</p>
 </blockquote>
 <p>Compared to <a href="statements-and-state.html">last chapter&rsquo;s</a> grueling marathon, today is a
 lighthearted frolic through a daisy meadow. But while the work is easy, the
-reward is surprisingly large.</p>
+reward is surprisingly large.
+与上一章艰苦的马拉松相比，这一章就是在雏菊草地上的轻松嬉戏。虽然工作很简单，但回报却惊人的大。</p>
 <p>Right now, our interpreter is little more than a calculator. A Lox program can
 only do a fixed amount of work before completing. To make it run twice as long
 you have to make the source code twice as lengthy. We&rsquo;re about to fix that. In
 this chapter, our interpreter takes a big step towards the programming
-language major leagues: <em>Turing-completeness</em>.</p>
-<h2><a href="#turing-machines-briefly" id="turing-machines-briefly"><small>9&#8202;.&#8202;1</small>Turing Machines (Briefly)</a></h2>
+language major leagues: <em>Turing-completeness</em>.
+现在，我们的解释器只不过是一个计算器而已。一个Lox程序在结束之前只能做固定的工作量。要想让它的运行时间延长一倍，你就必须让源代码的长度增加一倍。我们即将解决这个问题。在本章中，我们的解释器向编程语言大联盟迈出了一大步：图灵完备性。</p>
+<h2><a href="#turing-machines-briefly--图灵机（简介）" id="turing-machines-briefly--图灵机（简介）"><small>9&#8202;.&#8202;1</small>Turing Machines (Briefly)  图灵机（简介）</a></h2>
 <p>In the early part of last century, mathematicians stumbled into a series of
 confusing <span name="paradox">paradoxes</span> that led them to doubt the
 stability of the foundation they had built their work upon. To address that
@@ -132,13 +135,15 @@ more general question, &ldquo;What do we mean when we claim a function is
 remained was to prove it. It turns out that the answer to both is &ldquo;no&rdquo;, and
 astonishingly, the two questions are deeply intertwined. This is a fascinating
 corner of mathematics that touches fundamental questions about what brains are
-able to do and how the universe works. I can&rsquo;t do it justice here.</p>
+able to do and how the universe works. I can&rsquo;t do it justice here.
+他们认为前两个问题的答案应该是“是”，剩下的就是去证明它。但事实证明这两个问题的答案都是“否”。而且令人惊讶的是，这两个问题是深深地交织在一起的。这是数学的一个迷人的角落，它触及了关于大脑能够做什么和宇宙如何运作的基本问题。我在这里说不清楚。</p>
 <p>What I do want to note is that in the process of proving that the answer to the
 first two questions is &ldquo;no&rdquo;, Alan Turing and Alonzo Church devised a precise
 answer to the last question<span class="em">&mdash;</span>a definition of what kinds of functions are <span
 name="uncomputable">computable</span>. They each crafted a tiny system with a
 minimum set of machinery that is still powerful enough to compute any of a
-(very) large class of functions.</p>
+(very) large class of functions.
+我想指出的是，在证明前两个问题的答案是 &ldquo;否 &ldquo;的过程中，艾伦·图灵和阿隆佐·邱奇为最后一个问题设计了一个精确的答案，即定义了什么样的函数是可计算的。他们各自设计了一个具有最小机械集的微型系统，该系统仍然强大到足以计算一个超大类函数中的任何一个。</p>
 <aside name="uncomputable">
 <p>They proved the answer to the first question is &ldquo;no&rdquo; by showing that the
 function that returns the truth value of a given statement is <em>not</em> a computable
@@ -148,7 +153,8 @@ one.</p>
 <span name="turing"><strong>Turing machine</strong></span>. Church&rsquo;s is the <strong>lambda
 calculus</strong>. Both are still widely used as the basis for models of computation
 and, in fact, many modern functional programming languages use the lambda
-calculus at their core.</p>
+calculus at their core.
+这些现在被认为是“可计算函数”。图灵的系统被称为<strong>图灵机</strong>，邱奇的系统是<strong>lambda演算</strong>。这两种方法仍然被广泛用作计算模型的基础，事实上，许多现代函数式编程语言的核心都是lambda演算。</p>
 <aside name="turing">
 <p>Turing called his inventions &ldquo;a-machines&rdquo; for &ldquo;automatic&rdquo;. He wasn&rsquo;t so
 self-aggrandizing as to put his <em>own</em> name on them. Later mathematicians did
@@ -161,21 +167,38 @@ powerful enough to compute <em>any</em> computable function.</p>
 <p>You can prove that by writing a simulator for a Turing machine in your language.
 Since Turing proved his machine can compute any computable function, by
 extension, that means your language can too. All you need to do is translate the
-function into a Turing machine, and then run that on your simulator.</p>
+function into a Turing machine, and then run that on your simulator.
+你可以用自己的语言为图灵机编写一个模拟器来证明这一点。由于图灵证明了他的机器可以计算任何可计算函数，推而广之，这意味着你的语言也可以。你所需要做的就是把函数翻译成图灵机，然后在你的模拟器上运行它。</p>
 <p>If your language is expressive enough to do that, it&rsquo;s considered
 <strong>Turing-complete</strong>. Turing machines are pretty dang simple, so it doesn&rsquo;t take
 much power to do this. You basically need arithmetic, a little control flow,
 and the ability to allocate and use (theoretically) arbitrary amounts of memory.
 We&rsquo;ve got the first. By the end of this chapter, we&rsquo;ll have the <span
-name="memory">second</span>.</p>
+name="memory">second</span>.
+如果你的语言有足够的表达能力来做到这一点，它就被认为是<strong>图灵完备</strong>的。图灵机非常简单，所以它不需要太多的能力。您基本上只需要算术、一点控制流以及分配和使用(理论上)任意数量内存的能力。我们已经具备了第一个条件。在本章结束时，我们将具备第二个条件。</p>
 <aside name="memory">
 <p>We <em>almost</em> have the third too. You can create and concatenate strings of
 arbitrary size, so you can <em>store</em> unbounded memory. But we don&rsquo;t have any way
 to access parts of a string.</p>
 </aside>
-<h2><a href="#conditional-execution" id="conditional-execution"><small>9&#8202;.&#8202;2</small>Conditional Execution</a></h2>
+<h2><a href="#conditional-execution--条件执行" id="conditional-execution--条件执行"><small>9&#8202;.&#8202;2</small>Conditional Execution  条件执行</a></h2>
 <p>Enough history, let&rsquo;s jazz up our language. We can divide control flow roughly
-into two kinds:</p>
+into two kinds:
+说完了历史，现在让我们把语言优化一下。我们大致可以把控制流分为两类：</p>
+<ul>
+<li>
+<blockquote>
+<p><strong>Conditional</strong> or <strong>branching control flow</strong> is used to <em>not</em> execute some piece of code. Imperatively, you can think of it as jumping <em>ahead</em> over a region of code.
+<strong>条件</strong>或<strong>分支控制流</strong>是用来不执行某些代码的。意思是，你可以把它看作是跳过了代码的一个区域。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p><strong>Looping control flow</strong> executes a chunk of code more than once. It jumps <em>back</em> so that you can do something again. Since you don’t usually want <em>infinite</em> loops, it typically has some conditional logic to know when to stop looping as well.
+<strong>循环控制流</strong>是用于多次执行一块代码的。它会<em>向回</em>跳转，从而能再次执行某些代码。用户通常不需要无限循环，所以一般也会有一些条件逻辑用于判断何时停止循环。</p>
+</blockquote>
+</li>
+</ul>
 <ul>
 <li>
 <p><strong>Conditional</strong> or <strong>branching control flow</strong> is used to <em>not</em> execute
@@ -193,13 +216,15 @@ stop looping as well.</p>
 conditional execution features, the <code>if</code> statement and the perspicaciously named
 &ldquo;conditional&rdquo; <span name="ternary">operator</span> (<code>?:</code>). An <code>if</code> statement
 lets you conditionally execute statements and the conditional operator lets you
-conditionally execute expressions.</p>
+conditionally execute expressions.
+分支更简单一些，所以我们先从分支开始实现。C衍生语言中包含两个主要的条件执行功能，即<code>if</code>语句和“条件”运算符（<code>?:</code>）。<code>if</code>语句使你可以按条件执行语句，而条件运算符使你可以按条件执行表达式。</p>
 <aside name="ternary">
 <p>The conditional operator is also called the &ldquo;ternary&rdquo; operator because it&rsquo;s the
 only operator in C that takes three operands.</p>
 </aside>
 <p>For simplicity&rsquo;s sake, Lox doesn&rsquo;t have a conditional operator, so let&rsquo;s get our
-<code>if</code> statement on. Our statement grammar gets a new production.</p>
+<code>if</code> statement on. Our statement grammar gets a new production.
+为了简单起见，Lox没有条件运算符，所以让我们直接开始<code>if</code>语句吧。我们的语句语法需要一个新的生成式。</p>
 <p><span name="semicolon"></span></p>
 <div class="codehilite"><pre><span class="i">statement</span>      → <span class="i">exprStmt</span>
                | <span class="i">ifStmt</span>
@@ -218,7 +243,8 @@ be one that ends in a semicolon.</p>
 <p>An <code>if</code> statement has an expression for the condition, then a statement to execute
 if the condition is truthy. Optionally, it may also have an <code>else</code> keyword and a
 statement to execute if the condition is falsey. The <span name="if-ast">syntax
-tree node</span> has fields for each of those three pieces.</p>
+tree node</span> has fields for each of those three pieces.
+if语句有一个表达式作为条件，然后是一个在条件为真时要执行的语句。另外，它还可以有一个<code>else</code>关键字和条件为假时要执行的语句。语法树节点中对语法的这三部分都有对应的字段。</p>
 <div class="codehilite"><pre class="insert-before">      &quot;Expression : Expr expression&quot;,
 </pre><div class="source-file"><em>tool/GenerateAst.java</em><br>
 in <em>main</em>()</div>
@@ -232,7 +258,8 @@ in <em>main</em>()</div>
 <p>The generated code for the new node is in <a href="appendix-ii.html#if-statement">Appendix II</a>.</p>
 </aside>
 <p>Like other statements, the parser recognizes an <code>if</code> statement by the leading
-<code>if</code> keyword.</p>
+<code>if</code> keyword.
+与其它语句类似，解析器通过开头的<code>if</code>关键字来识别<code>if</code>语句。</p>
 <div class="codehilite"><pre class="insert-before">  private Stmt statement() {
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
 in <em>statement</em>()</div>
@@ -241,7 +268,8 @@ in <em>statement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, in <em>statement</em>()</div>
 
-<p>When it finds one, it calls this new method to parse the rest:</p>
+<p>When it finds one, it calls this new method to parse the rest:
+如果发现了<code>if</code>关键字，就调用下面的新方法解析其余部分：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
 add after <em>statement</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">Stmt</span> <span class="i">ifStatement</span>() {
@@ -274,14 +302,31 @@ beginning of the statement to tell when the condition is done.</p>
 </aside>
 <p>As usual, the parsing code hews closely to the grammar. It detects an else
 clause by looking for the preceding <code>else</code> keyword. If there isn&rsquo;t one, the
-<code>elseBranch</code> field in the syntax tree is <code>null</code>.</p>
+<code>elseBranch</code> field in the syntax tree is <code>null</code>.
+跟之前一样，解析代码严格遵循语法。它通过查找前面的<code>else</code>关键字来检测<code>else</code>子句。如果没有，语法树中的<code>elseBranch</code>字段为<code>null</code>。</p>
 <p>That seemingly innocuous optional else has, in fact, opened up an ambiguity in
-our grammar. Consider:</p>
+our grammar. Consider:
+实际上，这个看似无伤大雅的可选项在我们的语法中造成了歧义。考虑以下代码：</p>
 <div class="codehilite"><pre><span class="k">if</span> (<span class="i">first</span>) <span class="k">if</span> (<span class="i">second</span>) <span class="i">whenTrue</span>(); <span class="k">else</span> <span class="i">whenFalse</span>();
 </pre></div>
 <p>Here&rsquo;s the riddle: Which <code>if</code> statement does that else clause belong to? This
 isn&rsquo;t just a theoretical question about how we notate our grammar. It actually
-affects how the code executes:</p>
+affects how the code executes:
+谜题是这样的:这里的<code>else</code>子句属于哪个<code>if</code>语句?这不仅仅是一个关于如何标注语法的理论问题。它实际上会影响代码的执行方式：</p>
+<ul>
+<li>
+<blockquote>
+<p>If we attach the else to the first <code>if</code> statement, then <code>whenFalse()</code> is called if <code>first</code> is falsey, regardless of what value <code>second</code> has.
+如果我们将<code>else</code>语句关联到第一个<code>if</code>语句，那么当<code>first</code>为假时，无论<code>second</code>的值是多少，都将调用<code>whenFalse()</code>。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>If we attach it to the second <code>if</code> statement, then <code>whenFalse()</code> is only called if <code>first</code> is truthy and <code>second</code> is falsey.
+如果我们将<code>else</code>语句关联到第二个<code>if</code>语句，那么只有当<code>first</code>为真并且<code>second</code>为假时，才会调用<code>whenFalse()</code>。</p>
+</blockquote>
+</li>
+</ul>
 <ul>
 <li>
 <p>If we attach the else to the first <code>if</code> statement, then <code>whenFalse()</code> is
@@ -294,7 +339,8 @@ called if <code>first</code> is truthy and <code>second</code> is falsey.</p>
 </ul>
 <p>Since else clauses are optional, and there is no explicit delimiter marking the
 end of the <code>if</code> statement, the grammar is ambiguous when you nest <code>if</code>s in this
-way. This classic pitfall of syntax is called the <strong><a href="https://en.wikipedia.org/wiki/Dangling_else">dangling else</a></strong> problem.</p>
+way. This classic pitfall of syntax is called the <strong><a href="https://en.wikipedia.org/wiki/Dangling_else">dangling else</a></strong> problem.
+由于<code>else</code>子句是可选的，而且没有明确的分隔符来标记<code>if</code>语句的结尾，所以当你以这种方式嵌套<code>if</code>时，语法是不明确的。这种典型的语法陷阱被称为<a href="https://en.wikipedia.org/wiki/Dangling_else">悬空的else</a>问题。</p>
 <p><span name="else"></span></p><img class="above" src="image/control-flow/dangling-else.png" alt="Two ways the else can be interpreted." />
 <aside name="else">
 <p>Here, formatting highlights the two ways the else could be parsed. But note that
@@ -303,15 +349,19 @@ the human reader.</p>
 </aside>
 <p>It <em>is</em> possible to define a context-free grammar that avoids the ambiguity
 directly, but it requires splitting most of the statement rules into pairs, one
-that allows an <code>if</code> with an <code>else</code> and one that doesn&rsquo;t. It&rsquo;s annoying.</p>
+that allows an <code>if</code> with an <code>else</code> and one that doesn&rsquo;t. It&rsquo;s annoying.
+也可以定义一个上下文无关的语法来直接避免歧义，但是需要将大部分语句规则拆分成对，一个是允许带有<code>else</code>的<code>if</code>语句，另一个不允许。这很烦人。</p>
 <p>Instead, most languages and parsers avoid the problem in an ad hoc way. No
 matter what hack they use to get themselves out of the trouble, they always
 choose the same interpretation<span class="em">&mdash;</span>the <code>else</code> is bound to the nearest <code>if</code> that
-precedes it.</p>
+precedes it.
+相反，大多数语言和解析器都以一种特殊的方式避免了这个问题。不管他们用什么方法来解决这个问题，他们总是选择同样的解释——<code>else</code>与前面最近的<code>if</code>绑定在一起。</p>
 <p>Our parser conveniently does that already. Since <code>ifStatement()</code> eagerly looks
 for an <code>else</code> before returning, the innermost call to a nested series will claim
-the else clause for itself before returning to the outer <code>if</code> statements.</p>
-<p>Syntax in hand, we are ready to interpret.</p>
+the else clause for itself before returning to the outer <code>if</code> statements.
+我们的解析器已经很方便地做到了这一点。因为 <code>ifStatement()</code>在返回之前会继续寻找一个<code>else</code>子句，连续嵌套的最内层调用在返回外部的<code>if</code>语句之前，会先为自己声明<code>else</code>语句。</p>
+<p>Syntax in hand, we are ready to interpret.
+语法就绪了，我们可以开始解释了。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>visitExpressionStmt</em>()</div>
 <pre>  <span class="a">@Override</span>
@@ -328,31 +378,37 @@ add after <em>visitExpressionStmt</em>()</div>
 
 <p>The interpreter implementation is a thin wrapper around the self-same Java code.
 It evaluates the condition. If truthy, it executes the then branch. Otherwise,
-if there is an else branch, it executes that.</p>
+if there is an else branch, it executes that.
+解释器实现就是对相同的Java代码的简单包装。它首先对条件表达式进行求值。如果为真，则执行<code>then</code>分支。否则，如果有存在<code>else</code>分支，就执行该分支。</p>
 <p>If you compare this code to how the interpreter handles other syntax we&rsquo;ve
 implemented, the part that makes control flow special is that Java <code>if</code>
 statement. Most other syntax trees always evaluate their subtrees. Here, we may
 not evaluate the then or else statement. If either of those has a side effect,
-the choice not to evaluate it becomes user visible.</p>
-<h2><a href="#logical-operators" id="logical-operators"><small>9&#8202;.&#8202;3</small>Logical Operators</a></h2>
+the choice not to evaluate it becomes user visible.
+如果你把这段代码与解释器中我们已实现的处理其它语法的代码进行比较，会发现控制流中特殊的地方就在于Java的<code>if</code>语句。其它大多数语法树总是会对子树求值，但是这里，我们可能会不执行<code>then</code>语句或<code>else</code>语句。如果其中任何一个语句有副作用，那么选择不执行某条语句就是用户可见的。</p>
+<h2><a href="#logical-operators--逻辑操作符" id="logical-operators--逻辑操作符"><small>9&#8202;.&#8202;3</small>Logical Operators  逻辑操作符</a></h2>
 <p>Since we don&rsquo;t have the conditional operator, you might think we&rsquo;re done with
 branching, but no. Even without the ternary operator, there are two other
 operators that are technically control flow constructs<span class="em">&mdash;</span>the logical operators
-<code>and</code> and <code>or</code>.</p>
+<code>and</code> and <code>or</code>.
+由于我们没有条件运算符，你可能认为我们已经完成分支开发了，但其实还没有。虽然没有三元运算符，但是还有两个其它操作符在技术上是控制流结构——逻辑运算符<code>and</code>和<code>or</code>。</p>
 <p>These aren&rsquo;t like other binary operators because they <strong>short-circuit</strong>. If,
 after evaluating the left operand, we know what the result of the logical
-expression must be, we don&rsquo;t evaluate the right operand. For example:</p>
+expression must be, we don&rsquo;t evaluate the right operand. For example:
+它们与其它二进制运算符不同，是因为它们会短路。如果在计算左操作数之后，我们已经确切知道逻辑表达式的结果，那么就不再计算右操作数。例如：</p>
 <div class="codehilite"><pre><span class="k">false</span> <span class="k">and</span> <span class="i">sideEffect</span>();
 </pre></div>
 <p>For an <code>and</code> expression to evaluate to something truthy, both operands must be
 truthy. We can see as soon as we evaluate the left <code>false</code> operand that that
 isn&rsquo;t going to be the case, so there&rsquo;s no need to evaluate <code>sideEffect()</code> and it
-gets skipped.</p>
+gets skipped.
+对于一个<code>and</code>表达式来说，两个操作数都必须是真，才能得到结果为真。我们只要看到左侧的<code>false</code>操作数，就知道结果不会是真，也就不需要对<code>sideEffect()</code>求值，会直接跳过它。</p>
 <p>This is why we didn&rsquo;t implement the logical operators with the other binary
 operators. Now we&rsquo;re ready. The two new operators are low in the precedence
 table. Similar to <code>||</code> and <code>&amp;&amp;</code> in C, they each have their <span
 name="logical">own</span> precedence with <code>or</code> lower than <code>and</code>. We slot them
-right between <code>assignment</code> and <code>equality</code>.</p>
+right between <code>assignment</code> and <code>equality</code>.
+这就是为什么我们没有在实现其它二元运算符的时候一起实现逻辑运算符。现在我们已经准备好了。这两个新的运算符在优先级表中的位置很低，类似于C语言中的<code>||</code>和<code>&amp;&amp;</code>，它们都有各自的优先级，<code>or</code>低于<code>and</code>。我们把这两个运算符插入<code>assignment</code> 和 <code>equality</code>之间。</p>
 <aside name="logical">
 <p>I&rsquo;ve always wondered why they don&rsquo;t have the same precedence, like the various
 comparison or equality operators do.</p>
@@ -367,7 +423,8 @@ comparison or equality operators do.</p>
 The two new rules, <code>logic_or</code> and <code>logic_and</code>, are <span
 name="same">similar</span> to other binary operators. Then <code>logic_and</code> calls
 out to <code>equality</code> for its operands, and we chain back to the rest of the
-expression rules.</p>
+expression rules.
+<code>assignment</code> 现在不是落到 <code>equality</code>，而是继续进入<code>logic_or</code>。两个新规则，<code>logic_or</code> 和 <code>logic_and</code>，与其它二元运算符类似。然后<code>logic_and</code>会调用<code>equality</code>计算其操作数，然后我们就链入了表达式规则的其它部分。</p>
 <aside name="same">
 <p>The <em>syntax</em> doesn&rsquo;t care that they short-circuit. That&rsquo;s a semantic concern.</p>
 </aside>
@@ -376,7 +433,8 @@ since they have the same fields. But then <code>visitBinaryExpr()</code> would h
 check to see if the operator is one of the logical operators and use a different
 code path to handle the short circuiting. I think it&rsquo;s cleaner to define a <span
 name="logical-ast">new class</span> for these operators so that they get their
-own visit method.</p>
+own visit method.
+对于这两个新表达式，我们可以重用Expr.Binary类，因为他们具有相同的字段。但是这样的话，<code>visitBinaryExpr()</code> 方法中必须检查运算符是否是逻辑运算符，并且要使用不同的代码处理短路逻辑。我认为更整洁的方法是为这些运算符定义一个新类，这样它们就有了自己的<code>visit</code>方法。</p>
 <div class="codehilite"><pre class="insert-before">      &quot;Literal  : Object value&quot;,
 </pre><div class="source-file"><em>tool/GenerateAst.java</em><br>
 in <em>main</em>()</div>
@@ -389,7 +447,8 @@ in <em>main</em>()</div>
 <p>The generated code for the new node is in <a href="appendix-ii.html#logical-expression">Appendix II</a>.</p>
 </aside>
 <p>To weave the new expressions into the parser, we first change the parsing code
-for assignment to call <code>or()</code>.</p>
+for assignment to call <code>or()</code>.
+为了将新的表达式加入到解析器中，我们首先将赋值操作的解析代码改为调用<code>or()</code>方法。</p>
 <div class="codehilite"><pre class="insert-before">  private Expr assignment() {
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
 in <em>assignment</em>()<br>
@@ -401,7 +460,8 @@ replace 1 line</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, in <em>assignment</em>(), replace 1 line</div>
 
-<p>The code to parse a series of <code>or</code> expressions mirrors other binary operators.</p>
+<p>The code to parse a series of <code>or</code> expressions mirrors other binary operators.
+解析一系列<code>or</code>语句的代码与其它二元运算符相似。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
 add after <em>assignment</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">Expr</span> <span class="i">or</span>() {
@@ -418,7 +478,8 @@ add after <em>assignment</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, add after <em>assignment</em>()</div>
 
-<p>Its operands are the next higher level of precedence, the new <code>and</code> expression.</p>
+<p>Its operands are the next higher level of precedence, the new <code>and</code> expression.
+它的操作数是位于下一优先级的新的<code>and</code>表达式。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
 add after <em>or</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">Expr</span> <span class="i">and</span>() {
@@ -436,7 +497,8 @@ add after <em>or</em>()</div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, add after <em>or</em>()</div>
 
 <p>That calls <code>equality()</code> for its operands, and with that, the expression parser
-is all tied back together again. We&rsquo;re ready to interpret.</p>
+is all tied back together again. We&rsquo;re ready to interpret.
+这里会调用 <code>equality()</code> 计算操作数，这样一来，表达式解析器又重新绑定到了一起。我们已经准备好进行解释了。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>visitLiteralExpr</em>()</div>
 <pre>  <span class="a">@Override</span>
@@ -457,26 +519,32 @@ add after <em>visitLiteralExpr</em>()</div>
 <p>If you compare this to the <a href="evaluating-expressions.html">earlier chapter&rsquo;s</a> <code>visitBinaryExpr()</code>
 method, you can see the difference. Here, we evaluate the left operand first. We
 look at its value to see if we can short-circuit. If not, and only then, do we
-evaluate the right operand.</p>
+evaluate the right operand.
+如果你把这个方法与前面章节的<code>visitBinaryExpr()</code>方法相比较，就可以看出其中的区别。这里，我们先计算左操作数。然后我们查看结果值，判断是否可以短路。当且仅当不能短路时，我们才计算右侧的操作数。</p>
 <p>The other interesting piece here is deciding what actual value to return. Since
 Lox is dynamically typed, we allow operands of any type and use truthiness to
 determine what each operand represents. We apply similar reasoning to the
 result. Instead of promising to literally return <code>true</code> or <code>false</code>, a logic
-operator merely guarantees it will return a value with appropriate truthiness.</p>
+operator merely guarantees it will return a value with appropriate truthiness.
+另一个有趣的部分是决定返回什么实际值。由于Lox是动态类型的，我们允许任何类型的操作数，并使用真实性来确定每个操作数代表什么。我们对结果采用类似的推理。逻辑运算符并不承诺会真正返回<code>true</code>或<code>false</code>，而只是保证它将返回一个具有适当真实性的值。</p>
 <p>Fortunately, we have values with proper truthiness right at hand<span class="em">&mdash;</span>the results
-of the operands themselves. So we use those. For example:</p>
+of the operands themselves. So we use those. For example:
+幸运的是，我们手边就有具有适当真实性的值——即操作数本身的结果，所以我们可以直接使用它们。如：</p>
 <div class="codehilite"><pre><span class="k">print</span> <span class="s">&quot;hi&quot;</span> <span class="k">or</span> <span class="n">2</span>; <span class="c">// &quot;hi&quot;.</span>
 <span class="k">print</span> <span class="k">nil</span> <span class="k">or</span> <span class="s">&quot;yes&quot;</span>; <span class="c">// &quot;yes&quot;.</span>
 </pre></div>
 <p>On the first line, <code>"hi"</code> is truthy, so the <code>or</code> short-circuits and returns
 that. On the second line, <code>nil</code> is falsey, so it evaluates and returns the
-second operand, <code>"yes"</code>.</p>
+second operand, <code>"yes"</code>.
+在第一行，<code>“hi”</code>是真的，所以<code>or</code>短路并返回它。在第二行，<code>nil</code>是假的，因此它计算并返回第二个操作数<code>“yes”</code>。</p>
 <p>That covers all of the branching primitives in Lox. We&rsquo;re ready to jump ahead to
 loops. You see what I did there? <em>Jump. Ahead.</em> Get it? See, it&rsquo;s like a
-reference to<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>oh, forget it.</p>
-<h2><a href="#while-loops" id="while-loops"><small>9&#8202;.&#8202;4</small>While Loops</a></h2>
+reference to<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>oh, forget it.
+这样就完成了Lox中的所有分支原语，我们准备实现循环吧。</p>
+<h2><a href="#while-loops--while循环" id="while-loops--while循环"><small>9&#8202;.&#8202;4</small>While Loops  While循环</a></h2>
 <p>Lox features two looping control flow statements, <code>while</code> and <code>for</code>. The <code>while</code>
-loop is the simpler one, so we&rsquo;ll start there. Its grammar is the same as in C.</p>
+loop is the simpler one, so we&rsquo;ll start there. Its grammar is the same as in C.
+Lox有两种类型的循环控制流语句，分别是<code>while</code>和<code>for</code>。<code>while</code>循环更简单一点，我们先从它开始.</p>
 <div class="codehilite"><pre><span class="i">statement</span>      → <span class="i">exprStmt</span>
                | <span class="i">ifStmt</span>
                | <span class="i">printStmt</span>
@@ -488,7 +556,8 @@ loop is the simpler one, so we&rsquo;ll start there. Its grammar is the same as 
 <p>We add another clause to the statement rule that points to the new rule for
 while. It takes a <code>while</code> keyword, followed by a parenthesized condition
 expression, then a statement for the body. That new grammar rule gets a <span
-name="while-ast">syntax tree node</span>.</p>
+name="while-ast">syntax tree node</span>.
+我们在<code>statement</code>规则中添加一个子句，指向while对应的新规则<code>whileStmt</code>。该规则接收一个<code>while</code>关键字，后跟一个带括号的条件表达式，然后是循环体对应的语句。新语法规则需要定义新的语法树节点。</p>
 <div class="codehilite"><pre class="insert-before">      &quot;Print      : Expr expression&quot;,
 </pre><pre class="insert-before">      <span class="s">&quot;Var        : Token name, Expr initializer&quot;</span><span class="insert-comma">,</span>
 </pre><div class="source-file"><em>tool/GenerateAst.java</em><br>
@@ -504,10 +573,12 @@ add <em>&ldquo;,&rdquo;</em> to previous line</div>
 </aside>
 <p>The node stores the condition and body. Here you can see why it&rsquo;s nice to have
 separate base classes for expressions and statements. The field declarations
-make it clear that the condition is an expression and the body is a statement.</p>
+make it clear that the condition is an expression and the body is a statement.
+该节点中保存了条件式和循环体。这里就可以看出来为什么表达式和语句最好要有单独的基类。字段声明清楚地表明了，条件是一个表达式，循环主体是一个语句。</p>
 <p>Over in the parser, we follow the same process we used for <code>if</code> statements.
 First, we add another case in <code>statement()</code> to detect and match the leading
-keyword.</p>
+keyword.
+在解析器中，我们遵循与<code>if</code>语句相同的处理步骤。首先，在 <code>statement()</code> 添加一个case分支检查并匹配开头的关键字。</p>
 <div class="codehilite"><pre class="insert-before">    if (match(PRINT)) return printStatement();
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
 in <em>statement</em>()</div>
@@ -516,7 +587,8 @@ in <em>statement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, in <em>statement</em>()</div>
 
-<p>That delegates the real work to this method:</p>
+<p>That delegates the real work to this method:
+实际的工作委托给下面的方法：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
 add after <em>varDeclaration</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">Stmt</span> <span class="i">whileStatement</span>() {
@@ -531,7 +603,8 @@ add after <em>varDeclaration</em>()</div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, add after <em>varDeclaration</em>()</div>
 
 <p>The grammar is dead simple and this is a straight translation of it to Java.
-Speaking of translating straight to Java, here&rsquo;s how we execute the new syntax:</p>
+Speaking of translating straight to Java, here&rsquo;s how we execute the new syntax:
+语法非常简单，这里将其直接翻译为Java。说到直接翻译成Java，下面是我们执行新语法的方式：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>visitVarStmt</em>()</div>
 <pre>  <span class="a">@Override</span>
@@ -547,13 +620,16 @@ add after <em>visitVarStmt</em>()</div>
 <p>Like the visit method for <code>if</code>, this visitor uses the corresponding Java
 feature. This method isn&rsquo;t complex, but it makes Lox much more powerful. We can
 finally write a program whose running time isn&rsquo;t strictly bound by the length of
-the source code.</p>
-<h2><a href="#for-loops" id="for-loops"><small>9&#8202;.&#8202;5</small>For Loops</a></h2>
+the source code.
+和<code>if</code>的访问方法一样，这里的访问方法使用了相应的Java特性。这个方法并不复杂，但它使Lox变得更加强大。我们终于可以编写一个运行时间不受源代码长度严格限制的程序了。</p>
+<h2><a href="#for-loops--for循环" id="for-loops--for循环"><small>9&#8202;.&#8202;5</small>For Loops  For循环</a></h2>
 <p>We&rsquo;re down to the last control flow construct, <span name="for">Ye Olde</span>
-C-style <code>for</code> loop. I probably don&rsquo;t need to remind you, but it looks like this:</p>
+C-style <code>for</code> loop. I probably don&rsquo;t need to remind you, but it looks like this:
+我们已经到了最后一个控制流结构，即老式的C语言风格<code>for</code>循环。我可能不需要提醒你，但还是要说它看起来是这样的：</p>
 <div class="codehilite"><pre><span class="k">for</span> (<span class="k">var</span> <span class="i">i</span> = <span class="n">0</span>; <span class="i">i</span> &lt; <span class="n">10</span>; <span class="i">i</span> = <span class="i">i</span> + <span class="n">1</span>) <span class="k">print</span> <span class="i">i</span>;
 </pre></div>
-<p>In grammarese, that&rsquo;s:</p>
+<p>In grammarese, that&rsquo;s:
+在语法中，是这样的：</p>
 <div class="codehilite"><pre><span class="i">statement</span>      → <span class="i">exprStmt</span>
                | <span class="i">forStmt</span>
                | <span class="i">ifStmt</span>
@@ -577,8 +653,27 @@ defining an iteration protocol that the <code>for</code> loop could use. So we&r
 with the old school C <code>for</code> loop. Think of it as &ldquo;vintage&rdquo;. The fixie of control
 flow statements.</p>
 </aside>
-<p>Inside the parentheses, you have three clauses separated by semicolons:</p>
+<p>Inside the parentheses, you have three clauses separated by semicolons:
+在括号内，有三个由分号分隔的子语句：</p>
 <ol>
+<li>
+<blockquote>
+<p>The first clause is the <em>initializer</em>. It is executed exactly once, before anything else. It’s usually an expression, but for convenience, we also allow a variable declaration. In that case, the variable is scoped to the rest of the <code>for</code> loop—the other two clauses and the body.
+第一个子句是<em>初始化式</em>。它只会在任何其它操作之前执行一次。它通常是一个表达式，但是为了便利，我们也允许一个变量声明。在这种情况下，变量的作用域就是<code>for</code>循环的其它部分——其余两个子式和循环体。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>Next is the <em>condition</em>. As in a <code>while</code> loop, this expression controls when to exit the loop. It’s evaluated once at the beginning of each iteration, including the first. If the result is truthy, it executes the loop body. Otherwise, it bails.
+接下来是<em>条件表达式</em>。与<code>while</code>循环一样，这个表达式控制了何时退出循环。它会在每次循环开始之前执行一次（包括第一次）。如果结果是真，就执行循环体；否则，就结束循环。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>The last clause is the <em>increment</em>. It’s an arbitrary expression that does some work at the end of each loop iteration. The result of the expression is discarded, so it must have a side effect to be useful. In practice, it usually increments a variable.
+最后一个子句是<em>增量式</em>。它是一个任意的表达式，会在每次循环结束的时候做一些工作。因为表达式的结果会被丢弃，所以它必须有副作用才能有用。在实践中，它通常会对变量进行递增。</p>
+</blockquote>
+</li>
 <li>
 <p>The first clause is the <em>initializer</em>. It is executed exactly once, before
 anything else. It&rsquo;s usually an expression, but for convenience, we also
@@ -599,17 +694,20 @@ usually increments a variable.</p>
 </li>
 </ol>
 <p>Any of these clauses can be omitted. Following the closing parenthesis is a
-statement for the body, which is typically a block.</p>
-<h3><a href="#desugaring" id="desugaring"><small>9&#8202;.&#8202;5&#8202;.&#8202;1</small>Desugaring</a></h3>
+statement for the body, which is typically a block.
+这些子语句都可以忽略。在右括号之后是一个语句作为循环体，通常是一个代码块。</p>
+<h3><a href="#desugaring--语法脱糖" id="desugaring--语法脱糖"><small>9&#8202;.&#8202;5&#8202;.&#8202;1</small>Desugaring  语法脱糖</a></h3>
 <p>That&rsquo;s a lot of machinery, but note that none of it does anything you couldn&rsquo;t
 do with the statements we already have. If <code>for</code> loops didn&rsquo;t support
 initializer clauses, you could just put the initializer expression before the
 <code>for</code> statement. Without an increment clause, you could simply put the increment
-expression at the end of the body yourself.</p>
+expression at the end of the body yourself.
+这里包含了很多配件，但是请注意，它所做的任何事情中，没有一件是无法用已有的语句实现的。如果<code>for</code>循环不支持初始化子句，你可以在<code>for</code>语句之前加一条初始化表达式。如果没有增量子语句，你可以直接把增量表达式放在循环体的最后。</p>
 <p>In other words, Lox doesn&rsquo;t <em>need</em> <code>for</code> loops, they just make some common code
 patterns more pleasant to write. These kinds of features are called <span
 name="sugar"><strong>syntactic sugar</strong></span>. For example, the previous <code>for</code> loop
-could be rewritten like so:</p>
+could be rewritten like so:
+换句话说，Lox不<em>需要</em><code>for</code>循环，它们只是让一些常见的代码模式更容易编写。这类功能被称为<strong>语法糖</strong>。例如，前面的<code>for</code>循环可以改写成这样：</p>
 <aside name="sugar">
 <p>This delightful turn of phrase was coined by Peter J. Landin in 1964 to describe
 how some of the nice expression forms supported by languages like ALGOL were a
@@ -627,11 +725,13 @@ sweetener sprinkled over the more fundamental<span class="em">&mdash;</span>but 
 easy on the eyes. Syntactic sugar features like Lox&rsquo;s <code>for</code> loop make a language
 more pleasant and productive to work in. But, especially in sophisticated
 language implementations, every language feature that requires back-end support
-and optimization is expensive.</p>
+and optimization is expensive.
+虽然这个脚本不太容易看懂，但这个脚本与之前那个语义完全相同。像Lox中的<code>for</code>循环这样的语法糖特性可以使语言编写起来更加愉快和高效。但是，特别是在复杂的语言实现中，每一个需要后端支持和优化的语言特性都是代价昂贵的。</p>
 <p>We can have our cake and eat it too by <span
 name="caramel"><strong>desugaring</strong></span>. That funny word describes a process where
 the front end takes code using syntax sugar and translates it to a more
-primitive form that the back end already knows how to execute.</p>
+primitive form that the back end already knows how to execute.
+我们可以通过<strong>脱糖</strong>来吃这个蛋糕。这个有趣的词描述了这样一个过程：前端接收使用了语法糖的代码，并将其转换成后端知道如何执行的更原始的形式。</p>
 <aside name="caramel">
 <p>Oh, how I wish the accepted term for this was &ldquo;caramelization&rdquo;. Why introduce a
 metaphor if you aren&rsquo;t going to stick with it?</p>
@@ -640,7 +740,8 @@ metaphor if you aren&rsquo;t going to stick with it?</p>
 interpreter already handles. In our simple interpreter, desugaring really
 doesn&rsquo;t save us much work, but it does give me an excuse to introduce you to the
 technique. So, unlike the previous statements, we <em>won&rsquo;t</em> add a new syntax tree
-node. Instead, we go straight to parsing. First, add an import we&rsquo;ll need soon.</p>
+node. Instead, we go straight to parsing. First, add an import we&rsquo;ll need soon.
+我们将把<code>for</code>循环脱糖为<code>while</code>循环和其它解释器可处理的其它语句。在我们的简单解释器中，脱糖真的不能为我们节省很多工作，但它确实给了我一个契机来向你介绍这一技术。因此，与之前的语句不同，我们不会为<code>for</code>循环添加一个新的语法树节点。相反，我们会直接进行解析。首先，先引入一个我们要用到的依赖：</p>
 <div class="codehilite"><pre class="insert-before">import java.util.ArrayList;
 </pre><div class="source-file"><em>lox/Parser.java</em></div>
 <pre class="insert"><span class="k">import</span> <span class="i">java.util.Arrays</span>;
@@ -648,7 +749,8 @@ node. Instead, we go straight to parsing. First, add an import we&rsquo;ll need 
 </pre></div>
 <div class="source-file-narrow"><em>lox/Parser.java</em></div>
 
-<p>Like every statement, we start parsing a <code>for</code> loop by matching its keyword.</p>
+<p>Like every statement, we start parsing a <code>for</code> loop by matching its keyword.
+像每个语句一样，我们通过匹配<code>for</code>关键字来解析循环。</p>
 <div class="codehilite"><pre class="insert-before">  private Stmt statement() {
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
 in <em>statement</em>()</div>
@@ -659,7 +761,8 @@ in <em>statement</em>()</div>
 
 <p>Here is where it gets interesting. The desugaring is going to happen here, so
 we&rsquo;ll build this method a piece at a time, starting with the opening parenthesis
-before the clauses.</p>
+before the clauses.
+接下来是有趣的部分，脱糖也是在这里发生的，所以我们会一点点构建这个方法，首先从子句之前的左括号开始。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
 add after <em>statement</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">Stmt</span> <span class="i">forStatement</span>() {
@@ -670,7 +773,8 @@ add after <em>statement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, add after <em>statement</em>()</div>
 
-<p>The first clause following that is the initializer.</p>
+<p>The first clause following that is the initializer.
+接下来的第一个子句是初始化式。</p>
 <div class="codehilite"><pre class="insert-before">    consume(LEFT_PAREN, &quot;Expect '(' after 'for'.&quot;);
 
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
@@ -692,14 +796,16 @@ replace 1 line</div>
 omitted. Otherwise, we check for a <code>var</code> keyword to see if it&rsquo;s a <span
 name="variable">variable</span> declaration. If neither of those matched, it
 must be an expression. We parse that and wrap it in an expression statement so
-that the initializer is always of type Stmt.</p>
+that the initializer is always of type Stmt.
+如果<code>(</code>后面的标记是分号，那么初始化式就被省略了。否则，我们就检查<code>var</code>关键字，看它是否是一个变量声明。如果这两者都不符合，那么它一定是一个表达式。我们对其进行解析，并将其封装在一个表达式语句中，这样初始化器就必定属于Stmt类型。</p>
 <aside name="variable">
 <p>In a previous chapter, I said we can split expression and statement syntax trees
 into two separate class hierarchies because there&rsquo;s no single place in the
 grammar that allows both an expression and a statement. That wasn&rsquo;t <em>entirely</em>
 true, I guess.</p>
 </aside>
-<p>Next up is the condition.</p>
+<p>Next up is the condition.
+接下来是条件表达式。</p>
 <div class="codehilite"><pre class="insert-before">      initializer = expressionStatement();
     }
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
@@ -716,7 +822,8 @@ in <em>forStatement</em>()</div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, in <em>forStatement</em>()</div>
 
 <p>Again, we look for a semicolon to see if the clause has been omitted. The last
-clause is the increment.</p>
+clause is the increment.
+同样，我们查找分号检查子句是否被忽略。最后一个子句是增量语句。</p>
 <div class="codehilite"><pre class="insert-before">    consume(SEMICOLON, &quot;Expect ';' after loop condition.&quot;);
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
 in <em>forStatement</em>()</div>
@@ -732,7 +839,8 @@ in <em>forStatement</em>()</div>
 <div class="source-file-narrow"><em>lox/Parser.java</em>, in <em>forStatement</em>()</div>
 
 <p>It&rsquo;s similar to the condition clause except this one is terminated by the
-closing parenthesis. All that remains is the <span name="body">body</span>.</p>
+closing parenthesis. All that remains is the <span name="body">body</span>.
+它类似于条件式子句，只是这个子句是由右括号终止的。剩下的就是循环主体了。</p>
 <aside name="body">
 <p>Is it just me or does that sound morbid? &ldquo;All that remained<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>was the <em>body</em>&rdquo;.</p>
 </aside>
@@ -750,9 +858,11 @@ in <em>forStatement</em>()</div>
 nodes are sitting in a handful of Java local variables. This is where the
 desugaring comes in. We take those and use them to synthesize syntax tree nodes
 that express the semantics of the <code>for</code> loop, like the hand-desugared example I
-showed you earlier.</p>
+showed you earlier.
+我们已经解析了<code>for</code>循环的所有部分，得到的AST节点也存储在一些Java本地变量中。这里也是脱糖开始的地方。我们利用这些变量来合成表示<code>for</code>循环语义的语法树节点，就像前面展示的手工脱糖的例子一样。</p>
 <p>The code is a little simpler if we work backward, so we start with the increment
-clause.</p>
+clause.
+如果我们从后向前处理，代码会更简单一些，所以我们从增量子句开始。</p>
 <div class="codehilite"><pre class="insert-before">    Stmt body = statement();
 
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
@@ -770,7 +880,8 @@ in <em>forStatement</em>()</div>
 
 <p>The increment, if there is one, executes after the body in each iteration of the
 loop. We do that by replacing the body with a little block that contains the
-original body followed by an expression statement that evaluates the increment.</p>
+original body followed by an expression statement that evaluates the increment.
+如果存在增量子句的话，会在循环的每个迭代中在循环体结束之后执行。我们用一个代码块来代替循环体，这个代码块中包含原始的循环体，后面跟一个执行增量子语句的表达式语句。</p>
 <div class="codehilite"><pre class="insert-before">    }
 
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
@@ -784,7 +895,8 @@ in <em>forStatement</em>()</div>
 
 <p>Next, we take the condition and the body and build the loop using a primitive
 <code>while</code> loop. If the condition is omitted, we jam in <code>true</code> to make an infinite
-loop.</p>
+loop.
+接下来，我们获取条件式和循环体，并通过基本的<code>while</code>语句构建对应的循环。如果条件式被省略了，我们就使用<code>true</code>来创建一个无限循环。</p>
 <div class="codehilite"><pre class="insert-before">    body = new Stmt.While(condition, body);
 
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
@@ -799,13 +911,22 @@ in <em>forStatement</em>()</div>
 
 <p>Finally, if there is an initializer, it runs once before the entire loop. We do
 that by, again, replacing the whole statement with a block that runs the
-initializer and then executes the loop.</p>
+initializer and then executes the loop.
+最后，如果有初始化式，它会在整个循环之前运行一次。我们的做法是，再次用代码块来替换整个语句，该代码块中首先运行一个初始化式，然后执行循环。</p>
 <p>That&rsquo;s it. Our interpreter now supports C-style <code>for</code> loops and we didn&rsquo;t have
 to touch the Interpreter class at all. Since we desugared to nodes the
-interpreter already knows how to visit, there is no more work to do.</p>
+interpreter already knows how to visit, there is no more work to do.
+就是这样。我们的解释器现在已经支持了C语言风格的<code>for</code>循环，而且我们根本不需要修改解释器类。因为我们通过脱糖将其转换为了解释器已经知道如何访问的节点，所以无需做其它的工作。</p>
 <p>Finally, Lox is powerful enough to entertain us, at least for a few minutes.
 Here&rsquo;s a tiny program to print the first 21 elements in the Fibonacci
-sequence:</p>
+sequence:
+最后，Lox已强大到足以娱乐我们，至少几分钟。下面是一个打印斐波那契数列前21个元素的小程序：
+: 其中最著名的就是罗素悖论。最初，集合理论允许你定义任何类型的集合。只要你能用英语描述它，它就是有效的。自然，鉴于数学家对自引用的偏爱，集合可以包含其他的集合。于是，罗素，这个无赖，提出了：&lt;br/>R是所有不包含自身的集合的集合。&lt;br/>R是否包含自己？如果不包含，那么根据定义的后半部分，它应该包含；如果包含，那么它就不满足定义。脑袋要炸了。
+: 图灵把他的发明称为 “a-machines”，表示“automatic(自动)”。他并没有自吹自擂到把自己的名字放入其中。后来的数学家们为他做了这些。这就是你如何在成名的同时还能保持谦虚。
+: 我们也基本上具备第三个条件了。你可以创建和拼接任意大小的字符串，因此也就可以存储无界内存。但我们还无法访问字符串的各个部分。
+: 条件操作符也称为三元操作符，因为它是C语言中唯一接受三个操作数的操作符。
+: 条件周围的圆括号只有一半是有用的。您需要在条件和then语句之间设置某种分隔符，否则解析器无法判断是否到达条件表达式的末尾。但是<code>if</code> 后面的小括号并没有什么用处。Dennis Ritchie 把它放在那里是为了让他可以使用<code>)</code>作为结尾的分隔符，而且不会出现不对称的小括号。其他语言，比如Lua和一些BASICs，使用<code>then</code>这样的关键字作为结束分隔符，在条件表达式之前没有任何内容。而Go和Swift则要求语句必须是一个带括号的块，这样就可以使用语句开头的<code>{</code>来判断条件表达式是否结束。
+: 这个令人愉快的短语是由Peter J. Landin在1964年创造的，用来描述ALGOL等语言支持的一些很好的表达式形式是如何在更基本但可能不太令人满意的lambda演算的基础上增添一些小甜头的。</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">a</span> = <span class="n">0</span>;
 <span class="k">var</span> <span class="i">temp</span>;
 
@@ -822,12 +943,14 @@ sequence:</p>
 <p>A few chapters from now, when Lox supports first-class functions and dynamic
 dispatch, we technically won&rsquo;t <em>need</em> branching statements built into the
 language. Show how conditional execution can be implemented in terms of
-those. Name a language that uses this technique for its control flow.</p>
+those. Name a language that uses this technique for its control flow.
+1、在接下来的几章中，当Lox支持一级函数和动态调度时，从技术上讲，我们就不需要在语言中内置分支语句。说明如何用这些特性来实现条件执行。说出一种在控制流中使用这种技术的语言。</p>
 </li>
 <li>
 <p>Likewise, looping can be implemented using those same tools, provided our
 interpreter supports an important optimization. What is it, and why is it
-necessary? Name a language that uses this technique for iteration.</p>
+necessary? Name a language that uses this technique for iteration.
+2、同样地，只要我们的解释器支持一个重要的优化，循环也可以用这些工具来实现。它是什么？为什么它是必要的？请说出一种使用这种技术进行迭代的语言。</p>
 </li>
 <li>
 <p>Unlike Lox, most other C-style languages also support <code>break</code> and <code>continue</code>

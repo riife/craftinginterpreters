@@ -37,10 +37,11 @@
 <h3><a href="#top">Jumping Back and Forth<small>23</small></a></h3>
 
 <ul>
-    <li><a href="#if-statements"><small>23.1</small> If Statements</a></li>
-    <li><a href="#logical-operators"><small>23.2</small> Logical Operators</a></li>
-    <li><a href="#while-statements"><small>23.3</small> While Statements</a></li>
-    <li><a href="#for-statements"><small>23.4</small> For Statements</a></li>
+    <li><a href="#if-statements--if语句"><small>23.1</small> If Statements  If语句</a></li>
+    <li><a href="#logical-operators--逻辑运算符"><small>23.2</small> Logical Operators  逻辑运算符</a></li>
+    <li><a href="#while-statements--while语句"><small>23.3</small> While Statements  While语句</a></li>
+    <li><a href="#for-statements--for语句"><small>23.4</small> For Statements  For语句</a></li>
+    <li><a href="#习题"><small>23.5</small> 习题</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful</a></li>
@@ -68,10 +69,11 @@
 <h3><a href="#top">Jumping Back and Forth<small>23</small></a></h3>
 
 <ul>
-    <li><a href="#if-statements"><small>23.1</small> If Statements</a></li>
-    <li><a href="#logical-operators"><small>23.2</small> Logical Operators</a></li>
-    <li><a href="#while-statements"><small>23.3</small> While Statements</a></li>
-    <li><a href="#for-statements"><small>23.4</small> For Statements</a></li>
+    <li><a href="#if-statements--if语句"><small>23.1</small> If Statements  If语句</a></li>
+    <li><a href="#logical-operators--逻辑运算符"><small>23.2</small> Logical Operators  逻辑运算符</a></li>
+    <li><a href="#while-statements--while语句"><small>23.3</small> While Statements  While语句</a></li>
+    <li><a href="#for-statements--for语句"><small>23.4</small> For Statements  For语句</a></li>
+    <li><a href="#习题"><small>23.5</small> 习题</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful</a></li>
@@ -96,7 +98,8 @@
 <p>The order that our mind imagines is like a net, or like a ladder, built to
 attain something. But afterward you must throw the ladder away, because you
 discover that, even if it was useful, it was meaningless.</p>
-<p><cite>Umberto Eco, <em>The Name of the Rose</em></cite></p>
+<p><cite>Umberto Eco, <em>The Name of the Rose</em></cite>
+我们头脑中想象的秩序就像一张网，或者像一架梯子，用来达到某种目的。但事后你必须把梯子扔掉，因为你会发现，即使它有用，也毫无意义。（翁贝托·艾柯，《玫瑰之名》）</p>
 </blockquote>
 <p>It&rsquo;s taken a while to get here, but we&rsquo;re finally ready to add control flow to
 our virtual machine. In the tree-walk interpreter we built for jlox, we
@@ -104,33 +107,39 @@ implemented Lox&rsquo;s control flow in terms of Java&rsquo;s. To execute a Lox 
 statement, we used a Java <code>if</code> statement to run the chosen branch. That works,
 but isn&rsquo;t entirely satisfying. By what magic does the <em>JVM itself</em> or a native
 CPU implement <code>if</code> statements? Now that we have our own bytecode VM to hack on,
-we can answer that.</p>
+we can answer that.
+虽然花了一些时间，但我们终于准备好向虚拟机中添加控制流了。在我们为jlox构建的树遍历解释器中，我们以Java的方式实现了控制流。为了执行Lox的<code>if</code>语句，我们使用Java的<code>if</code>语句来执行所选的分支。这是可行的，但并不是完全令人满意。JVM本身或原生CPU如何实现<code>if</code>语句呢？现在我们有了自己的字节码虚拟机，我们可以回答这个问题。</p>
 <p>When we talk about &ldquo;control flow&rdquo;, what are we referring to? By &ldquo;flow&rdquo; we mean
 the way execution moves through the text of the program. Almost like there is a
 little robot inside the computer wandering through our code, executing bits and
 pieces here and there. Flow is the path that robot takes, and by <em>controlling</em>
-the robot, we drive which pieces of code it executes.</p>
+the robot, we drive which pieces of code it executes.
+当我们谈论“控制流”时，我们指的是什么？我们所说的“流”是指执行过程在程序文本中的移动方式。就好像电脑里有一个小机器人在我们的代码里游荡，在这里或那里执行一些零零碎碎的片段。流就是机器人所走的路径，通过<em>控制</em>机器人，我们驱动它执行某些代码片段。</p>
 <p>In jlox, the robot&rsquo;s locus of attention<span class="em">&mdash;</span>the <em>current</em> bit of code<span class="em">&mdash;</span>was
 implicit based on which AST nodes were stored in various Java variables and what
 Java code we were in the middle of running. In clox, it is much more explicit.
 The VM&rsquo;s <code>ip</code> field stores the address of the current bytecode instruction. The
-value of that field is exactly &ldquo;where we are&rdquo; in the program.</p>
+value of that field is exactly &ldquo;where we are&rdquo; in the program.
+在jlox中，机器人的关注点（<em>当前</em>代码位）是隐式的，它取决于哪些AST节点被存储在各种Java变量中，以及我们正在运行的Java代码是什么。在clox中，它要明确得多。VM的<code>ip</code>字段存储了当前字节码指令的地址。该字段的值正是我们在程序中的“位置”。</p>
 <p>Execution proceeds normally by incrementing the <code>ip</code>. But we can mutate that
 variable however we want to. In order to implement control flow, all that&rsquo;s
 necessary is to change the <code>ip</code> in more interesting ways. The simplest control
-flow construct is an <code>if</code> statement with no <code>else</code> clause:</p>
+flow construct is an <code>if</code> statement with no <code>else</code> clause:
+执行操作通常是通过增加<code>ip</code>进行的。但是我们可以随意地改变这个变量。为了实现控制流，所需要做的就是以更有趣的方式改变<code>ip</code>。最简单的控制流结构是没有<code>else</code>子句的<code>if</code>语句：</p>
 <div class="codehilite"><pre><span class="k">if</span> (<span class="i">condition</span>) <span class="k">print</span>(<span class="s">&quot;condition was truthy&quot;</span>);
 </pre></div>
 <p>The VM evaluates the bytecode for the condition expression. If the result is
 truthy, then it continues along and executes the <code>print</code> statement in the body.
 The interesting case is when the condition is falsey. When that happens,
-execution skips over the then branch and proceeds to the next statement.</p>
+execution skips over the then branch and proceeds to the next statement.
+虚拟机会计算条件表达式对应的字节码。如果结构是真，则继续执行主体中的<code>print</code>语句。有趣的是当条件为假的时候，这种情况下，执行会跳过then分支并执行下一条语句。</p>
 <p>To skip over a chunk of code, we simply set the <code>ip</code> field to the address of the
 bytecode instruction following that code. To <em>conditionally</em> skip over some
 code, we need an instruction that looks at the value on top of the stack. If
 it&rsquo;s falsey, it adds a given offset to the <code>ip</code> to jump over a range of
 instructions. Otherwise, it does nothing and lets execution proceed to the next
-instruction as usual.</p>
+instruction as usual.
+要想跳过一大块代码，我们只需将<code>ip</code>字段设置为其后代码的字节码指令的地址。为了<em>有条件地</em>跳过一些代码，我们需要一条指令来查看栈顶的值。如果它是假，就在<code>ip</code>上增加一个给定的偏移量，跳过一系列指令。否则，它什么也不做，并照常执行下一条指令。</p>
 <p>When we compile to bytecode, the explicit nested block structure of the code
 evaporates, leaving only a flat series of instructions behind. Lox is a
 <a href="https://en.wikipedia.org/wiki/Structured_programming">structured programming</a> language, but clox bytecode isn&rsquo;t. The right<span class="em">&mdash;</span>or
@@ -139,19 +148,23 @@ jump into the middle of a block, or from one scope into another.</p>
 <p>The VM will happily execute that, even if the result leaves the stack in an
 unknown, inconsistent state. So even though the bytecode is unstructured, we&rsquo;ll
 take care to ensure that our compiler only generates clean code that maintains
-the same structure and nesting that Lox itself does.</p>
+the same structure and nesting that Lox itself does.
+虚拟机会很高兴地执行这些指令，即使其结果会导致堆栈处于未知的、不一致的状态。因此，尽管字节码是非结构化的，我们也要确保编译成只生成与Lox本身保持相同结构和嵌套的干净代码。</p>
 <p>This is exactly how real CPUs behave. Even though we might program them using
 higher-level languages that mandate structured control flow, the compiler lowers
 that down to raw jumps. At the bottom, it turns out goto is the only real
-control flow.</p>
+control flow.
+这就是真正的CPU的行为方式。即使我们可能会使用高级语言对它们进行编程，这些语言能够规定格式化控制流，但编译器也会将其降级为原生跳转。在底层，事实证明goto是唯一真正的控制流。</p>
 <p>Anyway, I didn&rsquo;t mean to get all philosophical. The important bit is that if we
 have that one conditional jump instruction, that&rsquo;s enough to implement Lox&rsquo;s
 <code>if</code> statement, as long as it doesn&rsquo;t have an <code>else</code> clause. So let&rsquo;s go ahead
-and get started with that.</p>
-<h2><a href="#if-statements" id="if-statements"><small>23&#8202;.&#8202;1</small>If Statements</a></h2>
+and get started with that.
+不管这么说，我并不是故意要搞得这么哲学化。重要的是，如果我们有一个条件跳转指令，就足以实现Lox的<code>if</code>语句了，只要它没有<code>else</code>子句。让我们开始吧。</p>
+<h2><a href="#if-statements--if语句" id="if-statements--if语句"><small>23&#8202;.&#8202;1</small>If Statements  If语句</a></h2>
 <p>This many chapters in, you know the drill. Any new feature starts in the front
 end and works its way through the pipeline. An <code>if</code> statement is, well, a
-statement, so that&rsquo;s where we hook it into the parser.</p>
+statement, so that&rsquo;s where we hook it into the parser.
+这么多章了，你知道该怎么做。任何新特性都是从前端开始的，如果沿着管道进行工作。<code>if</code>语句是一个，嗯，语句，所以我们通过语句将它连接到解析器。</p>
 <div class="codehilite"><pre class="insert-before">  if (match(TOKEN_PRINT)) {
     printStatement();
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -162,7 +175,8 @@ in <em>statement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>statement</em>()</div>
 
-<p>When we see an <code>if</code> keyword, we hand off compilation to this function:</p>
+<p>When we see an <code>if</code> keyword, we hand off compilation to this function:
+如果我们看到<code>if</code>关键字，就把编译工作交给这个函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>expressionStatement</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">ifStatement</span>() {
@@ -191,10 +205,12 @@ humans.</p>
 </aside>
 <p>First we compile the condition expression, bracketed by parentheses. At runtime,
 that will leave the condition value on top of the stack. We&rsquo;ll use that to
-determine whether to execute the then branch or skip it.</p>
+determine whether to execute the then branch or skip it.
+首先我们编译条件表达式（用小括号括起来）。在运行时，这会将条件值留在栈顶。我们将通过它来决定是执行then分支还是跳过它。</p>
 <p>Then we emit a new <code>OP_JUMP_IF_FALSE</code> instruction. It has an operand for how
 much to offset the <code>ip</code><span class="em">&mdash;</span>how many bytes of code to skip. If the condition is
-falsey, it adjusts the <code>ip</code> by that amount. Something like this:</p>
+falsey, it adjusts the <code>ip</code> by that amount. Something like this:
+然后我们生成一个新的<code>OP_JUMP_IF_ELSE</code>指令。这条指令有一个操作数，用来表示<code>ip</code>的偏移量——要跳过多少字节的代码。如果条件是假，它就按这个值调整<code>ip</code>，就像这样：</p>
 <aside name="legend">
 <p>The boxes with the torn edges here represent the blob of bytecode generated by
 compiling some sub-clause of a control flow construct. So the &ldquo;condition
@@ -204,14 +220,17 @@ expression.</p>
 <p><span name="legend"></span></p><img src="image/jumping-back-and-forth/if-without-else.png" alt="Flowchart of the compiled bytecode of an if statement." />
 <p>But we have a problem. When we&rsquo;re writing the <code>OP_JUMP_IF_FALSE</code> instruction&rsquo;s
 operand, how do we know how far to jump? We haven&rsquo;t compiled the then branch
-yet, so we don&rsquo;t know how much bytecode it contains.</p>
+yet, so we don&rsquo;t know how much bytecode it contains.
+但我们有个问题。当我们写<code>OP_JUMP_IF_FALSE</code>指令的操作数时，我们怎么知道要跳多远？我们还没有编译then分支，所以我们不知道它包含多少字节码。</p>
 <p>To fix that, we use a classic trick called <strong>backpatching</strong>. We emit the jump
 instruction first with a placeholder offset operand. We keep track of where that
 half-finished instruction is. Next, we compile the then body. Once that&rsquo;s done,
 we know how far to jump. So we go back and replace that placeholder offset with
 the real one now that we can calculate it. Sort of like sewing a patch onto the
-existing fabric of the compiled code.</p><img src="image/jumping-back-and-forth/patch.png" alt="A patch containing a number being sewn onto a sheet of bytecode." />
-<p>We encode this trick into two helper functions.</p>
+existing fabric of the compiled code.
+为了解决这个问题，我们使用了一个经典的技巧，叫作<strong>回填（backpatching）</strong>。我们首先生成跳转指令，并附上一个占位的偏移量操作数，我们跟踪这个半成品指令的位置。接下来，我们编译then主体。一旦完成，我们就知道要跳多远。所以我们回去将占位符替换为真正的偏移量，现在我们可以计算它了。这有点像在已编译代码的现有结构上打补丁。</p><img src="image/jumping-back-and-forth/patch.png" alt="A patch containing a number being sewn onto a sheet of bytecode." />
+<p>We encode this trick into two helper functions.
+我们将这个技巧编码为两个辅助函数。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>emitBytes</em>()</div>
 <pre><span class="k">static</span> <span class="t">int</span> <span class="i">emitJump</span>(<span class="t">uint8_t</span> <span class="i">instruction</span>) {
@@ -227,13 +246,15 @@ add after <em>emitBytes</em>()</div>
 jump offset. We pass in the opcode as an argument because later we&rsquo;ll have two
 different instructions that use this helper. We use two bytes for the jump
 offset operand. A 16-bit <span name="offset">offset</span> lets us jump over up
-to 65,535 bytes of code, which should be plenty for our needs.</p>
+to 65,535 bytes of code, which should be plenty for our needs.
+第一个程序会生成一个字节码指令，并为跳转偏移量写入一个占位符操作数。我们把操作码作为参数传入，因为稍后我们会有两个不同的指令都使用这个辅助函数。我们使用两个字节作为跳转偏移量的操作数。一个16位的偏移量可以让我们跳转65535个字节的代码，这对于我们的需求来说应该足够了。</p>
 <aside name="offset">
 <p>Some instruction sets have separate &ldquo;long&rdquo; jump instructions that take larger
 operands for when you need to jump a greater distance.</p>
 </aside>
 <p>The function returns the offset of the emitted instruction in the chunk. After
-compiling the then branch, we take that offset and pass it to this:</p>
+compiling the then branch, we take that offset and pass it to this:
+该函数会返回生成的指令在字节码块中的偏移量。编译完then分支后，我们将这个偏移量传递给这个函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>emitConstant</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">patchJump</span>(<span class="t">int</span> <span class="i">offset</span>) {
@@ -255,8 +276,10 @@ with the calculated jump offset. We call <code>patchJump()</code> right before w
 next instruction that we want the jump to land on, so it uses the current
 bytecode count to determine how far to jump. In the case of an <code>if</code> statement,
 that means right after we compile the then branch and before we compile the next
-statement.</p>
-<p>That&rsquo;s all we need at compile time. Let&rsquo;s define the new instruction.</p>
+statement.
+这个函数会返回到字节码中，并将给定位置的操作数替换为计算出的跳转偏移量。我们在生成下一条希望跳转的指令之前调用<code>patchJump()</code>，因此会使用当前字节码计数来确定要跳转的距离。在<code>if</code>语句的情况下，就是在编译完then分支之后，并在编译下一个语句之前。</p>
+<p>That&rsquo;s all we need at compile time. Let&rsquo;s define the new instruction.
+这就是在编译时需要做的。让我们来定义新指令。</p>
 <div class="codehilite"><pre class="insert-before">  OP_PRINT,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -265,7 +288,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>Over in the VM, we get it working like so:</p>
+<p>Over in the VM, we get it working like so:
+在虚拟机中，我们让它这样工作：</p>
 <div class="codehilite"><pre class="insert-before">        break;
       }
 </pre><div class="source-file"><em>vm.c</em><br>
@@ -280,7 +304,8 @@ in <em>run</em>()</div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>run</em>()</div>
 
 <p>This is the first instruction we&rsquo;ve added that takes a 16-bit operand. To read
-that from the chunk, we use a new macro.</p>
+that from the chunk, we use a new macro.
+这是我们添加的第一个需要16位操作数的指令。为了从字节码块中读出这个指令，需要使用一个新的宏。</p>
 <div class="codehilite"><pre class="insert-before">#define READ_CONSTANT() (vm.chunk-&gt;constants.values[READ_BYTE()])
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -291,7 +316,8 @@ in <em>run</em>()</div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>run</em>()</div>
 
 <p>It yanks the next two bytes from the chunk and builds a 16-bit unsigned integer
-out of them. As usual, we clean up our macro when we&rsquo;re done with it.</p>
+out of them. As usual, we clean up our macro when we&rsquo;re done with it.
+它从字节码块中抽取接下来的两个字节，并从中构建出一个16位无符号整数。和往常一样，当我们结束之后要清理宏。</p>
 <div class="codehilite"><pre class="insert-before">#undef READ_BYTE
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -303,11 +329,13 @@ in <em>run</em>()</div>
 <p>After reading the offset, we check the condition value on top of the stack.
 <span name="if">If</span> it&rsquo;s falsey, we apply this jump offset to the <code>ip</code>.
 Otherwise, we leave the <code>ip</code> alone and execution will automatically proceed to
-the next instruction following the jump instruction.</p>
+the next instruction following the jump instruction.
+读取偏移量之后，我们检查栈顶的条件值。如果是假，我们就将这个跳转偏移量应用到<code>ip</code>上。否则，我们就保持<code>ip</code>不变，执行会自动进入跳转指令的下一条指令。</p>
 <p>In the case where the condition is falsey, we don&rsquo;t need to do any other work.
 We&rsquo;ve offset the <code>ip</code>, so when the outer instruction dispatch loop turns again,
 it will pick up execution at that new instruction, past all of the code in the
-then branch.</p>
+then branch.
+在条件为假的情况下，我们不需要做任何其它工作。我们已经移动了<code>ip</code>，所以当外部指令调度循环再次启动时，将会在新指令处执行，跳过了then分支的所有代码。</p>
 <aside name="if">
 <p>I said we wouldn&rsquo;t use C&rsquo;s <code>if</code> statement to implement Lox&rsquo;s control flow, but
 we do use one here to determine whether or not to offset the instruction
@@ -329,11 +357,13 @@ doesn&rsquo;t affect how our VM does its own control flow.</p>
 we aren&rsquo;t totally done here, since this leaves an extra value floating around on
 the stack. We&rsquo;ll clean that up soon. Ignoring that for the moment, we do have a
 working <code>if</code> statement in Lox now, with only one little instruction required to
-support it at runtime in the VM.</p>
-<h3><a href="#else-clauses" id="else-clauses"><small>23&#8202;.&#8202;1&#8202;.&#8202;1</small>Else clauses</a></h3>
+support it at runtime in the VM.
+请注意，跳转指令并没有将条件值弹出栈。因此，我们在这里还没有全部完成，因为还在堆栈上留下了一个额外的值。我们很快就会把它清理掉。暂时先忽略这个问题，我们现在在Lox中已经有了可用的<code>if</code>语句，只需要一条小指令在虚拟机运行时支持它。</p>
+<h3><a href="#else-clauses--else子句" id="else-clauses--else子句"><small>23&#8202;.&#8202;1&#8202;.&#8202;1</small>Else clauses  Else子句</a></h3>
 <p>An <code>if</code> statement without support for <code>else</code> clauses is like Morticia Addams
 without Gomez. So, after we compile the then branch, we look for an <code>else</code>
-keyword. If we find one, we compile the else branch.</p>
+keyword. If we find one, we compile the else branch.
+一个不支持<code>else</code>子句的<code>if</code>语句就像没有Gomez的Morticia Addams（《亚当斯一家》）。因此，在我们编译完then分支之后，我们要寻找<code>else</code>关键字。如果找到了，则编译else分支。</p>
 <div class="codehilite"><pre class="insert-before">  patchJump(thenJump);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>ifStatement</em>()</div>
@@ -346,12 +376,15 @@ in <em>ifStatement</em>()</div>
 
 <p>When the condition is falsey, we&rsquo;ll jump over the then branch. If there&rsquo;s an
 else branch, the <code>ip</code> will land right at the beginning of its code. But that&rsquo;s
-not enough, though. Here&rsquo;s the flow that leads to:</p><img src="image/jumping-back-and-forth/bad-else.png" alt="Flowchart of the compiled bytecode with the then branch incorrectly falling through to the else branch." />
+not enough, though. Here&rsquo;s the flow that leads to:
+当条件为假时，我们会跳过then分支。如果存在else分支，<code>ip</code>就会出现在其字节码的开头处。但这还不够。下面是对应的流：</p><img src="image/jumping-back-and-forth/bad-else.png" alt="Flowchart of the compiled bytecode with the then branch incorrectly falling through to the else branch." />
 <p>If the condition is truthy, we execute the then branch like we want. But after
 that, execution rolls right on through into the else branch. Oops! When the
 condition is true, after we run the then branch, we need to jump over the else
-branch. That way, in either case, we only execute a single branch, like this:</p><img src="image/jumping-back-and-forth/if-else.png" alt="Flowchart of the compiled bytecode for an if with an else clause." />
-<p>To implement that, we need another jump from the end of the then branch.</p>
+branch. That way, in either case, we only execute a single branch, like this:
+如果条件是真，则按照要求执行then分支。但在那之后，执行会直接转入到else分支。糟糕！当条件为真时，执行完then分支后，我们需要跳过else分支。这样，无论哪种情况，我们都只执行一个分支，像这样：</p><img src="image/jumping-back-and-forth/if-else.png" alt="Flowchart of the compiled bytecode for an if with an else clause." />
+<p>To implement that, we need another jump from the end of the then branch.
+为了实现这一点，我们需要从then分支的末端再进行一次跳转。</p>
 <div class="codehilite"><pre class="insert-before">  statement();
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -362,7 +395,8 @@ in <em>ifStatement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>ifStatement</em>()</div>
 
-<p>We patch that offset after the end of the else body.</p>
+<p>We patch that offset after the end of the else body.
+我们在else主体结束后修补这个偏移量。</p>
 <div class="codehilite"><pre class="insert-before">  if (match(TOKEN_ELSE)) statement();
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>ifStatement</em>()</div>
@@ -373,7 +407,8 @@ in <em>ifStatement</em>()</div>
 
 <p>After executing the then branch, this jumps to the next statement after the else
 branch. Unlike the other jump, this jump is unconditional. We always take it, so
-we need another instruction that expresses that.</p>
+we need another instruction that expresses that.
+在执行完then分支后，会跳转到else分支之后的下一条语句。与其它跳转不同，这个跳转是无条件的。我们一定会接受该跳转，所以我们需要另一条指令来表达它。</p>
 <div class="codehilite"><pre class="insert-before">  OP_PRINT,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -382,7 +417,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>We interpret it like so:</p>
+<p>We interpret it like so:
+我们这样来解释它：</p>
 <div class="codehilite"><pre class="insert-before">        break;
       }
 </pre><div class="source-file"><em>vm.c</em><br>
@@ -397,18 +433,22 @@ in <em>run</em>()</div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>run</em>()</div>
 
 <p>Nothing too surprising here<span class="em">&mdash;</span>the only difference is that it doesn&rsquo;t check a
-condition and always applies the offset.</p>
+condition and always applies the offset.
+这里没有什么特别出人意料的——唯一的区别就是它不检查条件，并且一定会应用偏移量。</p>
 <p>We have then and else branches working now, so we&rsquo;re close. The last bit is to
 clean up that condition value we left on the stack. Remember, each statement is
 required to have zero stack effect<span class="em">&mdash;</span>after the statement is finished executing,
-the stack should be as tall as it was before.</p>
+the stack should be as tall as it was before.
+我们现在有了then和else分支，所以已经接近完成了。最后一点是清理我们遗留在栈上的条件值。请记住，每个语句都要求是0堆栈效应——在语句执行完毕后，堆栈应该与之前一样高。</p>
 <p>We could have the <code>OP_JUMP_IF_FALSE</code> instruction pop the condition itself, but
 soon we&rsquo;ll use that same instruction for the logical operators where we don&rsquo;t
 want the condition popped. Instead, we&rsquo;ll have the compiler emit a couple of
 explicit <code>OP_POP</code> instructions when compiling an <code>if</code> statement. We need to take
-care that every execution path through the generated code pops the condition.</p>
+care that every execution path through the generated code pops the condition.
+我们可以让<code>OP_JUMP_IF_FALSE</code>指令自身弹出条件值，但很快我们会对不希望弹出条件值的逻辑运算符使用相同的指令。相对地，我们在编译<code>if</code>语句时，会让编译器生成几条显式的<code>OP_POP</code>指令，我们需要注意生成的代码中的每一条执行路径都要弹出条件值。</p>
 <p>When the condition is truthy, we pop it right before the code inside the then
-branch.</p>
+branch.
+当条件为真时，我们会在进入then分支的代码前弹出该值。</p>
 <div class="codehilite"><pre class="insert-before">  int thenJump = emitJump(OP_JUMP_IF_FALSE);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>ifStatement</em>()</div>
@@ -417,7 +457,8 @@ in <em>ifStatement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>ifStatement</em>()</div>
 
-<p>Otherwise, we pop it at the beginning of the else branch.</p>
+<p>Otherwise, we pop it at the beginning of the else branch.
+否则，我们就在else分支的开头弹出它。</p>
 <div class="codehilite"><pre class="insert-before">  patchJump(thenJump);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>ifStatement</em>()</div>
@@ -430,11 +471,14 @@ in <em>ifStatement</em>()</div>
 
 <p>This little instruction here also means that every <code>if</code> statement has an
 implicit else branch even if the user didn&rsquo;t write an <code>else</code> clause. In the case
-where they left it off, all the branch does is discard the condition value.</p>
-<p>The full correct flow looks like this:</p><img src="image/jumping-back-and-forth/full-if-else.png" alt="Flowchart of the compiled bytecode including necessary pop instructions." />
+where they left it off, all the branch does is discard the condition value.
+这里的这个小指令也意味着每个<code>if</code>语句都有一个隐含的else分支，即使用户没有写<code>else</code>子句。在用户没有写else子句的情况下，这个分支所做的就是丢弃条件值。</p>
+<p>The full correct flow looks like this:
+完整正确的流看起来是这样的：</p><img src="image/jumping-back-and-forth/full-if-else.png" alt="Flowchart of the compiled bytecode including necessary pop instructions." />
 <p>If you trace through, you can see that it always executes a single branch and
 ensures the condition is popped first. All that remains is a little disassembler
-support.</p>
+support.
+如果你跟踪整个过程，可以看到它总是只执行一个分支，并确保条件值首先被弹出。剩下的就是一点反汇编程序的支持了。</p>
 <div class="codehilite"><pre class="insert-before">      return simpleInstruction(&quot;OP_PRINT&quot;, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -447,7 +491,8 @@ in <em>disassembleInstruction</em>()</div>
 <div class="source-file-narrow"><em>debug.c</em>, in <em>disassembleInstruction</em>()</div>
 
 <p>These two instructions have a new format with a 16-bit operand, so we add a new
-utility function to disassemble them.</p>
+utility function to disassemble them.
+这两条指令具有新格式，有着16位的操作数，因此我们添加了一个新的工具函数来反汇编它们。</p>
 <div class="codehilite"><div class="source-file"><em>debug.c</em><br>
 add after <em>byteInstruction</em>()</div>
 <pre><span class="k">static</span> <span class="t">int</span> <span class="i">jumpInstruction</span>(<span class="k">const</span> <span class="t">char</span>* <span class="i">name</span>, <span class="t">int</span> <span class="i">sign</span>,
@@ -464,19 +509,22 @@ add after <em>byteInstruction</em>()</div>
 <p>There we go, that&rsquo;s one complete control flow construct. If this were an &rsquo;80s
 movie, the montage music would kick in and the rest of the control flow syntax
 would take care of itself. Alas, the <span name="80s">&rsquo;80s</span> are long over,
-so we&rsquo;ll have to grind it out ourselves.</p>
+so we&rsquo;ll have to grind it out ourselves.
+就这样，这就是一个完整的控制流结构。如果这是一部80年代的电影，蒙太奇音乐就该响起了，剩下的控制流语法就会自行完成。唉，80年代已经过去很久了，所以我们得自己打磨了。</p>
 <aside name="80s">
 <p>My enduring love of Depeche Mode notwithstanding.</p>
 </aside>
-<h2><a href="#logical-operators" id="logical-operators"><small>23&#8202;.&#8202;2</small>Logical Operators</a></h2>
+<h2><a href="#logical-operators--逻辑运算符" id="logical-operators--逻辑运算符"><small>23&#8202;.&#8202;2</small>Logical Operators  逻辑运算符</a></h2>
 <p>You probably remember this from jlox, but the logical operators <code>and</code> and <code>or</code>
 aren&rsquo;t just another pair of binary operators like <code>+</code> and <code>-</code>. Because they
 short-circuit and may not evaluate their right operand depending on the value of
-the left one, they work more like control flow expressions.</p>
+the left one, they work more like control flow expressions.
+你可能还记得jlox中的实现，但是逻辑运算符<code>and</code>和<code>or</code>并不仅仅是另一对像<code>+</code>和<code>-</code>一样的二元运算符。因为它们是短路的，根据左操作数的值，有可能不会对右操作数求值，它们的工作方式 更像是控制流表达式。</p>
 <p>They&rsquo;re basically a little variation on an <code>if</code> statement with an <code>else</code> clause.
 The easiest way to explain them is to just show you the compiler code and the
 control flow it produces in the resulting bytecode. Starting with <code>and</code>, we hook
-it into the expression parsing table here:</p>
+it into the expression parsing table here:
+它们基本上是带有<code>else</code>子句的<code>if</code>语句的小变体。解释它们的最简单的方法是向你展示编译器代码以及它在字节码中生成的控制流。从<code>and</code>开始，我们把它挂接到表达式解析表中：</p>
 <div class="codehilite"><pre class="insert-before">  [TOKEN_NUMBER]        = {number,   NULL,   PREC_NONE},
 </pre><div class="source-file"><em>compiler.c</em><br>
 replace 1 line</div>
@@ -485,7 +533,8 @@ replace 1 line</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, replace 1 line</div>
 
-<p>That hands off to a new parser function.</p>
+<p>That hands off to a new parser function.
+这就交给了一个新的解析器函数。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>defineVariable</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">and_</span>(<span class="t">bool</span> <span class="i">canAssign</span>) {
@@ -504,12 +553,15 @@ compiled. That means at runtime, its value will be on top of the stack. If that
 value is falsey, then we know the entire <code>and</code> must be false, so we skip the
 right operand and leave the left-hand side value as the result of the entire
 expression. Otherwise, we discard the left-hand value and evaluate the right
-operand which becomes the result of the whole <code>and</code> expression.</p>
+operand which becomes the result of the whole <code>and</code> expression.
+在这个方法被调用时，左侧的表达式已经被编译了。这意味着，在运行时，它的值将会在栈顶。如果这个值为假，我们就知道整个<code>and</code>表达式的结果一定是假，所以我们跳过右边的操作数，将左边的值作为整个表达式的结果。否则，我们就丢弃左值，计算右操作数，并将它作为整个<code>and</code>表达式的结果。</p>
 <p>Those four lines of code right there produce exactly that. The flow looks like
-this:</p><img src="image/jumping-back-and-forth/and.png" alt="Flowchart of the compiled bytecode of an 'and' expression." />
+this:
+这四行代码正是产生这样的结果。流程看起来像这样：</p><img src="image/jumping-back-and-forth/and.png" alt="Flowchart of the compiled bytecode of an 'and' expression." />
 <p>Now you can see why <code>OP_JUMP_IF_FALSE</code> <span name="instr">leaves</span> the
 value on top of the stack. When the left-hand side of the <code>and</code> is falsey, that
-value sticks around to become the result of the entire expression.</p>
+value sticks around to become the result of the entire expression.
+现在你可以看到为什么<code>OP_JUMP_IF_FALSE</code>要将值留在栈顶。当<code>and</code>左侧的值为假时，这个值会保留下来，成为整个表达式的结果。</p>
 <aside name="instr">
 <p>We&rsquo;ve got plenty of space left in our opcode range, so we could have separate
 instructions for conditional jumps that implicitly pop and those that don&rsquo;t, I
@@ -517,8 +569,9 @@ suppose. But I&rsquo;m trying to keep things minimal for the book. In your bytec
 VM, it&rsquo;s worth exploring adding more specialized instructions and seeing how
 they affect performance.</p>
 </aside>
-<h3><a href="#logical-or-operator" id="logical-or-operator"><small>23&#8202;.&#8202;2&#8202;.&#8202;1</small>Logical or operator</a></h3>
-<p>The <code>or</code> operator is a little more complex. First we add it to the parse table.</p>
+<h3><a href="#logical-or-operator--逻辑or运算符" id="logical-or-operator--逻辑or运算符"><small>23&#8202;.&#8202;2&#8202;.&#8202;1</small>Logical or operator  逻辑or运算符</a></h3>
+<p>The <code>or</code> operator is a little more complex. First we add it to the parse table.
+<code>or</code>运算符有点复杂。首先，我们将它添加到解析表中。</p>
 <div class="codehilite"><pre class="insert-before">  [TOKEN_NIL]           = {literal,  NULL,   PREC_NONE},
 </pre><div class="source-file"><em>compiler.c</em><br>
 replace 1 line</div>
@@ -527,7 +580,8 @@ replace 1 line</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, replace 1 line</div>
 
-<p>When that parser consumes an infix <code>or</code> token, it calls this:</p>
+<p>When that parser consumes an infix <code>or</code> token, it calls this:
+当解析器处理中缀<code>or</code>标识时，会调用这个：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>number</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">or_</span>(<span class="t">bool</span> <span class="i">canAssign</span>) {
@@ -547,24 +601,29 @@ add after <em>number</em>()</div>
 right operand. Thus we need to jump when a value is truthy. We could add a
 separate instruction, but just to show how our compiler is free to map the
 language&rsquo;s semantics to whatever instruction sequence it wants, I implemented it
-in terms of the jump instructions we already have.</p>
+in terms of the jump instructions we already have.
+在<code>or</code>表达式中，如果左侧值为<em>真</em>，那么我们就跳过右侧的操作数。因此，当值为真时，我们需要跳过。我们可以添加一条单独的指令，但为了说明编译器如何自由地将语言的语义映射为它想要的任何指令序列，我会使用已有的跳转指令来实现它。</p>
 <p>When the left-hand side is falsey, it does a tiny jump over the next statement.
 That statement is an unconditional jump over the code for the right operand.
 This little dance effectively does a jump when the value is truthy. The flow
-looks like this:</p><img src="image/jumping-back-and-forth/or.png" alt="Flowchart of the compiled bytecode of a logical or expression." />
+looks like this:
+当左侧值为假时，它会做一个小跳跃，跳过下一条语句。该语句会无条件跳过右侧操作数的代码。当值为真时，就会进行该跳转。流程看起来是这样的：</p><img src="image/jumping-back-and-forth/or.png" alt="Flowchart of the compiled bytecode of a logical or expression." />
 <p>If I&rsquo;m honest with you, this isn&rsquo;t the best way to do this. There are more
 instructions to dispatch and more overhead. There&rsquo;s no good reason why <code>or</code>
 should be slower than <code>and</code>. But it is kind of fun to see that it&rsquo;s possible to
 implement both operators without adding any new instructions. Forgive me my
-indulgences.</p>
+indulgences.
+说实话，这并不是最好的方法。（这种方式中）需要调度的指令更多，开销也更大。没有充足的理由说明为什么<code>or</code>要比<code>and</code>慢。但是，可以在不增加任何新指令的前提下实现两个运算符，这是有趣的。请原谅我的放纵。</p>
 <p>OK, those are the three <em>branching</em> constructs in Lox. By that, I mean, these
 are the control flow features that only jump <em>forward</em> over code. Other
 languages often have some kind of multi-way branching statement like <code>switch</code>
-and maybe a conditional expression like <code>?:</code>, but Lox keeps it simple.</p>
-<h2><a href="#while-statements" id="while-statements"><small>23&#8202;.&#8202;3</small>While Statements</a></h2>
+and maybe a conditional expression like <code>?:</code>, but Lox keeps it simple.
+好了，这就是Lox中的三个分支结构。我的意思是，这些控制流特性只能在代码上<em>向前</em>跳转。其它语言中通常有某种多路分支语句，如<code>switch</code>，也许还有条件表达式<code>?:</code>，但Lox保持简单。</p>
+<h2><a href="#while-statements--while语句" id="while-statements--while语句"><small>23&#8202;.&#8202;3</small>While Statements  While语句</a></h2>
 <p>That takes us to the <em>looping</em> statements, which jump <em>backward</em> so that code
 can be executed more than once. Lox only has two loop constructs, <code>while</code> and
-<code>for</code>. A <code>while</code> loop is (much) simpler, so we start the party there.</p>
+<code>for</code>. A <code>while</code> loop is (much) simpler, so we start the party there.
+这就将我们带到了<em>循环</em>语句，循环语句会向后跳转，使代码可以多次执行。Lox只有两种循环结构<code>while</code>和<code>for</code>。<code>while</code>循环要简单（得多），所以我们从这里开始。</p>
 <div class="codehilite"><pre class="insert-before">    ifStatement();
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>statement</em>()</div>
@@ -574,7 +633,8 @@ in <em>statement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>statement</em>()</div>
 
-<p>When we reach a <code>while</code> token, we call:</p>
+<p>When we reach a <code>while</code> token, we call:
+当我们遇到<code>while</code>标识时，调用：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>printStatement</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">whileStatement</span>() {
@@ -594,10 +654,12 @@ add after <em>printStatement</em>()</div>
 
 <p>Most of this mirrors <code>if</code> statements<span class="em">&mdash;</span>we compile the condition expression,
 surrounded by mandatory parentheses. That&rsquo;s followed by a jump instruction that
-skips over the subsequent body statement if the condition is falsey.</p>
+skips over the subsequent body statement if the condition is falsey.
+大部分跟<code>if</code>语句相似——我们编译条件表达式（强制用括号括起来）。之后是一个跳转指令，如果条件为假，会跳过后续的主体语句。</p>
 <p>We patch the jump after compiling the body and take care to <span
 name="pop">pop</span> the condition value from the stack on either path. The
-only difference from an <code>if</code> statement is the loop. That looks like this:</p>
+only difference from an <code>if</code> statement is the loop. That looks like this:
+我们在编译完主体之后对跳转指令进行修补，并注意在每个执行路径上都要弹出栈顶的条件值。与<code>if</code>语句的唯一区别就是循环。看起来像这样：</p>
 <aside name="pop">
 <p>Really starting to second-guess my decision to use the same jump instructions
 for the logical operators.</p>
@@ -616,8 +678,10 @@ in <em>whileStatement</em>()</div>
 instruction needs to know how far back to jump. When jumping forward, we had to
 emit the instruction in two stages since we didn&rsquo;t know how far we were going to
 jump until after we emitted the jump instruction. We don&rsquo;t have that problem
-now. We&rsquo;ve already compiled the point in code that we want to jump back to<span class="em">&mdash;</span>it&rsquo;s right before the condition expression.</p>
-<p>All we need to do is capture that location as we compile it.</p>
+now. We&rsquo;ve already compiled the point in code that we want to jump back to<span class="em">&mdash;</span>it&rsquo;s right before the condition expression.
+在主体之后，我们调用这个函数来生成一个“循环”指令。该指令需要知道往回跳多远。当向前跳时，我们必须分两个阶段发出指令，因为在发出跳跃指令前，我们不知道要跳多远。现在我们没有这个问题了。我们已经编译了要跳回去的代码位置——就在条件表达式之前。</p>
+<p>All we need to do is capture that location as we compile it.
+我们所需要做的就是在编译时捕获这个位置。</p>
 <div class="codehilite"><pre class="insert-before">static void whileStatement() {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>whileStatement</em>()</div>
@@ -630,7 +694,8 @@ in <em>whileStatement</em>()</div>
 the condition. That way, we re-evaluate the condition expression on each
 iteration. We store the chunk&rsquo;s current instruction count in <code>loopStart</code> to
 record the offset in the bytecode right before the condition expression we&rsquo;re
-about to compile. Then we pass that into this helper function:</p>
+about to compile. Then we pass that into this helper function:
+在执行完<code>while</code>循环后，我们会一直跳到条件表达式之前。这样，我们就可以在每次迭代时都重新对条件表达式求值。我们在<code>loopStar</code>中存储字节码块中当前的指令数，作为我们即将编译的条件表达式在字节码中的偏移量。然后我们将该值传给这个辅助函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>emitBytes</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">emitLoop</span>(<span class="t">int</span> <span class="i">loopStart</span>) {
@@ -650,14 +715,17 @@ instruction, which unconditionally jumps <em>backwards</em> by a given offset. L
 jump instructions, after that we have a 16-bit operand. We calculate the offset
 from the instruction we&rsquo;re currently at to the <code>loopStart</code> point that we want to
 jump back to. The <code>+ 2</code> is to take into account the size of the <code>OP_LOOP</code>
-instruction&rsquo;s own operands which we also need to jump over.</p>
+instruction&rsquo;s own operands which we also need to jump over.
+这有点像<code>emitJump()</code>和<code>patchJump()</code> 的结合。它生成一条新的循环指令，该指令会无条件地<em>向回</em>跳转给定的偏移量。和跳转指令一样，其后还有一个16位的操作数。我们计算当前指令到我们想要跳回的<code>loopStart</code>之间的偏移量。<code>+2</code>是考虑到了<code>OP_LOOP</code>指令自身操作数的大小，这个操作数我们也需要跳过。</p>
 <p>From the VM&rsquo;s perspective, there really is no semantic difference between
 <code>OP_LOOP</code> and <code>OP_JUMP</code>. Both just add an offset to the <code>ip</code>. We could have used
 a single instruction for both and given it a signed offset operand. But I
 figured it was a little easier to sidestep the annoying bit twiddling required
 to manually pack a signed 16-bit integer into two bytes, and we&rsquo;ve got the
-opcode space available, so why not use it?</p>
-<p>The new instruction is here:</p>
+opcode space available, so why not use it?
+从虚拟机的角度看，<code>OP_LOOP</code> 和<code>OP_JUMP</code>之间实际上没有语义上的区别。两者都只是在<code>ip</code>上加了一个偏移量。我们本可以用一条指令来处理这两者，并给该指令传入一个有符号的偏移量操作数。但我认为，这样做更容易避免手动将一个有符号的16位整数打包到两个字节所需要的烦人的位操作，况且我们有可用的操作码空间，为什么不使用呢？</p>
+<p>The new instruction is here:
+新指令如下：</p>
 <div class="codehilite"><pre class="insert-before">  OP_JUMP_IF_FALSE,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -666,7 +734,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>And in the VM, we implement it thusly:</p>
+<p>And in the VM, we implement it thusly:
+在虚拟机中，我们这样实现它：</p>
 <div class="codehilite"><pre class="insert-before">      }
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -680,7 +749,8 @@ in <em>run</em>()</div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>run</em>()</div>
 
 <p>The only difference from <code>OP_JUMP</code> is a subtraction instead of an addition.
-Disassembly is similar too.</p>
+Disassembly is similar too.
+与<code>OP_JUMP</code>唯一的区别就是这里使用了减法而不是加法。反汇编也是相似的。</p>
 <div class="codehilite"><pre class="insert-before">      return jumpInstruction(&quot;OP_JUMP_IF_FALSE&quot;, 1, chunk, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -692,11 +762,13 @@ in <em>disassembleInstruction</em>()</div>
 
 <p>That&rsquo;s our <code>while</code> statement. It contains two jumps<span class="em">&mdash;</span>a conditional forward one
 to escape the loop when the condition is not met, and an unconditional loop
-backward after we have executed the body. The flow looks like this:</p><img src="image/jumping-back-and-forth/while.png" alt="Flowchart of the compiled bytecode of a while statement." />
-<h2><a href="#for-statements" id="for-statements"><small>23&#8202;.&#8202;4</small>For Statements</a></h2>
+backward after we have executed the body. The flow looks like this:
+这就是我们的<code>while</code>语句。它包含两个跳转——一个是有条件的前向跳转，用于在不满足条件的时候退出循环；另一个是在执行完主体代码后的无条件跳转。流程看起来如下：</p><img src="image/jumping-back-and-forth/while.png" alt="Flowchart of the compiled bytecode of a while statement." />
+<h2><a href="#for-statements--for语句" id="for-statements--for语句"><small>23&#8202;.&#8202;4</small>For Statements  For语句</a></h2>
 <p>The other looping statement in Lox is the venerable <code>for</code> loop, inherited from
 C. It&rsquo;s got a lot more going on with it compared to a <code>while</code> loop. It has three
-clauses, all of which are optional:</p>
+clauses, all of which are optional:
+Lox中的另一个循环语句是古老的<code>for</code>循环，继承自C语言。与<code>while</code>循环相比，它有着更多的功能。它有三个子句，都是可选的：</p>
 <p><span name="detail"></span></p>
 <ul>
 <li>
@@ -718,9 +790,11 @@ semantics <a href="control-flow.html#for-loops">in more detail</a>.</p>
 <p>In jlox, the parser desugared a <code>for</code> loop to a synthesized AST for a <code>while</code>
 loop with some extra stuff before it and at the end of the body. We&rsquo;ll do
 something similar, though we won&rsquo;t go through anything like an AST. Instead,
-our bytecode compiler will use the jump and loop instructions we already have.</p>
+our bytecode compiler will use the jump and loop instructions we already have.
+在jlox中，解析器将<code>for</code>循环解构为一个<code>while</code>循环与其主体前后的一些额外内容的合成AST。我们会做一些类似的事情，不过我们不会使用AST之类的东西。相反，我们的字节码编译器将使用我们已有的跳转和循环指令。</p>
 <p>We&rsquo;ll work our way through the implementation a piece at a time, starting with
-the <code>for</code> keyword.</p>
+the <code>for</code> keyword.
+我们将从<code>for</code>关键字开始，逐步完成整个实现。</p>
 <div class="codehilite"><pre class="insert-before">    printStatement();
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>statement</em>()</div>
@@ -731,7 +805,8 @@ in <em>statement</em>()</div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>statement</em>()</div>
 
 <p>It calls a helper function. If we only supported <code>for</code> loops with empty clauses
-like <code>for (;;)</code>, then we could implement it like this:</p>
+like <code>for (;;)</code>, then we could implement it like this:
+它会调用一个辅助函数。如果我们只支持<code>for(::)</code>这样带有空子句的<code>for</code>循环，那么我们可以这样实现它：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>expressionStatement</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">forStatement</span>() {
@@ -751,14 +826,16 @@ add after <em>expressionStatement</em>()</div>
 <p>There&rsquo;s a bunch of mandatory punctuation at the top. Then we compile the body.
 Like we did for <code>while</code> loops, we record the bytecode offset at the top of the
 body and emit a loop to jump back to that point after it. We&rsquo;ve got a working
-implementation of <span name="infinite">infinite</span> loops now.</p>
+implementation of <span name="infinite">infinite</span> loops now.
+首先是一堆强制性的标点符号。然后我们编译主体。与<code>while</code>循环一样，我们在主体的顶部记录字节码的偏移量，并在之后生成一个循环指令跳回该位置。现在我们已经有了一个无限循环的有效实现。</p>
 <aside name="infinite">
 <p>Alas, without <code>return</code> statements, there isn&rsquo;t any way to terminate it short of
 a runtime error.</p>
 </aside>
-<h3><a href="#initializer-clause" id="initializer-clause"><small>23&#8202;.&#8202;4&#8202;.&#8202;1</small>Initializer clause</a></h3>
+<h3><a href="#initializer-clause--初始化子句" id="initializer-clause--初始化子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;1</small>Initializer clause  初始化子句</a></h3>
 <p>Now we&rsquo;ll add the first clause, the initializer. It executes only once, before
-the body, so compiling is straightforward.</p>
+the body, so compiling is straightforward.
+现在我们要添加第一个子句，初始化器。它只在主体之前执行一次，因此编译很简单。</p>
 <div class="codehilite"><pre class="insert-before">  consume(TOKEN_LEFT_PAREN, &quot;Expect '(' after 'for'.&quot;);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>forStatement</em>()<br>
@@ -781,9 +858,11 @@ an expression. We use the presence of the <code>var</code> keyword to tell which
 For the expression case, we call <code>expressionStatement()</code> instead of
 <code>expression()</code>. That looks for a semicolon, which we need here too, and also
 emits an <code>OP_POP</code> instruction to discard the value. We don&rsquo;t want the
-initializer to leave anything on the stack.</p>
+initializer to leave anything on the stack.
+语法有点复杂，因为我们允许出现变量声明或表达式。我们通过是否存在<code>var</code>关键字来判断是哪种类型。对于表达式，我们调用<code>expressionStatement()</code>而不是<code>expression()</code>。它会查找分号（我们这里也需要一个分号），并生成一个<code>OP_POP</code>指令来丢弃表达式的值。我们不希望初始化器在堆栈中留下任何东西。</p>
 <p>If a <code>for</code> statement declares a variable, that variable should be scoped to the
-loop body. We ensure that by wrapping the whole statement in a scope.</p>
+loop body. We ensure that by wrapping the whole statement in a scope.
+如果<code>for</code>语句声明了一个变量，那么该变量的作用域应该限制在循环体中。我们通过将整个语句包装在一个作用域中来确保这一点。</p>
 <div class="codehilite"><pre class="insert-before">static void forStatement() {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>forStatement</em>()</div>
@@ -792,7 +871,8 @@ in <em>forStatement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>forStatement</em>()</div>
 
-<p>Then we close it at the end.</p>
+<p>Then we close it at the end.
+然后我们在结尾关闭这个作用域。</p>
 <div class="codehilite"><pre class="insert-before">  emitLoop(loopStart);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>forStatement</em>()</div>
@@ -801,8 +881,9 @@ in <em>forStatement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>forStatement</em>()</div>
 
-<h3><a href="#condition-clause" id="condition-clause"><small>23&#8202;.&#8202;4&#8202;.&#8202;2</small>Condition clause</a></h3>
-<p>Next, is the condition expression that can be used to exit the loop.</p>
+<h3><a href="#condition-clause--条件子句" id="condition-clause--条件子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;2</small>Condition clause  条件子句</a></h3>
+<p>Next, is the condition expression that can be used to exit the loop.
+接下来，是可以用来退出循环的条件表达式。</p>
 <div class="codehilite"><pre class="insert-before">  int loopStart = currentChunk()-&gt;count;
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>forStatement</em>()<br>
@@ -823,12 +904,15 @@ replace 1 line</div>
 
 <p>Since the clause is optional, we need to see if it&rsquo;s actually present. If the
 clause is omitted, the next token must be a semicolon, so we look for that to
-tell. If there isn&rsquo;t a semicolon, there must be a condition expression.</p>
+tell. If there isn&rsquo;t a semicolon, there must be a condition expression.
+因为子句是可选的，我们需要查看它是否存在。如果子句被省略，下一个标识一定是分号，所以我们通过查找分号来进行判断。如果没有分号，就一定有一个条件表达式。</p>
 <p>In that case, we compile it. Then, just like with while, we emit a conditional
 jump that exits the loop if the condition is falsey. Since the jump leaves the
 value on the stack, we pop it before executing the body. That ensures we discard
-the value when the condition is true.</p>
-<p>After the loop body, we need to patch that jump.</p>
+the value when the condition is true.
+在这种情况下，我们对它进行编译。然后，就像<code>while</code>一样，我们生成一个条件跳转指令，如果条件为假则退出循环。因为跳转指令将值留在了栈上，我们在执行主体之前将值弹出。这样可以确保当条件值为真时，我们会丢弃这个值。</p>
+<p>After the loop body, we need to patch that jump.
+在循环主体之后，我们需要修补跳转指令。</p>
 <div class="codehilite"><pre class="insert-before">  emitLoop(loopStart);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>forStatement</em>()</div>
@@ -845,18 +929,22 @@ in <em>forStatement</em>()</div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>forStatement</em>()</div>
 
 <p>We do this only when there is a condition clause. If there isn&rsquo;t, there&rsquo;s no
-jump to patch and no condition value on the stack to pop.</p>
-<h3><a href="#increment-clause" id="increment-clause"><small>23&#8202;.&#8202;4&#8202;.&#8202;3</small>Increment clause</a></h3>
+jump to patch and no condition value on the stack to pop.
+我们只在有条件子句的时候才会这样做。如果没有条件子句，就没有需要修补的跳转指令，堆栈中也没有条件值需要弹出。</p>
+<h3><a href="#increment-clause--增量子句" id="increment-clause--增量子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;3</small>Increment clause  增量子句</a></h3>
 <p>I&rsquo;ve saved the best for last, the increment clause. It&rsquo;s pretty convoluted. It
 appears textually before the body, but executes <em>after</em> it. If we parsed to an
 AST and generated code in a separate pass, we could simply traverse into and
-compile the <code>for</code> statement AST&rsquo;s body field before its increment clause.</p>
+compile the <code>for</code> statement AST&rsquo;s body field before its increment clause.
+我把非常复杂的增量子句部分留到最后。从文本上看，它出现在循环主体之前，但却是在主体<em>之后</em>执行。如果我们将其解析为AST，并在单独的处理过程中生成代码，就可以简单地遍历并编译<code>for</code>语句AST的主体字段，然后再编译其增量子句。</p>
 <p>Unfortunately, we can&rsquo;t compile the increment clause later, since our compiler
 only makes a single pass over the code. Instead, we&rsquo;ll <em>jump over</em> the
 increment, run the body, jump <em>back</em> up to the increment, run it, and then go to
-the next iteration.</p>
+the next iteration.
+不幸的是，我们不能稍后再编译增量子句，因为我们的编译器只对代码做了一次遍历。相对地，我们会<em>跳过</em>增量子句，运行主体，<em>跳回</em>增量子句，运行它，然后进入下一个迭代。</p>
 <p>I know, a little weird, but hey, it beats manually managing ASTs in memory in C,
-right? Here&rsquo;s the code:</p>
+right? Here&rsquo;s the code:
+我知道，这有点奇怪，但是，这总比在C语言中手动管理内存中的AST要好，对吗？代码如下：</p>
 <div class="codehilite"><pre class="insert-before">  }
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -883,28 +971,48 @@ replace 1 line</div>
 token will be the closing parenthesis. When an increment is present, we need to
 compile it now, but it shouldn&rsquo;t execute yet. So, first, we emit an
 unconditional jump that hops over the increment clause&rsquo;s code to the body of the
-loop.</p>
+loop.
+同样，它也是可选的。因为这是最后一个子句，下一个标识是右括号。当存在增加子句时，我们需要立即编译它，但是它还不应该执行。因此，首先我们生成一个无条件跳转指令，该指令会跳过增量子句的代码进入循环体中。</p>
 <p>Next, we compile the increment expression itself. This is usually an assignment.
 Whatever it is, we only execute it for its side effect, so we also emit a pop to
-discard its value.</p>
+discard its value.
+接下来，我们编译增量表达式本身。这通常是一个赋值语句。不管它是什么，我们执行它只是为了它的副作用，所以我们也生成一个弹出指令丢弃该值。</p>
 <p>The last part is a little tricky. First, we emit a loop instruction. This is the
 main loop that takes us back to the top of the <code>for</code> loop<span class="em">&mdash;</span>right before the
 condition expression if there is one. That loop happens right after the
-increment, since the increment executes at the end of each loop iteration.</p>
+increment, since the increment executes at the end of each loop iteration.
+最后一部分有点棘手。首先，我们生成一个循环指令。这是主循环，会将我们带到<code>for</code>循环的顶部——如果有条件表达式的话，就回在它前面。这个循环发生在增量语句之后，因此增量语句是在每次循环迭代结束时执行的。</p>
 <p>Then we change <code>loopStart</code> to point to the offset where the increment expression
 begins. Later, when we emit the loop instruction after the body statement, this
 will cause it to jump up to the <em>increment</em> expression instead of the top of the
 loop like it does when there is no increment. This is how we weave the
-increment in to run after the body.</p>
+increment in to run after the body.
+然后我们更改<code>loopStart</code>，指向增量表达式开始处的偏移量。之后，当我们在主体语句结束之后生成循环指令时，就会跳转到增量表达式，而不是像没有增量表达式时那样跳转到循环顶部。这就是我们如何在主体之后运行增量子句的办法。</p>
 <p>It&rsquo;s convoluted, but it all works out. A complete loop with all the clauses
-compiles to a flow like this:</p><img src="image/jumping-back-and-forth/for.png" alt="Flowchart of the compiled bytecode of a for statement." />
+compiles to a flow like this:
+这很复杂，但一切都解决了。一个包含所有子句的完整循环会被编译为类似这样的流程：</p><img src="image/jumping-back-and-forth/for.png" alt="Flowchart of the compiled bytecode of a for statement." />
 <p>As with implementing <code>for</code> loops in jlox, we didn&rsquo;t need to touch the runtime.
 It all gets compiled down to primitive control flow operations the VM already
 supports. In this chapter, we&rsquo;ve taken a big <span name="leap">leap</span>
 forward<span class="em">&mdash;</span>clox is now Turing complete. We&rsquo;ve also covered quite a bit of new
 syntax: three statements and two expression forms. Even so, it only took three
 new simple instructions. That&rsquo;s a pretty good effort-to-reward ratio for the
-architecture of our VM.</p>
+architecture of our VM.
+与jlox中实现<code>for</code>循环一样，我们不需要接触运行时。所有这些都被编译到虚拟机已经支持的原始控制流中。在这一章中，我们向前迈出了一大步——clox现在图灵完整了。我们还讨论了相当多的新语法：三种语句和两种表达式形式。即便如此，我们也只用了三个简单的新指令。对于我们的虚拟机架构来说，这是一个相当不错的努力-回报比。
+: 你有没有注意到，<code>if</code>关键字后面的<code>(</code>实际上没有什么用处？如果没有它，语言也会很明确，而且容易解析，比如：<BR><code>if condition) print("looks weird");</code><BR>结尾的<code>)</code>是有用的，因为它将条件表达式和主体分隔开。有些语言使用<code>then</code>关键字来代替。但是开头的<code>(</code>没有任何作用。它之所以存在，是因为不匹配的括号在我们人类看来很糟糕。
+: 一些指令集中有单独的“长”跳转指令，这些指令会接受更大的操作数，当你需要跳转更远的距离时可以使用。
+: 我说过我们不会使用C的<code>if</code>语句来实现Lox的控制流，但我们在这里确实使用了<code>if</code>语句来决定是否偏移指令指针。但我们并没有真正使用C语言来实现控制流。如果我们想的话，可以用纯粹的算术做到同样的事情。假设我们有一个函数<code>falsey()</code>，它接受一个Lox Value，如果是假则返回1，否则返回0。那我们可以这样实现跳转指令：<BR><BR><code>falsey()</code>函数可能会使用一些控制流来处理不同的值类型，但这是该函数的实现细节，并不影响我们的虚拟机如何处理自己的控制流。
+: 我们的操作码范围中还有足够的空间，所以我们可以为隐式弹出值的条件跳转和不弹出值的条件跳转制定单独的指令。但我想尽量在书中保持简约。在你的字节码虚拟机中，值得探索添加更多的专用指令，看看它们是如何影响性能的。
+: 真的开始怀疑我对逻辑运算符使用相同的跳转指令的决定了。</p>
+<h2><a href="#习题" id="习题"><small>23&#8202;.&#8202;5</small>习题</a></h2>
+<ol>
+<li>
+<blockquote>
+<p>In addition to <code>if</code> statements, most C-family languages have a multi-way <code>switch</code> statement. Add one to clox. The grammar is:
+除了<code>if</code>语句，大多数C家族语言都要一个多路<code>switch</code>语句。在clox中添加一个。语法如下：</p>
+</blockquote>
+</li>
+</ol>
 <aside name="leap">
 <p>I couldn&rsquo;t resist the pun. I regret nothing.</p>
 </aside>
@@ -924,10 +1032,18 @@ value expression. Then walk the cases. For each case, evaluate its value
 expression. If the case value is equal to the switch value, execute the
 statements under the case and then exit the <code>switch</code> statement. Otherwise,
 try the next case. If no case matches and there is a <code>default</code> clause,
-execute its statements.</p>
+execute its statements.
+为了执行<code>switch</code>语句，首先要计算括号内的switch值表达式。然后遍历分支。对于每个分支，计算其值表达式。如果case值等于switch值，就执行case下的语句，然后退出<code>switch</code>语句。否则，就尝试下一个case分支。如果没有匹配的分支，并且有<code>default</code>子句，就执行其中的语句。
+为了让事情更简单，我们省略了fall through和<code>break</code>语句。每个case子句在其语句完成后会自动跳转到switch语句的结尾。</p>
+</li>
+<li>
+<blockquote>
+<p>In jlox, we had a challenge to add support for <code>break</code> statements. This time, let’s do <code>continue</code>:
+在jlox中，我们有一个习题是添加对<code>break</code>语句的支持。这一次，我们来做<code>continue</code>：</p>
+</blockquote>
 <p>To keep things simpler, we&rsquo;re omitting fallthrough and <code>break</code> statements.
-Each case automatically jumps to the end of the switch statement after its
-statements are done.</p>
+ Each case automatically jumps to the end of the switch statement after its
+ statements are done.</p>
 </li>
 <li>
 <p>In jlox, we had a challenge to add support for <code>break</code> statements. This
@@ -937,10 +1053,17 @@ time, let&rsquo;s do <code>continue</code>:</p>
 <p>A <code>continue</code> statement jumps directly to the top of the nearest enclosing
 loop, skipping the rest of the loop body. Inside a <code>for</code> loop, a <code>continue</code>
 jumps to the increment clause, if there is one. It&rsquo;s a compile-time error to
-have a <code>continue</code> statement not enclosed in a loop.</p>
+have a <code>continue</code> statement not enclosed in a loop.
+<code>continue</code>语句直接跳转到最内层的封闭循环的顶部，跳过循环体的其余部分。在<code>for</code>循环中，如果有增量子句，<code>continue</code>会跳到增量子句。如果<code>continue</code>子句没有被包含在循环中，则是一个编译时错误。
+一定要考虑作用域问题。当执行<code>continue</code>语句时，在循环体内或嵌套在循环体中的代码块内声明的局部变量应该如何处理？</p>
+</li>
+<li>
+<blockquote>
+<p>Control flow constructs have been mostly unchanged since Algol 68. Language evolution since then has focused on making code more declarative and high level, so imperative control flow hasn’t gotten much attention.</p>
+</blockquote>
 <p>Make sure to think about scope. What should happen to local variables
-declared inside the body of the loop or in blocks nested inside the loop
-when a <code>continue</code> is executed?</p>
+ declared inside the body of the loop or in blocks nested inside the loop
+ when a <code>continue</code> is executed?</p>
 </li>
 <li>
 <p>Control flow constructs have been mostly unchanged since Algol 68. Language
@@ -950,7 +1073,9 @@ level, so imperative control flow hasn&rsquo;t gotten much attention.</p>
 be a refinement of an existing form or something entirely new. In practice,
 it&rsquo;s hard to come up with something useful enough at this low expressiveness
 level to outweigh the cost of forcing a user to learn an unfamiliar notation
-and behavior, but it&rsquo;s a good chance to practice your design skills.</p>
+and behavior, but it&rsquo;s a good chance to practice your design skills.
+自Algol 68以来，控制流结构基本没有变化。从那时起，语言的发展就专注于使代码更具有声明性和高层次，因此命令式控制流并没有得到太多的关注。
+为了好玩，可以试着为Lox发明一个有用的新的控制流功能。它可以是现有形式的改进，也可以是全新的东西。实践中，在这种较低的表达层次上，很难想出足够有用的东西来抵消迫使用户学习不熟悉的符号和行为的代价，但这是一个练习设计技能的好机会。</p>
 </li>
 </ol>
 </div>

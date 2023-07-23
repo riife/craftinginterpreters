@@ -87,7 +87,7 @@ class Mustache {
   Map<String, dynamic> _makePartData(Book book, int partIndex) {
     var partPage = book.parts[partIndex];
     return <String, dynamic>{
-      "title": partPage.title,
+      "title": partPage.title, // TODO: Translate title
       "number": partPage.numberString,
       "file": partPage.fileName,
       "chapters": _makeChapterList(partPage)

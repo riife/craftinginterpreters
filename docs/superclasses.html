@@ -37,10 +37,11 @@
 <h3><a href="#top">Superclasses<small>29</small></a></h3>
 
 <ul>
-    <li><a href="#inheriting-methods"><small>29.1</small> Inheriting Methods</a></li>
-    <li><a href="#storing-superclasses"><small>29.2</small> Storing Superclasses</a></li>
-    <li><a href="#super-calls"><small>29.3</small> Super Calls</a></li>
-    <li><a href="#a-complete-virtual-machine"><small>29.4</small> A Complete Virtual Machine</a></li>
+    <li><a href="#inheriting-methods--继承方法"><small>29.1</small> Inheriting Methods  继承方法</a></li>
+    <li><a href="#storing-superclasses--存储超类"><small>29.2</small> Storing Superclasses  存储超类</a></li>
+    <li><a href="#super-calls--超类调用"><small>29.3</small> Super Calls  超类调用</a></li>
+    <li><a href="#a-complete-virtual-machine--一个完整的虚拟机"><small>29.4</small> A Complete Virtual Machine  一个完整的虚拟机</a></li>
+    <li><a href="#习题"><small>29.5</small> 习题</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
 </ul>
@@ -67,10 +68,11 @@
 <h3><a href="#top">Superclasses<small>29</small></a></h3>
 
 <ul>
-    <li><a href="#inheriting-methods"><small>29.1</small> Inheriting Methods</a></li>
-    <li><a href="#storing-superclasses"><small>29.2</small> Storing Superclasses</a></li>
-    <li><a href="#super-calls"><small>29.3</small> Super Calls</a></li>
-    <li><a href="#a-complete-virtual-machine"><small>29.4</small> A Complete Virtual Machine</a></li>
+    <li><a href="#inheriting-methods--继承方法"><small>29.1</small> Inheriting Methods  继承方法</a></li>
+    <li><a href="#storing-superclasses--存储超类"><small>29.2</small> Storing Superclasses  存储超类</a></li>
+    <li><a href="#super-calls--超类调用"><small>29.3</small> Super Calls  超类调用</a></li>
+    <li><a href="#a-complete-virtual-machine--一个完整的虚拟机"><small>29.4</small> A Complete Virtual Machine  一个完整的虚拟机</a></li>
+    <li><a href="#习题"><small>29.5</small> 习题</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
 </ul>
@@ -94,7 +96,8 @@
 <p>You can choose your friends but you sho&rsquo; can&rsquo;t choose your family, an&rsquo; they&rsquo;re
 still kin to you no matter whether you acknowledge &rsquo;em or not, and it
 makes you look right silly when you don&rsquo;t.</p>
-<p><cite>Harper Lee, <em>To Kill a Mockingbird</em></cite></p>
+<p><cite>Harper Lee, <em>To Kill a Mockingbird</em></cite>
+你可以选择你的朋友，但无法选择你的家庭，所以不管你承认与否，他们都是你的亲属，而且不承认会让你显得很蠢。（哈珀·李，《杀死一只知更鸟》）</p>
 </blockquote>
 <p>This is the very last chapter where we add new functionality to our VM. We&rsquo;ve
 packed almost the entire Lox language in there already. All that remains is
@@ -111,10 +114,12 @@ are &ldquo;optimization&rdquo;.</p>
 <p>Some of the material in this chapter will remind you of jlox. The way we resolve
 super calls is pretty much the same, though viewed through clox&rsquo;s more complex
 mechanism for storing state on the stack. But we have an entirely different,
-much faster, way of handling inherited method calls this time around.</p>
-<h2><a href="#inheriting-methods" id="inheriting-methods"><small>29&#8202;.&#8202;1</small>Inheriting Methods</a></h2>
+much faster, way of handling inherited method calls this time around.
+本章中的一些内容会让你想起jlox。我们解决超类调用的方式几乎是一样的，即便是从clox这种在栈中存储状态的更复杂的机制来看。但这次我们会用一种完全不同的、更快的方式来处理继承方法的调用。</p>
+<h2><a href="#inheriting-methods--继承方法" id="inheriting-methods--继承方法"><small>29&#8202;.&#8202;1</small>Inheriting Methods  继承方法</a></h2>
 <p>We&rsquo;ll kick things off with method inheritance since it&rsquo;s the simpler piece. To
-refresh your memory, Lox inheritance syntax looks like this:</p>
+refresh your memory, Lox inheritance syntax looks like this:
+我们会从方法继承开始，因为它是比较简单的部分。为了恢复你的记忆，Lox的继承语法如下所示：</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Doughnut</span> {
   <span class="i">cook</span>() {
     <span class="k">print</span> <span class="s">&quot;Dunk in the fryer.&quot;</span>;
@@ -129,7 +134,8 @@ refresh your memory, Lox inheritance syntax looks like this:</p>
 </pre></div>
 <p>Here, the Cruller class inherits from Doughnut and thus, instances of Cruller
 inherit the <code>cook()</code> method. I don&rsquo;t know why I&rsquo;m belaboring this. You know how
-inheritance works. Let&rsquo;s start compiling the new syntax.</p>
+inheritance works. Let&rsquo;s start compiling the new syntax.
+这里，Culler类继承自Doughnut，因此，Cruller的实例继承了<code>cook()</code>方法。我不明白我为什么要反复强调这个，你知道继承是怎么回事。让我们开始编译新语法。</p>
 <div class="codehilite"><pre class="insert-before">  currentClass = &amp;classCompiler;
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -149,19 +155,24 @@ in <em>classDeclaration</em>()</div>
 superclass clause. We consume the superclass&rsquo;s identifier token, then call
 <code>variable()</code>. That function takes the previously consumed token, treats it as a
 variable reference, and emits code to load the variable&rsquo;s value. In other words,
-it looks up the superclass by name and pushes it onto the stack.</p>
+it looks up the superclass by name and pushes it onto the stack.
+在编译类名之后，如果下一个标识是<code>&lt;</code>，那我们就找到了一个超类子句。我们消耗超类的标识符，然后调用<code>variable()</code>。该函数接受前面消耗的标识，将其视为变量引用，并发出代码来加载变量的值。换句话说，它通过名称查找超类并将其压入栈中。</p>
 <p>After that, we call <code>namedVariable()</code> to load the subclass doing the inheriting
 onto the stack, followed by an <code>OP_INHERIT</code> instruction. That instruction
 wires up the superclass to the new subclass. In the last chapter, we defined an
 <code>OP_METHOD</code> instruction to mutate an existing class object by adding a method to
 its method table. This is similar<span class="em">&mdash;</span>the <code>OP_INHERIT</code> instruction takes an
-existing class and applies the effect of inheritance to it.</p>
-<p>In the previous example, when the compiler works through this bit of syntax:</p>
+existing class and applies the effect of inheritance to it.
+之后，我们调用<code>namedVariable()</code>将进行继承的子类加载到栈中，接着是<code>OP_INHERIT</code>指令。该指令将超类与新的子类连接起来。在上一章中，我们定义了一条<code>OP_METHOD</code>指令，通过向已有类对象的方法表中添加方法来改变它。这里是类似的——<code>OP_INHERIT</code>指令接受一个现有的类，并对其应用继承的效果。</p>
+<p>In the previous example, when the compiler works through this bit of syntax:
+在前面的例子中，当编译器处理这些语法时：</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Cruller</span> &lt; <span class="t">Doughnut</span> {
 </pre></div>
-<p>The result is this bytecode:</p><img src="image/superclasses/inherit-stack.png" alt="The series of bytecode instructions for a Cruller class inheriting from Doughnut." />
+<p>The result is this bytecode:
+结果就是这个字节码：</p><img src="image/superclasses/inherit-stack.png" alt="The series of bytecode instructions for a Cruller class inheriting from Doughnut." />
 <p>Before we implement the new <code>OP_INHERIT</code> instruction, we have an edge case to
-detect.</p>
+detect.
+在我们实现新的<code>OP_INHERIT</code>指令之前，还需要检测一个边界情况。</p>
 <div class="codehilite"><pre class="insert-before">    variable(false);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>classDeclaration</em>()</div>
@@ -177,14 +188,16 @@ in <em>classDeclaration</em>()</div>
 
 <p><span name="cycle">A</span> class cannot be its own superclass. Unless you have
 access to a deranged nuclear physicist and a very heavily modified DeLorean, you
-cannot inherit from yourself.</p>
+cannot inherit from yourself.
+一个类不能成为它自己的超类。除非你能接触到一个核物理学家和一辆改装过的DeLorean汽车【译者注：电影《回到未来》的梗】，否则你无法继承自己。</p>
 <aside name="cycle">
 <p>Interestingly, with the way we implement method inheritance, I don&rsquo;t think
 allowing cycles would actually cause any problems in clox. It wouldn&rsquo;t do
 anything <em>useful</em>, but I don&rsquo;t think it would cause a crash or infinite loop.</p>
 </aside>
-<h3><a href="#executing-inheritance" id="executing-inheritance"><small>29&#8202;.&#8202;1&#8202;.&#8202;1</small>Executing inheritance</a></h3>
-<p>Now onto the new instruction.</p>
+<h3><a href="#executing-inheritance--执行继承" id="executing-inheritance--执行继承"><small>29&#8202;.&#8202;1&#8202;.&#8202;1</small>Executing inheritance  执行继承</a></h3>
+<p>Now onto the new instruction.
+现在来看新指令。</p>
 <div class="codehilite"><pre class="insert-before">  OP_CLASS,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -194,7 +207,8 @@ in enum <em>OpCode</em></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
 <p>There are no operands to worry about. The two values we need<span class="em">&mdash;</span>superclass and
-subclass<span class="em">&mdash;</span>are both found on the stack. That means disassembling is easy.</p>
+subclass<span class="em">&mdash;</span>are both found on the stack. That means disassembling is easy.
+不需要担心任何操作数。我们需要的两个值——超类和子类——都可以在栈中找到。这意味着反汇编很容易。</p>
 <div class="codehilite"><pre class="insert-before">      return constantInstruction(&quot;OP_CLASS&quot;, chunk, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -204,7 +218,8 @@ in <em>disassembleInstruction</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>debug.c</em>, in <em>disassembleInstruction</em>()</div>
 
-<p>The interpreter is where the action happens.</p>
+<p>The interpreter is where the action happens.
+解释器是行为发生的地方。</p>
 <div class="codehilite"><pre class="insert-before">        break;
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -225,18 +240,24 @@ grab both of those and then do the inherit-y bit. This is where clox takes a
 different path than jlox. In our first interpreter, each subclass stored a
 reference to its superclass. On method access, if we didn&rsquo;t find the method in
 the subclass&rsquo;s method table, we recursed through the inheritance chain looking
-at each ancestor&rsquo;s method table until we found it.</p>
+at each ancestor&rsquo;s method table until we found it.
+从栈顶往下，我们依次有子类，然后是超类。我们获取这两个类，然后进行继承。这就是clox与jlox不同的地方。在我们的第一个解释器中，每个子类都存储了一个对其超类的引用。在访问方法时，如果我们没有在子类方法表中找到它，就通过继承链递归遍历每个祖先的方法表，直到找到该方法。</p>
 <p>For example, calling <code>cook()</code> on an instance of Cruller sends jlox on this
-journey:</p><img src="image/superclasses/jlox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller means walking the superclass chain." />
+journey:
+例如，在Cruller的实例上调用<code>cook()</code>方法，jlox会这样做：
+<img src="29.超类/jlox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller means walking the superclass chain." /></p><img src="image/superclasses/jlox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller means walking the superclass chain." />
 <p>That&rsquo;s a lot of work to perform during method <em>invocation</em> time. It&rsquo;s slow, and
 worse, the farther an inherited method is up the ancestor chain, the slower it
-gets. Not a great performance story.</p>
+gets. Not a great performance story.
+在方法<em>调用</em>期间要做大量的工作。这很慢，而且更糟糕的是，继承的方法在祖先链上越远，它就越慢。这不是一个好的性能故事。</p>
 <p>The new approach is much faster. When the subclass is declared, we copy all of
 the inherited class&rsquo;s methods down into the subclass&rsquo;s own method table. Later,
 when <em>calling</em> a method, any method inherited from a superclass will be found
 right in the subclass&rsquo;s own method table. There is no extra runtime work needed
 for inheritance at all. By the time the class is declared, the work is done.
-This means inherited method calls are exactly as fast as normal method calls<span class="em">&mdash;</span>a <span name="two">single</span> hash table lookup.</p><img src="image/superclasses/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." />
+This means inherited method calls are exactly as fast as normal method calls<span class="em">&mdash;</span>a <span name="two">single</span> hash table lookup.
+新方法则要快得多。当子类被声明时，我们将继承类的所有方法复制到子类自己的方法表中。之后，当我们<em>调用</em>某个方法时，从超类继承的任何方法都可以在子类自己的方法表中找到。继承根本不需要做额外的运行时工作。当类被声明时，工作就完成了。这意味着继承的方法和普通方法调用一样快——只需要一次哈希表查询。
+<img src="29.超类/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." /></p><img src="image/superclasses/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." />
 <aside name="two">
 <p>Well, two hash table lookups, I guess. Because first we have to make sure a
 field on the instance doesn&rsquo;t shadow the method.</p>
@@ -245,14 +266,16 @@ field on the instance doesn&rsquo;t shadow the method.</p>
 and fast, but, like most optimizations, you get to use it only under certain
 constraints. It works in Lox because Lox classes are <em>closed</em>. Once a class
 declaration is finished executing, the set of methods for that class can never
-change.</p>
+change.
+我有时听到这种技术被称为“向下复制继承”。它简单而快速，但是，与大多数优化一样，你只能在特定的约束条件下使用它。它适用于Lox，是因为Lox的类是<em>关闭</em>的。一旦某个类的声明执行完毕，该类的方法集就永远不能更改。</p>
 <p>In languages like Ruby, Python, and JavaScript, it&rsquo;s possible to <span
 name="monkey">crack</span> open an existing class and jam some new methods into
 it or even remove them. That would break our optimization because if those
 modifications happened to a superclass <em>after</em> the subclass declaration
 executed, the subclass would not pick up those changes. That breaks a user&rsquo;s
 expectation that inheritance always reflects the current state of the
-superclass.</p>
+superclass.
+在Ruby、Python和JavaScript等语言中，可以打开一个现有的类，并将一些新方法加入其中，甚至删除方法。这会破坏我们的优化，因为如果这些修改在子类声明执行<em>之后</em>发生在超类上，子类就不会获得这些变化。这就打破了用户的期望，即继承总是反映超类的当前状态。</p>
 <aside name="monkey">
 <p>As you can imagine, changing the set of methods a class defines imperatively at
 runtime can make it hard to reason about a program. It is a very powerful tool,
@@ -262,24 +285,28 @@ name &ldquo;monkey patching&rdquo;, or the even less decorous &ldquo;duck punchi
 </aside>
 <p>Fortunately for us (but not for users who like the feature, I guess), Lox
 doesn&rsquo;t let you patch monkeys or punch ducks, so we can safely apply this
-optimization.</p>
+optimization.
+幸运的是（我猜对于喜欢这一特性的用户来说不算幸运），Lox不允许猴子补丁或鸭子打洞，所以我们可以安全的应用这种优化。</p>
 <p>What about method overrides? Won&rsquo;t copying the superclass&rsquo;s methods into the
 subclass&rsquo;s method table clash with the subclass&rsquo;s own methods? Fortunately, no.
 We emit the <code>OP_INHERIT</code> after the <code>OP_CLASS</code> instruction that creates the
 subclass but before any method declarations and <code>OP_METHOD</code> instructions have
 been compiled. At the point that we copy the superclass&rsquo;s methods down, the
 subclass&rsquo;s method table is empty. Any methods the subclass overrides will
-overwrite those inherited entries in the table.</p>
-<h3><a href="#invalid-superclasses" id="invalid-superclasses"><small>29&#8202;.&#8202;1&#8202;.&#8202;2</small>Invalid superclasses</a></h3>
+overwrite those inherited entries in the table.
+那方法重写呢？将超类的方法复制到子类的方法表中，不会与子类自己的方法发生冲突吗？幸运的是，不会。我们是在创建子类的<code>OP_CLASS</code>指令之后、但在任何方法声明和<code>OP_METHOD</code>指令被编译之前发出<code>OP_INHERIT</code>指令。当我们将超类的方法复制下来时，子类的方法表是空的。子类重写的任何方法都会覆盖表中那些继承的条目。</p>
+<h3><a href="#invalid-superclasses--无效超类" id="invalid-superclasses--无效超类"><small>29&#8202;.&#8202;1&#8202;.&#8202;2</small>Invalid superclasses  无效超类</a></h3>
 <p>Our implementation is simple and fast, which is just the way I like my VM code.
 But it&rsquo;s not robust. Nothing prevents a user from inheriting from an object that
-isn&rsquo;t a class at all:</p>
+isn&rsquo;t a class at all:
+我们的实现简单而快速，这正是我喜欢我的VM代码的原因。但它并不健壮。没有什么能阻止用户继承一个根本不是类的对象：</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="t">NotClass</span> = <span class="s">&quot;So not a class&quot;</span>;
 <span class="k">class</span> <span class="t">OhNo</span> &lt; <span class="t">NotClass</span> {}
 </pre></div>
 <p>Obviously, no self-respecting programmer would write that, but we have to guard
 against potential Lox users who have no self respect. A simple runtime check
-fixes that.</p>
+fixes that.
+显然，任何一个有自尊心的程序员都不会写这种东西，但我们必须堤防那些没有自尊心的潜在Lox用户。一个简单的运行时检查就可以解决这个问题。</p>
 <div class="codehilite"><pre class="insert-before">        Value superclass = peek(1);
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -294,23 +321,27 @@ in <em>run</em>()</div>
 
 <p>If the value we loaded from the identifier in the superclass clause isn&rsquo;t an
 ObjClass, we report a runtime error to let the user know what we think of them
-and their code.</p>
-<h2><a href="#storing-superclasses" id="storing-superclasses"><small>29&#8202;.&#8202;2</small>Storing Superclasses</a></h2>
+and their code.
+如果我们从超类子句的标识符中加载到的值不是ObjClass，就报告一个运行时错误，让用户知道我们对他们及其代码的看法。</p>
+<h2><a href="#storing-superclasses--存储超类" id="storing-superclasses--存储超类"><small>29&#8202;.&#8202;2</small>Storing Superclasses  存储超类</a></h2>
 <p>Did you notice that when we added method inheritance, we didn&rsquo;t actually add any
 reference from a subclass to its superclass? After we copy the inherited methods
 over, we forget the superclass entirely. We don&rsquo;t need to keep a handle on the
-superclass, so we don&rsquo;t.</p>
+superclass, so we don&rsquo;t.
+你是否注意到，在我们添加方法继承时，实际上并没有添加任何从子类指向超类的引用？我们把继承的方法复制到子类之后，就完全忘记了超类。我们不需要保存超类的句柄，所以我们没有这样做。</p>
 <p>That won&rsquo;t be sufficient to support super calls. Since a subclass <span
 name="may">may</span> override the superclass method, we need to be able to get
 our hands on superclass method tables. Before we get to that mechanism, I want 
-to refresh your memory on how super calls are statically resolved.</p>
+to refresh your memory on how super calls are statically resolved.
+这不足以支持超类调用。因为子类可能会覆盖超类方法，我们需要能够获得超类方法表。在讨论这个机制之前，我想让你回忆一下如何静态解析超类调用。</p>
 <aside name="may">
 <p>&ldquo;May&rdquo; might not be a strong enough word. Presumably the method <em>has</em> been
 overridden. Otherwise, why are you bothering to use <code>super</code> instead of just
 calling it directly?</p>
 </aside>
 <p>Back in the halcyon days of jlox, I showed you <a href="inheritance.html#semantics">this tricky example</a> to
-explain the way super calls are dispatched:</p>
+explain the way super calls are dispatched:
+回顾jlox的光辉岁月，我给你展示了这个棘手的示例，来解释超类调用的分派方式：</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">A</span> {
   <span class="i">method</span>() {
     <span class="k">print</span> <span class="s">&quot;A method&quot;</span>;
@@ -336,13 +367,15 @@ calls were resolved relative to the superclass of the <em>receiver</em>, then we
 look in C&rsquo;s superclass, B. But super calls are resolved relative to the
 superclass of the <em>surrounding class where the super call occurs</em>. In this case,
 we are in B&rsquo;s <code>test()</code> method, so the superclass is A, and the program should
-print &ldquo;A method&rdquo;.</p>
+print &ldquo;A method&rdquo;.
+在<code>test()</code>方法的主体中，<code>this</code>是C的一个实例。如果超类调用是在<em>接收器</em>的超类中来解析的，那我们会在C的超类B中寻找方法。但是超类调用是在<em>发生超类调用的外围类</em>的超类中解析的。在本例中，我们在B的<code>test()</code>方法中，因此超类是A，程序应该打印“A method”。</p>
 <p>This means that super calls are not resolved dynamically based on the runtime
 instance. The superclass used to look up the method is a static<span class="em">&mdash;</span>practically
 lexical<span class="em">&mdash;</span>property of where the call occurs. When we added inheritance to jlox,
 we took advantage of that static aspect by storing the superclass in the same
 Environment structure we used for all lexical scopes. Almost as if the
-interpreter saw the above program like this:</p>
+interpreter saw the above program like this:
+这意味着超类调用不是根据运行时的实例进行动态解析的。用于查找方法的超类是调用发生位置的一个静态（实际上是词法）属性。当我们在jlox中添加继承时，我们利用了这种静态优势，将超类存储在我们用于所有词法作用域的同一个Environment结构中。就好像解释器看到的程序是这样的：</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">A</span> {
   <span class="i">method</span>() {
     <span class="k">print</span> <span class="s">&quot;A method&quot;</span>;
@@ -367,15 +400,18 @@ interpreter saw the above program like this:</p>
 </pre></div>
 <p>Each subclass has a hidden variable storing a reference to its superclass.
 Whenever we need to perform a super call, we access the superclass from that
-variable and tell the runtime to start looking for methods there.</p>
+variable and tell the runtime to start looking for methods there.
+每个子类都有一个隐藏变量，用于存储对其超类的引用。当我们需要执行一个超类调用时，我们就从这个变量访问超类，并告诉运行时从那里开始查找方法。</p>
 <p>We&rsquo;ll take the same path with clox. The difference is that instead of jlox&rsquo;s
 heap-allocated Environment class, we have the bytecode VM&rsquo;s value stack and
 upvalue system. The machinery is a little different, but the overall effect is
-the same.</p>
-<h3><a href="#a-superclass-local-variable" id="a-superclass-local-variable"><small>29&#8202;.&#8202;2&#8202;.&#8202;1</small>A superclass local variable</a></h3>
+the same.
+我们在clox中采用相同的方法。不同之处在于，我们使用的是字节码虚拟机的值栈和上值系统，而不是jlox的堆分配的Environment 类。机制有些不同，但总体效果是一样的。</p>
+<h3><a href="#a-superclass-local-variable--超类局部变量" id="a-superclass-local-variable--超类局部变量"><small>29&#8202;.&#8202;2&#8202;.&#8202;1</small>A superclass local variable  超类局部变量</a></h3>
 <p>Our compiler already emits code to load the superclass onto the stack. Instead
 of leaving that slot as a temporary, we create a new scope and make it a local
-variable.</p>
+variable.
+我们的编译器已经发出了将超类加载到栈中的代码。我们不将这个槽看作是临时的，而是创建一个新的作用域，并将其作为一个局部变量。</p>
 <div class="codehilite"><pre class="insert-before">    }
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -392,15 +428,18 @@ in <em>classDeclaration</em>()</div>
 <p>Creating a new lexical scope ensures that if we declare two classes in the same
 scope, each has a different local slot to store its superclass. Since we always
 name this variable &ldquo;super&rdquo;, if we didn&rsquo;t make a scope for each subclass, the
-variables would collide.</p>
+variables would collide.
+创建一个新的词法作用域可以确保，如果我们在同一个作用域中声明两个类，每个类都有一个不同的局部槽来存储其超类。由于我们总是将该变量命名为“super”，如果我们不为每个子类创建作用域，那么这些变量就会发生冲突。</p>
 <p>We name the variable &ldquo;super&rdquo; for the same reason we use &ldquo;this&rdquo; as the name of
 the hidden local variable that <code>this</code> expressions resolve to: &ldquo;super&rdquo; is a
 reserved word, which guarantees the compiler&rsquo;s hidden variable won&rsquo;t collide
-with a user-defined one.</p>
+with a user-defined one.
+我们将该变量命名为“super”，与我们使用“this”作为<code>this</code>表达式解析得到的隐藏局部变量名称的原因相同：“super”是一个保留字，它可以保证编译器的隐藏变量不会与用户定义的变量发生冲突。</p>
 <p>The difference is that when compiling <code>this</code> expressions, we conveniently have a
 token sitting around whose lexeme is &ldquo;this&rdquo;. We aren&rsquo;t so lucky here. Instead,
 we add a little helper function to create a synthetic token for the given <span
-name="constant">constant</span> string.</p>
+name="constant">constant</span> string.
+不同之处在于，在编译<code>this</code>表达式时，我们可以很方便地使用一个标识，词素是<code>this</code>。在这里我们就没那么幸运了。相对地，我们添加一个小的辅助函数，来为给定的常量字符串创建一个合成标识。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>variable</em>()</div>
 <pre><span class="k">static</span> <span class="t">Token</span> <span class="i">syntheticToken</span>(<span class="k">const</span> <span class="t">char</span>* <span class="i">text</span>) {
@@ -419,7 +458,8 @@ memory because it never gets freed. But the memory for C string literals lives
 in the executable&rsquo;s constant data section and never needs to be freed, so we&rsquo;re
 fine.</p>
 </aside>
-<p>Since we opened a local scope for the superclass variable, we need to close it.</p>
+<p>Since we opened a local scope for the superclass variable, we need to close it.
+因为我们为超类变量打开了一个局部作用域，我们还需要关闭它。</p>
 <div class="codehilite"><pre class="insert-before">  emitByte(OP_POP);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>classDeclaration</em>()</div>
@@ -438,11 +478,13 @@ in <em>classDeclaration</em>()</div>
 and its methods. That way, the variable is accessible in all of the methods of
 the subclass. It&rsquo;s a somewhat pointless optimization, but we create the scope
 only if there <em>is</em> a superclass clause. Thus we need to close the scope only if
-there is one.</p>
+there is one.
+在编译完类的主体及其方法后，我们会弹出作用域并丢弃“super”变量。这样，该变量在子类的所有方法中被都可以访问。这是一个有点无意义的优化，但我们只在有超类子句的情况下创建作用域。因此，只有在有超类的情况下，我们才需要关闭这个作用域。</p>
 <p>To track that, we could declare a little local variable in <code>classDeclaration()</code>.
 But soon, other functions in the compiler will need to know whether the
 surrounding class is a subclass or not. So we may as well give our future selves
-a hand and store this fact as a field in the ClassCompiler now.</p>
+a hand and store this fact as a field in the ClassCompiler now.
+为了记录是否有超类，我们可以在<code>classDeclaration()</code>中声明一个局部变量。但是很快，编译器中的其它函数需要知道外层的类是否是子类。所以我们不妨帮帮未来的自己，现在就把它作为一个字段存储在ClassCompiler中。</p>
 <div class="codehilite"><pre class="insert-before">typedef struct ClassCompiler {
   struct ClassCompiler* enclosing;
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -452,7 +494,8 @@ in struct <em>ClassCompiler</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in struct <em>ClassCompiler</em></div>
 
-<p>When we first initialize a ClassCompiler, we assume it is not a subclass.</p>
+<p>When we first initialize a ClassCompiler, we assume it is not a subclass.
+当我们第一次初始化某个ClassCompiler时，我们假定它不是子类。</p>
 <div class="codehilite"><pre class="insert-before">  ClassCompiler classCompiler;
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>classDeclaration</em>()</div>
@@ -461,7 +504,8 @@ in <em>classDeclaration</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>classDeclaration</em>()</div>
 
-<p>Then, if we see a superclass clause, we know we are compiling a subclass.</p>
+<p>Then, if we see a superclass clause, we know we are compiling a subclass.
+然后，如果看到超类子句，我们就知道正在编译一个子类。</p>
 <div class="codehilite"><pre class="insert-before">    emitByte(OP_INHERIT);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>classDeclaration</em>()</div>
@@ -475,11 +519,13 @@ of the surrounding subclass from within any of the subclass&rsquo;s methods<span
 emit code to load the variable named &ldquo;super&rdquo;. That variable is a local outside
 of the method body, but our existing upvalue support enables the VM to capture
 that local inside the body of the method or even in functions nested inside that
-method.</p>
-<h2><a href="#super-calls" id="super-calls"><small>29&#8202;.&#8202;3</small>Super Calls</a></h2>
+method.
+这种机制在运行时为我们提供了一种方法，可以从子类的任何方法中访问外层子类的超类对象——只需发出代码来加载名为“super”的变量。这个变量是方法主体之外的一个局部变量，但是我们现有的上值支持VM在方法主体内、甚至是嵌套方法内的函数中捕获该局部变量。</p>
+<h2><a href="#super-calls--超类调用" id="super-calls--超类调用"><small>29&#8202;.&#8202;3</small>Super Calls  超类调用</a></h2>
 <p>With that runtime support in place, we are ready to implement super calls. As
 usual, we go front to back, starting with the new syntax. A super call <span
-name="last">begins</span>, naturally enough, with the <code>super</code> keyword.</p>
+name="last">begins</span>, naturally enough, with the <code>super</code> keyword.
+有了这个运行时支持，我们就可以实现超类调用了。跟之前一样，我们从前端到后端，先从新语法开始。超类调用，自然是以<code>super</code>关键字开始。</p>
 <aside name="last">
 <p>This is it, friend. The very last entry you&rsquo;ll add to the parsing table.</p>
 </aside>
@@ -492,7 +538,8 @@ replace 1 line</div>
 <div class="source-file-narrow"><em>compiler.c</em>, replace 1 line</div>
 
 <p>When the expression parser lands on a <code>super</code> token, control jumps to a new
-parsing function which starts off like so:</p>
+parsing function which starts off like so:
+当表达式解析器落在一个<code>super</code>标识时，控制流会跳转到一个新的解析函数，该函数的开头是这样的：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>syntheticToken</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">super_</span>(<span class="t">bool</span> <span class="i">canAssign</span>) {
@@ -508,7 +555,8 @@ a <code>super</code> <span name="token">token</span> is not a standalone express
 Instead, the dot and method name following it are inseparable parts of the
 syntax. However, the parenthesized argument list is separate. As with normal
 method access, Lox supports getting a reference to a superclass method as a
-closure without invoking it:</p>
+closure without invoking it:
+这与我们编译<code>this</code>表达式的方式很不一样。与<code>this</code>不同，<code>super</code>标识不是一个独立的表达式。相反，它后面的点和方法名称是语法中不可分割的部分。但是，括号内的参数列表是独立的。和普通的方法访问一样，Lox支持以闭包的方式获得对超类方法的引用，而不必调用它：</p>
 <aside name="token">
 <p>Hypothetical question: If a bare <code>super</code> token <em>was</em> an expression, what kind of
 object would it evaluate to?</p>
@@ -531,8 +579,10 @@ object would it evaluate to?</p>
 when the compiler hits a <code>super</code> token, we consume the subsequent <code>.</code> token and
 then look for a method name. Methods are looked up dynamically, so we use
 <code>identifierConstant()</code> to take the lexeme of the method name token and store it
-in the constant table just like we do for property access expressions.</p>
-<p>Here is what the compiler does after consuming those tokens:</p>
+in the constant table just like we do for property access expressions.
+换句话说，Lox并没有真正的超类*调用（call）<em>表达式，它有的是超类</em>访问（access）*表达式，如果你愿意，可以选择立即调用。因此，当编译器碰到一个<code>super</code>标识时，我们会消费后续的<code>.</code>标识，然后寻找一个方法名称。方法是动态查找的，所以我们使用<code>identifierConstant()</code>来获取方法名标识的词素，并将其存储在常量表中，就像我们对属性访问表达式所做的那样。</p>
+<p>Here is what the compiler does after consuming those tokens:
+下面是编译器在消费这些标识之后做的事情：</p>
 <div class="codehilite"><pre class="insert-before">  uint8_t name = identifierConstant(&amp;parser.previous);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>super_</em>()</div>
@@ -550,10 +600,12 @@ needs both the receiver <em>and</em> the superclass of the surrounding method&rs
 The first <code>namedVariable()</code> call generates code to look up the current receiver
 stored in the hidden variable &ldquo;this&rdquo; and push it onto the stack. The second
 <code>namedVariable()</code> call emits code to look up the superclass from its &ldquo;super&rdquo;
-variable and push that on top.</p>
+variable and push that on top.
+为了在<em>当前实例</em>上访问一个<em>超类方法</em>，运行时需要接收器<em>和</em>外围方法所在类的超类。第一个<code>namedVariable()</code>调用产生代码来查找存储在隐藏变量“this”中的当前接收器，并将其压入栈中。第二个<code>namedVariable()</code>调用产生代码，从它的“super”变量中查找超类，并将其推入栈顶。</p>
 <p>Finally, we emit a new <code>OP_GET_SUPER</code> instruction with an operand for the
 constant table index of the method name. That&rsquo;s a lot to hold in your head. To
-make it tangible, consider this example program:</p>
+make it tangible, consider this example program:
+最后，我们发出一条新的<code>OP_GET_SUPER</code>指令，其操作数为方法名称的常量表索引。你脑子里装的东西太多了。为了使它具体化，请看下面的示例程序：</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Doughnut</span> {
   <span class="i">cook</span>() {
     <span class="k">print</span> <span class="s">&quot;Dunk in the fryer.&quot;</span>;
@@ -573,9 +625,12 @@ make it tangible, consider this example program:</p>
 }
 </pre></div>
 <p>The bytecode emitted for the <code>super.finish("icing")</code> expression looks and works
-like this:</p><img src="image/superclasses/super-instructions.png" alt="The series of bytecode instructions for calling super.finish()." />
+like this:
+<code>super.finish("icing")</code>发出的字节码看起来像是这样的：
+<img src="29.超类/super-instructions.png" alt="The series of bytecode instructions for calling super.finish()." /></p><img src="image/superclasses/super-instructions.png" alt="The series of bytecode instructions for calling super.finish()." />
 <p>The first three instructions give the runtime access to the three pieces of
-information it needs to perform the super access:</p>
+information it needs to perform the super access:
+前三条指令让运行时获得了执行超类访问时需要的三条信息：</p>
 <ol>
 <li>
 <p>The first instruction loads <strong>the instance</strong> onto the stack.</p>
@@ -590,10 +645,12 @@ access</strong> as an operand.</p>
 </li>
 </ol>
 <p>The remaining instructions are the normal bytecode for evaluating an argument
-list and calling a function.</p>
+list and calling a function.
+剩下的指令是用于计算参数列表和调用函数的常规字节码。</p>
 <p>We&rsquo;re almost ready to implement the new <code>OP_GET_SUPER</code> instruction in the
 interpreter. But before we do, the compiler has some errors it is responsible
-for reporting.</p>
+for reporting.
+我们几乎已经准备好在解释器中实现新的<code>OP_GET_SUPER</code>指令了。但在此之前，编译器需要负责报告一些错误。</p>
 <div class="codehilite"><pre class="insert-before">static void super_(bool canAssign) {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>super_</em>()</div>
@@ -610,11 +667,13 @@ in <em>super_</em>()</div>
 <p>A super call is meaningful only inside the body of a method (or in a function
 nested inside a method), and only inside the method of a class that has a
 superclass. We detect both of these cases using the value of <code>currentClass</code>. If
-that&rsquo;s <code>NULL</code> or points to a class with no superclass, we report those errors.</p>
-<h3><a href="#executing-super-accesses" id="executing-super-accesses"><small>29&#8202;.&#8202;3&#8202;.&#8202;1</small>Executing super accesses</a></h3>
+that&rsquo;s <code>NULL</code> or points to a class with no superclass, we report those errors.
+超类调用只有在方法主体（或方法中嵌套的函数）中才有意义，而且只在具有超类的某个类的方法中才有意义。我们使用<code>currentClass</code>的值来检测这两种情况。如果它是<code>NULL</code>或者指向一个没有超类的类，我们就报告这些错误。</p>
+<h3><a href="#executing-super-accesses--执行超类访问" id="executing-super-accesses--执行超类访问"><small>29&#8202;.&#8202;3&#8202;.&#8202;1</small>Executing super accesses  执行超类访问</a></h3>
 <p>Assuming the user didn&rsquo;t put a <code>super</code> expression where it&rsquo;s not allowed, their
 code passes from the compiler over to the runtime. We&rsquo;ve got ourselves a new
-instruction.</p>
+instruction.
+假设用户没有在不允许的地方使用<code>super</code>表达式，他们的代码将从编译器传递到运行时。我们已经有了一个新指令。</p>
 <div class="codehilite"><pre class="insert-before">  OP_SET_PROPERTY,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -623,7 +682,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>We disassemble it like other opcodes that take a constant table index operand.</p>
+<p>We disassemble it like other opcodes that take a constant table index operand.
+我们像对其它需要常量表索引操作数的操作码一样对它进行反汇编。</p>
 <div class="codehilite"><pre class="insert-before">      return constantInstruction(&quot;OP_SET_PROPERTY&quot;, chunk, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -634,7 +694,8 @@ in <em>disassembleInstruction</em>()</div>
 <div class="source-file-narrow"><em>debug.c</em>, in <em>disassembleInstruction</em>()</div>
 
 <p>You might anticipate something harder, but interpreting the new instruction is
-similar to executing a normal property access.</p>
+similar to executing a normal property access.
+你可能预想这是一件比较困难的事，但解释新指令与执行正常的属性访问类似。</p>
 <div class="codehilite"><pre class="insert-before">      }
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -654,21 +715,25 @@ in <em>run</em>()</div>
 <p>As with properties, we read the method name from the
 constant table. Then we pass that to <code>bindMethod()</code> which looks up the method in
 the given class&rsquo;s method table and creates an ObjBoundMethod to bundle the
-resulting closure to the current instance.</p>
+resulting closure to the current instance.
+和属性一样，我们从常量表中读取方法名。然后我们将其传递给<code>bindMethod()</code>，该方法会在给定类的方法表中查找方法，并创建一个ObjBoundMethod将结果闭包与当前实例相绑定。</p>
 <p>The key <span name="field">difference</span> is <em>which</em> class we pass to
 <code>bindMethod()</code>. With a normal property access, we use the ObjInstances&rsquo;s own
 class, which gives us the dynamic dispatch we want. For a super call, we don&rsquo;t
 use the instance&rsquo;s class. Instead, we use the statically resolved superclass of
 the containing class, which the compiler has conveniently ensured is sitting on
-top of the stack waiting for us.</p>
+top of the stack waiting for us.
+关键的区别在于将<em>哪个</em>类传递给<code>bindMethod()</code>。对于普通的属性访问，我们使用ObjInstances自己的类，这为我们提供了我们想要的动态分派。对于超类调用，我们不使用实例的类。相反，我们使用静态分析得到的外层类的超类，编译器已经确保它在栈顶等着我们。</p>
 <p>We pop that superclass and pass it to <code>bindMethod()</code>, which correctly skips over
 any overriding methods in any of the subclasses between that superclass and the
 instance&rsquo;s own class. It also correctly includes any methods inherited by the
-superclass from any of <em>its</em> superclasses.</p>
+superclass from any of <em>its</em> superclasses.
+我们弹出该超类并将其传递给<code>bindMethod()</code>，该方法会正确地跳过该超类与实例本身的类之间的任何子类覆写的方法。它还正确地包含了超类从其任何超类中继承的方法。</p>
 <p>The rest of the behavior is the same. Popping the superclass leaves the instance
 at the top of the stack. When <code>bindMethod()</code> succeeds, it pops the instance and
 pushes the new bound method. Otherwise, it reports a runtime error and returns
-<code>false</code>. In that case, we abort the interpreter.</p>
+<code>false</code>. In that case, we abort the interpreter.
+其余的行为都是一样的。超类弹出栈使得实例位于栈顶。当<code>bindMethod()</code>成功时，它会弹出实例并压入新的已绑定方法。否则，它会报告一个运行时错误并返回<code>false</code>。在这种情况下，我们中止解释器。</p>
 <aside name="field">
 <p>Another difference compared to <code>OP_GET_PROPERTY</code> is that we don&rsquo;t try to look
 for a shadowing field first. Fields are not inherited, so <code>super</code> expressions
@@ -678,11 +743,12 @@ always resolve to methods.</p>
 instances would inherit from (&ldquo;delegate to&rdquo;) other instances. In that case,
 fields <em>could</em> be inherited, and we would need to check for them here.</p>
 </aside>
-<h3><a href="#faster-super-calls" id="faster-super-calls"><small>29&#8202;.&#8202;3&#8202;.&#8202;2</small>Faster super calls</a></h3>
+<h3><a href="#faster-super-calls--更快的超类调用" id="faster-super-calls--更快的超类调用"><small>29&#8202;.&#8202;3&#8202;.&#8202;2</small>Faster super calls  更快的超类调用</a></h3>
 <p>We have superclass method accesses working now. And since the returned object is
 an ObjBoundMethod that you can then invoke, we&rsquo;ve got super <em>calls</em> working too.
 Just like last chapter, we&rsquo;ve reached a point where our VM has the complete,
-correct semantics.</p>
+correct semantics.
+我们现在有了对超类方法的访问。由于返回的对象是一个你可以稍后调用的ObjBoundMethod，我们也就有了可用的超类<em>调用</em>。就像上一章一样，我们的虚拟机现在已经有了完整、正确的语义。</p>
 <p>But, also like last chapter, it&rsquo;s pretty slow. Again, we&rsquo;re heap allocating an
 ObjBoundMethod for each super call even though most of the time the very next
 instruction is an <code>OP_CALL</code> that immediately unpacks that bound method, invokes
@@ -690,11 +756,13 @@ it, and then discards it. In fact, this is even more likely to be true for
 super calls than for regular method calls. At least with method calls there is
 a chance that the user is actually invoking a function stored in a field. With
 super calls, you&rsquo;re <em>always</em> looking up a method. The only question is whether
-you invoke it immediately or not.</p>
+you invoke it immediately or not.
+但是，也和上一章一样，它很慢。同样，我们为每个超类调用在堆中分配了一个ObjBoundMethod，尽管大多数时候下一个指令就是<code>OP_CALL</code>，它会立即解包该已绑定方法，调用它，然后丢弃它。事实上，超类调用比普通方法调用更有可能出现这种情况。至少在方法调用中，用户有可能实际上在调用存储在字段中的函数。在超类调用中，你肯定是在查找一个方法。唯一的问题在于你是否立即调用它。</p>
 <p>The compiler can certainly answer that question for itself if it sees a left
 parenthesis after the superclass method name, so we&rsquo;ll go ahead and perform the
 same optimization we did for method calls. Take out the two lines of code that
-load the superclass and emit <code>OP_GET_SUPER</code>, and replace them with this:</p>
+load the superclass and emit <code>OP_GET_SUPER</code>, and replace them with this:
+如果编译器看到超类方法名称后面有一个左括号，它肯定能自己回答这个问题，所以我们会继续执行与方法调用相同的优化。去掉加载超类并发出<code>OP_GET_SUPER</code>的两行代码，替换为这个：</p>
 <div class="codehilite"><pre class="insert-before">  namedVariable(syntheticToken(&quot;this&quot;), false);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>super_</em>()<br>
@@ -717,14 +785,17 @@ find one, we compile that. Then we load the superclass. After that, we emit a
 new <code>OP_SUPER_INVOKE</code> instruction. This <span
 name="superinstruction">superinstruction</span> combines the behavior of
 <code>OP_GET_SUPER</code> and <code>OP_CALL</code>, so it takes two operands: the constant table index
-of the method name to look up and the number of arguments to pass to it.</p>
+of the method name to look up and the number of arguments to pass to it.
+现在，在我们发出任何代码之前，我们要寻找一个带括号的参数列表。如果找到了，我们就编译它，任何加载超类，之后，我们发出一条新的<code>OP_SUPER_INVOKE</code>指令。这个超级指令结合了<code>OP_GET_SUPER</code>和<code>OP_CALL</code>的行为，所以它需要两个操作数：待查找的方法名称和要传递给它的参数数量。</p>
 <aside name="superinstruction">
 <p>This is a particularly <em>super</em> superinstruction, if you get what I&rsquo;m saying.
 I<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>I&rsquo;m sorry for this terrible joke.</p>
 </aside>
 <p>Otherwise, if we don&rsquo;t find a <code>(</code>, we continue to compile the expression as a
-super access like we did before and emit an <code>OP_GET_SUPER</code>.</p>
-<p>Drifting down the compilation pipeline, our first stop is a new instruction.</p>
+super access like we did before and emit an <code>OP_GET_SUPER</code>.
+否则，如果没有找到<code>(</code>，则继续像前面那样将表达式编译为一个超类访问，并发出一条<code>OP_GET_SUPER</code>指令。</p>
+<p>Drifting down the compilation pipeline, our first stop is a new instruction.
+沿着编译流水线向下，我们的第一站是一条新指令。</p>
 <div class="codehilite"><pre class="insert-before">  OP_INVOKE,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -733,7 +804,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>And just past that, its disassembler support.</p>
+<p>And just past that, its disassembler support.
+在那之后，是它的反汇编器支持。</p>
 <div class="codehilite"><pre class="insert-before">      return invokeInstruction(&quot;OP_INVOKE&quot;, chunk, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -745,7 +817,8 @@ in <em>disassembleInstruction</em>()</div>
 
 <p>A super invocation instruction has the same set of operands as <code>OP_INVOKE</code>, so
 we reuse the same helper to disassemble it. Finally, the pipeline dumps us into
-the interpreter.</p>
+the interpreter.
+超类调用指令具有与<code>OP_INVOKE</code>相同的操作数集，因此我们复用同一个辅助函数对其反汇编。最后，流水线将我们带到解释器中。</p>
 <div class="codehilite"><pre class="insert-before">        break;
       }
 </pre><div class="source-file"><em>vm.c</em><br>
@@ -770,47 +843,74 @@ stack is organized, though. With an unoptimized super call, the superclass is
 popped and replaced by the ObjBoundMethod for the resolved function <em>before</em> the
 arguments to the call are executed. This ensures that by the time the <code>OP_CALL</code>
 is executed, the bound method is <em>under</em> the argument list, where the runtime
-expects it to be for a closure call.</p>
-<p>With our optimized instructions, things are shuffled a bit:</p><img src="image/superclasses/super-invoke.png" class="wide" alt="The series of bytecode instructions for calling super.finish() using OP_SUPER_INVOKE." />
+expects it to be for a closure call.
+这一小段代码基本上是<code>OP_INVOKE</code>的实现，其中混杂了一点<code>OP_GET_SUPER</code>。不过，在堆栈的组织方式上有些不同。在未优化的超类调用中，超类会被弹出，并在调用的<em>参数</em>被执行之前替换为被解析函数的ObjBoundMethod。这确保了在<code>OP_CALL</code>执行时，已绑定方法在参数列表<em>之下</em>，也就是运行时期望闭包调用所在的位置。</p>
+<p>With our optimized instructions, things are shuffled a bit:
+在我们优化的指令中，事情有点被打乱：
+<img src="29.超类/super-invoke.png" alt="The series of bytecode instructions for calling super.finish() using OP_SUPER_INVOKE." /></p><img src="image/superclasses/super-invoke.png" class="wide" alt="The series of bytecode instructions for calling super.finish() using OP_SUPER_INVOKE." />
 <p>Now resolving the superclass method is part of the <em>invocation</em>, so the
 arguments need to already be on the stack at the point that we look up the
-method. This means the superclass object is on top of the arguments.</p>
+method. This means the superclass object is on top of the arguments.
+现在，解析超类方法是执行的一部分，因此当我们查找方法时，参数需要已经在栈上。这意味着超类对象位于参数之上。</p>
 <p>Aside from that, the behavior is roughly the same as an <code>OP_GET_SUPER</code> followed
 by an <code>OP_CALL</code>. First, we pull out the method name and argument count operands.
 Then we pop the superclass off the top of the stack so that we can look up the
 method in its method table. This conveniently leaves the stack set up just right
-for a method call.</p>
+for a method call.
+除此之外，其行为与<code>OP_GET_SUPER</code>后跟<code>OP_CALL</code>大致相同。首先，我们取出方法名和参数数量两个操作数。然后我们从栈顶弹出超类，这样我们就可以在它的方法表中查找方法。这方便地将堆栈设置为适合方法调用的状态。</p>
 <p>We pass the superclass, method name, and argument count to our existing
 <code>invokeFromClass()</code> function. That function looks up the given method on the
 given class and attempts to create a call to it with the given arity. If a
 method could not be found, it returns <code>false</code>, and we bail out of the
 interpreter. Otherwise, <code>invokeFromClass()</code> pushes a new CallFrame onto the call
 stack for the method&rsquo;s closure. That invalidates the interpreter&rsquo;s cached
-CallFrame pointer, so we refresh <code>frame</code>.</p>
-<h2><a href="#a-complete-virtual-machine" id="a-complete-virtual-machine"><small>29&#8202;.&#8202;4</small>A Complete Virtual Machine</a></h2>
+CallFrame pointer, so we refresh <code>frame</code>.
+我们将超类、方法名和参数数量传递给现有的<code>invokeFromClass()</code>函数。该函数在给定的类上查找给定的方法，并尝试用给定的元数创建一个对它的调用。如果找不到某个方法，它就返回false，并退出解释器。否则，<code>invokeFromClass()</code>将一个新的CallFrame压入方法闭包的调用栈上。这会使解释器缓存的CallFrame指针失效，所以我们也要刷新<code>frame</code>。</p>
+<h2><a href="#a-complete-virtual-machine--一个完整的虚拟机" id="a-complete-virtual-machine--一个完整的虚拟机"><small>29&#8202;.&#8202;4</small>A Complete Virtual Machine  一个完整的虚拟机</a></h2>
 <p>Take a look back at what we&rsquo;ve created. By my count, we wrote around 2,500 lines
 of fairly clean, straightforward C. That little program contains a complete
 implementation of the<span class="em">&mdash;</span>quite high-level!<span class="em">&mdash;</span>Lox language, with a whole
 precedence table full of expression types and a suite of control flow
 statements. We implemented variables, functions, closures, classes, fields,
-methods, and inheritance.</p>
+methods, and inheritance.
+回顾一下我们创造了什么。根据我的计算，我们编写了大约2500行相当干净、简洁的C语言代码。这个小程序中包含了对Lox语言（相当高级）的完整实现，它有一个满是表达式类型的优先级表和一套控制流语句。我们实现了变量、函数、闭包、类、字段、方法和继承。</p>
 <p>Even more impressive, our implementation is portable to any platform with a C
 compiler, and is fast enough for real-world production use. We have a
 single-pass bytecode compiler, a tight virtual machine interpreter for our
 internal instruction set, compact object representations, a stack for storing
-variables without heap allocation, and a precise garbage collector.</p>
+variables without heap allocation, and a precise garbage collector.
+更令人印象深刻的是，我们的实现可以移植到任何带有C编译器的平台上，而且速度快到足以在实际生产中使用。我们有一个单遍字节码编译器，一个用于内部指令集的严格虚拟机解释器，紧凑的对象表示，一个用于存储变量而不需要堆分配的栈，以及一个精确的垃圾回收器。</p>
 <p>If you go out and start poking around in the implementations of Lua, Python, or
 Ruby, you will be surprised by how much of it now looks familiar to you. You
 have seriously leveled up your knowledge of how programming languages work,
 which in turn gives you a deeper understanding of programming itself. It&rsquo;s like
 you used to be a race car driver, and now you can pop the hood and repair the
-engine too.</p>
+engine too.
+如果你开始研究Lua、Python或Ruby的实现，你会惊讶于它们现在看起来有多熟悉。你已经真正提高了关于编程语言工作方式的知识水平，这反过来又使你对编程本身有了更深的理解。这就像你以前是个赛车手，现在你可以打开引擎盖，修改发动机了。</p>
 <p>You can stop here if you like. The two implementations of Lox you have are
 complete and full featured. You built the car and can drive it wherever you want
 now. But if you are looking to have more fun tuning and tweaking for even
 greater performance out on the track, there is one more chapter. We don&rsquo;t add
 any new capabilities, but we roll in a couple of classic optimizations to
-squeeze even more perf out. If that sounds fun, <a href="optimization.html">keep reading</a><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
+squeeze even more perf out. If that sounds fun, <a href="optimization.html">keep reading</a><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
+如果你愿意，可以在这里停下来。你拥有的两个Lox实现是完整的、功能齐全的。你造了这俩车，现在可以把它开到你想去的地方。但是，如果你想获得更多改装与调整的乐趣，以期在赛道上获得更佳的性能，还有一个章节。我们没有增加任何新的功能，但我们推出了几个经典的优化，以挤压出更多的性能。如果这听起来很有趣，请继续读下去……
+: 这个“只是”并不意味着加速不重要！毕竟，我们的第二个虚拟机的全部目的就是比jlox有更好的性能。你可以认为，前面的15章都是“优化”。
+: 有趣的是，根据我们实现方法继承的方式，我认为允许循环实际上不会在clox中引起任何问题。它不会做任何有用的事情，但我认为它不会导致崩溃或无限循环。
+: 好吧，我想应该是两次哈希查询。因为首先我们必须确保实例上的字段不会遮蔽方法。
+: 可以想见，在运行时改变某个类中以命令式定义的方法集会使得对程序的推理变得困难。这是一个非常强大的工具，但也是一个危险的工具。<BR>那些认为这个工具可能有点太危险的人，给它取了个不伦不类的名字“猴子补丁”，或者是更不体面的“鸭子打洞”。
+: “可能”这个词也许不够有力。大概这个方法<em>已经</em>被重写了。否则，你为什么要费力地使用<code>super</code>而不是直接调用它呢？
+: 我说“常量字符串”是因为标识不对其词素做任何内存管理。如果我们试图使用堆分配的字符串，最终会泄漏内存，因为它永远不会被释放。但是，C语言字符串字面量的内存位于可执行文件的常量数据部分，永远不需要释放，所以我们这样没有问题。
+: 就是这样，朋友，你要添加到解析表中的最后一项。
+: 假设性问题：如果一个光秃秃的<code>super</code>标识是一个表达式，那么它会被计算为哪种对象呢？
+: 与<code>OP_GET_PROPERTY</code>相比的另一个区别是，我们不会先尝试寻找遮蔽字段。字段不会被继承，所以<code>super</code>表达式总是解析为方法。<BR>如果Lox是一种使用<em>委托</em>而不是<em>继承</em>的基于原型的语言，那么就不是一个<em>类</em>继承另一个<em>类</em>，而是实例继承自（委托给）其它实例。在这种情况下，字段可以被继承，我们就需要在这里检查它们。</p>
+<h2><a href="#习题" id="习题"><small>29&#8202;.&#8202;5</small>习题</a></h2>
+<ol>
+<li>
+<blockquote>
+<p>A tenet of object-oriented programming is that a class should ensure new objects are in a valid state. In Lox, that means defining an initializer that populates the instance’s fields. Inheritance complicates invariants because the instance must be in a valid state according to all of the classes in the object’s inheritance chain.</p>
+</blockquote>
+</li>
+</ol>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -824,9 +924,17 @@ classes in the object&rsquo;s inheritance chain.</p>
 <code>init()</code> method. The harder part is fields. There is nothing preventing two
 classes in the inheritance chain from accidentally claiming the same field
 name. When this happens, they will step on each other&rsquo;s fields and possibly
-leave you with an instance in a broken state.</p>
+leave you with an instance in a broken state.
+面向对象编程的一个原则是，类应该确保新对象处于有效状态。在Lox中，这意味着要定义一个填充实例字段的初始化器。继承使不变性复杂化，因为对于对象继承链中的所有类，实例必须处于有效状态。
+简单的部分是记住在每个子类的<code>init()</code>方法中调用<code>super.init()</code>。比较难的部分是字段。没有什么方法可以防止继承链中的两个类意外地声明相同的字段名。当这种情况发生时，它们会互相干扰彼此的字段，并可能让你的实例处于崩溃状态。
+如果Lox是你的语言，你会如何解决这个问题？如果你想改变语言，请实现你的更改。</p>
+</li>
+<li>
+<blockquote>
+<p>Our copy-down inheritance optimization is valid only because Lox does not permit you to modify a class’s methods after its declaration. This means we don’t have to worry about the copied methods in the subclass getting out of sync with later changes to the superclass.</p>
+</blockquote>
 <p>If Lox was your language, how would you address this, if at all? If you
-would change the language, implement your change.</p>
+ would change the language, implement your change.</p>
 </li>
 <li>
 <p>Our copy-down inheritance optimization is valid only because Lox does not
@@ -835,7 +943,15 @@ don&rsquo;t have to worry about the copied methods in the subclass getting out o
 sync with later changes to the superclass.</p>
 <p>Other languages, like Ruby, <em>do</em> allow classes to be modified after the
 fact. How do implementations of languages like that support class
-modification while keeping method resolution efficient?</p>
+modification while keeping method resolution efficient?
+我们的向下复制继承优化之所以有效，仅仅是因为Lox不允许在类声明之后修改它的方法。这意味着我们不必担心子类中复制的方法与后面对超类的修改不同步。
+其它语言，如Ruby，确实允许在事后修改类。像这样的语言实现如何支持类的修改，同时保持方法解析的效率呢？</p>
+</li>
+<li>
+<blockquote>
+<p>In the <a href="http://www.craftinginterpreters.com/inheritance.html">jlox chapter on inheritance</a>, we had a challenge to implement the BETA language’s approach to method overriding. Solve the challenge again, but this time in clox. Here’s the description of the previous challenge:
+在jlox关于继承的章节中，我们有一个习题，是实现BETA语言的方法重写。再次解决这个习题，但这次是在clox中。下面是对之前习题的描述：</p>
+</blockquote>
 </li>
 <li>
 <p>In the <a href="inheritance.html">jlox chapter on inheritance</a>, we had a challenge to
@@ -844,19 +960,23 @@ challenge again, but this time in clox. Here&rsquo;s the description of the
 previous challenge:</p>
 <p>In Lox, as in most other object-oriented languages, when looking up a
 method, we start at the bottom of the class hierarchy and work our way up<span class="em">&mdash;</span>a subclass&rsquo;s method is preferred over a superclass&rsquo;s. In order to get to the
-superclass method from within an overriding method, you use <code>super</code>.</p>
+superclass method from within an overriding method, you use <code>super</code>.
+在Lox中，和其它大多数面向对象的语言一样，当查找一个方法时，我们从类层次结构的底部开始，然后向上查找——子类的方法优于超类的方法。要想在子类方法中访问超类方法，可以使用<code>super</code>。</p>
 <p>The language <a href="https://beta.cs.au.dk/">BETA</a> takes the <a href="http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/">opposite approach</a>. When you call a
 method, it starts at the <em>top</em> of the class hierarchy and works <em>down</em>. A
 superclass method wins over a subclass method. In order to get to the
 subclass method, the superclass method can call <code>inner</code>, which is sort of
 like the inverse of <code>super</code>. It chains to the next method down the
-hierarchy.</p>
+hierarchy.
+<a href="https://beta.cs.au.dk/">BETA</a>语言则采取了<a href="http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/">相反的方法</a>。当你调用某个方法时，它从类层次结构的顶部开始向下运行。超类方法优于子类方法。要想访问子类方法，超类方法中可以调用<code>inner()</code>，这有点像是<code>super</code>的反义词。它会链接到层次结构中的下一个方法。</p>
 <p>The superclass method controls when and where the subclass is allowed to
 refine its behavior. If the superclass method doesn&rsquo;t call <code>inner</code> at all,
 then the subclass has no way of overriding or modifying the superclass&rsquo;s
-behavior.</p>
+behavior.
+超类方法控制着子类何时何地被允许完善其行为。如果超类方法根本不调用<code>inner</code>，那么子类就没有办法覆写或修改超类的行为。</p>
 <p>Take out Lox&rsquo;s current overriding and <code>super</code> behavior, and replace it with
-BETA&rsquo;s semantics. In short:</p>
+BETA&rsquo;s semantics. In short:
+去掉Lox中当前的覆写和<code>super</code>行为，替换为BETA的语义。简而言之：</p>
 <ul>
 <li>
 <p>When calling a method on a class, the method <em>highest</em> on the
@@ -869,7 +989,16 @@ between the class containing the <code>inner</code> and the class of <code>this<
 there is no matching method, the <code>inner</code> call does nothing.</p>
 </li>
 </ul>
-<p>For example:</p>
+</li>
+</ol>
+<ul>
+<li>
+<p>当调用某个类中的方法时，该类继承链上最高的方法优先。</p>
+</li>
+<li>
+<p>在方法体内部，对<code>inner</code>的调用，会沿着包含<code>inner</code>的类和<code>this</code>的类之间的继承链，在最近的子类中查找同名的方法。如果没有匹配的方法，<code>inner</code>调用就什么也不做。</p>
+<p>For example:
+举例来说：</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Doughnut</span> {
   <span class="i">cook</span>() {
     <span class="k">print</span> <span class="s">&quot;Fry until golden brown.&quot;</span>;
@@ -886,16 +1015,18 @@ there is no matching method, the <code>inner</code> call does nothing.</p>
 
 <span class="t">BostonCream</span>().<span class="i">cook</span>();
 </pre></div>
-<p>This should print:</p>
+<p>This should print:
+这里应该打印：</p>
 <div class="codehilite"><pre>Fry until golden brown.
 Pipe full of custard and coat with chocolate.
 Place in a nice box.
 </pre></div>
 <p>Since clox is about not just implementing Lox, but doing so with good
-performance, this time around try to solve the challenge with an eye towards
-efficiency.</p>
+  performance, this time around try to solve the challenge with an eye towards
+  efficiency.
+因为clox不仅仅是实现Lox，而是要以良好的性能来实现，所以这次要尝试以效率为导向来解决这个问题。</p>
 </li>
-</ol>
+</ul>
 </div>
 
 <footer>

@@ -37,10 +37,10 @@
 <h3><a href="#top">Evaluating Expressions<small>7</small></a></h3>
 
 <ul>
-    <li><a href="#representing-values"><small>7.1</small> Representing Values</a></li>
-    <li><a href="#evaluating-expressions"><small>7.2</small> Evaluating Expressions</a></li>
-    <li><a href="#runtime-errors"><small>7.3</small> Runtime Errors</a></li>
-    <li><a href="#hooking-up-the-interpreter"><small>7.4</small> Hooking Up the Interpreter</a></li>
+    <li><a href="#representing-values--值描述"><small>7.1</small> Representing Values  值描述</a></li>
+    <li><a href="#evaluating-expressions--表达式求值"><small>7.2</small> Evaluating Expressions  表达式求值</a></li>
+    <li><a href="#runtime-errors--运行时错误"><small>7.3</small> Runtime Errors  运行时错误</a></li>
+    <li><a href="#hooking-up-the-interpreter--连接解释器"><small>7.4</small> Hooking Up the Interpreter  连接解释器</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>Static and Dynamic Typing</a></li>
@@ -68,10 +68,10 @@
 <h3><a href="#top">Evaluating Expressions<small>7</small></a></h3>
 
 <ul>
-    <li><a href="#representing-values"><small>7.1</small> Representing Values</a></li>
-    <li><a href="#evaluating-expressions"><small>7.2</small> Evaluating Expressions</a></li>
-    <li><a href="#runtime-errors"><small>7.3</small> Runtime Errors</a></li>
-    <li><a href="#hooking-up-the-interpreter"><small>7.4</small> Hooking Up the Interpreter</a></li>
+    <li><a href="#representing-values--值描述"><small>7.1</small> Representing Values  值描述</a></li>
+    <li><a href="#evaluating-expressions--表达式求值"><small>7.2</small> Evaluating Expressions  表达式求值</a></li>
+    <li><a href="#runtime-errors--运行时错误"><small>7.3</small> Runtime Errors  运行时错误</a></li>
+    <li><a href="#hooking-up-the-interpreter--连接解释器"><small>7.4</small> Hooking Up the Interpreter  连接解释器</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
     <li class="end-part"><a href="#design-note"><small>note</small>Static and Dynamic Typing</a></li>
@@ -99,7 +99,8 @@
 <p>If you want to properly set the mood for this chapter, try to conjure up a
 thunderstorm, one of those swirling tempests that likes to yank open shutters at
 the climax of the story. Maybe toss in a few bolts of lightning. In this
-chapter, our interpreter will take breath, open its eyes, and execute some code.</p>
+chapter, our interpreter will take breath, open its eyes, and execute some code.
+如果你想为这一章适当地设定气氛，试着想象一场雷雨，那种在故事高潮时喜欢拉开百叶窗的漩涡式暴风雨。也许再加上几道闪电。在这一章中，我们的解释器将开始呼吸，睁开眼睛，并执行一些代码。</p>
 <p><span name="spooky"></span></p><img src="image/evaluating-expressions/lightning.png" alt="A bolt of lightning strikes a Victorian mansion. Spooky!" />
 <aside name="spooky">
 <p>A decrepit Victorian mansion is optional, but adds to the ambiance.</p>
@@ -108,13 +109,27 @@ chapter, our interpreter will take breath, open its eyes, and execute some code.
 what the user&rsquo;s source code commands. They can compile it to machine code,
 translate it to another high-level language, or reduce it to some bytecode
 format for a virtual machine to run. For our first interpreter, though, we are
-going to take the simplest, shortest path and execute the syntax tree itself.</p>
+going to take the simplest, shortest path and execute the syntax tree itself.
+对于语言实现来说，有各种方式可以使计算机执行用户的源代码命令。它们可以将其编译为机器代码，将其翻译为另一种高级语言，或者将其还原为某种字节码格式，以便在虚拟机中执行。不过对于我们的第一个解释器，我们要选择最简单、最短的一条路，也就是执行语法树本身。</p>
 <p>Right now, our parser only supports expressions. So, to &ldquo;execute&rdquo; code, we will
 evaluate an expression and produce a value. For each kind of expression syntax
 we can parse<span class="em">&mdash;</span>literal, operator, etc.<span class="em">&mdash;</span>we need a corresponding chunk of code
 that knows how to evaluate that tree and produce a result. That raises two
-questions:</p>
+questions:
+现在，我们的解释器只支持表达式。因此，为了“执行”代码，我们要计算一个表达式时并生成一个值。对于我们可以解析的每一种表达式语法——字面量，操作符等——我们都需要一个相应的代码块，该代码块知道如何计算该语法树并产生结果。这也就引出了两个问题：</p>
 <ol>
+<li>
+<blockquote>
+<p>What kinds of values do we produce?
+我们要生成什么类型的值？</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>How do we organize those chunks of code?
+我们如何组织这些代码块？</p>
+</blockquote>
+</li>
 <li>
 <p>What kinds of values do we produce?</p>
 </li>
@@ -122,15 +137,17 @@ questions:</p>
 <p>How do we organize those chunks of code?</p>
 </li>
 </ol>
-<p>Taking them on one at a time<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
-<h2><a href="#representing-values" id="representing-values"><small>7&#8202;.&#8202;1</small>Representing Values</a></h2>
+<p>Taking them on one at a time<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
+让我们来逐个击破。</p>
+<h2><a href="#representing-values--值描述" id="representing-values--值描述"><small>7&#8202;.&#8202;1</small>Representing Values  值描述</a></h2>
 <p>In Lox, <span name="value">values</span> are created by literals, computed by
 expressions, and stored in variables. The user sees these as <em>Lox</em> objects, but
 they are implemented in the underlying language our interpreter is written in.
 That means bridging the lands of Lox&rsquo;s dynamic typing and Java&rsquo;s static types. A
 variable in Lox can store a value of any (Lox) type, and can even store values
 of different types at different points in time. What Java type might we use to
-represent that?</p>
+represent that?
+在Lox中，值由字面量创建，由表达式计算，并存储在变量中。用户将其视作Lox对象，但它们是用编写解释器的底层语言实现的。这意味着要在Lox的动态类型和Java的静态类型之间架起桥梁。Lox中的变量可以存储任何（Lox）类型的值，甚至可以在不同时间存储不同类型的值。我们可以用什么Java类型来表示？</p>
 <aside name="value">
 <p>Here, I&rsquo;m using &ldquo;value&rdquo; and &ldquo;object&rdquo; pretty much interchangeably.</p>
 <p>Later in the C interpreter we&rsquo;ll make a slight distinction between them, but
@@ -143,10 +160,19 @@ which kind of value it holds at runtime. When the interpreter executes a <code>+
 operator, it needs to tell if it is adding two numbers or concatenating two
 strings. Is there a Java type that can hold numbers, strings, Booleans, and
 more? Is there one that can tell us what its runtime type is? There is! Good old
-java.lang.Object.</p>
+java.lang.Object.
+给定一个具有该静态类型的Java变量，我们还必须能够在运行时确定它持有哪种类型的值。当解释器执行 <code>+</code>运算符时，它需要知道它是在将两个数字相加还是在拼接两个字符串。有没有一种Java类型可以容纳数字、字符串、布尔值等等？有没有一种类型可以告诉我们它的运行时类型是什么？有的! 就是老牌的<code>java.lang.Object</code>。</p>
 <p>In places in the interpreter where we need to store a Lox value, we can use
 Object as the type. Java has boxed versions of its primitive types that all
-subclass Object, so we can use those for Lox&rsquo;s built-in types:</p><table>
+subclass Object, so we can use those for Lox&rsquo;s built-in types:
+在解释器中需要存储Lox值的地方，我们可以使用Object作为类型。Java已经将其基本类型的所有子类对象装箱了，因此我们可以将它们用作Lox的内置类型：
+| Lox type Lox类 | Java representation Java表示 |
+| | |
+| Any Lox value | Object |
+| <code>nil</code> | <code>null</code> |
+| Boolean | Boolean |
+| number | Double |
+| string | String |</p><table>
 <thead>
 <tr>
   <td>Lox type</td>
@@ -182,13 +208,14 @@ other words, the <span name="jvm">JVM</span>&rsquo;s own object representation
 conveniently gives us everything we need to implement Lox&rsquo;s built-in types.
 We&rsquo;ll have to do a little more work later when we add Lox&rsquo;s notions of
 functions, classes, and instances, but Object and the boxed primitive classes
-are sufficient for the types we need right now.</p>
+are sufficient for the types we need right now.
+给定一个静态类型为Object的值，我们可以使用Java内置的<code>instanceof</code>操作符来确定运行时的值是数字、字符串或其它什么。换句话说，JVM自己的对象表示方便地为我们提供了实现Lox内置类型所需的一切。当稍后添加Lox的函数、类和实例等概念时，我们还必须做更多的工作，但Object和基本类型的包装类足以满足我们现在的需要。</p>
 <aside name="jvm">
 <p>Another thing we need to do with values is manage their memory, and Java does
 that too. A handy object representation and a really nice garbage collector are
 the main reasons we&rsquo;re writing our first interpreter in Java.</p>
 </aside>
-<h2><a href="#evaluating-expressions" id="evaluating-expressions"><small>7&#8202;.&#8202;2</small>Evaluating Expressions</a></h2>
+<h2><a href="#evaluating-expressions--表达式求值" id="evaluating-expressions--表达式求值"><small>7&#8202;.&#8202;2</small>Evaluating Expressions  表达式求值</a></h2>
 <p>Next, we need blobs of code to implement the evaluation logic for each kind of
 expression we can parse. We could stuff that code into the syntax tree classes
 in something like an <code>interpret()</code> method. In effect, we could tell each syntax
@@ -200,7 +227,8 @@ chapter, we created an AstPrinter class. It took in a syntax tree and
 recursively traversed it, building up a string which it ultimately returned.
 That&rsquo;s almost exactly what a real interpreter does, except instead of
 concatenating strings, it computes values.</p>
-<p>We start with a new class.</p>
+<p>We start with a new class.
+我们先创建一个新类。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 create new file</div>
 <pre><span class="k">package</span> <span class="i">com.craftinginterpreters.lox</span>;
@@ -214,22 +242,25 @@ create new file</div>
 will be Object, the root class that we use to refer to a Lox value in our Java
 code. To satisfy the Visitor interface, we need to define visit methods for each
 of the four expression tree classes our parser produces. We&rsquo;ll start with the
-simplest<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
-<h3><a href="#evaluating-literals" id="evaluating-literals"><small>7&#8202;.&#8202;2&#8202;.&#8202;1</small>Evaluating literals</a></h3>
+simplest<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
+这个类声明它是一个访问者。访问方法的返回类型将是Object，即我们在Java代码中用来引用Lox值的根类。为了实现Visitor接口，我们需要为解析器生成的四个表达式树类中分别定义访问方法。我们从最简单的开始…</p>
+<h3><a href="#evaluating-literals--字面量求值" id="evaluating-literals--字面量求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;1</small>Evaluating literals  字面量求值</a></h3>
 <p>The leaves of an expression tree<span class="em">&mdash;</span>the atomic bits of syntax that all other
 expressions are composed of<span class="em">&mdash;</span>are <span name="leaf">literals</span>. Literals
 are almost values already, but the distinction is important. A literal is a <em>bit
 of syntax</em> that produces a value. A literal always appears somewhere in the
 user&rsquo;s source code. Lots of values are produced by computation and don&rsquo;t exist
 anywhere in the code itself. Those aren&rsquo;t literals. A literal comes from the
-parser&rsquo;s domain. Values are an interpreter concept, part of the runtime&rsquo;s world.</p>
+parser&rsquo;s domain. Values are an interpreter concept, part of the runtime&rsquo;s world.
+一个表达式树的叶子节点（构成其它表达式的语法原子单位）是字面量。字面符号几乎已经是值了，但两者的区别很重要。字面量是产生一个值的语法单元。字面量总是出现在用户的源代码中的某个地方。而很多值是通过计算产生的，并不存在于代码中的任何地方，这些都不是字面量。字面量来自于解析器领域，而值是一个解释器的概念，是运行时世界的一部分。</p>
 <aside name="leaf">
 <p>In the <a href="statements-and-state.html">next chapter</a>, when we implement variables, we&rsquo;ll add identifier
 expressions, which are also leaf nodes.</p>
 </aside>
 <p>So, much like we converted a literal <em>token</em> into a literal <em>syntax tree node</em>
 in the parser, now we convert the literal tree node into a runtime value. That
-turns out to be trivial.</p>
+turns out to be trivial.
+因此，就像我们在解析器中将字面量<em>标记</em>转换为字面量<em>语法树节点</em>一样，现在我们将字面量树节点转换为运行时值。这其实很简单。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 in class <em>Interpreter</em></div>
 <pre>  <span class="a">@Override</span>
@@ -241,10 +272,12 @@ in class <em>Interpreter</em></div>
 
 <p>We eagerly produced the runtime value way back during scanning and stuffed it in
 the token. The parser took that value and stuck it in the literal tree node,
-so to evaluate a literal, we simply pull it back out.</p>
-<h3><a href="#evaluating-parentheses" id="evaluating-parentheses"><small>7&#8202;.&#8202;2&#8202;.&#8202;2</small>Evaluating parentheses</a></h3>
+so to evaluate a literal, we simply pull it back out.
+我们早在扫描过程中就即时生成了运行时的值，并把它放进了语法标记中。解析器获取该值并将其插入字面量语法树节点中，所以要对字面量求值，我们只需把它存的值取出来。</p>
+<h3><a href="#evaluating-parentheses--括号求值" id="evaluating-parentheses--括号求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;2</small>Evaluating parentheses  括号求值</a></h3>
 <p>The next simplest node to evaluate is grouping<span class="em">&mdash;</span>the node you get as a result
-of using explicit parentheses in an expression.</p>
+of using explicit parentheses in an expression.
+下一个要求值的节点是分组——在表达式中显式使用括号时产生的语法树节点。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 in class <em>Interpreter</em></div>
 <pre>  <span class="a">@Override</span>
@@ -256,9 +289,11 @@ in class <em>Interpreter</em></div>
 
 <p>A <span name="grouping">grouping</span> node has a reference to an inner node
 for the expression contained inside the parentheses. To evaluate the grouping
-expression itself, we recursively evaluate that subexpression and return it.</p>
+expression itself, we recursively evaluate that subexpression and return it.
+一个分组节点中包含一个引用指向对应于括号内的表达式的内部节点。要想计算括号表达式，我们只需要递归地对子表达式求值并返回结果即可。</p>
 <p>We rely on this helper method which simply sends the expression back into the
-interpreter&rsquo;s visitor implementation:</p>
+interpreter&rsquo;s visitor implementation:
+我们依赖于下面这个辅助方法，它只是将表达式发送回解释器的访问者实现中：</p>
 <aside name="grouping">
 <p>Some parsers don&rsquo;t define tree nodes for parentheses. Instead, when parsing a
 parenthesized expression, they simply return the node for the inner expression.
@@ -273,10 +308,11 @@ in class <em>Interpreter</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in class <em>Interpreter</em></div>
 
-<h3><a href="#evaluating-unary-expressions" id="evaluating-unary-expressions"><small>7&#8202;.&#8202;2&#8202;.&#8202;3</small>Evaluating unary expressions</a></h3>
+<h3><a href="#evaluating-unary-expressions--一元表达式求值" id="evaluating-unary-expressions--一元表达式求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;3</small>Evaluating unary expressions  一元表达式求值</a></h3>
 <p>Like grouping, unary expressions have a single subexpression that we must
 evaluate first. The difference is that the unary expression itself does a little
-work afterwards.</p>
+work afterwards.
+像分组表达式一样，一元表达式也有一个必须先求值的子表达式。不同的是，一元表达式自身在完成求值之后还会做一些工作。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>visitLiteralExpr</em>()</div>
 <pre>  <span class="a">@Override</span>
@@ -296,20 +332,24 @@ add after <em>visitLiteralExpr</em>()</div>
 
 <p>First, we evaluate the operand expression. Then we apply the unary operator
 itself to the result of that. There are two different unary expressions,
-identified by the type of the operator token.</p>
+identified by the type of the operator token.
+首先，我们计算操作数表达式，然后我们将一元操作符作用于子表达式的结果。我们有两种不同的一元表达式，由操作符标记的类型来区分。</p>
 <p>Shown here is <code>-</code>, which negates the result of the subexpression. The
 subexpression must be a number. Since we don&rsquo;t <em>statically</em> know that in Java,
 we <span name="cast">cast</span> it before performing the operation. This type
 cast happens at runtime when the <code>-</code> is evaluated. That&rsquo;s the core of what makes
-a language dynamically typed right there.</p>
+a language dynamically typed right there.
+这里展示的是<code>-</code>，它会对子表达式的结构取负。子表达式结果必须是数字。因为我们在Java中无法<em>静态地</em>知道这一点，所以我们在执行操作之前先对其进行强制转换。这个类型转换是在运行时对<code>-</code>求值时发生的。这就是将语言动态类型化的核心所在。</p>
 <aside name="cast">
 <p>You&rsquo;re probably wondering what happens if the cast fails. Fear not, we&rsquo;ll get
 into that soon.</p>
 </aside>
 <p>You can start to see how evaluation recursively traverses the tree. We can&rsquo;t
 evaluate the unary operator itself until after we evaluate its operand
-subexpression. That means our interpreter is doing a <strong>post-order traversal</strong><span class="em">&mdash;</span>each node evaluates its children before doing its own work.</p>
-<p>The other unary operator is logical not.</p>
+subexpression. That means our interpreter is doing a <strong>post-order traversal</strong><span class="em">&mdash;</span>each node evaluates its children before doing its own work.
+你可以看到求值过程是如何递归遍历语法树的。在对一元操作符本身进行计算之前，我们必须先对其操作数子表达式求值。这表明，解释器正在进行<strong>后序遍历</strong>——每个节点在自己求值之前必须先对子节点求值。</p>
+<p>The other unary operator is logical not.
+另一个一元操作符是逻辑非。</p>
 <div class="codehilite"><pre class="insert-before">    switch (expr.operator.type) {
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitUnaryExpr</em>()</div>
@@ -321,18 +361,21 @@ in <em>visitUnaryExpr</em>()</div>
 
 <p>The implementation is simple, but what is this &ldquo;truthy&rdquo; thing about? We need to
 make a little side trip to one of the great questions of Western philosophy:
-<em>What is truth?</em></p>
-<h3><a href="#truthiness-and-falsiness" id="truthiness-and-falsiness"><small>7&#8202;.&#8202;2&#8202;.&#8202;4</small>Truthiness and falsiness</a></h3>
+<em>What is truth?</em>
+实现很简单，但是这里的“真实”指的是什么呢？我们需要简单地讨论一下西方哲学中的一个伟大问题：什么是真理？</p>
+<h3><a href="#truthiness-and-falsiness--真与假" id="truthiness-and-falsiness--真与假"><small>7&#8202;.&#8202;2&#8202;.&#8202;4</small>Truthiness and falsiness  真与假</a></h3>
 <p>OK, maybe we&rsquo;re not going to really get into the universal question, but at
 least inside the world of Lox, we need to decide what happens when you use
 something other than <code>true</code> or <code>false</code> in a logic operation like <code>!</code> or any
-other place where a Boolean is expected.</p>
+other place where a Boolean is expected.
+好吧，我们不会真正深入这个普世的问题，但是至少在Lox的世界中，我们需要确定当您在逻辑运算（如<code>!</code>或其他任何需要布尔值的地方）中使用非<code>true</code>或<code>false</code>以外的东西时会发生什么？</p>
 <p>We <em>could</em> just say it&rsquo;s an error because we don&rsquo;t roll with implicit
 conversions, but most dynamically typed languages aren&rsquo;t that ascetic. Instead,
 they take the universe of values of all types and partition them into two sets,
 one of which they define to be &ldquo;true&rdquo;, or &ldquo;truthful&rdquo;, or (my favorite) &ldquo;truthy&rdquo;,
 and the rest which are &ldquo;false&rdquo; or &ldquo;falsey&rdquo;. This partitioning is somewhat
-arbitrary and gets <span name="weird">weird</span> in a few languages.</p>
+arbitrary and gets <span name="weird">weird</span> in a few languages.
+我们<em>可以</em>说这是一个错误，因为我们没有使用隐式转换，但是大多数动态类型语言并不那么严格。相反，他们把所有类型的值分成两组，其中一组他们定义为“真”，其余为“假”。这种划分有些武断，在一些语言中会变得很奇怪。</p>
 <aside name="weird" class="bottom">
 <p>In JavaScript, strings are truthy, but empty strings are not. Arrays are truthy
 but empty arrays are<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>also truthy. The number <code>0</code> is falsey, but the <em>string</em>
@@ -344,7 +387,8 @@ non-empty strings are truthy.</p>
 <p>Get all that?</p>
 </aside>
 <p>Lox follows Ruby&rsquo;s simple rule: <code>false</code> and <code>nil</code> are falsey, and everything else
-is truthy. We implement that like so:</p>
+is truthy. We implement that like so:
+Lox遵循Ruby的简单规则：<code>false</code>和<code>nil</code>是假的，其他都是真的。我们是这样实现的：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>visitUnaryExpr</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">boolean</span> <span class="i">isTruthy</span>(<span class="t">Object</span> <span class="i">object</span>) {
@@ -355,9 +399,10 @@ add after <em>visitUnaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, add after <em>visitUnaryExpr</em>()</div>
 
-<h3><a href="#evaluating-binary-operators" id="evaluating-binary-operators"><small>7&#8202;.&#8202;2&#8202;.&#8202;5</small>Evaluating binary operators</a></h3>
+<h3><a href="#evaluating-binary-operators--二元操作符求值" id="evaluating-binary-operators--二元操作符求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;5</small>Evaluating binary operators  二元操作符求值</a></h3>
 <p>On to the last expression tree class, binary operators. There&rsquo;s a handful of
-them, and we&rsquo;ll start with the arithmetic ones.</p>
+them, and we&rsquo;ll start with the arithmetic ones.
+来到最后的表达式树类——二元操作符，其中包含很多运算符，我们先从数学运算开始。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>evaluate</em>()</div>
 <pre>  <span class="a">@Override</span>
@@ -389,8 +434,10 @@ simply an implementation detail.</p>
 make sure clox does the same thing.</p>
 </aside>
 <p>I think you can figure out what&rsquo;s going on here. The main difference from the
-unary negation operator is that we have two operands to evaluate.</p>
-<p>I left out one arithmetic operator because it&rsquo;s a little special.</p>
+unary negation operator is that we have two operands to evaluate.
+我想你能理解这里的实现。与一元取负运算符的主要区别是，我们有两个操作数要计算。</p>
+<p>I left out one arithmetic operator because it&rsquo;s a little special.
+我漏掉了一个算术运算符，因为它有点特殊。</p>
 <div class="codehilite"><pre class="insert-before">    switch (expr.operator.type) {
       case MINUS:
         return (double)left - (double)right;
@@ -413,7 +460,8 @@ in <em>visitBinaryExpr</em>()</div>
 <p>The <code>+</code> operator can also be used to concatenate two strings. To handle that, we
 don&rsquo;t just assume the operands are a certain type and <em>cast</em> them, we
 dynamically <em>check</em> the type and choose the appropriate operation. This is why
-we need our object representation to support <code>instanceof</code>.</p>
+we need our object representation to support <code>instanceof</code>.
+<code>+</code>操作符也可以用来拼接两个字符串。为此，我们不能只是假设操作数是某种类型并将其强制转换，而是要动态地检查操作数类型并选择适当的操作。这就是为什么我们需要对象表示能支持<code>instanceof</code>。</p>
 <aside name="plus">
 <p>We could have defined an operator specifically for string concatenation. That&rsquo;s
 what Perl (<code>.</code>), Lua (<code>..</code>), Smalltalk (<code>,</code>), Haskell (<code>++</code>), and others do.</p>
@@ -423,7 +471,8 @@ Java, JavaScript, Python, and others. This means that the <code>+</code> operato
 languages that don&rsquo;t use <code>+</code> for strings, they still often overload it for
 adding both integers and floating-point numbers.</p>
 </aside>
-<p>Next up are the comparison operators.</p>
+<p>Next up are the comparison operators.
+接下来是比较操作符。</p>
 <div class="codehilite"><pre class="insert-before">    switch (expr.operator.type) {
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
@@ -441,8 +490,10 @@ in <em>visitBinaryExpr</em>()</div>
 
 <p>They are basically the same as arithmetic. The only difference is that where the
 arithmetic operators produce a value whose type is the same as the operands
-(numbers or strings), the comparison operators always produce a Boolean.</p>
-<p>The last pair of operators are equality.</p>
+(numbers or strings), the comparison operators always produce a Boolean.
+它们基本上与算术运算符相同。唯一的区别是，算术运算符产生的值的类型与操作数（数字或字符串）相同，而比较运算符总是产生一个布尔值。</p>
+<p>The last pair of operators are equality.
+最后一对是等式运算符。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
 <pre>      <span class="k">case</span> <span class="i">BANG_EQUAL</span>: <span class="k">return</span> !<span class="i">isEqual</span>(<span class="i">left</span>, <span class="i">right</span>);
@@ -453,11 +504,13 @@ in <em>visitBinaryExpr</em>()</div>
 <p>Unlike the comparison operators which require numbers, the equality operators
 support operands of any type, even mixed ones. You can&rsquo;t ask Lox if 3 is <em>less</em>
 than <code>"three"</code>, but you can ask if it&rsquo;s <span name="equal"><em>equal</em></span> to
-it.</p>
+it.
+与需要数字的比较运算符不同，等式运算符支持任何类型的操作数，甚至是混合类型。你不能问Lox 3是否<em>小于</em><code>"three"</code>，但你可以问它3是否等于<code>"three"</code>。</p>
 <aside name="equal">
 <p>Spoiler alert: it&rsquo;s not.</p>
 </aside>
-<p>Like truthiness, the equality logic is hoisted out into a separate method.</p>
+<p>Like truthiness, the equality logic is hoisted out into a separate method.
+与真假判断一样，相等判断也被提取到了单独的方法中。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>isTruthy</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">boolean</span> <span class="i">isEqual</span>(<span class="t">Object</span> <span class="i">a</span>, <span class="t">Object</span> <span class="i">b</span>) {
@@ -471,12 +524,14 @@ add after <em>isTruthy</em>()</div>
 
 <p>This is one of those corners where the details of how we represent Lox objects
 in terms of Java matter. We need to correctly implement <em>Lox&rsquo;s</em> notion of
-equality, which may be different from Java&rsquo;s.</p>
+equality, which may be different from Java&rsquo;s.
+这是我们使用Java表示Lox对象的细节一角。我们需要正确地实现Lox的相等概念，这可能与Java中不同。</p>
 <p>Fortunately, the two are pretty similar. Lox doesn&rsquo;t do implicit conversions in
 equality and Java does not either. We do have to handle <code>nil</code>/<code>null</code> specially
 so that we don&rsquo;t throw a NullPointerException if we try to call <code>equals()</code> on
 <code>null</code>. Otherwise, we&rsquo;re fine. Java&rsquo;s <span name="nan"><code>equals()</code></span> method
-on Boolean, Double, and String have the behavior we want for Lox.</p>
+on Boolean, Double, and String have the behavior we want for Lox.
+幸运的是，这两者很相似。Lox不会在等式中做隐式转换，Java也不会。我们必须对 <code>nil</code>/<code>null</code> 做特殊处理，这样就不会在对<code>null</code>调用<code>equals()</code>方法时抛出NullPointerException。其它情况下，都是没问题的。Java中的<code>.equals()</code>方法对Boolean、Double和 String的处理都符合Lox的要求。</p>
 <aside name="nan">
 <p>What do you expect this to evaluate to:</p>
 <div class="codehilite"><pre>(<span class="n">0</span> / <span class="n">0</span>) == (<span class="n">0</span> / <span class="n">0</span>)
@@ -492,13 +547,15 @@ of language implementers&rsquo; lives.</p>
 <p>And that&rsquo;s it! That&rsquo;s all the code we need to correctly interpret a valid Lox
 expression. But what about an <em>invalid</em> one? In particular, what happens when a
 subexpression evaluates to an object of the wrong type for the operation being
-performed?</p>
-<h2><a href="#runtime-errors" id="runtime-errors"><small>7&#8202;.&#8202;3</small>Runtime Errors</a></h2>
+performed?
+就这样了! 这就是我们要正确解释一个有效的Lox表达式所需要的全部代码。但是<em>无效的</em>表达式呢？尤其是，当一个子表达式的计算结果类型与待执行的操作不符时会发生什么？</p>
+<h2><a href="#runtime-errors--运行时错误" id="runtime-errors--运行时错误"><small>7&#8202;.&#8202;3</small>Runtime Errors  运行时错误</a></h2>
 <p>I was cavalier about jamming casts in whenever a subexpression produces an
 Object and the operator requires it to be a number or a string. Those casts can
 fail. Even though the user&rsquo;s code is erroneous, if we want to make a <span
 name="fail">usable</span> language, we are responsible for handling that error
-gracefully.</p>
+gracefully.
+每当子表达式产生一个对象，而运算符要求它是一个数字或字符串时，我都会轻率地插入强制类型转换。这些类型转换可能会失败。如果我们想做出一个可用的语言，即使用户的代码是错误的，我们也有责任优雅地处理这个错误。</p>
 <aside name="fail">
 <p>We could simply not detect or report a type error at all. This is what C does if
 you cast a pointer to some type that doesn&rsquo;t match the data that is actually
@@ -512,42 +569,50 @@ memory.</p>
 previous chapters talking about error handling, but those were all <em>syntax</em> or
 <em>static</em> errors. Those are detected and reported before <em>any</em> code is executed.
 Runtime errors are failures that the language semantics demand we detect and
-report while the program is running (hence the name).</p>
+report while the program is running (hence the name).
+现在是时候讨论<strong>运行时错误</strong>了。在前面的章节中，我花了很多笔墨讨论错误处理，但这些都是语法或静态错误。这些都是在代码执行之前进行检测和报告的。运行时错误是语言语义要求我们在程序运行时检测和报告的故障（因此得名）。</p>
 <p>Right now, if an operand is the wrong type for the operation being performed,
 the Java cast will fail and the JVM will throw a ClassCastException. That
 unwinds the whole stack and exits the application, vomiting a Java stack trace
 onto the user. That&rsquo;s probably not what we want. The fact that Lox is
 implemented in Java should be a detail hidden from the user. Instead, we want
 them to understand that a <em>Lox</em> runtime error occurred, and give them an error
-message relevant to our language and their program.</p>
+message relevant to our language and their program.
+现在，如果操作数对于正在执行的操作来说是错误的类型，那么Java转换将失败，JVM将抛出一个ClassCastException。这将跳脱出整个调用堆栈并退出应用程序，然后向用户抛出Java堆栈跟踪信息。这可能不是我们想要的。Lox是用Java实现的这一事实应该是一个对用户隐藏的细节。相反，我们希望他们理解此时发生的是Lox运行时错误，并给他们一个与我们的语言和他们的程序相关的错误信息。</p>
 <p>The Java behavior does have one thing going for it, though. It correctly stops
 executing any code when the error occurs. Let&rsquo;s say the user enters some
-expression like:</p>
+expression like:
+不过，Java的行为确实有一个优点。当错误发生时，它会正确地停止执行代码。比方说，用户输入了一些表达式，比如：</p>
 <div class="codehilite"><pre><span class="n">2</span> * (<span class="n">3</span> / -<span class="s">&quot;muffin&quot;</span>)
 </pre></div>
 <p>You can&rsquo;t negate a <span name="muffin">muffin</span>, so we need to report a
 runtime error at that inner <code>-</code> expression. That in turn means we can&rsquo;t evaluate
 the <code>/</code> expression since it has no meaningful right operand. Likewise for the
 <code>*</code>. So when a runtime error occurs deep in some expression, we need to escape
-all the way out.</p>
+all the way out.
+你无法对&ldquo;muffin&rdquo;取负，所以我们需要在内部的<code>-</code>表达式中报告一个运行时错误。这又意味着我们无法计算<code>/</code>表达式，因为它的右操作数无意义，对于<code>*</code>表达式也是如此。因此，当某个表达式深处出现运行时错误时，我们需要一直跳出到最外层。</p>
 <aside name="muffin">
 <p>I don&rsquo;t know, man, <em>can</em> you negate a muffin?</p><img src="image/evaluating-expressions/muffin.png" alt="A muffin, negated." />
 </aside>
 <p>We could print a runtime error and then abort the process and exit the
 application entirely. That has a certain melodramatic flair. Sort of the
-programming language interpreter equivalent of a mic drop.</p>
+programming language interpreter equivalent of a mic drop.
+我们可以打印一个运行时错误，然后中止进程并完全退出应用程序。这有一点戏剧性，有点像编程语言解释器中的 &ldquo;mic drop&rdquo;。</p>
 <p>Tempting as that is, we should probably do something a little less cataclysmic.
 While a runtime error needs to stop evaluating the <em>expression</em>, it shouldn&rsquo;t
 kill the <em>interpreter</em>. If a user is running the REPL and has a typo in a line
 of code, they should still be able to keep the session going and enter more code
-after that.</p>
-<h3><a href="#detecting-runtime-errors" id="detecting-runtime-errors"><small>7&#8202;.&#8202;3&#8202;.&#8202;1</small>Detecting runtime errors</a></h3>
+after that.
+尽管这种处理方式很诱人，我们或许应该做一些不那么灾难性的事情。虽然运行时错误需要停止对表达式的计算，但它不应该杀死解释器。如果用户正在运行REPL，并且在一行代码中出现了错误，他们应该仍然能够保持会话，并在之后继续输入更多的代码。</p>
+<h3><a href="#detecting-runtime-errors--检测运行时错误" id="detecting-runtime-errors--检测运行时错误"><small>7&#8202;.&#8202;3&#8202;.&#8202;1</small>Detecting runtime errors  检测运行时错误</a></h3>
 <p>Our tree-walk interpreter evaluates nested expressions using recursive method
 calls, and we need to unwind out of all of those. Throwing an exception in Java
 is a fine way to accomplish that. However, instead of using Java&rsquo;s own cast
-failure, we&rsquo;ll define a Lox-specific one so that we can handle it how we want.</p>
+failure, we&rsquo;ll define a Lox-specific one so that we can handle it how we want.
+我们的树遍历型解释器通过递归方法调用计算嵌套的表达式，而且我们需要能够跳脱出所有的调用层。在Java中抛出异常是实现这一点的好方法。但是，我们不使用Java自己的转换失败错误，而是定义一个Lox专用的错误，这样我们就可以按照我们想要的方式处理它。</p>
 <p>Before we do the cast, we check the object&rsquo;s type ourselves. So, for unary <code>-</code>,
-we add:</p>
+we add:
+在进行强制转换之前，我们先自己检查对象的类型。因此，对于一元操作符<code>-</code>，我们需要添加代码：</p>
 <div class="codehilite"><pre class="insert-before">      case MINUS:
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitUnaryExpr</em>()</div>
@@ -556,7 +621,8 @@ in <em>visitUnaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitUnaryExpr</em>()</div>
 
-<p>The code to check the operand is:</p>
+<p>The code to check the operand is:
+检查操作数的代码如下：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>visitUnaryExpr</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">void</span> <span class="i">checkNumberOperand</span>(<span class="t">Token</span> <span class="i">operator</span>, <span class="t">Object</span> <span class="i">operand</span>) {
@@ -566,7 +632,8 @@ add after <em>visitUnaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, add after <em>visitUnaryExpr</em>()</div>
 
-<p>When the check fails, it throws one of these:</p>
+<p>When the check fails, it throws one of these:
+当检查失败时，代码会抛出一个以下的错误：</p>
 <div class="codehilite"><div class="source-file"><em>lox/RuntimeError.java</em><br>
 create new file</div>
 <pre><span class="k">package</span> <span class="i">com.craftinginterpreters.lox</span>;
@@ -584,7 +651,8 @@ create new file</div>
 
 <p>Unlike the Java cast exception, our <span name="class">class</span> tracks the
 token that identifies where in the user&rsquo;s code the runtime error came from. As
-with static errors, this helps the user know where to fix their code.</p>
+with static errors, this helps the user know where to fix their code.
+与Java转换异常不同，我们的类会跟踪语法标记，可以指明用户代码中抛出运行时错误的位置。与静态错误一样，这有助于用户知道去哪里修复代码。</p>
 <aside name="class">
 <p>I admit the name &ldquo;RuntimeError&rdquo; is confusing since Java defines a
 RuntimeException class. An annoying thing about building interpreters is your
@@ -593,8 +661,10 @@ wait until we support Lox classes.</p>
 </aside>
 <p>We need similar checking for the binary operators. Since I promised you every
 single line of code needed to implement the interpreters, I&rsquo;ll run through them
-all.</p>
-<p>Greater than:</p>
+all.
+我们需要对二元运算符进行类似的检查。既然我答应了要展示实现解释器所需的每一行代码，那么我就把它们逐一介绍一遍。</p>
+<p>Greater than:
+大于：</p>
 <div class="codehilite"><pre class="insert-before">      case GREATER:
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
@@ -603,7 +673,8 @@ in <em>visitBinaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitBinaryExpr</em>()</div>
 
-<p>Greater than or equal to:</p>
+<p>Greater than or equal to:
+大于等于：</p>
 <div class="codehilite"><pre class="insert-before">      case GREATER_EQUAL:
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
@@ -612,7 +683,8 @@ in <em>visitBinaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitBinaryExpr</em>()</div>
 
-<p>Less than:</p>
+<p>Less than:
+小于：</p>
 <div class="codehilite"><pre class="insert-before">      case LESS:
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
@@ -621,7 +693,8 @@ in <em>visitBinaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitBinaryExpr</em>()</div>
 
-<p>Less than or equal to:</p>
+<p>Less than or equal to:
+小于等于：</p>
 <div class="codehilite"><pre class="insert-before">      case LESS_EQUAL:
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
@@ -630,7 +703,8 @@ in <em>visitBinaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitBinaryExpr</em>()</div>
 
-<p>Subtraction:</p>
+<p>Subtraction:
+减法：</p>
 <div class="codehilite"><pre class="insert-before">      case MINUS:
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
@@ -639,7 +713,8 @@ in <em>visitBinaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitBinaryExpr</em>()</div>
 
-<p>Division:</p>
+<p>Division:
+除法：</p>
 <div class="codehilite"><pre class="insert-before">      case SLASH:
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
@@ -648,7 +723,8 @@ in <em>visitBinaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitBinaryExpr</em>()</div>
 
-<p>Multiplication:</p>
+<p>Multiplication:
+乘法：</p>
 <div class="codehilite"><pre class="insert-before">      case STAR:
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in <em>visitBinaryExpr</em>()</div>
@@ -658,7 +734,8 @@ in <em>visitBinaryExpr</em>()</div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitBinaryExpr</em>()</div>
 
 <p>All of those rely on this validator, which is virtually the same as the unary
-one:</p>
+one:
+所有这些都依赖于下面这个验证器，它实际上与一元验证器相同：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>checkNumberOperand</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">void</span> <span class="i">checkNumberOperands</span>(<span class="t">Token</span> <span class="i">operator</span>,
@@ -682,7 +759,8 @@ evaluating the right.</p>
 </aside>
 <p>The last remaining operator, again the odd one out, is addition. Since <code>+</code> is
 overloaded for numbers and strings, it already has code to check the types. All
-we need to do is fail if neither of the two success cases match.</p>
+we need to do is fail if neither of the two success cases match.
+剩下的最后一个运算符，也是最奇怪的一个，就是加法。由于<code>+</code>已经对数字和字符串进行重载，其中已经有检查类型的代码。我们需要做的就是在这两种情况都不匹配时失败。</p>
 <div class="codehilite"><pre class="insert-before">          return (String)left + (String)right;
         }
 
@@ -699,10 +777,11 @@ replace 1 line</div>
 errors are getting thrown. The next step is to write the code that catches them.
 For that, we need to wire up the Interpreter class into the main Lox class that
 drives it.</p>
-<h2><a href="#hooking-up-the-interpreter" id="hooking-up-the-interpreter"><small>7&#8202;.&#8202;4</small>Hooking Up the Interpreter</a></h2>
+<h2><a href="#hooking-up-the-interpreter--连接解释器" id="hooking-up-the-interpreter--连接解释器"><small>7&#8202;.&#8202;4</small>Hooking Up the Interpreter  连接解释器</a></h2>
 <p>The visit methods are sort of the guts of the Interpreter class, where the real
 work happens. We need to wrap a skin around them to interface with the rest of
-the program. The Interpreter&rsquo;s public API is simply one method.</p>
+the program. The Interpreter&rsquo;s public API is simply one method.
+visit方法是Interpreter类的核心部分，真正的工作是在这里进行的。我们需要给它们包上一层皮，以便与程序的其他部分对接。解释器的公共API只是一种方法。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 in class <em>Interpreter</em></div>
 <pre>  <span class="t">void</span> <span class="i">interpret</span>(<span class="t">Expr</span> <span class="i">expression</span>) {<span name="void"> </span>
@@ -719,7 +798,8 @@ in class <em>Interpreter</em></div>
 <p>This takes in a syntax tree for an expression and evaluates it. If that
 succeeds, <code>evaluate()</code> returns an object for the result value. <code>interpret()</code>
 converts that to a string and shows it to the user. To convert a Lox value to a
-string, we rely on:</p>
+string, we rely on:
+该方法会接收一个表达式对应的语法树，并对其进行计算。如果成功了，<code>evaluate()</code>方法会返回一个对象作为结果值。<code>interpret()</code>方法将结果转为字符串并展示给用户。要将Lox值转为字符串，我们要依赖下面的方法：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>isEqual</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">String</span> <span class="i">stringify</span>(<span class="t">Object</span> <span class="i">object</span>) {
@@ -740,15 +820,18 @@ add after <em>isEqual</em>()</div>
 
 <p>This is another of those pieces of code like <code>isTruthy()</code> that crosses the
 membrane between the user&rsquo;s view of Lox objects and their internal
-representation in Java.</p>
+representation in Java.
+这是一段像<code>isTruthy()</code>一样的代码，它连接了Lox对象的用户视图和它们在Java中的内部表示。</p>
 <p>It&rsquo;s pretty straightforward. Since Lox was designed to be familiar to someone
 coming from Java, things like Booleans look the same in both languages. The two
-edge cases are <code>nil</code>, which we represent using Java&rsquo;s <code>null</code>, and numbers.</p>
+edge cases are <code>nil</code>, which we represent using Java&rsquo;s <code>null</code>, and numbers.
+这很简单。由于Lox的设计旨在使Java使用者熟悉，因此Boolean之类的东西在两种语言中看起来是一样的。只有两种边界情况是<code>nil</code>(我们用Java的<code>null</code>表示)和数字。</p>
 <p>Lox uses double-precision numbers even for integer values. In that case, they
 should print without a decimal point. Since Java has both floating point and
 integer types, it wants you to know which one you&rsquo;re using. It tells you by
 adding an explicit <code>.0</code> to integer-valued doubles. We don&rsquo;t care about that, so
-we <span name="number">hack</span> it off the end.</p>
+we <span name="number">hack</span> it off the end.
+Lox即使对整数值也使用双精度数字。在这种情况下，打印时应该不带小数点。 由于Java同时具有浮点型和整型，它希望您知道正在使用的是哪一种类型。它通过在整数值的双数上添加一个明确的<code>.0</code>来告知用户。我们不关心这个，所以我们把它去掉。</p>
 <aside name="number">
 <p>Yet again, we take care of this edge case with numbers to ensure that jlox and
 clox work the same. Handling weird corners of the language like this will drive
@@ -757,11 +840,12 @@ you crazy but is an important part of the job.</p>
 the implementations aren&rsquo;t consistent, their program will break when they run it
 on different interpreters.</p>
 </aside>
-<h3><a href="#reporting-runtime-errors" id="reporting-runtime-errors"><small>7&#8202;.&#8202;4&#8202;.&#8202;1</small>Reporting runtime errors</a></h3>
+<h3><a href="#reporting-runtime-errors--报告运行时错误" id="reporting-runtime-errors--报告运行时错误"><small>7&#8202;.&#8202;4&#8202;.&#8202;1</small>Reporting runtime errors  报告运行时错误</a></h3>
 <p>If a runtime error is thrown while evaluating the expression, <code>interpret()</code>
 catches it. This lets us report the error to the user and then gracefully
 continue. All of our existing error reporting code lives in the Lox class, so we
-put this method there too:</p>
+put this method there too:
+如果在计算表达式时出现了运行时错误，<code>interpret()</code>方法会将其捕获。这样我们可以向用户报告这个错误，然后优雅地继续执行。我们现有的所有错误报告代码都在Lox类中，所以我们也把这个方法放在其中：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Lox.java</em><br>
 add after <em>error</em>()</div>
 <pre>  <span class="k">static</span> <span class="t">void</span> <span class="i">runtimeError</span>(<span class="t">RuntimeError</span> <span class="i">error</span>) {
@@ -775,8 +859,11 @@ add after <em>error</em>()</div>
 <p>We use the token associated with the RuntimeError to tell the user what line of
 code was executing when the error occurred. Even better would be to give the
 user an entire call stack to show how they <em>got</em> to be executing that code. But
-we don&rsquo;t have function calls yet, so I guess we don&rsquo;t have to worry about it.</p>
-<p>After showing the error, <code>runtimeError()</code> sets this field:</p>
+we don&rsquo;t have function calls yet, so I guess we don&rsquo;t have to worry about it.
+我们使用与RuntimeError关联的标记来告诉用户错误发生时正在执行哪一行代码。更好的做法是给用户一个完整的调用堆栈，来显示他们是如何执行该代码的。但我们目前还没有函数调用，所以我想我们不必担心这个问题。</p>
+<p>After showing the error, <code>runtimeError()</code> sets this field:
+展示错误之后，<code>runtimeError()</code>会设置以下字段：
+<u><em>lox/Lox.java，在 Lox类中添加：</em></u></p>
 <div class="codehilite"><pre class="insert-before">  static boolean hadError = false;
 </pre><div class="source-file"><em>lox/Lox.java</em><br>
 in class <em>Lox</em></div>
@@ -786,7 +873,8 @@ in class <em>Lox</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Lox.java</em>, in class <em>Lox</em></div>
 
-<p>That field plays a small but important role.</p>
+<p>That field plays a small but important role.
+这个字段担任着很小但很重要的角色。</p>
 <div class="codehilite"><pre class="insert-before">    run(new String(bytes, Charset.defaultCharset()));
 
     // Indicate an error in the exit code.
@@ -800,14 +888,16 @@ in <em>runFile</em>()</div>
 
 <p>If the user is running a Lox <span name="repl">script from a file</span> and a
 runtime error occurs, we set an exit code when the process quits to let the
-calling process know. Not everyone cares about shell etiquette, but we do.</p>
+calling process know. Not everyone cares about shell etiquette, but we do.
+如果用户从文件中运行Lox脚本，并且发生了运行时错误，我们在进程退出时设置一个退出码，以便让调用进程知道。不是每个人都在乎shell的规矩，但我们在乎。</p>
 <aside name="repl">
 <p>If the user is running the REPL, we don&rsquo;t care about tracking runtime errors.
 After they are reported, we simply loop around and let them input new code and
 keep going.</p>
 </aside>
-<h3><a href="#running-the-interpreter" id="running-the-interpreter"><small>7&#8202;.&#8202;4&#8202;.&#8202;2</small>Running the interpreter</a></h3>
-<p>Now that we have an interpreter, the Lox class can start using it.</p>
+<h3><a href="#running-the-interpreter--运行解释器" id="running-the-interpreter--运行解释器"><small>7&#8202;.&#8202;4&#8202;.&#8202;2</small>Running the interpreter  运行解释器</a></h3>
+<p>Now that we have an interpreter, the Lox class can start using it.
+现在我们有了解释器，Lox类可以开始使用它了。</p>
 <div class="codehilite"><pre class="insert-before">public class Lox {
 </pre><div class="source-file"><em>lox/Lox.java</em><br>
 in class <em>Lox</em></div>
@@ -819,9 +909,11 @@ in class <em>Lox</em></div>
 <p>We make the field static so that successive calls to <code>run()</code> inside a REPL
 session reuse the same interpreter. That doesn&rsquo;t make a difference now, but it
 will later when the interpreter stores global variables. Those variables should
-persist throughout the REPL session.</p>
+persist throughout the REPL session.
+我们把这个字段设置为静态的，这样在一个REPL会话中连续调用<code>run()</code>时就会重复使用同一个解释器。目前这一点没有什么区别，但以后当解释器需要存储全局变量时就会有区别。这些全局变量应该在整个REPL会话中持续存在。</p>
 <p>Finally, we remove the line of temporary code from the <a href="parsing-expressions.html">last chapter</a> for
-printing the syntax tree and replace it with this:</p>
+printing the syntax tree and replace it with this:
+最后，我们删除上一章中用于打印语法树的那行临时代码，并将其替换为：</p>
 <div class="codehilite"><pre class="insert-before">    // Stop if there was a syntax error.
     if (hadError) return;
 
@@ -834,11 +926,25 @@ replace 1 line</div>
 <div class="source-file-narrow"><em>lox/Lox.java</em>, in <em>run</em>(), replace 1 line</div>
 
 <p>We have an entire language pipeline now: scanning, parsing, and
-execution. Congratulations, you now have your very own arithmetic calculator.</p>
+execution. Congratulations, you now have your very own arithmetic calculator.
+我们现在有一个完整的语言管道：扫描、解析和执行。恭喜你，你现在有了你自己的算术计算器。</p>
 <p>As you can see, the interpreter is pretty bare bones. But the Interpreter class
 and the Visitor pattern we&rsquo;ve set up today form the skeleton that later chapters
 will stuff full of interesting guts<span class="em">&mdash;</span>variables, functions, etc. Right now, the
-interpreter doesn&rsquo;t do very much, but it&rsquo;s alive!</p><img src="image/evaluating-expressions/skeleton.png" alt="A skeleton waving hello." />
+interpreter doesn&rsquo;t do very much, but it&rsquo;s alive!
+如您所见，这个解释器是非常简陋的。但是我们今天建立的解释器类和访问者模式构成了一个骨架，后面的章节中将填充入有趣的内容（变量，函数等）。现在，解释器的功能并不多，但它是活的!
+: 在这里，我基本可以互换地使用 &ldquo;值 &ldquo;和 &ldquo;对象&ldquo;。稍后在C解释器中，我们会对它们稍作区分，但这主要是针对实现的两个不同方面（本地数据和堆分配数据）使用不同的术语。从用户的角度来看，这些术语是同义的。
+: 我们需要对值做的另一件事是管理它们的内存，Java也能做到这一点。方便的对象表示和非常好的垃圾收集器是我们用Java编写第一个解释器的主要原因。
+: 在下一章，当我们实现变量时，我们将添加标识符表达式，它也是叶子节点。
+: 有些解析器不为圆括号单独定义树节点。相应地，在解析带圆括号的表达式时，它们只返回内部表达式的节点。在Lox中，我们确实为圆括号创建了一个节点，因为稍后我们需要用它来正确处理赋值表达式的左值。
+: 在JavaScript中，字符串是真的，但空字符串不是。数组是真的，但空数组是<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>也是真的。数字0是假的，但字符串 &ldquo;0 &ldquo;是真的。&lt;br/>在 Python 中，空字符串是假的，就像在 JS 中一样，但其他空序列也是假的。&lt;br/>在PHP中，数字0和字符串 &ldquo;0 &ldquo;都是假的。大多数其他非空字符串是真实的。明白了吗？
+: 你是否注意到我们在这里固定了语言语义的一个细微的点？在二元表达式中，我们按从左到右的顺序计算操作数。如果这些操作数有副作用，那这个选择应该是用户可见的，所以这不是一个简单的实现细节。如果我们希望我们的两个解释器是一致的（提示：我们是一致的），我们就需要确保 clox 也是这样做的。
+: 你希望这个表达式的计算结果是什么？<code>(0 / 0) == (0 / 0)</code>。根据<a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</a>（它规定了双精度数的行为），用0除以0会得到特殊的<strong>NaN</strong>（不是一个数字）值。奇怪的是，NaN不等于它自己。&lt;br/>在Java中，基本类型double的<code>==</code>操作满足该规范，但是封装类Double的<code>equals()</code>方法不满足。Lox使用了后者，因此不遵循IEEE。这类微妙的不兼容问题占据了语言开发者生活中令人沮丧的一部分。
+: 我们完全可以不检测或报告一个类型错误。当你在C语言中把一个指针转换到与实际被指向的数据不匹配的类型上，C语言就是这样做的。C语言通过允许这样的操作获得了灵活性和速度，但它也是出了名的危险。一旦你错误地解释了内存中的数据，一切都完了。很少有现代语言接受这样的不安全操作。相反，大多数语言都是<strong>内存安全</strong>的，并通过静态和运行时检查的组合，确保程序永远不会错误地解释存储在内存中的值。
+: 我承认 &ldquo;RuntimeError &ldquo;这个名字令人困惑，因为Java定义了一个RuntimeException类。关于构建解释器的一件恼人的事情就是，您使用的名称经常与实现语言中已经使用的名称冲突。等我们支持Lox类就好了。
+: 另一个微妙的语义选择：在检查两个操作数的类型之前，我们先计算这两个操作数。假设我们有一个函数<code>say()</code>，它会打印其介绍的参数，然后返回。 我们使用这个函数写出表达式：<code>say("left") - say("right");</code>。我们的解释器在报告运行时错误之前会先打印&ldquo;left&rdquo;和&ldquo;right&rdquo;。相对地，我们也可以指定在计算右操作数之前先检查左操作数。
+: 同样，我们要处理这种数字的边界情况，以确保jlox和clox的工作方式相同。像这样处理语言的一个奇怪的边界可能会让你抓狂，但这是工作的一个重要部分。用户会有意或无意地依赖于这些细节，如果实现不一致，他们的程序在不同的解释器上运行时将会中断。
+: 如果用户正在运行REPL，则我们不必跟踪运行时错误。在错误被报告之后，我们只需要循环，让用户输入新的代码，然后继续执行。</p><img src="image/evaluating-expressions/skeleton.png" alt="A skeleton waving hello." />
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -847,7 +953,9 @@ interpreter doesn&rsquo;t do very much, but it&rsquo;s alive!</p><img src="image
 operators might have a reasonable interpretation for strings. Even
 comparisons among mixed types, like <code>3 &lt; "pancake"</code> could be handy to enable
 things like ordered collections of heterogeneous types. Or it could simply
-lead to bugs and confusion.</p>
+lead to bugs and confusion.
+1、允许对数字之外的类型进行比较可能是个有用的特性。操作符可能对字符串有合理的解释。即使是混合类型之间的比较，如<code>3&lt;"pancake"</code>，也可以方便地支持异构类型的有序集合。否则可能导致错误和混乱。
+你是否会扩展Lox以支持对其他类型的比较？如果是，您允许哪些类型间的比较，以及如何定义它们的顺序？证明你的选择并与其他语言进行比较。</p>
 <p>Would you extend Lox to support comparing other types? If so, which pairs of
 types do you allow and how do you define their ordering? Justify your
 choices and compare them to other languages.</p>
@@ -856,12 +964,15 @@ choices and compare them to other languages.</p>
 <p>Many languages define <code>+</code> such that if <em>either</em> operand is a string, the
 other is converted to a string and the results are then concatenated. For
 example, <code>"scone" + 4</code> would yield <code>scone4</code>. Extend the code in
-<code>visitBinaryExpr()</code> to support that.</p>
+<code>visitBinaryExpr()</code> to support that.
+2、许多语言对<code>+</code>的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，<code>"scone "+4</code>的结果应该是<code>scone4</code>。扩展<code>visitBinaryExpr()</code>中的代码以支持该特性。</p>
 </li>
 <li>
 <p>What happens right now if you divide a number by zero? What do you think
 should happen? Justify your choice. How do other languages you know handle
-division by zero, and why do they make the choices they do?</p>
+division by zero, and why do they make the choices they do?
+3、如果你用一个数除以0会发生什么？你认为应该发生什么？证明你的选择。你知道的其他语言是如何处理除零的，为什么他们会做出这样的选择？
+更改<code>visitBinaryExpr()</code>中的实现代码，以检测并报告运行时错误。</p>
 <p>Change the implementation in <code>visitBinaryExpr()</code> to detect and report a
 runtime error for this case.</p>
 </li>

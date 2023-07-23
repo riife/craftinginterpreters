@@ -33,7 +33,7 @@ class Page {
   String get fileName => toFileName(title);
 
   /// The path to this page's Markdown source file.
-  String get markdownPath => p.join("book", "$fileName.md");
+  String get markdownPath => p.join("book_zh", "$fileName.md");
 
   /// The path to this page's generated HTML file.
   String get htmlPath => p.join("docs", "$fileName.html");

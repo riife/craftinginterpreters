@@ -37,10 +37,11 @@
 <h3><a href="#top">Global Variables<small>21</small></a></h3>
 
 <ul>
-    <li><a href="#statements"><small>21.1</small> Statements</a></li>
-    <li><a href="#variable-declarations"><small>21.2</small> Variable Declarations</a></li>
-    <li><a href="#reading-variables"><small>21.3</small> Reading Variables</a></li>
-    <li><a href="#assignment"><small>21.4</small> Assignment</a></li>
+    <li><a href="#statements--语句"><small>21.1</small> Statements  语句</a></li>
+    <li><a href="#variable-declarations--变量声明"><small>21.2</small> Variable Declarations  变量声明</a></li>
+    <li><a href="#reading-variables--读取变量"><small>21.3</small> Reading Variables  读取变量</a></li>
+    <li><a href="#assignment--赋值"><small>21.4</small> Assignment  赋值</a></li>
+    <li><a href="#习题"><small>21.5</small> 习题</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
 </ul>
@@ -67,10 +68,11 @@
 <h3><a href="#top">Global Variables<small>21</small></a></h3>
 
 <ul>
-    <li><a href="#statements"><small>21.1</small> Statements</a></li>
-    <li><a href="#variable-declarations"><small>21.2</small> Variable Declarations</a></li>
-    <li><a href="#reading-variables"><small>21.3</small> Reading Variables</a></li>
-    <li><a href="#assignment"><small>21.4</small> Assignment</a></li>
+    <li><a href="#statements--语句"><small>21.1</small> Statements  语句</a></li>
+    <li><a href="#variable-declarations--变量声明"><small>21.2</small> Variable Declarations  变量声明</a></li>
+    <li><a href="#reading-variables--读取变量"><small>21.3</small> Reading Variables  读取变量</a></li>
+    <li><a href="#assignment--赋值"><small>21.4</small> Assignment  赋值</a></li>
+    <li><a href="#习题"><small>21.5</small> 习题</a></li>
     <li class="divider"></li>
     <li class="end-part"><a href="#challenges">Challenges</a></li>
 </ul>
@@ -95,14 +97,16 @@
 it never faded, and it never got stale. And then, when one wanted it, the
 bottle could be uncorked, and it would be like living the moment all over
 again.</p>
-<p><cite>Daphne du Maurier, <em>Rebecca</em></cite></p>
+<p><cite>Daphne du Maurier, <em>Rebecca</em></cite>
+如果有一种发明能把一段记忆装进瓶子里就好了，像香味一样。它永远不会褪色，也不会变质。然后，当一个人想要的时候，可以打开瓶塞，就像重新活在那个时刻一样。（达芙妮-杜穆里埃，《蝴蝶梦》）</p>
 </blockquote>
 <p>The <a href="hash-tables.html">previous chapter</a> was a long exploration of one big, deep,
 fundamental computer science data structure. Heavy on theory and concept. There
 may have been some discussion of big-O notation and algorithms. This chapter has
 fewer intellectual pretensions. There are no large ideas to learn. Instead, it&rsquo;s
 a handful of straightforward engineering tasks. Once we&rsquo;ve completed them, our
-virtual machine will support variables.</p>
+virtual machine will support variables.
+上一章对一个大的、深入的、基本的计算机科学数据结构进行了长时间的探索。偏重理论和概念。可能有一些关于大O符号和算法的讨论。这一章没有那么多知识分子的自吹自擂。没有什么伟大的思想需要学习。相反，它是一些简单的工程任务。一旦我们完成了这些任务，我们的虚拟机就可以支持变量。</p>
 <p>Actually, it will support only <em>global</em> variables. Locals are coming in the
 <a href="local-variables.html">next chapter</a>. In jlox, we managed to cram them both into a single chapter
 because we used the same implementation technique for all variables. We built a
@@ -112,7 +116,9 @@ simple, clean way to learn how to manage state.</p>
 call a function is not the road to a fast VM. Given how much code is concerned
 with using variables, if variables go slow, everything goes slow. For clox,
 we&rsquo;ll improve that by using a much more efficient strategy for <span
-name="different">local</span> variables, but globals aren&rsquo;t as easily optimized.</p>
+name="different">local</span> variables, but globals aren&rsquo;t as easily optimized.
+但它也很慢。每次进入一个代码块或调用一个函数时，都要分配一个新的哈希表，这不是通往快速虚拟机的道路。鉴于很多代码都与使用变量有关，如果变量操作缓慢，一切都会变慢。对于clox，我们会通过对局部变量使用更有效的策略来改善这一点，但全局变量不那么容易优化。
+This is a common meta-strategy in sophisticated language implementations. Often, the same language feature will have multiple implementation techniques, each tuned for different use patterns. For example, JavaScript VMs often have a faster representation for objects that are used more like instances of classes compared to other objects whose set of properties is more freely modified. C and C++ compilers usually have a variety of ways to compile <code>switch</code> statements based on the number of cases and how densely packed the case values are.</p>
 <aside name="different">
 <p>This is a common meta-strategy in sophisticated language implementations. Often,
 the same language feature will have multiple implementation techniques, each
@@ -126,7 +132,8 @@ based on the number of cases and how densely packed the case values are.</p>
 resolved dynamically. This means you can compile a chunk of code that refers to
 a global variable before it&rsquo;s defined. As long as the code doesn&rsquo;t <em>execute</em>
 before the definition happens, everything is fine. In practice, that means you
-can refer to later variables inside the body of functions.</p>
+can refer to later variables inside the body of functions.
+快速复习一下Lox语义：Lox中的全局变量是“后期绑定”的，或者说是动态解析的。这意味着，你可以在全局变量被定义之前，编译引用它的一大块代码。只要代码在定义发生之前没有执行，就没有问题。在实践中，这意味着你可以在函数的主体中引用后面的变量。</p>
 <div class="codehilite"><pre><span class="k">fun</span> <span class="i">showVariable</span>() {
   <span class="k">print</span> <span class="i">global</span>;
 }
@@ -136,25 +143,29 @@ can refer to later variables inside the body of functions.</p>
 </pre></div>
 <p>Code like this might seem odd, but it&rsquo;s handy for defining mutually recursive
 functions. It also plays nicer with the REPL. You can write a little function in
-one line, then define the variable it uses in the next.</p>
+one line, then define the variable it uses in the next.
+这样的代码可能看起来很奇怪，但它对于定义相互递归的函数很方便。它与REPL的配合也更好。你可以在一行中编写一个小函数，然后在下一行中定义它使用的变量。</p>
 <p>Local variables work differently. Since a local variable&rsquo;s declaration <em>always</em>
 occurs before it is used, the VM can resolve them at compile time, even in a
 simple single-pass compiler. That will let us use a smarter representation for
 locals. But that&rsquo;s for the next chapter. Right now, let&rsquo;s just worry about
-globals.</p>
-<h2><a href="#statements" id="statements"><small>21&#8202;.&#8202;1</small>Statements</a></h2>
+globals.
+局部变量的工作方式不同。因为局部变量的声明总是发生在使用之前，虚拟机可以在编译时解析它们，即使是在简单的单遍编译器中。这让我们可以为局部变量使用更聪明的表示形式。但这是下一章的内容。现在，我们只考虑全局变量。</p>
+<h2><a href="#statements--语句" id="statements--语句"><small>21&#8202;.&#8202;1</small>Statements  语句</a></h2>
 <p>Variables come into being using variable declarations, which means now is also
 the time to add support for statements to our compiler. If you recall, Lox
 splits statements into two categories. &ldquo;Declarations&rdquo; are those statements that
 bind a new name to a value. The other kinds of statements<span class="em">&mdash;</span>control flow,
 print, etc.<span class="em">&mdash;</span>are just called &ldquo;statements&rdquo;. We disallow declarations directly
-inside control flow statements, like this:</p>
+inside control flow statements, like this:
+变量是通过变量声明产生的，这意味着现在是时候向编译器中添加对语句的支持了。如果你还记得的话，Lox将语句分为两类。“声明”是那些将一个新名称与值绑定的语句。其它类型的语句——控制流、打印等——只被称为“语句”。我们不允许在控制流语句中直接使用声明，像这样：</p>
 <div class="codehilite"><pre><span class="k">if</span> (<span class="i">monday</span>) <span class="k">var</span> <span class="i">croissant</span> = <span class="s">&quot;yes&quot;</span>; <span class="c">// Error.</span>
 </pre></div>
 <p>Allowing it would raise confusing questions around the scope of the variable.
 So, like other languages, we prohibit it syntactically by having a separate
 grammar rule for the subset of statements that <em>are</em> allowed inside a control
-flow body.</p>
+flow body.
+允许这种做法会引发围绕变量作用域的令人困惑的问题。因此，像其它语言一样，对于允许出现在控制流主体内的语句子集，我们制定单独的语法规则，从而禁止这种做法。</p>
 <div class="codehilite"><pre><span class="i">statement</span>      → <span class="i">exprStmt</span>
                | <span class="i">forStmt</span>
                | <span class="i">ifStmt</span>
@@ -163,7 +174,8 @@ flow body.</p>
                | <span class="i">whileStmt</span>
                | <span class="i">block</span> ;
 </pre></div>
-<p>Then we use a separate rule for the top level of a script and inside a block.</p>
+<p>Then we use a separate rule for the top level of a script and inside a block.
+然后，我们为脚本的顶层和代码块内部使用单独的规则。</p>
 <div class="codehilite"><pre><span class="i">declaration</span>    → <span class="i">classDecl</span>
                | <span class="i">funDecl</span>
                | <span class="i">varDecl</span>
@@ -173,14 +185,16 @@ flow body.</p>
 includes <code>statement</code> so that all statement types are allowed. Since <code>block</code>
 itself is in <code>statement</code>, you can put declarations <span
 name="parens">inside</span> a control flow construct by nesting them inside a
-block.</p>
+block.
+<code>declaration</code>包含声明名称的语句，也包含<code>statement</code>规则，这样所有的语句类型都是允许的。因为<code>block</code>本身就在<code>statement</code>中，你可以通过将声明嵌套在代码块中的方式将它们放在控制流结构中。</p>
 <aside name="parens">
 <p>Blocks work sort of like parentheses do for expressions. A block lets you put
 the &ldquo;lower-precedence&rdquo; declaration statements in places where only a
 &ldquo;higher-precedence&rdquo; non-declaring statement is allowed.</p>
 </aside>
 <p>In this chapter, we&rsquo;ll cover only a couple of statements and one
-declaration.</p>
+declaration.
+在本章中，我们只讨论几个语句和一个声明。</p>
 <div class="codehilite"><pre><span class="i">statement</span>      → <span class="i">exprStmt</span>
                | <span class="i">printStmt</span> ;
 
@@ -189,7 +203,8 @@ declaration.</p>
 </pre></div>
 <p>Up to now, our VM considered a &ldquo;program&rdquo; to be a single expression since that&rsquo;s
 all we could parse and compile. In a full Lox implementation, a program is a
-sequence of declarations. We&rsquo;re ready to support that now.</p>
+sequence of declarations. We&rsquo;re ready to support that now.
+到目前为止，我们的虚拟机都认为“程序”是一个表达式，因为我们只能解析和编译一条表达式。在完整的Lox实现中，程序是一连串的声明。我们现在已经准备要支持它了。</p>
 <div class="codehilite"><pre class="insert-before">  advance();
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>compile</em>()<br>
@@ -205,7 +220,8 @@ replace 2 lines</div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>compile</em>(), replace 2 lines</div>
 
 <p>We keep compiling declarations until we hit the end of the source file. We
-compile a single declaration using this:</p>
+compile a single declaration using this:
+我们会一直编译声明语句，直到到达源文件的结尾。我们用这个方法来编译一条声明语句：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>expression</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">declaration</span>() {
@@ -215,7 +231,8 @@ add after <em>expression</em>()</div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after <em>expression</em>()</div>
 
 <p>We&rsquo;ll get to variable declarations later in the chapter, so for now, we simply
-forward to <code>statement()</code>.</p>
+forward to <code>statement()</code>.
+我们将在本章后面讨论变量声明，所以现在，我们直接使用<code>statement()</code>。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>declaration</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">statement</span>() {
@@ -228,7 +245,8 @@ add after <em>declaration</em>()</div>
 
 <p>Blocks can contain declarations, and control flow statements can contain other
 statements. That means these two functions will eventually be recursive. We may
-as well write out the forward declarations now.</p>
+as well write out the forward declarations now.
+代码块可以包含声明，而控制流语句可以包含其它语句。这意味着这两个函数最终是递归的。我们不妨现在就把前置声明写出来。</p>
 <div class="codehilite"><pre class="insert-before">static void expression();
 </pre><div class="source-file"><em>compiler.c</em><br>
 add after <em>expression</em>()</div>
@@ -238,10 +256,11 @@ add after <em>expression</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after <em>expression</em>()</div>
 
-<h3><a href="#print-statements" id="print-statements"><small>21&#8202;.&#8202;1&#8202;.&#8202;1</small>Print statements</a></h3>
+<h3><a href="#print-statements--print语句" id="print-statements--print语句"><small>21&#8202;.&#8202;1&#8202;.&#8202;1</small>Print statements  Print语句</a></h3>
 <p>We have two statement types to support in this chapter. Let&rsquo;s start with <code>print</code>
 statements, which begin, naturally enough, with a <code>print</code> token. We detect that
-using this helper function:</p>
+using this helper function:
+在本章中，我们有两种语句类型需要支持。我们从<code>print</code>语句开始，它自然是以<code>print</code>标识开头的。我们使用这个辅助函数来检测：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>consume</em>()</div>
 <pre><span class="k">static</span> <span class="t">bool</span> <span class="i">match</span>(<span class="t">TokenType</span> <span class="i">type</span>) {
@@ -255,7 +274,8 @@ add after <em>consume</em>()</div>
 <p>You may recognize it from jlox. If the current token has the given type, we
 consume the token and return <code>true</code>. Otherwise we leave the token alone and
 return <code>false</code>. This <span name="turtles">helper</span> function is implemented
-in terms of this other helper:</p>
+in terms of this other helper:
+你可能看出它是从jlox来的。如果当前的标识是指定类型，我们就消耗该标识并返回<code>true</code>。否则，我们就不处理该标识并返回<code>false</code>。这个辅助函数是通过另一个辅助函数实现的：</p>
 <aside name="turtles">
 <p>It&rsquo;s helpers all the way down!</p>
 </aside>
@@ -270,7 +290,8 @@ add after <em>consume</em>()</div>
 <p>The <code>check()</code> function returns <code>true</code> if the current token has the given type.
 It seems a little <span name="read">silly</span> to wrap this in a function, but
 we&rsquo;ll use it more later, and I think short verb-named functions like this make
-the parser easier to read.</p>
+the parser easier to read.
+如果当前标识符合给定的类型，<code>check()</code>函数返回<code>true</code>。将它封装在一个函数中似乎有点傻，但我们以后会更多地使用它，而且我们认为像这样简短的动词命名的函数使解析器更容易阅读。</p>
 <aside name="read">
 <p>This sounds trivial, but handwritten parsers for non-toy languages get pretty
 big. When you have thousands of lines of code, a utility function that turns two
@@ -278,7 +299,8 @@ lines into one and makes the result a little more readable easily earns its
 keep.</p>
 </aside>
 <p>If we did match the <code>print</code> token, then we compile the rest of the statement
-here:</p>
+here:
+如果我们确实匹配到了<code>print</code>标识，那么我们在下面这个方法中编译该语句的剩余部分：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>expression</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">printStatement</span>() {
@@ -291,7 +313,8 @@ add after <em>expression</em>()</div>
 
 <p>A <code>print</code> statement evaluates an expression and prints the result, so we first
 parse and compile that expression. The grammar expects a semicolon after that,
-so we consume it. Finally, we emit a new instruction to print the result.</p>
+so we consume it. Finally, we emit a new instruction to print the result.
+<code>print</code>语句会对表达式求值并打印出结果，所以我们首先解析并编译这个表达式。语法要求在表达式之后有一个分号，所以我们消耗一个分号标识。最后，我们生成一条新指令来打印结果。</p>
 <div class="codehilite"><pre class="insert-before">  OP_NEGATE,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -300,7 +323,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>At runtime, we execute this instruction like so:</p>
+<p>At runtime, we execute this instruction like so:
+在运行时，我们这样执行这条指令：</p>
 <div class="codehilite"><pre class="insert-before">        break;
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -315,26 +339,31 @@ in <em>run</em>()</div>
 
 <p>When the interpreter reaches this instruction, it has already executed the code
 for the expression, leaving the result value on top of the stack. Now we simply
-pop and print it.</p>
+pop and print it.
+当解释器到达这条指令时，它已经执行了表达式的代码，将结果值留在了栈顶。现在我们只需要弹出该值并打印。</p>
 <p>Note that we don&rsquo;t push anything else after that. This is a key difference
 between expressions and statements in the VM. Every bytecode instruction has a
 <span name="effect"><strong>stack effect</strong></span> that describes how the instruction
 modifies the stack. For example, <code>OP_ADD</code> pops two values and pushes one,
-leaving the stack one element smaller than before.</p>
+leaving the stack one element smaller than before.
+请注意，在此之后我们不会再向栈中压入任何内容。这是虚拟机中表达式和语句之间的一个关键区别。每个字节码指令都有<strong>堆栈效应</strong>，这个值用于描述指令如何修改堆栈内容。例如，<code>OP_ADD</code>会弹出两个值并压入一个值，使得栈中比之前少了一个元素。</p>
 <aside name="effect">
 <p>The stack is one element shorter after an <code>OP_ADD</code>, so its effect is -1:</p><img src="image/global-variables/stack-effect.png" alt="The stack effect of an OP_ADD instruction." />
 </aside>
 <p>You can sum the stack effects of a series of instructions to get their total
 effect. When you add the stack effects of the series of instructions compiled
 from any complete expression, it will total one. Each expression leaves one
-result value on the stack.</p>
+result value on the stack.
+你可以把一系列指令的堆栈效应相加，得到它们的总体效应。如果把从任何一个完整的表达式中编译得到的一系列指令的堆栈效应相加，其总数是1。每个表达式会在栈中留下一个结果值。</p>
 <p>The bytecode for an entire statement has a total stack effect of zero. Since a
 statement produces no values, it ultimately leaves the stack unchanged, though
 it of course uses the stack while it&rsquo;s doing its thing. This is important
 because when we get to control flow and looping, a program might execute a long
 series of statements. If each statement grew or shrank the stack, it might
-eventually overflow or underflow.</p>
-<p>While we&rsquo;re in the interpreter loop, we should delete a bit of code.</p>
+eventually overflow or underflow.
+整个语句对应字节码的总堆栈效应为0。因为语句不产生任何值，所以它最终会保持堆栈不变，尽管它在执行自己的操作时难免会使用堆栈。这一点很重要，因为等我们涉及到控制流和循环时，一个程序可能会执行一长串的语句。如果每条语句都增加或减少堆栈，最终就可能会溢出或下溢。</p>
+<p>While we&rsquo;re in the interpreter loop, we should delete a bit of code.
+在解释器循环中，我们应该删除一些代码。</p>
 <div class="codehilite"><pre class="insert-before">      case OP_RETURN: {
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()<br>
@@ -347,12 +376,14 @@ replace 2 lines</div>
 <p>When the VM only compiled and evaluated a single expression, we had some
 temporary code in <code>OP_RETURN</code> to output the value. Now that we have statements
 and <code>print</code>, we don&rsquo;t need that anymore. We&rsquo;re one <span
-name="return">step</span> closer to the complete implementation of clox.</p>
+name="return">step</span> closer to the complete implementation of clox.
+当虚拟机只编译和计算一条表达式时，我们在<code>OP_RETURN</code>中使用一些临时代码来输出值。现在我们已经有了语句和<code>print</code>，就不再需要这些了。我们离clox的完全实现又近了一步。</p>
 <aside name="return">
 <p>We&rsquo;re only one step closer, though. We will revisit <code>OP_RETURN</code> again when we
 add functions. Right now, it exits the entire interpreter loop.</p>
 </aside>
-<p>As usual, a new instruction needs support in the disassembler.</p>
+<p>As usual, a new instruction needs support in the disassembler.
+像往常一样，一条新指令需要反汇编程序的支持。</p>
 <div class="codehilite"><pre class="insert-before">      return simpleInstruction(&quot;OP_NEGATE&quot;, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -362,15 +393,18 @@ in <em>disassembleInstruction</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>debug.c</em>, in <em>disassembleInstruction</em>()</div>
 
-<p>That&rsquo;s our <code>print</code> statement. If you want, give it a whirl:</p>
+<p>That&rsquo;s our <code>print</code> statement. If you want, give it a whirl:
+这就是我们的<code>print</code>语句。如果你愿意，可以试一试：</p>
 <div class="codehilite"><pre><span class="k">print</span> <span class="n">1</span> + <span class="n">2</span>;
 <span class="k">print</span> <span class="n">3</span> * <span class="n">4</span>;
 </pre></div>
 <p>Exciting! OK, maybe not thrilling, but we can build scripts that contain as many
-statements as we want now, which feels like progress.</p>
-<h3><a href="#expression-statements" id="expression-statements"><small>21&#8202;.&#8202;1&#8202;.&#8202;2</small>Expression statements</a></h3>
+statements as we want now, which feels like progress.
+令人兴奋！好吧，也许没有那么激动人心，但是我们现在可以构建包含任意多语句的脚本，这感觉是一种进步。</p>
+<h3><a href="#expression-statements--表达式语句" id="expression-statements--表达式语句"><small>21&#8202;.&#8202;1&#8202;.&#8202;2</small>Expression statements  表达式语句</a></h3>
 <p>Wait until you see the next statement. If we <em>don&rsquo;t</em> see a <code>print</code> keyword, then
-we must be looking at an expression statement.</p>
+we must be looking at an expression statement.
+等待，直到你看到下一条语句。如果没有看到<code>print</code>关键字，那么我们看到的一定是一条表达式语句。</p>
 <div class="codehilite"><pre class="insert-before">    printStatement();
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>statement</em>()</div>
@@ -380,7 +414,8 @@ in <em>statement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>statement</em>()</div>
 
-<p>It&rsquo;s parsed like so:</p>
+<p>It&rsquo;s parsed like so:
+它是这样解析的：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>expression</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">expressionStatement</span>() {
@@ -394,13 +429,15 @@ add after <em>expression</em>()</div>
 <p>An &ldquo;expression statement&rdquo; is simply an expression followed by a semicolon.
 They&rsquo;re how you write an expression in a context where a statement is expected.
 Usually, it&rsquo;s so that you can call a function or evaluate an assignment for its
-side effect, like this:</p>
+side effect, like this:
+“表达式语句”就是一个表达式后面跟着一个分号。这是在需要语句的上下文中写表达式的方式。通常来说，这样你就可以调用函数或执行赋值操作以触发其副作用，像这样：</p>
 <div class="codehilite"><pre><span class="i">brunch</span> = <span class="s">&quot;quiche&quot;</span>;
 <span class="i">eat</span>(<span class="i">brunch</span>);
 </pre></div>
 <p>Semantically, an expression statement evaluates the expression and discards the
 result. The compiler directly encodes that behavior. It compiles the expression,
-and then emits an <code>OP_POP</code> instruction.</p>
+and then emits an <code>OP_POP</code> instruction.
+从语义上说，表达式语句会对表达式求值并丢弃结果。编译器直接对这种行为进行编码。它会编译表达式，然后生成一条<code>OP_POP</code>指令。</p>
 <div class="codehilite"><pre class="insert-before">  OP_FALSE,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -410,7 +447,8 @@ in enum <em>OpCode</em></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
 <p>As the name implies, that instruction pops the top value off the stack and
-forgets it.</p>
+forgets it.
+顾名思义，该指令会弹出栈顶的值并将其遗弃。</p>
 <div class="codehilite"><pre class="insert-before">      case OP_FALSE: push(BOOL_VAL(false)); break;
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -419,7 +457,8 @@ in <em>run</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>run</em>()</div>
 
-<p>We can disassemble it too.</p>
+<p>We can disassemble it too.
+我们也可以对它进行反汇编。</p>
 <div class="codehilite"><pre class="insert-before">      return simpleInstruction(&quot;OP_FALSE&quot;, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -432,18 +471,20 @@ in <em>disassembleInstruction</em>()</div>
 <p>Expression statements aren&rsquo;t very useful yet since we can&rsquo;t create any
 expressions that have side effects, but they&rsquo;ll be essential when we
 <a href="calls-and-functions.html">add functions later</a>. The <span name="majority">majority</span> of
-statements in real-world code in languages like C are expression statements.</p>
+statements in real-world code in languages like C are expression statements.
+表达式语句现在还不是很有用，因为我们无法创建任何有副作用的表达式，但等我们后面添加函数时，它们将是必不可少的。在像C这样的真正语言中，大部分语句都是表达式语句。</p>
 <aside name="majority">
 <p>By my count, 80 of the 149 statements, in the version of &ldquo;compiler.c&rdquo; that we
 have at the end of this chapter are expression statements.</p>
 </aside>
-<h3><a href="#error-synchronization" id="error-synchronization"><small>21&#8202;.&#8202;1&#8202;.&#8202;3</small>Error synchronization</a></h3>
+<h3><a href="#error-synchronization--错误同步" id="error-synchronization--错误同步"><small>21&#8202;.&#8202;1&#8202;.&#8202;3</small>Error synchronization  错误同步</a></h3>
 <p>While we&rsquo;re getting this initial work done in the compiler, we can tie off a
 loose end we left <a href="compiling-expressions.html#handling-syntax-errors">several chapters back</a>. Like jlox, clox uses panic
 mode error recovery to minimize the number of cascaded compile errors that it
 reports. The compiler exits panic mode when it reaches a synchronization point.
 For Lox, we chose statement boundaries as that point. Now that we have
-statements, we can implement synchronization.</p>
+statements, we can implement synchronization.
+当我们在编译器中完成这些初始化工作时，我们可以把前几章遗留的一个小尾巴处理一下。与jlox一样，clox也使用了恐慌模式下的错误恢复来减少它所报告的级联编译错误。当编译器到达同步点时，就退出恐慌模式。对于Lox来说，我们选择语句边界作为同步点。现在我们有了语句，就可以实现同步了。</p>
 <div class="codehilite"><pre class="insert-before">  statement();
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>declaration</em>()</div>
@@ -455,7 +496,8 @@ in <em>declaration</em>()</div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>declaration</em>()</div>
 
 <p>If we hit a compile error while parsing the previous statement, we enter panic
-mode. When that happens, after the statement we start synchronizing.</p>
+mode. When that happens, after the statement we start synchronizing.
+如果我们在解析前一条语句时遇到编译错误，我们就会进入恐慌模式。当这种情况发生时，我们会在这条语句之后开始同步。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>printStatement</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">synchronize</span>() {
@@ -488,12 +530,34 @@ add after <em>printStatement</em>()</div>
 statement boundary. We recognize the boundary by looking for a preceding token
 that can end a statement, like a semicolon. Or we&rsquo;ll look for a subsequent token
 that begins a statement, usually one of the control flow or declaration
-keywords.</p>
-<h2><a href="#variable-declarations" id="variable-declarations"><small>21&#8202;.&#8202;2</small>Variable Declarations</a></h2>
+keywords.
+我们会不分青红皂白地跳过标识，直到我们到达一个看起来像是语句边界的位置。我们识别边界的方式包括，查找可以结束一条语句的前驱标识，如分号；或者我们可以查找能够开始一条语句的后续标识，通常是控制流或声明语句的关键字之一。</p>
+<h2><a href="#variable-declarations--变量声明" id="variable-declarations--变量声明"><small>21&#8202;.&#8202;2</small>Variable Declarations  变量声明</a></h2>
 <p>Merely being able to <em>print</em> doesn&rsquo;t win your language any prizes at the
 programming language <span name="fair">fair</span>, so let&rsquo;s move on to
 something a little more ambitious and get variables going. There are three
-operations we need to support:</p>
+operations we need to support:
+仅仅能够<em>打印</em>并不能为你的语言在编程语言博览会上赢得任何奖项，所以让我们继续做一些更有野心的事，让变量发挥作用。我们需要支持三种操作：</p>
+<ul>
+<li>
+<blockquote>
+<p>Declaring a new variable using a <code>var</code> statement.
+使用<code>var</code>语句声明一个新变量</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>Accessing the value of a variable using an identifier expression.
+使用标识符表达式访问一个变量的值</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>Storing a new value in an existing variable using an assignment expression.
+使用赋值表达式将一个新的值存储在现有的变量中</p>
+</blockquote>
+</li>
+</ul>
 <aside name="fair">
 <p>I can&rsquo;t help but imagine a &ldquo;language fair&rdquo; like some country 4H thing. Rows of
 straw-lined stalls full of baby languages <em>moo</em>ing and <em>baa</em>ing at each other.</p>
@@ -504,7 +568,8 @@ straw-lined stalls full of baby languages <em>moo</em>ing and <em>baa</em>ing at
 <li>Storing a new value in an existing variable using an assignment expression.</li>
 </ul>
 <p>We can&rsquo;t do either of the last two until we have some variables, so we start
-with declarations.</p>
+with declarations.
+等我们有了变量以后，才能做后面两件事，所以我们从声明开始。</p>
 <div class="codehilite"><pre class="insert-before">static void declaration() {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>declaration</em>()<br>
@@ -521,7 +586,8 @@ replace 1 line</div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>declaration</em>(), replace 1 line</div>
 
 <p>The placeholder parsing function we sketched out for the declaration grammar
-rule has an actual production now. If we match a <code>var</code> token, we jump here:</p>
+rule has an actual production now. If we match a <code>var</code> token, we jump here:
+我们为声明语法规则建立的占位解析函数现在已经有了实际的生成式。如果我们匹配到一个<code>var</code>标识，就跳转到这里：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>expression</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">varDeclaration</span>() {
@@ -545,7 +611,8 @@ add after <em>expression</em>()</div>
 followed by an initializer expression. If the user doesn&rsquo;t initialize the
 variable, the compiler implicitly initializes it to <span
 name="nil"><code>nil</code></span> by emitting an <code>OP_NIL</code> instruction. Either way, we
-expect the statement to be terminated with a semicolon.</p>
+expect the statement to be terminated with a semicolon.
+关键字后面跟着变量名。它是由<code>parseVariable()</code>编译的，我们马上就会讲到。然后我们会寻找一个<code>=</code>，后跟初始化表达式。如果用户没有初始化变量，编译器会生成<code>OP_NIL</code>指令隐式地将其初始化为<code>nil</code>。无论哪种方式，我们都希望语句以分号结束。</p>
 <aside name="nil" class="bottom">
 <p>Essentially, the compiler desugars a variable declaration like:</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">a</span>;
@@ -557,7 +624,8 @@ expect the statement to be terminated with a semicolon.</p>
 latter.</p>
 </aside>
 <p>There are two new functions here for working with variables and identifiers.
-Here is the first:</p>
+Here is the first:
+这里有两个新函数用于处理变量和标识符。下面是第一个：</p>
 <div class="codehilite"><pre class="insert-before">static void parsePrecedence(Precedence precedence);
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -570,7 +638,8 @@ add after <em>parsePrecedence</em>()</div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after <em>parsePrecedence</em>()</div>
 
 <p>It requires the next token to be an identifier, which it consumes and sends
-here:</p>
+here:
+它要求下一个标识是一个标识符，它会消耗该标识并发送到这里：</p>
 <div class="codehilite"><pre class="insert-before">static void parsePrecedence(Precedence precedence);
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -584,14 +653,17 @@ add after <em>parsePrecedence</em>()</div>
 
 <p>This function takes the given token and adds its lexeme to the chunk&rsquo;s constant
 table as a string. It then returns the index of that constant in the constant
-table.</p>
+table.
+这个函数接受给定的标识，并将其词素作为一个字符串添加到字节码块的常量表中。然后，它会返回该常量在常量表中的索引。</p>
 <p>Global variables are looked up <em>by name</em> at runtime. That means the VM<span class="em">&mdash;</span>the
 bytecode interpreter loop<span class="em">&mdash;</span>needs access to the name. A whole string is too big
 to stuff into the bytecode stream as an operand. Instead, we store the string in
 the constant table and the instruction then refers to the name by its index in
-the table.</p>
+the table.
+全局变量在运行时是按<em>名称</em>查找的。这意味着虚拟机（字节码解释器循环）需要访问该名称。整个字符串太大，不能作为操作数塞进字节码流中。相反，我们将字符串存储到常量表中，然后指令通过该名称在表中的索引来引用它。</p>
 <p>This function returns that index all the way to <code>varDeclaration()</code> which later
-hands it over to here:</p>
+hands it over to here:
+这个函数会将索引一直返回给<code>varDeclaration()</code>，随后又将其传递到这里：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>parseVariable</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">defineVariable</span>(<span class="t">uint8_t</span> <span class="i">global</span>) {
@@ -605,14 +677,16 @@ the new variable and stores its initial value. The index of the variable&rsquo;s
 in the constant table is the instruction&rsquo;s operand. As usual in a stack-based
 VM, we emit this instruction last. At runtime, we execute the code for the
 variable&rsquo;s initializer first. That leaves the value on the stack. Then this
-instruction takes that value and stores it away for later.</p>
+instruction takes that value and stores it away for later.
+它会输出字节码指令，用于定义新变量并存储其初始化值。变量名在常量表中的索引是该指令的操作数。在基于堆栈的虚拟机中，我们通常是最后发出这条指令。在运行时，我们首先执行变量初始化器的代码，将值留在栈中。然后这条指令会获取该值并保存起来，以供日后使用。</p>
 <aside name="helper">
 <p>I know some of these functions seem pretty pointless right now. But we&rsquo;ll get
 more mileage out of them as we add more language features for working with
 names. Function and class declarations both declare new variables, and variable
 and assignment expressions access them.</p>
 </aside>
-<p>Over in the runtime, we begin with this new instruction:</p>
+<p>Over in the runtime, we begin with this new instruction:
+在运行时，我们从这条新指令开始：</p>
 <div class="codehilite"><pre class="insert-before">  OP_POP,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -621,7 +695,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>Thanks to our handy-dandy hash table, the implementation isn&rsquo;t too hard.</p>
+<p>Thanks to our handy-dandy hash table, the implementation isn&rsquo;t too hard.
+多亏了我们方便的哈希表，实现起来并不太难。</p>
 <div class="codehilite"><pre class="insert-before">      case OP_POP: pop(); break;
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -637,7 +712,8 @@ in <em>run</em>()</div>
 
 <p>We get the name of the variable from the constant table. Then we <span
 name="pop">take</span> the value from the top of the stack and store it in a
-hash table with that name as the key.</p>
+hash table with that name as the key.
+我们从常量表中获取变量的名称，然后我们从栈顶获取值，并以该名称为键将其存储在哈希表中。</p>
 <aside name="pop">
 <p>Note that we don&rsquo;t <em>pop</em> the value until <em>after</em> we add it to the hash table.
 That ensures the VM can still find the value if a garbage collection is
@@ -647,8 +723,10 @@ possibility since the hash table requires dynamic allocation when it resizes.</p
 <p>This code doesn&rsquo;t check to see if the key is already in the table. Lox is pretty
 lax with global variables and lets you redefine them without error. That&rsquo;s
 useful in a REPL session, so the VM supports that by simply overwriting the
-value if the key happens to already be in the hash table.</p>
-<p>There&rsquo;s another little helper macro:</p>
+value if the key happens to already be in the hash table.
+这段代码并没有检查键是否已经在表中。Lox对全局变量的处理非常宽松，允许你重新定义它们而且不会出错。这在REPL会话中很有用，如果键恰好已经在哈希表中，虚拟机通过简单地覆盖值来支持这一点。</p>
+<p>There&rsquo;s another little helper macro:
+还有另一个小的辅助宏：</p>
 <div class="codehilite"><pre class="insert-before">#define READ_CONSTANT() (vm.chunk-&gt;constants.values[READ_BYTE()])
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -661,9 +739,11 @@ in <em>run</em>()</div>
 into the chunk&rsquo;s constant table and returns the string at that index. It doesn&rsquo;t
 check that the value <em>is</em> a string<span class="em">&mdash;</span>it just indiscriminately casts it. That&rsquo;s
 safe because the compiler never emits an instruction that refers to a non-string
-constant.</p>
+constant.
+它从字节码块中读取一个1字节的操作数。它将其视为字节码块的常量表的索引，并返回该索引处的字符串。它不检查该值是否是字符串——它只是不加区分地进行类型转换。这是安全的，因为编译器永远不会发出引用非字符串常量的指令。</p>
 <p>Because we care about lexical hygiene, we also undefine this macro at the end of
-the interpret function.</p>
+the interpret function.
+因为我们关心词法卫生，所以在解释器函数的末尾也取消了这个宏的定义。</p>
 <div class="codehilite"><pre class="insert-before">#undef READ_CONSTANT
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -674,7 +754,8 @@ in <em>run</em>()</div>
 
 <p>I keep saying &ldquo;the hash table&rdquo;, but we don&rsquo;t actually have one yet. We need a
 place to store these globals. Since we want them to persist as long as clox is
-running, we store them right in the VM.</p>
+running, we store them right in the VM.
+我一直在说“哈希表”，但实际上我们还没有哈希表。我们需要一个地方来存储这些全局变量。因为我们希望它们在clox运行期间一直存在，所以我们将它们之间存储在虚拟机中。</p>
 <div class="codehilite"><pre class="insert-before">  Value* stackTop;
 </pre><div class="source-file"><em>vm.h</em><br>
 in struct <em>VM</em></div>
@@ -684,7 +765,8 @@ in struct <em>VM</em></div>
 <div class="source-file-narrow"><em>vm.h</em>, in struct <em>VM</em></div>
 
 <p>As we did with the string table, we need to initialize the hash table to a valid
-state when the VM boots up.</p>
+state when the VM boots up.
+正如我们对字符串表所做的那样，我们需要在虚拟机启动时将哈希表初始化为有效状态。</p>
 <div class="codehilite"><pre class="insert-before">  vm.objects = NULL;
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>initVM</em>()</div>
@@ -695,7 +777,8 @@ in <em>initVM</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>initVM</em>()</div>
 
-<p>And we <span name="tear">tear</span> it down when we exit.</p>
+<p>And we <span name="tear">tear</span> it down when we exit.
+当我们退出时，就将其删掉。</p>
 <aside name="tear">
 <p>The process will free everything on exit, but it feels undignified to require
 the operating system to clean up our mess.</p>
@@ -708,7 +791,8 @@ in <em>freeVM</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>freeVM</em>()</div>
 
-<p>As usual, we want to be able to disassemble the new instruction too.</p>
+<p>As usual, we want to be able to disassemble the new instruction too.
+跟往常一样，我们也希望能够对新指令进行反汇编。</p>
 <div class="codehilite"><pre class="insert-before">      return simpleInstruction(&quot;OP_POP&quot;, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -720,10 +804,12 @@ in <em>disassembleInstruction</em>()</div>
 <div class="source-file-narrow"><em>debug.c</em>, in <em>disassembleInstruction</em>()</div>
 
 <p>And with that, we can define global variables. Not that users can <em>tell</em> that
-they&rsquo;ve done so, because they can&rsquo;t actually <em>use</em> them. So let&rsquo;s fix that next.</p>
-<h2><a href="#reading-variables" id="reading-variables"><small>21&#8202;.&#8202;3</small>Reading Variables</a></h2>
+they&rsquo;ve done so, because they can&rsquo;t actually <em>use</em> them. So let&rsquo;s fix that next.
+有了这个，我们就可以定义全局变量了。但用户并不能说他们可以定义全局变量，因为他们实际上还不能使用这些变量。所以，接下来我们解决这个问题。</p>
+<h2><a href="#reading-variables--读取变量" id="reading-variables--读取变量"><small>21&#8202;.&#8202;3</small>Reading Variables  读取变量</a></h2>
 <p>As in every programming language ever, we access a variable&rsquo;s value using its
-name. We hook up identifier tokens to the expression parser here:</p>
+name. We hook up identifier tokens to the expression parser here:
+像所有编程语言中一样，我们使用变量的名称来访问它的值。我们在这里将标识符和表达式解析器进行挂钩：</p>
 <div class="codehilite"><pre class="insert-before">  [TOKEN_LESS_EQUAL]    = {NULL,     binary, PREC_COMPARISON},
 </pre><div class="source-file"><em>compiler.c</em><br>
 replace 1 line</div>
@@ -732,7 +818,8 @@ replace 1 line</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, replace 1 line</div>
 
-<p>That calls this new parser function:</p>
+<p>That calls this new parser function:
+这里调用了这个新解析器函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>string</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">variable</span>() {
@@ -742,7 +829,8 @@ add after <em>string</em>()</div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after <em>string</em>()</div>
 
 <p>Like with declarations, there are a couple of tiny helper functions that seem
-pointless now but will become more useful in later chapters. I promise.</p>
+pointless now but will become more useful in later chapters. I promise.
+和声明一样，这里有几个小的辅助函数，现在看起来毫无意义，但在后面的章节中会变得更加有用。我保证。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>string</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">namedVariable</span>(<span class="t">Token</span> <span class="i">name</span>) {
@@ -755,7 +843,8 @@ add after <em>string</em>()</div>
 <p>This calls the same <code>identifierConstant()</code> function from before to take the
 given identifier token and add its lexeme to the chunk&rsquo;s constant table as a
 string. All that remains is to emit an instruction that loads the global
-variable with that name. Here&rsquo;s the instruction:</p>
+variable with that name. Here&rsquo;s the instruction:
+这里会调用与之前相同的<code>identifierConstant()</code>函数，以获取给定的标识符标识，并将其词素作为字符串添加到字节码块的常量表中。剩下的工作就是生成一条指令，加载具有该名称的全局变量。下面是这个指令：</p>
 <div class="codehilite"><pre class="insert-before">  OP_POP,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -764,7 +853,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>Over in the interpreter, the implementation mirrors <code>OP_DEFINE_GLOBAL</code>.</p>
+<p>Over in the interpreter, the implementation mirrors <code>OP_DEFINE_GLOBAL</code>.
+在解释器中，它的实现是<code>OP_DEFINE_GLOBAL</code>的镜像操作。</p>
 <div class="codehilite"><pre class="insert-before">      case OP_POP: pop(); break;
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -784,11 +874,13 @@ in <em>run</em>()</div>
 
 <p>We pull the constant table index from the instruction&rsquo;s operand and get the
 variable name. Then we use that as a key to look up the variable&rsquo;s value in the
-globals hash table.</p>
+globals hash table.
+我们从指令操作数中提取常量表索引并获得变量名称。然后我们使用它作为键，在全局变量哈希表中查找变量的值。</p>
 <p>If the key isn&rsquo;t present in the hash table, it means that global variable has
 never been defined. That&rsquo;s a runtime error in Lox, so we report it and exit the
 interpreter loop if that happens. Otherwise, we take the value and push it
-onto the stack.</p>
+onto the stack.
+如果该键不在哈希表中，就意味着这个全局变量从未被定义过。这在Lox中是运行时错误，所以如果发生这种情况，我们要报告错误并退出解释器循环。否则，我们获取该值并将其压入栈中。</p>
 <div class="codehilite"><pre class="insert-before">      return simpleInstruction(&quot;OP_POP&quot;, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -799,46 +891,57 @@ in <em>disassembleInstruction</em>()</div>
 <div class="source-file-narrow"><em>debug.c</em>, in <em>disassembleInstruction</em>()</div>
 
 <p>A little bit of disassembling, and we&rsquo;re done. Our interpreter is now able to
-run code like this:</p>
+run code like this:
+稍微反汇编一下，就完成了。我们的解释器现在可以运行这样的代码了：</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">beverage</span> = <span class="s">&quot;cafe au lait&quot;</span>;
 <span class="k">var</span> <span class="i">breakfast</span> = <span class="s">&quot;beignets with &quot;</span> + <span class="i">beverage</span>;
 <span class="k">print</span> <span class="i">breakfast</span>;
 </pre></div>
-<p>There&rsquo;s only one operation left.</p>
-<h2><a href="#assignment" id="assignment"><small>21&#8202;.&#8202;4</small>Assignment</a></h2>
+<p>There&rsquo;s only one operation left.
+只剩一个操作了。</p>
+<h2><a href="#assignment--赋值" id="assignment--赋值"><small>21&#8202;.&#8202;4</small>Assignment  赋值</a></h2>
 <p>Throughout this book, I&rsquo;ve tried to keep you on a fairly safe and easy path. I
 don&rsquo;t avoid hard <em>problems</em>, but I try to not make the <em>solutions</em> more complex
 than they need to be. Alas, other design choices in our <span
-name="jlox">bytecode</span> compiler make assignment annoying to implement.</p>
+name="jlox">bytecode</span> compiler make assignment annoying to implement.
+在这本书中，我一直试图让你走在一条相对安全和简单的道路上。我并不回避困难的<em>问题</em>，但是我尽量不让解决方案过于复杂。可惜的是，我们的字节码编译器中的其它设计选择使得赋值的实现变得很麻烦。</p>
 <aside name="jlox">
 <p>If you recall, assignment was pretty easy in jlox.</p>
 </aside>
 <p>Our bytecode VM uses a single-pass compiler. It parses and generates bytecode
 on the fly without any intermediate AST. As soon as it recognizes a piece of
-syntax, it emits code for it. Assignment doesn&rsquo;t naturally fit that. Consider:</p>
+syntax, it emits code for it. Assignment doesn&rsquo;t naturally fit that. Consider:
+我们的字节码虚拟机使用的是单遍编译器。它在不需要任何中间AST的情况下，动态地解析并生成字节码。一旦它识别出某个语法，它就会生成对应的字节码。赋值操作天然不符合这一点。请考虑一下：</p>
 <div class="codehilite"><pre><span class="i">menu</span>.<span class="i">brunch</span>(<span class="i">sunday</span>).<span class="i">beverage</span> = <span class="s">&quot;mimosa&quot;</span>;
 </pre></div>
 <p>In this code, the parser doesn&rsquo;t realize <code>menu.brunch(sunday).beverage</code> is the
 target of an assignment and not a normal expression until it reaches <code>=</code>, many
 tokens after the first <code>menu</code>. By then, the compiler has already emitted
-bytecode for the whole thing.</p>
-<p>The problem is not as dire as it might seem, though. Look at how the parser sees that example:</p><img src="image/global-variables/setter.png" alt="The 'menu.brunch(sunday).beverage = &quot;mimosa&quot;' statement, showing that 'menu.brunch(sunday)' is an expression." />
+bytecode for the whole thing.
+在这段代码中，直到解析器遇见<code>=</code>（第一个<code>menu</code>之后很多个标识），它才能意识到<code>menu.brunch(sunday).beverage</code>是赋值操作的目标，而不是常规的表达式。到那时，编译器已经为整个代码生成字节码了。</p>
+<p>The problem is not as dire as it might seem, though. Look at how the parser sees that example:
+不过，这个问题并不像看上去那么可怕。看看解析器是如何处理这个例子的：
+<img src="21.全局变量/setter.png" alt="The &lsquo;menu.brunch(sunday).beverage = &ldquo;mimosa&rdquo;&rsquo; statement, showing that &lsquo;menu.brunch(sunday)&rsquo; is an expression." /></p><img src="image/global-variables/setter.png" alt="The 'menu.brunch(sunday).beverage = &quot;mimosa&quot;' statement, showing that 'menu.brunch(sunday)' is an expression." />
 <p>Even though the <code>.beverage</code> part must not be compiled as a get expression,
 everything to the left of the <code>.</code> is an expression, with the normal expression
-semantics. The <code>menu.brunch(sunday)</code> part can be compiled and executed as usual.</p>
+semantics. The <code>menu.brunch(sunday)</code> part can be compiled and executed as usual.
+尽管<code>.beverage</code>部分无法被编译为一个get表达式，<code>.</code>左侧的其它部分是一个表达式，有着正常的表达式语义。<code>menu.brunch(sunday)</code>部分可以像往常一样编译和执行。</p>
 <p>Fortunately for us, the only semantic differences on the left side of an
 assignment appear at the very right-most end of the tokens, immediately
 preceding the <code>=</code>. Even though the receiver of a setter may be an arbitrarily
 long expression, the part whose behavior differs from a get expression is only
 the trailing identifier, which is right before the <code>=</code>. We don&rsquo;t need much
 lookahead to realize <code>beverage</code> should be compiled as a set expression and not a
-getter.</p>
+getter.
+幸运的是，赋值语句左侧部分唯一的语义差异在于其最右侧的标识，紧挨着<code>=</code>之前。尽管setter的接收方可能是一个任意长的表达式，但与get表达式不同的部分在于尾部的标识符，它就在<code>=</code>之前。我们不需要太多的前瞻就可以意识到<code>beverage</code>应该被编译为set表达式而不是getter。</p>
 <p>Variables are even easier since they are just a single bare identifier before an
 <code>=</code>. The idea then is that right <em>before</em> compiling an expression that can also
 be used as an assignment target, we look for a subsequent <code>=</code> token. If we see
 one, we compile it as an assignment or setter instead of a variable access or
-getter.</p>
-<p>We don&rsquo;t have setters to worry about yet, so all we need to handle are variables.</p>
+getter.
+变量就更简单了，因为它们在<code>=</code>之前就是一个简单的标识符。那么我们的想法是，在编译一个也可以作为赋值目标的表达式<em>之前</em>，我们会寻找随后的<code>=</code>标识。如果我们看到了，那表明我们将其一个赋值表达式或setter来编译，而不是变量访问或getter。</p>
+<p>We don&rsquo;t have setters to worry about yet, so all we need to handle are variables.
+我们还不需要考虑setter，所以我们需要处理的就是变量。</p>
 <div class="codehilite"><pre class="insert-before">  uint8_t arg = identifierConstant(&amp;name);
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>namedVariable</em>()<br>
@@ -857,8 +960,10 @@ replace 1 line</div>
 
 <p>In the parse function for identifier expressions, we look for an equals sign
 after the identifier. If we find one, instead of emitting code for a variable
-access, we compile the assigned value and then emit an assignment instruction.</p>
-<p>That&rsquo;s the last instruction we need to add in this chapter.</p>
+access, we compile the assigned value and then emit an assignment instruction.
+在标识符表达式的解析函数中，我们会查找标识符后面的等号。如果找到了，我们就不会生成变量访问的代码，我们会编译所赋的值，然后生成一个赋值指令。</p>
+<p>That&rsquo;s the last instruction we need to add in this chapter.
+这就是我们在本章中需要添加的最后一条指令。</p>
 <div class="codehilite"><pre class="insert-before">  OP_DEFINE_GLOBAL,
 </pre><div class="source-file"><em>chunk.h</em><br>
 in enum <em>OpCode</em></div>
@@ -867,7 +972,8 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<p>As you&rsquo;d expect, its runtime behavior is similar to defining a new variable.</p>
+<p>As you&rsquo;d expect, its runtime behavior is similar to defining a new variable.
+如你所想，它的运行时行为类似于定义一个新变量。</p>
 <div class="codehilite"><pre class="insert-before">      }
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -887,7 +993,8 @@ in <em>run</em>()</div>
 <p>The main difference is what happens when the key doesn&rsquo;t already exist in the
 globals hash table. If the variable hasn&rsquo;t been defined yet, it&rsquo;s a runtime
 error to try to assign to it. Lox <a href="statements-and-state.html#design-note">doesn&rsquo;t do implicit variable
-declaration</a>.</p>
+declaration</a>.
+主要的区别在于，当键在全局变量哈希表中不存在时会发生什么。如果这个变量还没有定义，对其进行赋值就是一个运行时错误。Lox不做隐式的变量声明。</p>
 <aside name="delete">
 <p>The call to <code>tableSet()</code> stores the value in the global variable table even if
 the variable wasn&rsquo;t previously defined. That fact is visible in a REPL session,
@@ -896,8 +1003,10 @@ care to delete that zombie value from the table.</p>
 </aside>
 <p>The other difference is that setting a variable doesn&rsquo;t pop the value off the
 stack. Remember, assignment is an expression, so it needs to leave that value
-there in case the assignment is nested inside some larger expression.</p>
-<p>Add a dash of disassembly:</p>
+there in case the assignment is nested inside some larger expression.
+另一个区别是，设置变量并不会从栈中弹出值。记住，赋值是一个表达式，所以它需要把这个值保留在那里，以防赋值嵌套在某个更大的表达式中。</p>
+<p>Add a dash of disassembly:
+加一点反汇编代码：</p>
 <div class="codehilite"><pre class="insert-before">      return constantInstruction(&quot;OP_DEFINE_GLOBAL&quot;, chunk,
                                  offset);
 </pre><div class="source-file"><em>debug.c</em><br>
@@ -908,13 +1017,17 @@ in <em>disassembleInstruction</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>debug.c</em>, in <em>disassembleInstruction</em>()</div>
 
-<p>So we&rsquo;re done, right? Well<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>not quite. We&rsquo;ve made a mistake! Take a gander at:</p>
+<p>So we&rsquo;re done, right? Well<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>not quite. We&rsquo;ve made a mistake! Take a gander at:
+我们已经完成了，是吗？嗯……不完全是。我们犯了一个错误！看一下这个：</p>
 <div class="codehilite"><pre><span class="i">a</span> * <span class="i">b</span> = <span class="i">c</span> + <span class="i">d</span>;
 </pre></div>
 <p>According to Lox&rsquo;s grammar, <code>=</code> has the lowest precedence, so this should be
-parsed roughly like:</p><img src="image/global-variables/ast-good.png" alt="The expected parse, like '(a * b) = (c + d)'." />
+parsed roughly like:
+根据Lox语法，<code>=</code>的优先级最低，所以这大致应该解析为：
+<img src="21.全局变量/ast-good.png" alt="The expected parse, like &lsquo;(a * b) = (c + d)&rsquo;." /></p><img src="image/global-variables/ast-good.png" alt="The expected parse, like '(a * b) = (c + d)'." />
 <p>Obviously, <code>a * b</code> isn&rsquo;t a <span name="do">valid</span> assignment target, so
-this should be a syntax error. But here&rsquo;s what our parser does:</p>
+this should be a syntax error. But here&rsquo;s what our parser does:
+显然，<code>a*b</code>不是一个有效的赋值目标，所以这应该是一个语法错误。但我们的解析器是这样的：</p>
 <aside name="do">
 <p>Wouldn&rsquo;t it be wild if <code>a * b</code> <em>was</em> a valid assignment target, though? You
 could imagine some algebra-like language that tried to divide the assigned value
@@ -929,18 +1042,28 @@ a terrible idea.</p>
 <li>That calls <code>variable()</code> again for parsing <code>b</code>.</li>
 <li>Inside that call to <code>variable()</code>, it looks for a trailing <code>=</code>. It sees one
 and thus parses the rest of the line as an assignment.</li>
+<li>首先，<code>parsePrecedence()</code>使用<code>variable()</code>前缀解析器解析<code>a</code>。</li>
+<li>之后，会进入中缀解析循环。</li>
+<li>达到<code>*</code>，并调用<code>binary()</code>。</li>
+<li>递归地调用<code>parsePrecedence()</code>解析右操作数。</li>
+<li>再次调用<code>variable()</code>解析<code>b</code>。</li>
+<li>在对<code>variable()</code>的调用中，会查找尾部的<code>=</code>。它看到了，因此会将本行的其余部分解析为一个赋值表达式。</li>
 </ol>
-<p>In other words, the parser sees the above code like:</p><img src="image/global-variables/ast-bad.png" alt="The actual parse, like 'a * (b = c + d)'." />
+<p>In other words, the parser sees the above code like:
+换句话说，解析器将上面的代码看作：
+<img src="21.全局变量/ast-bad.png" alt="The actual parse, like &lsquo;a * (b = c + d)&rsquo;." /></p><img src="image/global-variables/ast-bad.png" alt="The actual parse, like 'a * (b = c + d)'." />
 <p>We&rsquo;ve messed up the precedence handling because <code>variable()</code> doesn&rsquo;t take into
 account the precedence of the surrounding expression that contains the variable.
 If the variable happens to be the right-hand side of an infix operator, or the
 operand of a unary operator, then that containing expression is too high
-precedence to permit the <code>=</code>.</p>
+precedence to permit the <code>=</code>.
+我们搞砸了优先级处理，因为<code>variable()</code>没有考虑包含变量的外围表达式的优先级。如果变量恰好是中缀操作符的右操作数，或者是一元操作符的操作数，那么这个包含表达式的优先级太高，不允许使用<code>=</code>。</p>
 <p>To fix this, <code>variable()</code> should look for and consume the <code>=</code> only if it&rsquo;s in
 the context of a low-precedence expression. The code that knows the current
 precedence is, logically enough, <code>parsePrecedence()</code>. The <code>variable()</code> function
 doesn&rsquo;t need to know the actual level. It just cares that the precedence is low
-enough to allow assignment, so we pass that fact in as a Boolean.</p>
+enough to allow assignment, so we pass that fact in as a Boolean.
+为了解决这个问题，<code>variable()</code>应该只在低优先级表达式的上下文中寻找并使用<code>=</code>。从逻辑上讲，知道当前优先级的代码是<code>parsePrecedence()</code>。<code>variable()</code>函数不需要知道实际的级别。它只关心优先级是否低到允许赋值表达式，所以我们把这个情况以布尔值传入。</p>
 <div class="codehilite"><pre class="insert-before">    error(&quot;Expect expression.&quot;);
     return;
   }
@@ -958,7 +1081,8 @@ replace 1 line</div>
 
 <p>Since assignment is the lowest-precedence expression, the only time we allow an
 assignment is when parsing an assignment expression or top-level expression like
-in an expression statement. That flag makes its way to the parser function here:</p>
+in an expression statement. That flag makes its way to the parser function here:
+因为赋值是最低优先级的表达式，只有在解析赋值表达式或如表达式语句等顶层表达式时，才允许出现赋值。这个标志会被传入这个解析器函数：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 function <em>variable</em>()<br>
 replace 3 lines</div>
@@ -968,7 +1092,8 @@ replace 3 lines</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, function <em>variable</em>(), replace 3 lines</div>
 
-<p>Which passes it through a new parameter:</p>
+<p>Which passes it through a new parameter:
+通过一个新参数透传该值：</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 function <em>namedVariable</em>()<br>
 replace 1 line</div>
@@ -977,7 +1102,8 @@ replace 1 line</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, function <em>namedVariable</em>(), replace 1 line</div>
 
-<p>And then finally uses it here:</p>
+<p>And then finally uses it here:
+最后在这里使用它：</p>
 <div class="codehilite"><pre class="insert-before">  uint8_t arg = identifierConstant(&amp;name);
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -992,15 +1118,18 @@ replace 1 line</div>
 the compiler, but arrived it has. If the variable is nested inside some
 expression with higher precedence, <code>canAssign</code> will be <code>false</code> and this will
 ignore the <code>=</code> even if there is one there. Then <code>namedVariable()</code> returns, and
-execution eventually makes its way back to <code>parsePrecedence()</code>.</p>
+execution eventually makes its way back to <code>parsePrecedence()</code>.
+为了把字面上的1比特数据送到编译器的正确位置需要做很多工作，但它已经到达了。如果变量嵌套在某个优先级更高的表达式中，<code>canAssign</code>将为<code>false</code>，即使有<code>=</code>也会被忽略。然后<code>namedVariable()</code>返回，执行最终返回到了<code>parsePrecedence()</code>。</p>
 <p>Then what? What does the compiler do with our broken example from before? Right
 now, <code>variable()</code> won&rsquo;t consume the <code>=</code>, so that will be the current token. The
 compiler returns back to <code>parsePrecedence()</code> from the <code>variable()</code> prefix parser
 and then tries to enter the infix parsing loop. There is no parsing function
-associated with <code>=</code>, so it skips that loop.</p>
+associated with <code>=</code>, so it skips that loop.
+然后呢？编译器会对我们前面的负面例子做什么？现在，<code>variable()</code>不会消耗<code>=</code>，所以它将是当前的标识。编译器从<code>variable()</code>前缀解析器返回到<code>parsePrecedence()</code>，然后尝试进入中缀解析循环。没有与<code>=</code>相关的解析函数，因此也会跳过这个循环。</p>
 <p>Then <code>parsePrecedence()</code> silently returns back to the caller. That also isn&rsquo;t
 right. If the <code>=</code> doesn&rsquo;t get consumed as part of the expression, nothing else
-is going to consume it. It&rsquo;s an error and we should report it.</p>
+is going to consume it. It&rsquo;s an error and we should report it.
+然后<code>parsePrecedence()</code>默默地返回到调用方。这也是不对的。如果<code>=</code>没有作为表达式的一部分被消耗，那么其它任何东西都不会消耗它。这是一个错误，我们应该报告它。</p>
 <div class="codehilite"><pre class="insert-before">    infixRule();
   }
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -1020,13 +1149,15 @@ parse functions. But those functions are stored in a table of function pointers,
 so all of the parse functions need to have the same type. Even though most parse
 functions don&rsquo;t support being used as an assignment target<span class="em">&mdash;</span>setters are the
 <span name="index">only</span> other one<span class="em">&mdash;</span>our friendly C compiler requires
-them <em>all</em> to accept the parameter.</p>
+them <em>all</em> to accept the parameter.
+这样，前面的错误程序在编译时就会正确地得到一个错误。好了，现在我们完成了吗？也不尽然。看，我们正向一个解析函数传递参数。但是这些函数是存储在一个函数指令表格中的，所以所有的解析函数需要具有相同的类型。尽管大多数解析函数都不支持被用作赋值目标——setter是唯一的一个——但我们这个友好的C编译器要求它们<em>都</em>接受相同的参数。</p>
 <aside name="index">
 <p>If Lox had arrays and subscript operators like <code>array[index]</code> then an infix <code>[</code>
 would also allow assignment to support <code>array[index] = value</code>.</p>
 </aside>
 <p>So we&rsquo;re going to finish off this chapter with some grunt work. First, let&rsquo;s go
-ahead and pass the flag to the infix parse functions.</p>
+ahead and pass the flag to the infix parse functions.
+所以我们要做一些苦差事来结束这一章。首先，让我们继续前进，将标志传给中缀解析函数。</p>
 <div class="codehilite"><pre class="insert-before">    ParseFn infixRule = getRule(parser.previous.type)-&gt;infix;
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>parsePrecedence</em>()<br>
@@ -1037,7 +1168,8 @@ replace 1 line</div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>parsePrecedence</em>(), replace 1 line</div>
 
 <p>We&rsquo;ll need that for setters eventually. Then we&rsquo;ll fix the typedef for the
-function type.</p>
+function type.
+我们最终会在setter中需要它。然后，我们要修复函数类型的类型定义。</p>
 <div class="codehilite"><pre class="insert-before">} Precedence;
 
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -1051,7 +1183,28 @@ typedef struct {
 <div class="source-file-narrow"><em>compiler.c</em>, add after enum <em>Precedence</em>, replace 1 line</div>
 
 <p>And some completely tedious code to accept this parameter in all of our existing
-parse functions. Here:</p>
+parse functions. Here:
+还有一些非常乏味的代码，为了在所有的现有解析函数中接受这个参数。这里：</p>
+<ul>
+<li></li>
+</ul>
+<p>这里:</p>
+<ul>
+<li></li>
+</ul>
+<p>这里:</p>
+<ul>
+<li></li>
+</ul>
+<p>这里:</p>
+<ul>
+<li></li>
+</ul>
+<p>还有这里:</p>
+<ul>
+<li></li>
+</ul>
+<p>最后:</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 function <em>binary</em>()<br>
 replace 1 line</div>
@@ -1106,14 +1259,38 @@ replace 1 line</div>
 <div class="source-file-narrow"><em>compiler.c</em>, function <em>unary</em>(), replace 1 line</div>
 
 <p>Phew! We&rsquo;re back to a C program we can compile. Fire it up and now you can run
-this:</p>
+this:
+吁！我们又回到了可以编译的C程序。启动它，新增你可以运行这个：</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">breakfast</span> = <span class="s">&quot;beignets&quot;</span>;
 <span class="k">var</span> <span class="i">beverage</span> = <span class="s">&quot;cafe au lait&quot;</span>;
 <span class="i">breakfast</span> = <span class="s">&quot;beignets with &quot;</span> + <span class="i">beverage</span>;
 
 <span class="k">print</span> <span class="i">breakfast</span>;
 </pre></div>
-<p>It&rsquo;s starting to look like real code for an actual language!</p>
+<p>It&rsquo;s starting to look like real code for an actual language!
+它开始看起来像是实际语言的真正代码了！
+: 这是复杂的语言实现中常见的元策略。通常情况下，同一种语言特性会有多种实现技术，每种技术都针对不同的使用模式进行了优化。举例来说，与属性集可以自由修改的其它对象相比，Java Script虚拟机通常对那些使用起来像类实例对象有着更快的表示形式。C和C++编译器通常由多种方法能够根据case分支数量和case值的密集程度来编译<code>switch</code>语句。
+: 代码块的作用有点像表达式中的括号。块可以让你把“低级别的”声明语句放在只允许“高级别的”非声明语句的地方。
+: 这听起来微不足道，但是非玩具型语言的手写解析器非常大。当你有数千行代码时，如果一个实用函数可以将两行代码简化为一行代码，并使结果更易于阅读，那它就很容易被接受。
+: <code>OP_ADD</code>执行过后堆栈会少一个元素，所以它的效应是<code>-1</code>：
+: 不过，我们只是近了一步。等我们添加函数时，还会重新审视<code>OP_RETURN</code>。现在，它退出整个解释器的循环即可。
+: 据我统计，在本章末尾的<code>compiler.c</code>版本中，149条语句中有80条是表达式语句。
+: 基本上，编译器会对变量声明进行脱糖处理，如<code>var a;</code>变成<code>var a = nil;</code>，它为前者生成的代码和为后者生成的代码是相同的。
+: 我知道这里有一些函数现在看起来没什么意义。但是，随着我们增加更多与名称相关的语言特性，我们会从中获得更多的好处。函数和类声明都声明了新的变量，而变量表达式和赋值表达式会访问它们。
+: 请注意，直到将值添加到哈希表之后，我们才会弹出它。这确保了如果在将值添加到哈希表的过程中触发了垃圾回收，虚拟机仍然可以找到这个值。这显然是很可能的，因为哈希表在调整大小时需要动态分配。
+: 这个进程在退出时会释放所有的东西，但要求操作系统来收拾我们的烂摊子，总感觉很不体面。
+: 如果你还记得，在jlox中赋值是很容易的。
+: 对<code>tableSet()</code>的调用会将值存储在全局变量表中，即使该变量之前没有定义。这个问题在REPL会话中是用户可见的，因为即使报告了运行时错误，它仍然在运行。因此，我们也要注意从表中删除僵尸值。
+: 如果<code>a*b</code>是一个有效的赋值目标，这岂不是很疯狂？你可以想象一些类似代数的语言，试图以某种合理的方式划分所赋的值，并将其分配给<code>a</code>和<code>b</code>……这可能是一个很糟糕的主意。
+: 如果Lox有数组和下标操作符，如<code>array[index]</code>，那么中缀操作符<code>[</code>也能允许赋值，支持：<code>array[index] = value</code>。</p>
+<h2><a href="#习题" id="习题"><small>21&#8202;.&#8202;5</small>习题</a></h2>
+<ol>
+<li>
+<blockquote>
+<p>The compiler adds a global variable’s name to the constant table as a string every time an identifier is encountered. It creates a new constant each time, even if that variable name is already in a previous slot in the constant table. That’s wasteful in cases where the same variable is referenced multiple times by the same function. That, in turn, increases the odds of filling up the constant table and running out of slots since we allow only 256 constants in a single chunk.</p>
+</blockquote>
+</li>
+</ol>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -1126,7 +1303,20 @@ referenced multiple times by the same function. That, in turn, increases the
 odds of filling up the constant table and running out of slots since we
 allow only 256 constants in a single chunk.</p>
 <p>Optimize this. How does your optimization affect the performance of the
-compiler compared to the runtime? Is this the right trade-off?</p>
+compiler compared to the runtime? Is this the right trade-off?
+每次遇到标识符时，编译器都会将全局变量的名称作为字符串添加到常量表中。它每次都会创建一个新的常量，即使这个变量的名字已经在常量表中的前一个槽中存在。在同一个函数多次引用同一个变量的情况下，这是一种浪费。这反过来又增加了填满常量表的可能性，因为我们在一个字节码块中只允许有256个常量。
+对此进行优化。与运行时相比，你的优化对编译器的性能有何影响？这是正确的取舍吗？</p>
+</li>
+<li>
+<blockquote>
+<p>Looking up a global variable by name in a hash table each time it is used is pretty slow, even with a good hash table. Can you come up with a more efficient way to store and access global variables without changing the semantics?
+每次使用全局变量时，根据名称在哈希表中查找变量是很慢的，即使有一个很好的哈希表。你能否想出一种更有效的方法来存储和访问全局变量而不改变语义？</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>When running in the REPL, a user might write a function that references an unknown global variable. Then, in the next line, they declare the variable. Lox should handle this gracefully by not reporting an “unknown variable” compile error when the function is first defined.</p>
+</blockquote>
 </li>
 <li>
 <p>Looking up a global variable by name in a hash table each time it is used
@@ -1140,7 +1330,9 @@ unknown global variable. Then, in the next line, they declare the variable.
 Lox should handle this gracefully by not reporting an &ldquo;unknown variable&rdquo;
 compile error when the function is first defined.</p>
 <p>But when a user runs a Lox <em>script</em>, the compiler has access to the full
-text of the entire program before any code is run. Consider this program:</p>
+text of the entire program before any code is run. Consider this program:
+当在REPL中运行时，用户可能会编写一个引用未知全局变量的函数。然后，在下一行中，他们声明了这个变量。Lox应该优雅地处理这个问题，在第一次定义函数时不报告“未知变量”的编译错误。
+但是，当用户运行Lox脚本时，编译器可以在任何代码运行之前访问整个程序的全部文本。考虑一下这个程序：</p>
 <div class="codehilite"><pre><span class="k">fun</span> <span class="i">useVar</span>() {
   <span class="k">print</span> <span class="i">oops</span>;
 }
@@ -1150,7 +1342,9 @@ text of the entire program before any code is run. Consider this program:</p>
 <p>Here, we can tell statically that <code>oops</code> will not be defined because there
 is <em>no</em> declaration of that global anywhere in the program. Note that
 <code>useVar()</code> is never called either, so even though the variable isn&rsquo;t
-defined, no runtime error will occur because it&rsquo;s never used either.</p>
+defined, no runtime error will occur because it&rsquo;s never used either.
+这里，我们可以静态地告知用户<code>oops</code>不会被定义，因为在程序中没有任何地方对该全局变量进行了声明。请注意，<code>useVar()</code>也从未被调用，所以即使变量没有被定义，也不会发生运行时错误，因为它从未被使用。
+我们可以将这样的错误报告为编译错误，至少在运行脚本时是这样。你认为我们应该这样做吗？请说明你的答案。你知道其它脚本语言是怎么做的吗？</p>
 <p>We could report mistakes like this as compile errors, at least when running
 from a script. Do you think we should? Justify your answer. What do other
 scripting languages you know do?</p>

@@ -1,6 +1,7 @@
 # Intermediate and built stuff.
 .sass-cache/
 /build/
+/book_/
 /gen/
 clox
 *.class
