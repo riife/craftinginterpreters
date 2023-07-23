@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Superclasses &middot; Crafting Interpreters</title>
+<title>超类 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,67 +32,67 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Superclasses<small>29</small></a></h3>
-
-<ul>
-    <li><a href="#inheriting-methods--继承方法"><small>29.1</small> Inheriting Methods  继承方法</a></li>
-    <li><a href="#storing-superclasses--存储超类"><small>29.2</small> Storing Superclasses  存储超类</a></li>
-    <li><a href="#super-calls--超类调用"><small>29.3</small> Super Calls  超类调用</a></li>
-    <li><a href="#a-complete-virtual-machine--一个完整的虚拟机"><small>29.4</small> A Complete Virtual Machine  一个完整的虚拟机</a></li>
-    <li><a href="#习题"><small>29.5</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="methods-and-initializers.html" title="Methods and Initializers" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="optimization.html" title="Optimization" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">超类<small>29</small></a></h3>
+    
+    <ul>
+        <li><a href="#inheriting-methods--继承方法"><small>29.1</small> Inheriting Methods  继承方法</a></li>
+        <li><a href="#storing-superclasses--存储超类"><small>29.2</small> Storing Superclasses  存储超类</a></li>
+        <li><a href="#super-calls--超类调用"><small>29.3</small> Super Calls  超类调用</a></li>
+        <li><a href="#a-complete-virtual-machine--一个完整的虚拟机"><small>29.4</small> A Complete Virtual Machine  一个完整的虚拟机</a></li>
+        <li><a href="#习题"><small>29.5</small> 习题</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="methods-and-initializers.html" title="方法和初始化" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="optimization.html" title="优化" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="methods-and-initializers.html" title="Methods and Initializers" class="prev">←</a>
-<a href="optimization.html" title="Optimization" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="methods-and-initializers.html" title="方法和初始化" class="prev">←</a>
+  <a href="optimization.html" title="优化" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Superclasses<small>29</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">超类<small>29</small></a></h3>
+        
+        <ul>
+            <li><a href="#inheriting-methods--继承方法"><small>29.1</small> Inheriting Methods  继承方法</a></li>
+            <li><a href="#storing-superclasses--存储超类"><small>29.2</small> Storing Superclasses  存储超类</a></li>
+            <li><a href="#super-calls--超类调用"><small>29.3</small> Super Calls  超类调用</a></li>
+            <li><a href="#a-complete-virtual-machine--一个完整的虚拟机"><small>29.4</small> A Complete Virtual Machine  一个完整的虚拟机</a></li>
+            <li><a href="#习题"><small>29.5</small> 习题</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="methods-and-initializers.html" title="方法和初始化" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="optimization.html" title="优化" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#inheriting-methods--继承方法"><small>29.1</small> Inheriting Methods  继承方法</a></li>
-    <li><a href="#storing-superclasses--存储超类"><small>29.2</small> Storing Superclasses  存储超类</a></li>
-    <li><a href="#super-calls--超类调用"><small>29.3</small> Super Calls  超类调用</a></li>
-    <li><a href="#a-complete-virtual-machine--一个完整的虚拟机"><small>29.4</small> A Complete Virtual Machine  一个完整的虚拟机</a></li>
-    <li><a href="#习题"><small>29.5</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">29</div>
+    <h1>超类</h1>
 
-<div class="prev-next">
-    <a href="methods-and-initializers.html" title="Methods and Initializers" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="optimization.html" title="Optimization" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">29</div>
-  <h1>Superclasses</h1>
-
-<blockquote>
+    <blockquote>
 <p>You can choose your friends but you sho&rsquo; can&rsquo;t choose your family, an&rsquo; they&rsquo;re
 still kin to you no matter whether you acknowledge &rsquo;em or not, and it
 makes you look right silly when you don&rsquo;t.</p>
@@ -1029,14 +1029,16 @@ Place in a nice box.
 </ul>
 </div>
 
-<footer>
-<a href="optimization.html" class="next">
-  Next Chapter: &ldquo;Optimization&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="optimization.html" class="next">
+        下一节: &ldquo;优化&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

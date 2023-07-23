@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Inheritance &middot; Crafting Interpreters</title>
+<title>继承 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,65 +32,65 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Inheritance<small>13</small></a></h3>
-
-<ul>
-    <li><a href="#superclasses-and-subclasses--超类和子类"><small>13.1</small> Superclasses and Subclasses  超类和子类</a></li>
-    <li><a href="#inheriting-methods--继承方法"><small>13.2</small> Inheriting Methods  继承方法</a></li>
-    <li><a href="#calling-superclass-methods--调用超类方法"><small>13.3</small> Calling Superclass Methods  调用超类方法</a></li>
-    <li><a href="#conclusion--总结"><small>13.4</small> Conclusion  总结</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="classes.html" title="Classes" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">继承<small>13</small></a></h3>
+    
+    <ul>
+        <li><a href="#superclasses-and-subclasses--超类和子类"><small>13.1</small> Superclasses and Subclasses  超类和子类</a></li>
+        <li><a href="#inheriting-methods--继承方法"><small>13.2</small> Inheriting Methods  继承方法</a></li>
+        <li><a href="#calling-superclass-methods--调用超类方法"><small>13.3</small> Calling Superclass Methods  调用超类方法</a></li>
+        <li><a href="#conclusion--总结"><small>13.4</small> Conclusion  总结</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="classes.html" title="类" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+        <a href="a-bytecode-virtual-machine.html" title="字节码虚拟机" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="classes.html" title="Classes" class="prev">←</a>
-<a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="classes.html" title="类" class="prev">←</a>
+  <a href="a-bytecode-virtual-machine.html" title="字节码虚拟机" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Inheritance<small>13</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">继承<small>13</small></a></h3>
+        
+        <ul>
+            <li><a href="#superclasses-and-subclasses--超类和子类"><small>13.1</small> Superclasses and Subclasses  超类和子类</a></li>
+            <li><a href="#inheriting-methods--继承方法"><small>13.2</small> Inheriting Methods  继承方法</a></li>
+            <li><a href="#calling-superclass-methods--调用超类方法"><small>13.3</small> Calling Superclass Methods  调用超类方法</a></li>
+            <li><a href="#conclusion--总结"><small>13.4</small> Conclusion  总结</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="classes.html" title="类" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+            <a href="a-bytecode-virtual-machine.html" title="字节码虚拟机" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#superclasses-and-subclasses--超类和子类"><small>13.1</small> Superclasses and Subclasses  超类和子类</a></li>
-    <li><a href="#inheriting-methods--继承方法"><small>13.2</small> Inheriting Methods  继承方法</a></li>
-    <li><a href="#calling-superclass-methods--调用超类方法"><small>13.3</small> Calling Superclass Methods  调用超类方法</a></li>
-    <li><a href="#conclusion--总结"><small>13.4</small> Conclusion  总结</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">13</div>
+    <h1>继承</h1>
 
-<div class="prev-next">
-    <a href="classes.html" title="Classes" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">13</div>
-  <h1>Inheritance</h1>
-
-<blockquote>
+    <blockquote>
 <p>Once we were blobs in the sea, and then fishes, and then lizards and rats and
 then monkeys, and hundreds of things in between. This hand was once a fin,
 this hand once had claws! In my human mouth I have the pointy teeth of a wolf
@@ -498,7 +498,7 @@ in <em>primary</em>()</div>
 <p>A leading <code>super</code> keyword tells us we&rsquo;ve hit a <code>super</code> expression. After that we
 consume the expected <code>.</code> and method name.
 开头的<code>super</code>关键字告诉我们遇到了一个<code>super</code>表达式，之后我们消费预期中的<code>.</code>和方法名称。</p>
-<h3><a href="#semantics--语义" id="semantics--语义"><small>13&#8202;.&#8202;3&#8202;.&#8202;2</small>Semantics  语义</a></h3>
+<h3><a href="#semantics" id="semantics"><small>13&#8202;.&#8202;3&#8202;.&#8202;2</small>Semantics</a></h3>
 <p>Earlier, I said a <code>super</code> expression starts the method lookup from &ldquo;the
 superclass&rdquo;, but <em>which</em> superclass? The naïve answer is the superclass of
 <code>this</code>, the object the surrounding method was called on. That coincidentally
@@ -1038,14 +1038,16 @@ that you know how to build an interpreter, implement one of those features.</p>
 </ol>
 </div>
 
-<footer>
-<a href="a-bytecode-virtual-machine.html" class="next">
-  Next Part: &ldquo;A Bytecode Virtual Machine&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="a-bytecode-virtual-machine.html" class="next">
+        下一章: &ldquo;字节码虚拟机&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

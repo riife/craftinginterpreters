@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Appendix I &middot; Crafting Interpreters</title>
+<title>附录I &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,57 +32,57 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Appendix I<small>A1</small></a></h3>
-
-<ul>
-    <li><a href="#syntax-grammar--语法"><small>A1.1</small> Syntax Grammar  语法</a></li>
-    <li><a href="#lexical-grammar--词法"><small>A1.2</small> Lexical Grammar  词法</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="backmatter.html" title="Backmatter" class="left">&larr;&nbsp;Previous</a>
-    <a href="backmatter.html" title="Backmatter">&uarr;&nbsp;Up</a>
-    <a href="appendix-ii.html" title="Appendix II" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">附录I<small>A1</small></a></h3>
+    
+    <ul>
+        <li><a href="#syntax-grammar--语法"><small>A1.1</small> Syntax Grammar  语法</a></li>
+        <li><a href="#lexical-grammar--词法"><small>A1.2</small> Lexical Grammar  词法</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="backmatter.html" title="附录" class="left">&larr;&nbsp;Previous</a>
+        <a href="backmatter.html" title="Backmatter">&uarr;&nbsp;Up</a>
+        <a href="appendix-ii.html" title="附录II" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="backmatter.html" title="Backmatter" class="prev">←</a>
-<a href="appendix-ii.html" title="Appendix II" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="backmatter.html" title="附录" class="prev">←</a>
+  <a href="appendix-ii.html" title="附录II" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Appendix I<small>A1</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">附录I<small>A1</small></a></h3>
+        
+        <ul>
+            <li><a href="#syntax-grammar--语法"><small>A1.1</small> Syntax Grammar  语法</a></li>
+            <li><a href="#lexical-grammar--词法"><small>A1.2</small> Lexical Grammar  词法</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="backmatter.html" title="附录" class="left">&larr;&nbsp;Previous</a>
+            <a href="backmatter.html" title="Backmatter">&uarr;&nbsp;Up</a>
+            <a href="appendix-ii.html" title="附录II" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#syntax-grammar--语法"><small>A1.1</small> Syntax Grammar  语法</a></li>
-    <li><a href="#lexical-grammar--词法"><small>A1.2</small> Lexical Grammar  词法</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">A1</div>
+    <h1>附录I</h1>
 
-<div class="prev-next">
-    <a href="backmatter.html" title="Backmatter" class="left">&larr;&nbsp;Previous</a>
-    <a href="backmatter.html" title="Backmatter">&uarr;&nbsp;Up</a>
-    <a href="appendix-ii.html" title="Appendix II" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">A1</div>
-  <h1>Appendix I</h1>
-
-<p>Here is a complete grammar for Lox. The chapters that introduce each part of the
+    <p>Here is a complete grammar for Lox. The chapters that introduce each part of the
 language include the grammar rules there, but this collects them all into one
 place.
 这里有一份Lox的完整语法。介绍语言每个部分的章节中都包含对应的语法规则，但这里将它们全部收录在一起了。</p>
@@ -93,7 +93,7 @@ entire Lox program (or a single REPL entry).
 语法用于将词法标识（token）的线性序列解析为嵌套的语法树结构。它从匹配整个Lox程序（或单条REPL输入）的第一个规则开始。</p>
 <div class="codehilite"><pre><span class="i">program</span>        → <span class="i">declaration</span>* <span class="t">EOF</span> ;
 </pre></div>
-<h3><a href="#declarations--声明" id="declarations--声明"><small>A1&#8202;.&#8202;1&#8202;.&#8202;1</small>Declarations  声明</a></h3>
+<h3><a href="#declarations" id="declarations"><small>A1&#8202;.&#8202;1&#8202;.&#8202;1</small>Declarations</a></h3>
 <p>A program is a series of declarations, which are the statements that bind new
 identifiers or any of the other statement types.
 一个程序就是一系列的声明，也就是绑定新标识符或其它statement类型的语句。</p>
@@ -107,7 +107,7 @@ identifiers or any of the other statement types.
 <span class="i">funDecl</span>        → <span class="s">&quot;fun&quot;</span> <span class="i">function</span> ;
 <span class="i">varDecl</span>        → <span class="s">&quot;var&quot;</span> <span class="t">IDENTIFIER</span> ( <span class="s">&quot;=&quot;</span> <span class="i">expression</span> )? <span class="s">&quot;;&quot;</span> ;
 </pre></div>
-<h3><a href="#statements--语句" id="statements--语句"><small>A1&#8202;.&#8202;1&#8202;.&#8202;2</small>Statements  语句</a></h3>
+<h3><a href="#statements" id="statements"><small>A1&#8202;.&#8202;1&#8202;.&#8202;2</small>Statements</a></h3>
 <p>The remaining statement rules produce side effects, but do not introduce
 bindings.
 其余的语句规则会产生副作用，但不会引入绑定。</p>
@@ -133,7 +133,7 @@ bindings.
 <p>Note that <code>block</code> is a statement rule, but is also used as a nonterminal in a
 couple of other rules for things like function bodies.
 请注意，<code>block</code>是一个语句规则，但在其它规则中也作为非终止符使用，用于表示函数体等内容。</p>
-<h3><a href="#expressions--表达式" id="expressions--表达式"><small>A1&#8202;.&#8202;1&#8202;.&#8202;3</small>Expressions  表达式</a></h3>
+<h3><a href="#expressions" id="expressions"><small>A1&#8202;.&#8202;1&#8202;.&#8202;3</small>Expressions</a></h3>
 <p>Expressions produce values. Lox has a number of unary and binary operators with
 different levels of precedence. Some grammars for languages do not directly
 encode the precedence relationships and specify that elsewhere. Here, we use a
@@ -177,14 +177,16 @@ that there are no recursive rules.
 <span class="t">DIGIT</span>          → <span class="s">&quot;0&quot;</span> ... <span class="s">&quot;9&quot;</span> ;
 </pre></div>
 
-<footer>
-<a href="appendix-ii.html" class="next">
-  Next Chapter: &ldquo;Appendix II&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="appendix-ii.html" class="next">
+        下一节: &ldquo;附录II&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

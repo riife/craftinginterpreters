@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Table of Contents &middot; Crafting Interpreters</title>
+<title>目录 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -33,193 +33,196 @@
 <!-- <div class="scrim"></div> -->
 
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="index.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-    <h2><a href="#top"><small>&nbsp;</small> Table of Contents</a></h2>
+    <h2><a href="#top"><small>&nbsp;</small> 目录</a></h2>
     <ul>
-      <li><a href="#welcome"><small>I</small>Welcome</a></li>
-      <li><a href="#a-tree-walk-interpreter"><small>II</small>A Tree-Walk Interpreter</a></li>
-      <li><a href="#a-bytecode-virtual-machine"><small>III</small>A Bytecode Virtual Machine</a></li>
-      <li><a href="#backmatter"><small>&#10087;</small>Backmatter</a></li>
+      <li><a href="#welcome"><small>I</small>欢迎</a></li>
+      <li><a href="#a-tree-walk-interpreter"><small>II</small>树遍历解释器</a></li>
+      <li><a href="#a-bytecode-virtual-machine"><small>III</small>字节码虚拟机</a></li>
+      <li><a href="#backmatter"><small>&#10087;</small>后记</a></li>
     </ul>
         <div class="prev-next">
-        <a href="acknowledgements.html" title="Acknowledgements" class="left">&larr;&nbsp;Previous</a>
+        <a href="acknowledgements.html" title="鸣谢" class="left">&larr;&nbsp;Previous</a>
         <a href="index.html" title="Crafting Interpreters">&uarr;&nbsp;Up</a>
-        <a href="welcome.html" title="Welcome" class="right">Next&nbsp;&rarr;</a>
+        <a href="welcome.html" title="欢迎" class="right">Next&nbsp;&rarr;</a>
     </div>  </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="acknowledgements.html" title="Acknowledgements" class="prev">←</a>
-<a href="welcome.html" title="Welcome" class="next">→</a>
+  <a href="index.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="acknowledgements.html" title="鸣谢" class="prev">←</a>
+  <a href="welcome.html" title="欢迎" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-    <h2><a href="#top"><small>&nbsp;</small> Table of Contents</a></h2>
-    <ul>
-      <li><a href="#welcome"><small>I</small>Welcome</a></li>
-      <li><a href="#a-tree-walk-interpreter"><small>II</small>A Tree-Walk Interpreter</a></li>
-      <li><a href="#a-bytecode-virtual-machine"><small>III</small>A Bytecode Virtual Machine</a></li>
-      <li><a href="#backmatter"><small>&#10087;</small>Backmatter</a></li>
-    </ul>
-        <div class="prev-next">
-        <a href="acknowledgements.html" title="Acknowledgements" class="left">&larr;&nbsp;Previous</a>
-        <a href="index.html" title="Crafting Interpreters">&uarr;&nbsp;Up</a>
-        <a href="welcome.html" title="Welcome" class="right">Next&nbsp;&rarr;</a>
-    </div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="contents">
-
-<h1 class="part">Table of Contents</h1>
-
-<div class="chapters">
-  <div class="row">
-    <div class="first">
-    <h2><span class="num">&#10087;</span>Frontmatter</h2>
-    <ul>
-      <li><span class="num">&nbsp;</span><a href="dedication.html">Dedication</a></li>
-      <li><span class="num">&nbsp;</span><a href="acknowledgements.html">Acknowledgements</a></li>
-    </ul>
-
-      <h2><span class="num">I.</span><a href="welcome.html" name="welcome">Welcome</a></h2>
-      <ul>
-        <li><span class="num">1.</span><a href="introduction.html">Introduction</a>
-        </li>
-        <li><span class="num">2.</span><a href="a-map-of-the-territory.html">A Map of the Territory</a>
-        </li>
-        <li><span class="num">3.</span><a href="the-lox-language.html">The Lox Language</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="the-lox-language.html#design-note">Design Note: Expressions and Statements</a>
-        </li>
-      </ul>      <h2><span class="num">II.</span><a href="a-tree-walk-interpreter.html" name="a-tree-walk-interpreter">A Tree-Walk Interpreter</a></h2>
-      <ul>
-        <li><span class="num">4.</span><a href="scanning.html">Scanning</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="scanning.html#design-note">Design Note: Implicit Semicolons</a>
-        </li>
-        <li><span class="num">5.</span><a href="representing-code.html">Representing Code</a>
-        </li>
-        <li><span class="num">6.</span><a href="parsing-expressions.html">Parsing Expressions</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="parsing-expressions.html#design-note">Design Note: Logic Versus History</a>
-        </li>
-        <li><span class="num">7.</span><a href="evaluating-expressions.html">Evaluating Expressions</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="evaluating-expressions.html#design-note">Design Note: Static and Dynamic Typing</a>
-        </li>
-        <li><span class="num">8.</span><a href="statements-and-state.html">Statements and State</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="statements-and-state.html#design-note">Design Note: Implicit Variable Declaration</a>
-        </li>
-        <li><span class="num">9.</span><a href="control-flow.html">Control Flow</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="control-flow.html#design-note">Design Note: Spoonfuls of Syntactic Sugar</a>
-        </li>
-        <li><span class="num">10.</span><a href="functions.html">Functions</a>
-        </li>
-        <li><span class="num">11.</span><a href="resolving-and-binding.html">Resolving and Binding</a>
-        </li>
-        <li><span class="num">12.</span><a href="classes.html">Classes</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="classes.html#design-note">Design Note: Prototypes and Power</a>
-        </li>
-        <li><span class="num">13.</span><a href="inheritance.html">Inheritance</a>
-        </li>
-      </ul>    </div>
-    <div class="second">
-      <h2><span class="num">III.</span><a href="a-bytecode-virtual-machine.html" name="a-bytecode-virtual-machine">A Bytecode Virtual Machine</a></h2>
-      <ul>
-        <li><span class="num">14.</span><a href="chunks-of-bytecode.html">Chunks of Bytecode</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="chunks-of-bytecode.html#design-note">Design Note: Test Your Language</a>
-        </li>
-        <li><span class="num">15.</span><a href="a-virtual-machine.html">A Virtual Machine</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="a-virtual-machine.html#design-note">Design Note: Register-Based Bytecode</a>
-        </li>
-        <li><span class="num">16.</span><a href="scanning-on-demand.html">Scanning on Demand</a>
-        </li>
-        <li><span class="num">17.</span><a href="compiling-expressions.html">Compiling Expressions</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="compiling-expressions.html#design-note">Design Note: It&rsquo;s Just Parsing</a>
-        </li>
-        <li><span class="num">18.</span><a href="types-of-values.html">Types of Values</a>
-        </li>
-        <li><span class="num">19.</span><a href="strings.html">Strings</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="strings.html#design-note">Design Note: String Encoding</a>
-        </li>
-        <li><span class="num">20.</span><a href="hash-tables.html">Hash Tables</a>
-        </li>
-        <li><span class="num">21.</span><a href="global-variables.html">Global Variables</a>
-        </li>
-        <li><span class="num">22.</span><a href="local-variables.html">Local Variables</a>
-        </li>
-        <li><span class="num">23.</span><a href="jumping-back-and-forth.html">Jumping Back and Forth</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="jumping-back-and-forth.html#design-note">Design Note: Considering Goto Harmful</a>
-        </li>
-        <li><span class="num">24.</span><a href="calls-and-functions.html">Calls and Functions</a>
-        </li>
-        <li><span class="num">25.</span><a href="closures.html">Closures</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="closures.html#design-note">Design Note: Closing Over the Loop Variable</a>
-        </li>
-        <li><span class="num">26.</span><a href="garbage-collection.html">Garbage Collection</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="garbage-collection.html#design-note">Design Note: Generational Collectors</a>
-        </li>
-        <li><span class="num">27.</span><a href="classes-and-instances.html">Classes and Instances</a>
-        </li>
-        <li><span class="num">28.</span><a href="methods-and-initializers.html">Methods and Initializers</a>
-        </li>
-        <li class="design-note">
-        <span class="num">&nbsp;</span><a href="methods-and-initializers.html#design-note">Design Note: Novelty Budget</a>
-        </li>
-        <li><span class="num">29.</span><a href="superclasses.html">Superclasses</a>
-        </li>
-        <li><span class="num">30.</span><a href="optimization.html">Optimization</a>
-        </li>
-      </ul>
-    <h2><span class="num">&#10087;</span><a href="backmatter.html" name="backmatter">Backmatter</a></h2>
-    <ul>
-      <li><span class="num">A1.</span><a href="appendix-i.html">Appendix I: Lox Grammar</a></li>
-      <li><span class="num">A2.</span><a href="appendix-ii.html">Appendix II: Generated Syntax Tree Classes</a></li>
-    </ul>
-    </div>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="index.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h2><a href="#top"><small>&nbsp;</small> 目录</a></h2>
+        <ul>
+          <li><a href="#welcome"><small>I</small>欢迎</a></li>
+          <li><a href="#a-tree-walk-interpreter"><small>II</small>树遍历解释器</a></li>
+          <li><a href="#a-bytecode-virtual-machine"><small>III</small>字节码虚拟机</a></li>
+          <li><a href="#backmatter"><small>&#10087;</small>后记</a></li>
+        </ul>
+                <div class="prev-next">
+            <a href="acknowledgements.html" title="鸣谢" class="left">&larr;&nbsp;Previous</a>
+            <a href="index.html" title="Crafting Interpreters">&uarr;&nbsp;Up</a>
+            <a href="welcome.html" title="欢迎" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
   </div>
-</div>
 
-<footer>
-  <a href="welcome.html" class="next">
-    First Part: &ldquo;Welcome&rdquo; &rarr;
-  </a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2020</a>
-</footer>
-</article>
+  <article class="contents">
 
-</div>
-</body>
-</html>
+    <h1 class="part">目录</h1>
+
+    <div class="chapters">
+      <div class="row">
+        <div class="first">
+          <h2><span class="num">&#10087;</span>前言</h2>
+          <ul>
+            <li><span class="num">&nbsp;</span><a href="dedication.html">致辞</a></li>
+            <li><span class="num">&nbsp;</span><a href="acknowledgements.html">鸣谢</a></li>
+          </ul>
+
+          <h2><span class="num">I.</span><a href="welcome.html" name="welcome">欢迎</a></h2>
+          <ul>
+            <li><span class="num">1.</span><a href="introduction.html">导言</a>
+            </li>
+            <li><span class="num">2.</span><a href="a-map-of-the-territory.html">领域概览</a>
+            </li>
+            <li><span class="num">3.</span><a href="the-lox-language.html">Lox语言</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="the-lox-language.html#design-note">Design Note: Expressions and Statements</a>
+            </li>
+          </ul>          <h2><span class="num">II.</span><a href="a-tree-walk-interpreter.html" name="a-tree-walk-interpreter">树遍历解释器</a></h2>
+          <ul>
+            <li><span class="num">4.</span><a href="scanning.html">扫描</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="scanning.html#design-note">Design Note: Implicit Semicolons</a>
+            </li>
+            <li><span class="num">5.</span><a href="representing-code.html">代码表示</a>
+            </li>
+            <li><span class="num">6.</span><a href="parsing-expressions.html">解析表达式</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="parsing-expressions.html#design-note">Design Note: Logic Versus History</a>
+            </li>
+            <li><span class="num">7.</span><a href="evaluating-expressions.html">求值表达式</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="evaluating-expressions.html#design-note">Design Note: Static and Dynamic Typing</a>
+            </li>
+            <li><span class="num">8.</span><a href="statements-and-state.html">语句和状态</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="statements-and-state.html#design-note">Design Note: Implicit Variable Declaration</a>
+            </li>
+            <li><span class="num">9.</span><a href="control-flow.html">控制流</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="control-flow.html#design-note">Design Note: Spoonfuls of Syntactic Sugar</a>
+            </li>
+            <li><span class="num">10.</span><a href="functions.html">函数</a>
+            </li>
+            <li><span class="num">11.</span><a href="resolving-and-binding.html">解析和绑定</a>
+            </li>
+            <li><span class="num">12.</span><a href="classes.html">类</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="classes.html#design-note">Design Note: Prototypes and Power</a>
+            </li>
+            <li><span class="num">13.</span><a href="inheritance.html">继承</a>
+            </li>
+          </ul>        </div>
+        <div class="second">
+          <h2><span class="num">III.</span><a href="a-bytecode-virtual-machine.html" name="a-bytecode-virtual-machine">字节码虚拟机</a></h2>
+          <ul>
+            <li><span class="num">14.</span><a href="chunks-of-bytecode.html">字节码块</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="chunks-of-bytecode.html#design-note">Design Note: Test Your Language</a>
+            </li>
+            <li><span class="num">15.</span><a href="a-virtual-machine.html">虚拟机</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="a-virtual-machine.html#design-note">Design Note: Register-Based Bytecode</a>
+            </li>
+            <li><span class="num">16.</span><a href="scanning-on-demand.html">按需扫描</a>
+            </li>
+            <li><span class="num">17.</span><a href="compiling-expressions.html">编译表达式</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="compiling-expressions.html#design-note">Design Note: It&rsquo;s Just Parsing</a>
+            </li>
+            <li><span class="num">18.</span><a href="types-of-values.html">值类型</a>
+            </li>
+            <li><span class="num">19.</span><a href="strings.html">字符串</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="strings.html#design-note">Design Note: String Encoding</a>
+            </li>
+            <li><span class="num">20.</span><a href="hash-tables.html">哈希表</a>
+            </li>
+            <li><span class="num">21.</span><a href="global-variables.html">全局变量</a>
+            </li>
+            <li><span class="num">22.</span><a href="local-variables.html">局部变量</a>
+            </li>
+            <li><span class="num">23.</span><a href="jumping-back-and-forth.html">来回跳转</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="jumping-back-and-forth.html#design-note">Design Note: Considering Goto Harmful</a>
+            </li>
+            <li><span class="num">24.</span><a href="calls-and-functions.html">调用与函数</a>
+            </li>
+            <li><span class="num">25.</span><a href="closures.html">闭包</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="closures.html#design-note">Design Note: Closing Over the Loop Variable</a>
+            </li>
+            <li><span class="num">26.</span><a href="garbage-collection.html">垃圾回收</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="garbage-collection.html#design-note">Design Note: Generational Collectors</a>
+            </li>
+            <li><span class="num">27.</span><a href="classes-and-instances.html">类和实例</a>
+            </li>
+            <li><span class="num">28.</span><a href="methods-and-initializers.html">方法和初始化</a>
+            </li>
+            <li class="design-note">
+            <span class="num">&nbsp;</span><a href="methods-and-initializers.html#design-note">Design Note: Novelty Budget</a>
+            </li>
+            <li><span class="num">29.</span><a href="superclasses.html">超类</a>
+            </li>
+            <li><span class="num">30.</span><a href="optimization.html">优化</a>
+            </li>
+          </ul>
+          <h2><span class="num">&#10087;</span><a href="backmatter.html" name="backmatter">后记</a></h2>
+          <ul>
+            <li><span class="num">A1.</span><a href="appendix-i.html">附录 I: Lox 语法</a></li>
+            <li><span class="num">A2.</span><a href="appendix-ii.html">附录 II: 语法生成树的类</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <a href="welcome.html" class="next">
+        第一章: &ldquo;欢迎&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2020</a>
+    </footer>
+  </article>
+
+  </div>
+  </body>
+  </html>

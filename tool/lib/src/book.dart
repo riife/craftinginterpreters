@@ -57,6 +57,49 @@ const _tableOfContents = {
   ],
 };
 
+const _titleZhMap = {
+  'Crafting Interpreters': 'Crafting Interpreters',
+  'Dedication': '致辞',
+  'Acknowledgements': '鸣谢',
+  'Table of Contents': '目录',
+  'Welcome': '欢迎',
+  'Introduction': '导言',
+  'A Map of the Territory': '领域概览',
+  'The Lox Language': 'Lox语言',
+  'A Tree-Walk Interpreter': '树遍历解释器',
+  'Scanning': '扫描',
+  'Representing Code': '代码表示',
+  'Parsing Expressions': '解析表达式',
+  'Evaluating Expressions': '求值表达式',
+  'Statements and State': '语句和状态',
+  'Control Flow': '控制流',
+  'Functions': '函数',
+  'Resolving and Binding': '解析和绑定',
+  'Classes': '类',
+  'Inheritance': '继承',
+  'A Bytecode Virtual Machine': '字节码虚拟机',
+  'Chunks of Bytecode': '字节码块',
+  'A Virtual Machine': '虚拟机',
+  'Scanning on Demand': '按需扫描',
+  'Compiling Expressions': '编译表达式',
+  'Types of Values': '值类型',
+  'Strings': '字符串',
+  'Hash Tables': '哈希表',
+  'Global Variables': '全局变量',
+  'Local Variables': '局部变量',
+  'Jumping Back and Forth': '来回跳转',
+  'Calls and Functions': '调用与函数',
+  'Closures': '闭包',
+  'Garbage Collection': '垃圾回收',
+  'Classes and Instances': '类和实例',
+  'Methods and Initializers': '方法和初始化',
+  'Superclasses': '超类',
+  'Optimization': '优化',
+  'Backmatter': '附录',
+  'Appendix I': '附录I',
+  'Appendix II': '附录II'
+};
+
 /// The contents of the Markdown and source files for the book, loaded and
 /// parsed.
 class Book {
@@ -84,7 +127,8 @@ class Book {
       // There is no part page for the frontmatter.
       Page partPage;
       if (part != "") {
-        partPage = Page(part, null, partNumber, pages.length);
+        partPage =
+            Page(part, null, partNumber, pages.length, _titleZhMap[part]);
         pages.add(partPage);
         parts.add(partPage);
       }
@@ -102,8 +146,8 @@ class Book {
           chapterNumber = chapterIndex.toString();
           chapterIndex++;
         }
-
-        var page = Page(chapter, partPage, chapterNumber, pages.length);
+        var page = Page(chapter, partPage, chapterNumber, pages.length,
+            _titleZhMap[chapter]);
         pages.add(page);
         if (partPage != null) {
           partPage.chapters.add(page);

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Optimization &middot; Crafting Interpreters</title>
+<title>优化 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,67 +32,67 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Optimization<small>30</small></a></h3>
-
-<ul>
-    <li><a href="#measuring-performance--测量性能"><small>30.1</small> Measuring Performance  测量性能</a></li>
-    <li><a href="#faster-hash-table-probing--更快的哈希表探测"><small>30.2</small> Faster Hash Table Probing  更快的哈希表探测</a></li>
-    <li><a href="#nan-boxing--nan装箱"><small>30.3</small> NaN Boxing  NaN装箱</a></li>
-    <li><a href="#where-to-next--前路何方"><small>30.4</small> Where to Next  前路何方</a></li>
-    <li><a href="#习题"><small>30.5</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="superclasses.html" title="Superclasses" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="backmatter.html" title="Backmatter" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">优化<small>30</small></a></h3>
+    
+    <ul>
+        <li><a href="#measuring-performance--测量性能"><small>30.1</small> Measuring Performance  测量性能</a></li>
+        <li><a href="#faster-hash-table-probing--更快的哈希表探测"><small>30.2</small> Faster Hash Table Probing  更快的哈希表探测</a></li>
+        <li><a href="#nan-boxing--nan装箱"><small>30.3</small> NaN Boxing  NaN装箱</a></li>
+        <li><a href="#where-to-next--前路何方"><small>30.4</small> Where to Next  前路何方</a></li>
+        <li><a href="#习题"><small>30.5</small> 习题</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="superclasses.html" title="超类" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="backmatter.html" title="附录" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="superclasses.html" title="Superclasses" class="prev">←</a>
-<a href="backmatter.html" title="Backmatter" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="superclasses.html" title="超类" class="prev">←</a>
+  <a href="backmatter.html" title="附录" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Optimization<small>30</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">优化<small>30</small></a></h3>
+        
+        <ul>
+            <li><a href="#measuring-performance--测量性能"><small>30.1</small> Measuring Performance  测量性能</a></li>
+            <li><a href="#faster-hash-table-probing--更快的哈希表探测"><small>30.2</small> Faster Hash Table Probing  更快的哈希表探测</a></li>
+            <li><a href="#nan-boxing--nan装箱"><small>30.3</small> NaN Boxing  NaN装箱</a></li>
+            <li><a href="#where-to-next--前路何方"><small>30.4</small> Where to Next  前路何方</a></li>
+            <li><a href="#习题"><small>30.5</small> 习题</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="superclasses.html" title="超类" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="backmatter.html" title="附录" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#measuring-performance--测量性能"><small>30.1</small> Measuring Performance  测量性能</a></li>
-    <li><a href="#faster-hash-table-probing--更快的哈希表探测"><small>30.2</small> Faster Hash Table Probing  更快的哈希表探测</a></li>
-    <li><a href="#nan-boxing--nan装箱"><small>30.3</small> NaN Boxing  NaN装箱</a></li>
-    <li><a href="#where-to-next--前路何方"><small>30.4</small> Where to Next  前路何方</a></li>
-    <li><a href="#习题"><small>30.5</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">30</div>
+    <h1>优化</h1>
 
-<div class="prev-next">
-    <a href="superclasses.html" title="Superclasses" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="backmatter.html" title="Backmatter" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">30</div>
-  <h1>Optimization</h1>
-
-<blockquote>
+    <blockquote>
 <p>The evening&rsquo;s the best part of the day. You&rsquo;ve done your day&rsquo;s work. Now you
 can put your feet up and enjoy it.</p>
 <p><cite>Kazuo Ishiguro, <em>The Remains of the Day</em></cite>
@@ -204,7 +204,7 @@ compensate for variance caused by CPU throttling, caching, and other weird
 hardware and operating system quirks. I won&rsquo;t give you a whole sermon here,
 but treat benchmarking as its own skill that improves with practice.
 基准测试是一门微妙的艺术。就像测试一样，你需要在不过度拟合语言实现的同时，确保基准测试确实适合你所关心的代码路径。在测量性能时，你需要补偿由CPU节流、缓存和其它奇怪的硬件和操作系统特性造成的差异。我不会在这里给你一个完整的说教，但请把基准测试当作可以通过实践来提高的一门技能。</p>
-<h3><a href="#profiling--剖析" id="profiling--剖析"><small>30&#8202;.&#8202;1&#8202;.&#8202;2</small>Profiling  剖析</a></h3>
+<h3><a href="#profiling" id="profiling"><small>30&#8202;.&#8202;1&#8202;.&#8202;2</small>Profiling</a></h3>
 <p>OK, so you&rsquo;ve got a few benchmarks now. You want to make them go faster. Now
 what? First of all, let&rsquo;s assume you&rsquo;ve done all the obvious, easy work. You are
 using the right algorithms and data structures<span class="em">&mdash;</span>or, at least, you aren&rsquo;t using
@@ -1519,14 +1519,16 @@ material that teaches you the way you learn best.
 </ol>
 </div>
 
-<footer>
-<a href="backmatter.html" class="next">
-  Next Part: &ldquo;Backmatter&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="backmatter.html" class="next">
+        下一章: &ldquo;附录&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

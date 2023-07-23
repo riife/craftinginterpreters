@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Control Flow &middot; Crafting Interpreters</title>
+<title>控制流 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,69 +32,69 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Control Flow<small>9</small></a></h3>
-
-<ul>
-    <li><a href="#turing-machines-briefly--图灵机（简介）"><small>9.1</small> Turing Machines (Briefly)  图灵机（简介）</a></li>
-    <li><a href="#conditional-execution--条件执行"><small>9.2</small> Conditional Execution  条件执行</a></li>
-    <li><a href="#logical-operators--逻辑操作符"><small>9.3</small> Logical Operators  逻辑操作符</a></li>
-    <li><a href="#while-loops--while循环"><small>9.4</small> While Loops  While循环</a></li>
-    <li><a href="#for-loops--for循环"><small>9.5</small> For Loops  For循环</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Spoonfuls of Syntactic Sugar</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="statements-and-state.html" title="Statements and State" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="functions.html" title="Functions" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">控制流<small>9</small></a></h3>
+    
+    <ul>
+        <li><a href="#turing-machines-briefly--图灵机（简介）"><small>9.1</small> Turing Machines (Briefly)  图灵机（简介）</a></li>
+        <li><a href="#conditional-execution--条件执行"><small>9.2</small> Conditional Execution  条件执行</a></li>
+        <li><a href="#logical-operators--逻辑操作符"><small>9.3</small> Logical Operators  逻辑操作符</a></li>
+        <li><a href="#while-loops--while循环"><small>9.4</small> While Loops  While循环</a></li>
+        <li><a href="#for-loops--for循环"><small>9.5</small> For Loops  For循环</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Spoonfuls of Syntactic Sugar</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="statements-and-state.html" title="语句和状态" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+        <a href="functions.html" title="函数" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="statements-and-state.html" title="Statements and State" class="prev">←</a>
-<a href="functions.html" title="Functions" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="statements-and-state.html" title="语句和状态" class="prev">←</a>
+  <a href="functions.html" title="函数" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Control Flow<small>9</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">控制流<small>9</small></a></h3>
+        
+        <ul>
+            <li><a href="#turing-machines-briefly--图灵机（简介）"><small>9.1</small> Turing Machines (Briefly)  图灵机（简介）</a></li>
+            <li><a href="#conditional-execution--条件执行"><small>9.2</small> Conditional Execution  条件执行</a></li>
+            <li><a href="#logical-operators--逻辑操作符"><small>9.3</small> Logical Operators  逻辑操作符</a></li>
+            <li><a href="#while-loops--while循环"><small>9.4</small> While Loops  While循环</a></li>
+            <li><a href="#for-loops--for循环"><small>9.5</small> For Loops  For循环</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Spoonfuls of Syntactic Sugar</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="statements-and-state.html" title="语句和状态" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+            <a href="functions.html" title="函数" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#turing-machines-briefly--图灵机（简介）"><small>9.1</small> Turing Machines (Briefly)  图灵机（简介）</a></li>
-    <li><a href="#conditional-execution--条件执行"><small>9.2</small> Conditional Execution  条件执行</a></li>
-    <li><a href="#logical-operators--逻辑操作符"><small>9.3</small> Logical Operators  逻辑操作符</a></li>
-    <li><a href="#while-loops--while循环"><small>9.4</small> While Loops  While循环</a></li>
-    <li><a href="#for-loops--for循环"><small>9.5</small> For Loops  For循环</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Spoonfuls of Syntactic Sugar</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">9</div>
+    <h1>控制流</h1>
 
-<div class="prev-next">
-    <a href="statements-and-state.html" title="Statements and State" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="functions.html" title="Functions" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">9</div>
-  <h1>Control Flow</h1>
-
-<blockquote>
+    <blockquote>
 <p>Logic, like whiskey, loses its beneficial effect when taken in too large
 quantities.</p>
 <p><cite>Edward John Moreton Drax Plunkett, Lord Dunsany</cite>
@@ -1008,14 +1008,16 @@ comfort and efficiency of their work.</p>
 language<span class="em">&mdash;</span>relies on your own sense of taste.</p>
 </div>
 
-<footer>
-<a href="functions.html" class="next">
-  Next Chapter: &ldquo;Functions&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="functions.html" class="next">
+        下一节: &ldquo;函数&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

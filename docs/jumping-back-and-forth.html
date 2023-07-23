@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Jumping Back and Forth &middot; Crafting Interpreters</title>
+<title>来回跳转 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,69 +32,69 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Jumping Back and Forth<small>23</small></a></h3>
-
-<ul>
-    <li><a href="#if-statements--if语句"><small>23.1</small> If Statements  If语句</a></li>
-    <li><a href="#logical-operators--逻辑运算符"><small>23.2</small> Logical Operators  逻辑运算符</a></li>
-    <li><a href="#while-statements--while语句"><small>23.3</small> While Statements  While语句</a></li>
-    <li><a href="#for-statements--for语句"><small>23.4</small> For Statements  For语句</a></li>
-    <li><a href="#习题"><small>23.5</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="local-variables.html" title="Local Variables" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="calls-and-functions.html" title="Calls and Functions" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">来回跳转<small>23</small></a></h3>
+    
+    <ul>
+        <li><a href="#if-statements--if语句"><small>23.1</small> If Statements  If语句</a></li>
+        <li><a href="#logical-operators--逻辑运算符"><small>23.2</small> Logical Operators  逻辑运算符</a></li>
+        <li><a href="#while-statements--while语句"><small>23.3</small> While Statements  While语句</a></li>
+        <li><a href="#for-statements--for语句"><small>23.4</small> For Statements  For语句</a></li>
+        <li><a href="#习题"><small>23.5</small> 习题</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="local-variables.html" title="局部变量" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="calls-and-functions.html" title="调用与函数" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="local-variables.html" title="Local Variables" class="prev">←</a>
-<a href="calls-and-functions.html" title="Calls and Functions" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="local-variables.html" title="局部变量" class="prev">←</a>
+  <a href="calls-and-functions.html" title="调用与函数" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Jumping Back and Forth<small>23</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">来回跳转<small>23</small></a></h3>
+        
+        <ul>
+            <li><a href="#if-statements--if语句"><small>23.1</small> If Statements  If语句</a></li>
+            <li><a href="#logical-operators--逻辑运算符"><small>23.2</small> Logical Operators  逻辑运算符</a></li>
+            <li><a href="#while-statements--while语句"><small>23.3</small> While Statements  While语句</a></li>
+            <li><a href="#for-statements--for语句"><small>23.4</small> For Statements  For语句</a></li>
+            <li><a href="#习题"><small>23.5</small> 习题</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="local-variables.html" title="局部变量" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="calls-and-functions.html" title="调用与函数" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#if-statements--if语句"><small>23.1</small> If Statements  If语句</a></li>
-    <li><a href="#logical-operators--逻辑运算符"><small>23.2</small> Logical Operators  逻辑运算符</a></li>
-    <li><a href="#while-statements--while语句"><small>23.3</small> While Statements  While语句</a></li>
-    <li><a href="#for-statements--for语句"><small>23.4</small> For Statements  For语句</a></li>
-    <li><a href="#习题"><small>23.5</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">23</div>
+    <h1>来回跳转</h1>
 
-<div class="prev-next">
-    <a href="local-variables.html" title="Local Variables" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="calls-and-functions.html" title="Calls and Functions" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">23</div>
-  <h1>Jumping Back and Forth</h1>
-
-<blockquote>
+    <blockquote>
 <p>The order that our mind imagines is like a net, or like a ladder, built to
 attain something. But afterward you must throw the ladder away, because you
 discover that, even if it was useful, it was meaningless.</p>
@@ -359,7 +359,7 @@ the stack. We&rsquo;ll clean that up soon. Ignoring that for the moment, we do h
 working <code>if</code> statement in Lox now, with only one little instruction required to
 support it at runtime in the VM.
 请注意，跳转指令并没有将条件值弹出栈。因此，我们在这里还没有全部完成，因为还在堆栈上留下了一个额外的值。我们很快就会把它清理掉。暂时先忽略这个问题，我们现在在Lox中已经有了可用的<code>if</code>语句，只需要一条小指令在虚拟机运行时支持它。</p>
-<h3><a href="#else-clauses--else子句" id="else-clauses--else子句"><small>23&#8202;.&#8202;1&#8202;.&#8202;1</small>Else clauses  Else子句</a></h3>
+<h3><a href="#else-clauses" id="else-clauses"><small>23&#8202;.&#8202;1&#8202;.&#8202;1</small>Else clauses</a></h3>
 <p>An <code>if</code> statement without support for <code>else</code> clauses is like Morticia Addams
 without Gomez. So, after we compile the then branch, we look for an <code>else</code>
 keyword. If we find one, we compile the else branch.
@@ -1251,14 +1251,16 @@ understanding of the problems and benefits of goto. Instead, we just think it&rs
 for quality creative work.</p>
 </div>
 
-<footer>
-<a href="calls-and-functions.html" class="next">
-  Next Chapter: &ldquo;Calls and Functions&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="calls-and-functions.html" class="next">
+        下一节: &ldquo;调用与函数&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

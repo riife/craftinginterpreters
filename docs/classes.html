@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Classes &middot; Crafting Interpreters</title>
+<title>类 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,73 +32,73 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Classes<small>12</small></a></h3>
-
-<ul>
-    <li><a href="#oop-and-classes"><small>12.1</small> OOP and Classes</a></li>
-    <li><a href="#class-declarations"><small>12.2</small> Class Declarations</a></li>
-    <li><a href="#creating-instances--创建实例"><small>12.3</small> Creating Instances  创建实例</a></li>
-    <li><a href="#properties-on-instances--实例属性"><small>12.4</small> Properties on Instances  实例属性</a></li>
-    <li><a href="#methods-on-classes--类中的方法"><small>12.5</small> Methods on Classes  类中的方法</a></li>
-    <li><a href="#this"><small>12.6</small> This</a></li>
-    <li><a href="#constructors-and-initializers--构造函数和初始化"><small>12.7</small> Constructors and Initializers  构造函数和初始化</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="resolving-and-binding.html" title="Resolving and Binding" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="inheritance.html" title="Inheritance" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">类<small>12</small></a></h3>
+    
+    <ul>
+        <li><a href="#oop-and-classes"><small>12.1</small> OOP and Classes</a></li>
+        <li><a href="#class-declarations"><small>12.2</small> Class Declarations</a></li>
+        <li><a href="#creating-instances--创建实例"><small>12.3</small> Creating Instances  创建实例</a></li>
+        <li><a href="#properties-on-instances--实例属性"><small>12.4</small> Properties on Instances  实例属性</a></li>
+        <li><a href="#methods-on-classes--类中的方法"><small>12.5</small> Methods on Classes  类中的方法</a></li>
+        <li><a href="#this"><small>12.6</small> This</a></li>
+        <li><a href="#constructors-and-initializers--构造函数和初始化"><small>12.7</small> Constructors and Initializers  构造函数和初始化</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="resolving-and-binding.html" title="解析和绑定" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+        <a href="inheritance.html" title="继承" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="resolving-and-binding.html" title="Resolving and Binding" class="prev">←</a>
-<a href="inheritance.html" title="Inheritance" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="resolving-and-binding.html" title="解析和绑定" class="prev">←</a>
+  <a href="inheritance.html" title="继承" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Classes<small>12</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">类<small>12</small></a></h3>
+        
+        <ul>
+            <li><a href="#oop-and-classes"><small>12.1</small> OOP and Classes</a></li>
+            <li><a href="#class-declarations"><small>12.2</small> Class Declarations</a></li>
+            <li><a href="#creating-instances--创建实例"><small>12.3</small> Creating Instances  创建实例</a></li>
+            <li><a href="#properties-on-instances--实例属性"><small>12.4</small> Properties on Instances  实例属性</a></li>
+            <li><a href="#methods-on-classes--类中的方法"><small>12.5</small> Methods on Classes  类中的方法</a></li>
+            <li><a href="#this"><small>12.6</small> This</a></li>
+            <li><a href="#constructors-and-initializers--构造函数和初始化"><small>12.7</small> Constructors and Initializers  构造函数和初始化</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="resolving-and-binding.html" title="解析和绑定" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+            <a href="inheritance.html" title="继承" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#oop-and-classes"><small>12.1</small> OOP and Classes</a></li>
-    <li><a href="#class-declarations"><small>12.2</small> Class Declarations</a></li>
-    <li><a href="#creating-instances--创建实例"><small>12.3</small> Creating Instances  创建实例</a></li>
-    <li><a href="#properties-on-instances--实例属性"><small>12.4</small> Properties on Instances  实例属性</a></li>
-    <li><a href="#methods-on-classes--类中的方法"><small>12.5</small> Methods on Classes  类中的方法</a></li>
-    <li><a href="#this"><small>12.6</small> This</a></li>
-    <li><a href="#constructors-and-initializers--构造函数和初始化"><small>12.7</small> Constructors and Initializers  构造函数和初始化</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">12</div>
+    <h1>类</h1>
 
-<div class="prev-next">
-    <a href="resolving-and-binding.html" title="Resolving and Binding" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="inheritance.html" title="Inheritance" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">12</div>
-  <h1>Classes</h1>
-
-<blockquote>
+    <blockquote>
 <p>One has no right to love or hate anything if one has not acquired a thorough
 knowledge of its nature. Great love springs from great knowledge of the
 beloved object, and if you know it but little you will be able to love it only
@@ -1802,14 +1802,16 @@ a large enough margin to pay for the added complexity. But if that isn&rsquo;t h
 users are using your language, then by all means leave classes out.</p>
 </div>
 
-<footer>
-<a href="inheritance.html" class="next">
-  Next Chapter: &ldquo;Inheritance&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="inheritance.html" class="next">
+        下一节: &ldquo;继承&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

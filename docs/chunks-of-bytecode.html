@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Chunks of Bytecode &middot; Crafting Interpreters</title>
+<title>字节码块 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,71 +32,71 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Chunks of Bytecode<small>14</small></a></h3>
-
-<ul>
-    <li><a href="#bytecode"><small>14.1</small> Bytecode?</a></li>
-    <li><a href="#getting-started"><small>14.2</small> Getting Started</a></li>
-    <li><a href="#chunks-of-instructions"><small>14.3</small> Chunks of Instructions</a></li>
-    <li><a href="#disassembling-chunks"><small>14.4</small> Disassembling Chunks</a></li>
-    <li><a href="#constants"><small>14.5</small> Constants</a></li>
-    <li><a href="#line-information"><small>14.6</small> Line Information</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Test Your Language</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="a-virtual-machine.html" title="A Virtual Machine" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">字节码块<small>14</small></a></h3>
+    
+    <ul>
+        <li><a href="#bytecode"><small>14.1</small> Bytecode?</a></li>
+        <li><a href="#getting-started"><small>14.2</small> Getting Started</a></li>
+        <li><a href="#chunks-of-instructions"><small>14.3</small> Chunks of Instructions</a></li>
+        <li><a href="#disassembling-chunks"><small>14.4</small> Disassembling Chunks</a></li>
+        <li><a href="#constants"><small>14.5</small> Constants</a></li>
+        <li><a href="#line-information"><small>14.6</small> Line Information</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Test Your Language</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="a-bytecode-virtual-machine.html" title="字节码虚拟机" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="a-virtual-machine.html" title="虚拟机" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine" class="prev">←</a>
-<a href="a-virtual-machine.html" title="A Virtual Machine" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="a-bytecode-virtual-machine.html" title="字节码虚拟机" class="prev">←</a>
+  <a href="a-virtual-machine.html" title="虚拟机" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Chunks of Bytecode<small>14</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">字节码块<small>14</small></a></h3>
+        
+        <ul>
+            <li><a href="#bytecode"><small>14.1</small> Bytecode?</a></li>
+            <li><a href="#getting-started"><small>14.2</small> Getting Started</a></li>
+            <li><a href="#chunks-of-instructions"><small>14.3</small> Chunks of Instructions</a></li>
+            <li><a href="#disassembling-chunks"><small>14.4</small> Disassembling Chunks</a></li>
+            <li><a href="#constants"><small>14.5</small> Constants</a></li>
+            <li><a href="#line-information"><small>14.6</small> Line Information</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Test Your Language</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="a-bytecode-virtual-machine.html" title="字节码虚拟机" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="a-virtual-machine.html" title="虚拟机" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#bytecode"><small>14.1</small> Bytecode?</a></li>
-    <li><a href="#getting-started"><small>14.2</small> Getting Started</a></li>
-    <li><a href="#chunks-of-instructions"><small>14.3</small> Chunks of Instructions</a></li>
-    <li><a href="#disassembling-chunks"><small>14.4</small> Disassembling Chunks</a></li>
-    <li><a href="#constants"><small>14.5</small> Constants</a></li>
-    <li><a href="#line-information"><small>14.6</small> Line Information</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Test Your Language</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">14</div>
+    <h1>字节码块</h1>
 
-<div class="prev-next">
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="a-virtual-machine.html" title="A Virtual Machine" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">14</div>
-  <h1>Chunks of Bytecode</h1>
-
-<blockquote>
+    <blockquote>
 <p>If you find that you&rsquo;re spending almost all your time on theory, start turning
 some attention to practical things; it will improve your theories. If you find
 that you&rsquo;re spending almost all your time on practice, start turning some
@@ -1533,14 +1533,16 @@ internalize how important it is <em>that</em> you test yours. Seriously. Test yo
 language. You&rsquo;ll thank me for it.</p>
 </div>
 
-<footer>
-<a href="a-virtual-machine.html" class="next">
-  Next Chapter: &ldquo;A Virtual Machine&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="a-virtual-machine.html" class="next">
+        下一节: &ldquo;虚拟机&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

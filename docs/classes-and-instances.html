@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Classes and Instances &middot; Crafting Interpreters</title>
+<title>类和实例 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,67 +32,67 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Classes and Instances<small>27</small></a></h3>
-
-<ul>
-    <li><a href="#class-objects--class对象"><small>27.1</small> Class Objects  Class对象</a></li>
-    <li><a href="#class-declarations--类声明"><small>27.2</small> Class Declarations  类声明</a></li>
-    <li><a href="#instances-of-classes--类的实例"><small>27.3</small> Instances of Classes  类的实例</a></li>
-    <li><a href="#get-and-set-expressions--get和set表达式"><small>27.4</small> Get and Set Expressions  Get和SET表达式</a></li>
-    <li><a href="#习题"><small>27.5</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="garbage-collection.html" title="Garbage Collection" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="methods-and-initializers.html" title="Methods and Initializers" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">类和实例<small>27</small></a></h3>
+    
+    <ul>
+        <li><a href="#class-objects--class对象"><small>27.1</small> Class Objects  Class对象</a></li>
+        <li><a href="#class-declarations--类声明"><small>27.2</small> Class Declarations  类声明</a></li>
+        <li><a href="#instances-of-classes--类的实例"><small>27.3</small> Instances of Classes  类的实例</a></li>
+        <li><a href="#get-and-set-expressions--get和set表达式"><small>27.4</small> Get and Set Expressions  Get和SET表达式</a></li>
+        <li><a href="#习题"><small>27.5</small> 习题</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="garbage-collection.html" title="垃圾回收" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="methods-and-initializers.html" title="方法和初始化" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="garbage-collection.html" title="Garbage Collection" class="prev">←</a>
-<a href="methods-and-initializers.html" title="Methods and Initializers" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="garbage-collection.html" title="垃圾回收" class="prev">←</a>
+  <a href="methods-and-initializers.html" title="方法和初始化" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Classes and Instances<small>27</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">类和实例<small>27</small></a></h3>
+        
+        <ul>
+            <li><a href="#class-objects--class对象"><small>27.1</small> Class Objects  Class对象</a></li>
+            <li><a href="#class-declarations--类声明"><small>27.2</small> Class Declarations  类声明</a></li>
+            <li><a href="#instances-of-classes--类的实例"><small>27.3</small> Instances of Classes  类的实例</a></li>
+            <li><a href="#get-and-set-expressions--get和set表达式"><small>27.4</small> Get and Set Expressions  Get和SET表达式</a></li>
+            <li><a href="#习题"><small>27.5</small> 习题</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="garbage-collection.html" title="垃圾回收" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="methods-and-initializers.html" title="方法和初始化" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#class-objects--class对象"><small>27.1</small> Class Objects  Class对象</a></li>
-    <li><a href="#class-declarations--类声明"><small>27.2</small> Class Declarations  类声明</a></li>
-    <li><a href="#instances-of-classes--类的实例"><small>27.3</small> Instances of Classes  类的实例</a></li>
-    <li><a href="#get-and-set-expressions--get和set表达式"><small>27.4</small> Get and Set Expressions  Get和SET表达式</a></li>
-    <li><a href="#习题"><small>27.5</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">27</div>
+    <h1>类和实例</h1>
 
-<div class="prev-next">
-    <a href="garbage-collection.html" title="Garbage Collection" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="methods-and-initializers.html" title="Methods and Initializers" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">27</div>
-  <h1>Classes and Instances</h1>
-
-<blockquote>
+    <blockquote>
 <p>Caring too much for objects can destroy you. Only<span class="em">&mdash;</span>if you care for a thing
 enough, it takes on a life of its own, doesn&rsquo;t it? And isn’t the whole point
 of things<span class="em">&mdash;</span>beautiful things<span class="em">&mdash;</span>that they connect you to some larger beauty?</p>
@@ -981,14 +981,16 @@ with and optimize this?
 </ol>
 </div>
 
-<footer>
-<a href="methods-and-initializers.html" class="next">
-  Next Chapter: &ldquo;Methods and Initializers&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="methods-and-initializers.html" class="next">
+        下一节: &ldquo;方法和初始化&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

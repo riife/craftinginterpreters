@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Scanning &middot; Crafting Interpreters</title>
+<title>扫描 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,80 +32,79 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Scanning<small>4</small></a></h3>
-
-<ul>
-    <li><a href="#the-interpreter-framework--解释器框架"><small>4.1</small> The Interpreter Framework  解释器框架</a></li>
-    <li><a href="#lexemes-and-tokens"><small>4.2</small> Lexemes and Tokens</a></li>
-    <li><a href="#词素和标记（词法单元）"><small>4.3</small> 词素和标记（词法单元）</a></li>
-    <li><a href="#regular-languages-and-expressions--正则语言和表达式"><small>4.4</small> Regular Languages and Expressions  正则语言和表达式</a></li>
-    <li><a href="#the-scanner-class"><small>4.5</small> The Scanner Class</a></li>
-    <li><a href="#scanner类"><small>4.6</small> Scanner类</a></li>
-    <li><a href="#recognizing-lexemes--识别词素"><small>4.7</small> Recognizing Lexemes  识别词素</a></li>
-    <li><a href="#longer-lexemes--更长的词素"><small>4.8</small> Longer Lexemes  更长的词素</a></li>
-    <li><a href="#reserved-words-and-identifiers--保留字和标识符"><small>4.9</small> Reserved Words and Identifiers  保留字和标识符</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Implicit Semicolons</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="representing-code.html" title="Representing Code" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">扫描<small>4</small></a></h3>
+    
+    <ul>
+        <li><a href="#the-interpreter-framework--解释器框架"><small>4.1</small> The Interpreter Framework  解释器框架</a></li>
+        <li><a href="#lexemes-and-tokens"><small>4.2</small> Lexemes and Tokens</a></li>
+        <li><a href="#词素和标记（词法单元）"><small>4.3</small> 词素和标记（词法单元）</a></li>
+        <li><a href="#regular-languages-and-expressions--正则语言和表达式"><small>4.4</small> Regular Languages and Expressions  正则语言和表达式</a></li>
+        <li><a href="#the-scanner-class"><small>4.5</small> The Scanner Class</a></li>
+        <li><a href="#scanner类"><small>4.6</small> Scanner类</a></li>
+        <li><a href="#recognizing-lexemes--识别词素"><small>4.7</small> Recognizing Lexemes  识别词素</a></li>
+        <li><a href="#longer-lexemes--更长的词素"><small>4.8</small> Longer Lexemes  更长的词素</a></li>
+        <li><a href="#reserved-words-and-identifiers--保留字和标识符"><small>4.9</small> Reserved Words and Identifiers  保留字和标识符</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Implicit Semicolons</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="a-tree-walk-interpreter.html" title="树遍历解释器" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+        <a href="representing-code.html" title="代码表示" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter" class="prev">←</a>
-<a href="representing-code.html" title="Representing Code" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="a-tree-walk-interpreter.html" title="树遍历解释器" class="prev">←</a>
+  <a href="representing-code.html" title="代码表示" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Scanning<small>4</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">扫描<small>4</small></a></h3>
+        
+        <ul>
+            <li><a href="#the-interpreter-framework--解释器框架"><small>4.1</small> The Interpreter Framework  解释器框架</a></li>
+            <li><a href="#lexemes-and-tokens"><small>4.2</small> Lexemes and Tokens</a></li>
+            <li><a href="#词素和标记（词法单元）"><small>4.3</small> 词素和标记（词法单元）</a></li>
+            <li><a href="#regular-languages-and-expressions--正则语言和表达式"><small>4.4</small> Regular Languages and Expressions  正则语言和表达式</a></li>
+            <li><a href="#the-scanner-class"><small>4.5</small> The Scanner Class</a></li>
+            <li><a href="#scanner类"><small>4.6</small> Scanner类</a></li>
+            <li><a href="#recognizing-lexemes--识别词素"><small>4.7</small> Recognizing Lexemes  识别词素</a></li>
+            <li><a href="#longer-lexemes--更长的词素"><small>4.8</small> Longer Lexemes  更长的词素</a></li>
+            <li><a href="#reserved-words-and-identifiers--保留字和标识符"><small>4.9</small> Reserved Words and Identifiers  保留字和标识符</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Implicit Semicolons</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="a-tree-walk-interpreter.html" title="树遍历解释器" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+            <a href="representing-code.html" title="代码表示" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#the-interpreter-framework--解释器框架"><small>4.1</small> The Interpreter Framework  解释器框架</a></li>
-    <li><a href="#lexemes-and-tokens"><small>4.2</small> Lexemes and Tokens</a></li>
-    <li><a href="#词素和标记（词法单元）"><small>4.3</small> 词素和标记（词法单元）</a></li>
-    <li><a href="#regular-languages-and-expressions--正则语言和表达式"><small>4.4</small> Regular Languages and Expressions  正则语言和表达式</a></li>
-    <li><a href="#the-scanner-class"><small>4.5</small> The Scanner Class</a></li>
-    <li><a href="#scanner类"><small>4.6</small> Scanner类</a></li>
-    <li><a href="#recognizing-lexemes--识别词素"><small>4.7</small> Recognizing Lexemes  识别词素</a></li>
-    <li><a href="#longer-lexemes--更长的词素"><small>4.8</small> Longer Lexemes  更长的词素</a></li>
-    <li><a href="#reserved-words-and-identifiers--保留字和标识符"><small>4.9</small> Reserved Words and Identifiers  保留字和标识符</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Implicit Semicolons</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">4</div>
+    <h1>扫描</h1>
 
-<div class="prev-next">
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="representing-code.html" title="Representing Code" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">4</div>
-  <h1>Scanning</h1>
-
-<blockquote>
+    <blockquote>
 <p>Take big bites. Anything worth doing is worth overdoing.</p>
-<p><cite>Robert A. Heinlein, <em>Time Enough for Love</em></cite>
-大干特工。每件值得做的事都要尽力做好。</p>
+<p><cite>Robert A. Heinlein, <em>Time Enough for Love</em></cite></p>
 </blockquote>
 <p>The first step in any compiler or interpreter is <span
 name="lexing">scanning</span>. The scanner takes in raw source code as a series
@@ -379,7 +378,7 @@ process of grouping character sequences into lexemes, we also stumble upon some
 other useful information. When we take the lexeme and bundle it together with
 that other data, the result is a token. It includes useful stuff like:
 词素只是源代码的原始子字符串。 但是，在将字符序列分组为词素的过程中，我们也会发现了一些其他有用的信息。 当我们获取词素并将其与其他数据捆绑在一起时，结果是一个标记（token，词法单元）。它包含一些有用的内容，比如：</p>
-<h3><a href="#token-type--标记类型" id="token-type--标记类型"><small>4&#8202;.&#8202;3&#8202;.&#8202;1</small>Token type  标记类型</a></h3>
+<h3><a href="#token-type" id="token-type"><small>4&#8202;.&#8202;3&#8202;.&#8202;1</small>Token type</a></h3>
 <p>Keywords are part of the shape of the language&rsquo;s grammar, so the parser often
 has code like, &ldquo;If the next token is <code>while</code> then do<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo; That means the parser
 wants to know not just that it has a lexeme for some identifier, but that it has
@@ -705,7 +704,7 @@ with a blast of errors if they accidentally paste a big blob of weird text.
 Coalescing a run of invalid characters into a single error would give a nicer
 user experience.</p>
 </aside>
-<h3><a href="#operators--操作符" id="operators--操作符"><small>4&#8202;.&#8202;7&#8202;.&#8202;2</small>Operators  操作符</a></h3>
+<h3><a href="#operators" id="operators"><small>4&#8202;.&#8202;7&#8202;.&#8202;2</small>Operators</a></h3>
 <p>We have single-character lexemes working, but that doesn&rsquo;t cover all of Lox&rsquo;s
 operators. What about <code>!</code>? It&rsquo;s a single character, right? Sometimes, yes, but
 if the very next character is an equals sign, then we should instead create a
@@ -1329,14 +1328,16 @@ rules that make sense for your language&rsquo;s particular grammar and idioms. A
 don&rsquo;t do what JavaScript did.</p>
 </div>
 
-<footer>
-<a href="representing-code.html" class="next">
-  Next Chapter: &ldquo;Representing Code&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="representing-code.html" class="next">
+        下一节: &ldquo;代码表示&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

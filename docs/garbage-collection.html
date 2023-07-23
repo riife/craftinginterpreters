@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Garbage Collection &middot; Crafting Interpreters</title>
+<title>垃圾回收 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,77 +32,77 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Garbage Collection<small>26</small></a></h3>
-
-<ul>
-    <li><a href="#reachability--可达性"><small>26.1</small> Reachability  可达性</a></li>
-    <li><a href="#mark-sweep-garbage-collection--标记-清除垃圾回收"><small>26.2</small> Mark-Sweep Garbage Collection  标记-清除垃圾回收</a></li>
-    <li><a href="#marking-the-roots--标记根"><small>26.3</small> Marking the Roots  标记根</a></li>
-    <li><a href="#tracing-object-references--跟踪对象引用"><small>26.4</small> Tracing Object References  跟踪对象引用</a></li>
-    <li><a href="#sweeping-unused-objects--清除未使用的对象"><small>26.5</small> Sweeping Unused Objects  清除未使用的对象</a></li>
-    <li><a href="#when-to-collect--何时回收"><small>26.6</small> When to Collect  何时回收</a></li>
-    <li><a href="#garbage-collection-bugs--垃圾回收bug"><small>26.7</small> Garbage Collection Bugs  垃圾回收Bug</a></li>
-    <li><a href="#习题"><small>26.8</small> 习题</a></li>
-    <li><a href="#设计笔记：分代回收器"><small>26.9</small> 设计笔记：分代回收器</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="closures.html" title="Closures" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="classes-and-instances.html" title="Classes and Instances" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">垃圾回收<small>26</small></a></h3>
+    
+    <ul>
+        <li><a href="#reachability--可达性"><small>26.1</small> Reachability  可达性</a></li>
+        <li><a href="#mark-sweep-garbage-collection--标记-清除垃圾回收"><small>26.2</small> Mark-Sweep Garbage Collection  标记-清除垃圾回收</a></li>
+        <li><a href="#marking-the-roots--标记根"><small>26.3</small> Marking the Roots  标记根</a></li>
+        <li><a href="#tracing-object-references--跟踪对象引用"><small>26.4</small> Tracing Object References  跟踪对象引用</a></li>
+        <li><a href="#sweeping-unused-objects--清除未使用的对象"><small>26.5</small> Sweeping Unused Objects  清除未使用的对象</a></li>
+        <li><a href="#when-to-collect--何时回收"><small>26.6</small> When to Collect  何时回收</a></li>
+        <li><a href="#garbage-collection-bugs--垃圾回收bug"><small>26.7</small> Garbage Collection Bugs  垃圾回收Bug</a></li>
+        <li><a href="#习题"><small>26.8</small> 习题</a></li>
+        <li><a href="#设计笔记：分代回收器"><small>26.9</small> 设计笔记：分代回收器</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="closures.html" title="闭包" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="classes-and-instances.html" title="类和实例" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="closures.html" title="Closures" class="prev">←</a>
-<a href="classes-and-instances.html" title="Classes and Instances" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="closures.html" title="闭包" class="prev">←</a>
+  <a href="classes-and-instances.html" title="类和实例" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Garbage Collection<small>26</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">垃圾回收<small>26</small></a></h3>
+        
+        <ul>
+            <li><a href="#reachability--可达性"><small>26.1</small> Reachability  可达性</a></li>
+            <li><a href="#mark-sweep-garbage-collection--标记-清除垃圾回收"><small>26.2</small> Mark-Sweep Garbage Collection  标记-清除垃圾回收</a></li>
+            <li><a href="#marking-the-roots--标记根"><small>26.3</small> Marking the Roots  标记根</a></li>
+            <li><a href="#tracing-object-references--跟踪对象引用"><small>26.4</small> Tracing Object References  跟踪对象引用</a></li>
+            <li><a href="#sweeping-unused-objects--清除未使用的对象"><small>26.5</small> Sweeping Unused Objects  清除未使用的对象</a></li>
+            <li><a href="#when-to-collect--何时回收"><small>26.6</small> When to Collect  何时回收</a></li>
+            <li><a href="#garbage-collection-bugs--垃圾回收bug"><small>26.7</small> Garbage Collection Bugs  垃圾回收Bug</a></li>
+            <li><a href="#习题"><small>26.8</small> 习题</a></li>
+            <li><a href="#设计笔记：分代回收器"><small>26.9</small> 设计笔记：分代回收器</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="closures.html" title="闭包" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="classes-and-instances.html" title="类和实例" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#reachability--可达性"><small>26.1</small> Reachability  可达性</a></li>
-    <li><a href="#mark-sweep-garbage-collection--标记-清除垃圾回收"><small>26.2</small> Mark-Sweep Garbage Collection  标记-清除垃圾回收</a></li>
-    <li><a href="#marking-the-roots--标记根"><small>26.3</small> Marking the Roots  标记根</a></li>
-    <li><a href="#tracing-object-references--跟踪对象引用"><small>26.4</small> Tracing Object References  跟踪对象引用</a></li>
-    <li><a href="#sweeping-unused-objects--清除未使用的对象"><small>26.5</small> Sweeping Unused Objects  清除未使用的对象</a></li>
-    <li><a href="#when-to-collect--何时回收"><small>26.6</small> When to Collect  何时回收</a></li>
-    <li><a href="#garbage-collection-bugs--垃圾回收bug"><small>26.7</small> Garbage Collection Bugs  垃圾回收Bug</a></li>
-    <li><a href="#习题"><small>26.8</small> 习题</a></li>
-    <li><a href="#设计笔记：分代回收器"><small>26.9</small> 设计笔记：分代回收器</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">26</div>
+    <h1>垃圾回收</h1>
 
-<div class="prev-next">
-    <a href="closures.html" title="Closures" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="classes-and-instances.html" title="Classes and Instances" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">26</div>
-  <h1>Garbage Collection</h1>
-
-<blockquote>
+    <blockquote>
 <p>I wanna, I wanna,<br />
 I wanna, I wanna,<br />
 I wanna be trash.<br /></p>
@@ -1950,14 +1950,16 @@ quite simple. You can think of one as just two separately tuned GCs and a pretty
 simple policy for moving objects from one to the other.</p>
 </div>
 
-<footer>
-<a href="classes-and-instances.html" class="next">
-  Next Chapter: &ldquo;Classes and Instances&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="classes-and-instances.html" class="next">
+        下一节: &ldquo;类和实例&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

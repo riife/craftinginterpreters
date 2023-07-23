@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Calls and Functions &middot; Crafting Interpreters</title>
+<title>调用与函数 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,73 +32,73 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Calls and Functions<small>24</small></a></h3>
-
-<ul>
-    <li><a href="#function-objects--函数对象"><small>24.1</small> Function Objects  函数对象</a></li>
-    <li><a href="#compiling-to-function-objects--编译为函数对象"><small>24.2</small> Compiling to Function Objects  编译为函数对象</a></li>
-    <li><a href="#call-frames--调用帧"><small>24.3</small> Call Frames  调用帧</a></li>
-    <li><a href="#function-declarations--函数声明"><small>24.4</small> Function Declarations  函数声明</a></li>
-    <li><a href="#function-calls--函数调用"><small>24.5</small> Function Calls  函数调用</a></li>
-    <li><a href="#return-statements--return语句"><small>24.6</small> Return Statements  Return语句</a></li>
-    <li><a href="#native-functions--本地函数"><small>24.7</small> Native Functions  本地函数</a></li>
-    <li><a href="#习题"><small>24.8</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="jumping-back-and-forth.html" title="Jumping Back and Forth" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="closures.html" title="Closures" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">调用与函数<small>24</small></a></h3>
+    
+    <ul>
+        <li><a href="#function-objects--函数对象"><small>24.1</small> Function Objects  函数对象</a></li>
+        <li><a href="#compiling-to-function-objects--编译为函数对象"><small>24.2</small> Compiling to Function Objects  编译为函数对象</a></li>
+        <li><a href="#call-frames--调用帧"><small>24.3</small> Call Frames  调用帧</a></li>
+        <li><a href="#function-declarations--函数声明"><small>24.4</small> Function Declarations  函数声明</a></li>
+        <li><a href="#function-calls--函数调用"><small>24.5</small> Function Calls  函数调用</a></li>
+        <li><a href="#return-statements--return语句"><small>24.6</small> Return Statements  Return语句</a></li>
+        <li><a href="#native-functions--本地函数"><small>24.7</small> Native Functions  本地函数</a></li>
+        <li><a href="#习题"><small>24.8</small> 习题</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="jumping-back-and-forth.html" title="来回跳转" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="closures.html" title="闭包" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="jumping-back-and-forth.html" title="Jumping Back and Forth" class="prev">←</a>
-<a href="closures.html" title="Closures" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="jumping-back-and-forth.html" title="来回跳转" class="prev">←</a>
+  <a href="closures.html" title="闭包" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Calls and Functions<small>24</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">调用与函数<small>24</small></a></h3>
+        
+        <ul>
+            <li><a href="#function-objects--函数对象"><small>24.1</small> Function Objects  函数对象</a></li>
+            <li><a href="#compiling-to-function-objects--编译为函数对象"><small>24.2</small> Compiling to Function Objects  编译为函数对象</a></li>
+            <li><a href="#call-frames--调用帧"><small>24.3</small> Call Frames  调用帧</a></li>
+            <li><a href="#function-declarations--函数声明"><small>24.4</small> Function Declarations  函数声明</a></li>
+            <li><a href="#function-calls--函数调用"><small>24.5</small> Function Calls  函数调用</a></li>
+            <li><a href="#return-statements--return语句"><small>24.6</small> Return Statements  Return语句</a></li>
+            <li><a href="#native-functions--本地函数"><small>24.7</small> Native Functions  本地函数</a></li>
+            <li><a href="#习题"><small>24.8</small> 习题</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="jumping-back-and-forth.html" title="来回跳转" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="closures.html" title="闭包" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#function-objects--函数对象"><small>24.1</small> Function Objects  函数对象</a></li>
-    <li><a href="#compiling-to-function-objects--编译为函数对象"><small>24.2</small> Compiling to Function Objects  编译为函数对象</a></li>
-    <li><a href="#call-frames--调用帧"><small>24.3</small> Call Frames  调用帧</a></li>
-    <li><a href="#function-declarations--函数声明"><small>24.4</small> Function Declarations  函数声明</a></li>
-    <li><a href="#function-calls--函数调用"><small>24.5</small> Function Calls  函数调用</a></li>
-    <li><a href="#return-statements--return语句"><small>24.6</small> Return Statements  Return语句</a></li>
-    <li><a href="#native-functions--本地函数"><small>24.7</small> Native Functions  本地函数</a></li>
-    <li><a href="#习题"><small>24.8</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">24</div>
+    <h1>调用与函数</h1>
 
-<div class="prev-next">
-    <a href="jumping-back-and-forth.html" title="Jumping Back and Forth" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="closures.html" title="Closures" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">24</div>
-  <h1>Calls and Functions</h1>
-
-<blockquote>
+    <blockquote>
 <p>Any problem in computer science can be solved with another level of
 indirection. Except for the problem of too many layers of indirection.</p>
 <p><cite>David Wheeler</cite>
@@ -2120,25 +2120,11 @@ sink.</p>
 <em>require</em> that without dropping into inline assembly, but we can structure
 the code to encourage the compiler to make that optimization. If we store
 the <code>ip</code> directly in a C local variable and mark it <code>register</code>, there&rsquo;s a
-good chance the C compiler will accede to our polite request.
-读写<code>ip</code>字段是字节码循环中最频繁的操作之一。新增，我们通过一个指向当前CallFrame的指针来访问它。这里需要一次指针间接引用，可能会迫使CPU绕过缓存而进入主存。这可能是一个真正的性能损耗。
-理想情况下，我们一个将<code>ip</code>保存在一个本地CPU寄存器中。在不引入内联汇编的情况下，C语言中不允许我们这样做，但是我们可以通过结构化的代码来鼓励编译器进行优化。如果我们将<code>ip</code>直接存储在C局部变量中，并将其标记为<code>register</code>，那么C编译器很可能会同意我们的礼貌请求。
-这确实意味着在开始和结束函数调用时，我们需要谨慎地从正确的CallFrame中加载和保存局部变量<code>ip</code>。请实现这一优化。写几个基准测试，看看它对性能有什么影响。您认为增加的代码复杂性值得吗？</p>
-</li>
-<li>
-<blockquote>
-<p>Native function calls are fast in part because we don’t validate that the call passes as many arguments as the function expects. We really should, or an incorrect call to a native function without enough arguments could cause the function to read uninitialized memory. Add arity checking.
-本地函数调用之所以快，部分原因是我们没有验证调用时传入的参数是否与期望的一样多。我们确实应该这样做，否则在没有足够参数的情况下错误地调用本地函数，会导致函数读取未初始化的内存空间。请添加参数数量检查。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>Right now, there’s no way for a native function to signal a runtime error. In a real implementation, this is something we’d need to support because native functions live in the statically typed world of C but are called from dynamically typed Lox land. If a user, say, tries to pass a string to <code>sqrt()</code>, that native function needs to report a runtime error.</p>
-</blockquote>
+good chance the C compiler will accede to our polite request.</p>
 <p>This does mean we need to be careful to load and store the local <code>ip</code> back
- into the correct CallFrame when starting and ending function calls.
- Implement this optimization. Write a couple of benchmarks and see how it
- affects the performance. Do you think the extra code complexity is worth it?</p>
+into the correct CallFrame when starting and ending function calls.
+Implement this optimization. Write a couple of benchmarks and see how it
+affects the performance. Do you think the extra code complexity is worth it?</p>
 </li>
 <li>
 <p>Native function calls are fast in part because we don&rsquo;t validate that the
@@ -2171,14 +2157,16 @@ language and how practical it is?</p>
 </ol>
 </div>
 
-<footer>
-<a href="closures.html" class="next">
-  Next Chapter: &ldquo;Closures&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="closures.html" class="next">
+        下一节: &ldquo;闭包&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Hash Tables &middot; Crafting Interpreters</title>
+<title>哈希表 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,69 +32,69 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Hash Tables<small>20</small></a></h3>
-
-<ul>
-    <li><a href="#an-array-of-buckets--桶数组"><small>20.1</small> An Array of Buckets  桶数组</a></li>
-    <li><a href="#collision-resolution--冲突解决"><small>20.2</small> Collision Resolution  冲突解决</a></li>
-    <li><a href="#hash-functions--哈希函数"><small>20.3</small> Hash Functions  哈希函数</a></li>
-    <li><a href="#building-a-hash-table--构建哈希表"><small>20.4</small> Building a Hash Table  构建哈希表</a></li>
-    <li><a href="#string-interning--字符串驻留"><small>20.5</small> String Interning  字符串驻留</a></li>
-    <li><a href="#习题"><small>20.6</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="strings.html" title="Strings" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="global-variables.html" title="Global Variables" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">哈希表<small>20</small></a></h3>
+    
+    <ul>
+        <li><a href="#an-array-of-buckets--桶数组"><small>20.1</small> An Array of Buckets  桶数组</a></li>
+        <li><a href="#collision-resolution--冲突解决"><small>20.2</small> Collision Resolution  冲突解决</a></li>
+        <li><a href="#hash-functions--哈希函数"><small>20.3</small> Hash Functions  哈希函数</a></li>
+        <li><a href="#building-a-hash-table--构建哈希表"><small>20.4</small> Building a Hash Table  构建哈希表</a></li>
+        <li><a href="#string-interning--字符串驻留"><small>20.5</small> String Interning  字符串驻留</a></li>
+        <li><a href="#习题"><small>20.6</small> 习题</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="strings.html" title="字符串" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="global-variables.html" title="全局变量" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="strings.html" title="Strings" class="prev">←</a>
-<a href="global-variables.html" title="Global Variables" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="strings.html" title="字符串" class="prev">←</a>
+  <a href="global-variables.html" title="全局变量" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Hash Tables<small>20</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">哈希表<small>20</small></a></h3>
+        
+        <ul>
+            <li><a href="#an-array-of-buckets--桶数组"><small>20.1</small> An Array of Buckets  桶数组</a></li>
+            <li><a href="#collision-resolution--冲突解决"><small>20.2</small> Collision Resolution  冲突解决</a></li>
+            <li><a href="#hash-functions--哈希函数"><small>20.3</small> Hash Functions  哈希函数</a></li>
+            <li><a href="#building-a-hash-table--构建哈希表"><small>20.4</small> Building a Hash Table  构建哈希表</a></li>
+            <li><a href="#string-interning--字符串驻留"><small>20.5</small> String Interning  字符串驻留</a></li>
+            <li><a href="#习题"><small>20.6</small> 习题</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="strings.html" title="字符串" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="global-variables.html" title="全局变量" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#an-array-of-buckets--桶数组"><small>20.1</small> An Array of Buckets  桶数组</a></li>
-    <li><a href="#collision-resolution--冲突解决"><small>20.2</small> Collision Resolution  冲突解决</a></li>
-    <li><a href="#hash-functions--哈希函数"><small>20.3</small> Hash Functions  哈希函数</a></li>
-    <li><a href="#building-a-hash-table--构建哈希表"><small>20.4</small> Building a Hash Table  构建哈希表</a></li>
-    <li><a href="#string-interning--字符串驻留"><small>20.5</small> String Interning  字符串驻留</a></li>
-    <li><a href="#习题"><small>20.6</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">20</div>
+    <h1>哈希表</h1>
 
-<div class="prev-next">
-    <a href="strings.html" title="Strings" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="global-variables.html" title="Global Variables" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">20</div>
-  <h1>Hash Tables</h1>
-
-<blockquote>
+    <blockquote>
 <p>Hash, x. There is no definition for this word<span class="em">&mdash;</span>nobody knows what hash is.</p>
 <p><cite>Ambrose Bierce, <em>The Unabridged Devil&rsquo;s Dictionary</em></cite></p>
 </blockquote>
@@ -252,8 +252,7 @@ array size to reduce that, but it&rsquo;s a losing game. Say we wanted to store 
 hundred items in a hash table. To keep the chance of collision below a
 still-pretty-high 10%, we need an array with at least 47,015 elements. To get
 the chance below 1% requires an array with 492,555 elements, over 4,000 empty
-buckets for each one in use.
-即使负载因子很低，仍可能发生碰撞。<a href="https://en.wikipedia.org/wiki/Birthday_problem">生日悖论</a>告诉我们，随着哈希表中条目数量的增加，碰撞的概率会很快增加。我们可以选择一个很大的数组规模来减少这种情况，但这是注定失败的。假设我们想在哈希表中存储100个条目，要想使碰撞几率保持在10%以下，我们需要一个至少有47,105个元素的数组。要想使碰撞几率低于1%，需要一个有492,555个元素的数组，每使用一个元素就需要超过4000个空桶。</p>
+buckets for each one in use.</p>
 <p>A low load factor can make collisions <span name="pigeon">rarer</span>, but the
 <a href="https://en.wikipedia.org/wiki/Pigeonhole_principle"><em>pigeonhole principle</em></a> tells us we can never eliminate them entirely.
 If you&rsquo;ve got five pet pigeons and four holes to put them in, at least one hole
@@ -1579,14 +1578,16 @@ choose the specific test cases you chose?
 </ol>
 </div>
 
-<footer>
-<a href="global-variables.html" class="next">
-  Next Chapter: &ldquo;Global Variables&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="global-variables.html" class="next">
+        下一节: &ldquo;全局变量&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

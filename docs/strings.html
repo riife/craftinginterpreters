@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Strings &middot; Crafting Interpreters</title>
+<title>字符串 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,71 +32,71 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Strings<small>19</small></a></h3>
-
-<ul>
-    <li><a href="#values-and-objects--值与对象"><small>19.1</small> Values and Objects  值与对象</a></li>
-    <li><a href="#struct-inheritance--结构体继承"><small>19.2</small> Struct Inheritance  结构体继承</a></li>
-    <li><a href="#strings--字符串"><small>19.3</small> Strings  字符串</a></li>
-    <li><a href="#operations-on-strings--字符串操作"><small>19.4</small> Operations on Strings  字符串操作</a></li>
-    <li><a href="#freeing-objects--释放对象"><small>19.5</small> Freeing Objects  释放对象</a></li>
-    <li><a href="#习题"><small>19.6</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>String Encoding</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="types-of-values.html" title="Types of Values" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="hash-tables.html" title="Hash Tables" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">字符串<small>19</small></a></h3>
+    
+    <ul>
+        <li><a href="#values-and-objects--值与对象"><small>19.1</small> Values and Objects  值与对象</a></li>
+        <li><a href="#struct-inheritance--结构体继承"><small>19.2</small> Struct Inheritance  结构体继承</a></li>
+        <li><a href="#strings"><small>19.3</small> Strings</a></li>
+        <li><a href="#operations-on-strings--字符串操作"><small>19.4</small> Operations on Strings  字符串操作</a></li>
+        <li><a href="#freeing-objects--释放对象"><small>19.5</small> Freeing Objects  释放对象</a></li>
+        <li><a href="#习题"><small>19.6</small> 习题</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>String Encoding</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="types-of-values.html" title="值类型" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+        <a href="hash-tables.html" title="哈希表" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="types-of-values.html" title="Types of Values" class="prev">←</a>
-<a href="hash-tables.html" title="Hash Tables" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="types-of-values.html" title="值类型" class="prev">←</a>
+  <a href="hash-tables.html" title="哈希表" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Strings<small>19</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">字符串<small>19</small></a></h3>
+        
+        <ul>
+            <li><a href="#values-and-objects--值与对象"><small>19.1</small> Values and Objects  值与对象</a></li>
+            <li><a href="#struct-inheritance--结构体继承"><small>19.2</small> Struct Inheritance  结构体继承</a></li>
+            <li><a href="#strings"><small>19.3</small> Strings</a></li>
+            <li><a href="#operations-on-strings--字符串操作"><small>19.4</small> Operations on Strings  字符串操作</a></li>
+            <li><a href="#freeing-objects--释放对象"><small>19.5</small> Freeing Objects  释放对象</a></li>
+            <li><a href="#习题"><small>19.6</small> 习题</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>String Encoding</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="types-of-values.html" title="值类型" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
+            <a href="hash-tables.html" title="哈希表" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#values-and-objects--值与对象"><small>19.1</small> Values and Objects  值与对象</a></li>
-    <li><a href="#struct-inheritance--结构体继承"><small>19.2</small> Struct Inheritance  结构体继承</a></li>
-    <li><a href="#strings--字符串"><small>19.3</small> Strings  字符串</a></li>
-    <li><a href="#operations-on-strings--字符串操作"><small>19.4</small> Operations on Strings  字符串操作</a></li>
-    <li><a href="#freeing-objects--释放对象"><small>19.5</small> Freeing Objects  释放对象</a></li>
-    <li><a href="#习题"><small>19.6</small> 习题</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>String Encoding</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">19</div>
+    <h1>字符串</h1>
 
-<div class="prev-next">
-    <a href="types-of-values.html" title="Types of Values" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-bytecode-virtual-machine.html" title="A Bytecode Virtual Machine">&uarr;&nbsp;Up</a>
-    <a href="hash-tables.html" title="Hash Tables" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">19</div>
-  <h1>Strings</h1>
-
-<blockquote>
+    <blockquote>
 <p>&ldquo;Ah? A small aversion to menial labor?&rdquo; The doctor cocked an eyebrow.
 &ldquo;Understandable, but misplaced. One should treasure those hum-drum
 tasks that keep the body occupied but leave the mind and heart unfettered.&rdquo;</p>
@@ -421,7 +421,7 @@ ObjString on the heap. The first one returns the <code>ObjString*</code> pointer
 second one steps through that to return the character array itself, since that&rsquo;s
 often what we&rsquo;ll end up needing.
 这两个宏会接受一个Value，其中应当包含一个指向堆上的有效ObjString指针。第一个函数返回 <code>ObjString*</code> 指针。第二个函数更进一步返回了字符数组本身，因为这往往是我们最终需要的。</p>
-<h2><a href="#strings--字符串" id="strings--字符串"><small>19&#8202;.&#8202;3</small>Strings  字符串</a></h2>
+<h2><a href="#strings" id="strings"><small>19&#8202;.&#8202;3</small>Strings</a></h2>
 <p>OK, our VM can now represent string values. It&rsquo;s time to add strings to the
 language itself. As usual, we begin in the front end. The lexer already
 tokenizes string literals, so it&rsquo;s the parser&rsquo;s turn.
@@ -1244,14 +1244,16 @@ applications, I&rsquo;d probably go with the maximal approach. For my little emb
 scripting language <a href="http://wren.io">Wren</a>, I went with UTF-8 and code points.</p>
 </div>
 
-<footer>
-<a href="hash-tables.html" class="next">
-  Next Chapter: &ldquo;Hash Tables&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="hash-tables.html" class="next">
+        下一节: &ldquo;哈希表&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

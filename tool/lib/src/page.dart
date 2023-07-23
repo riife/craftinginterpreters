@@ -11,6 +11,8 @@ class Page {
   /// The title of this page.
   final String title;
 
+  final String titleZh;
+
   /// The chapter or part number, like "12", "II", or "".
   final String numberString;
 
@@ -27,10 +29,14 @@ class Page {
 
   PageFile _file;
 
-  Page(this.title, this.part, this.numberString, this.ordinal);
+  Page(this.title, this.part, this.numberString, this.ordinal,
+      [this.titleZh = ""]);
 
   /// The base file path and URI for the page, without any extension.
   String get fileName => toFileName(title);
+
+  /// get zh title
+  String get getTitleZh => titleZh.isEmpty ? title : titleZh;
 
   /// The path to this page's Markdown source file.
   String get markdownPath => p.join("book_zh", "$fileName.md");

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>Statements and State &middot; Crafting Interpreters</title>
+<title>语句和状态 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,69 +32,69 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">Statements and State<small>8</small></a></h3>
-
-<ul>
-    <li><a href="#statements--语句"><small>8.1</small> Statements  语句</a></li>
-    <li><a href="#global-variables--全局变量"><small>8.2</small> Global Variables  全局变量</a></li>
-    <li><a href="#environments--环境"><small>8.3</small> Environments  环境</a></li>
-    <li><a href="#assignment--赋值"><small>8.4</small> Assignment  赋值</a></li>
-    <li><a href="#scope--作用域"><small>8.5</small> Scope  作用域</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="evaluating-expressions.html" title="Evaluating Expressions" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="control-flow.html" title="Control Flow" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">语句和状态<small>8</small></a></h3>
+    
+    <ul>
+        <li><a href="#statements--语句"><small>8.1</small> Statements  语句</a></li>
+        <li><a href="#global-variables--全局变量"><small>8.2</small> Global Variables  全局变量</a></li>
+        <li><a href="#environments--环境"><small>8.3</small> Environments  环境</a></li>
+        <li><a href="#assignment--赋值"><small>8.4</small> Assignment  赋值</a></li>
+        <li><a href="#scope"><small>8.5</small> Scope</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="evaluating-expressions.html" title="求值表达式" class="left">&larr;&nbsp;Previous</a>
+        <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+        <a href="control-flow.html" title="控制流" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="evaluating-expressions.html" title="Evaluating Expressions" class="prev">←</a>
-<a href="control-flow.html" title="Control Flow" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="evaluating-expressions.html" title="求值表达式" class="prev">←</a>
+  <a href="control-flow.html" title="控制流" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">Statements and State<small>8</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">语句和状态<small>8</small></a></h3>
+        
+        <ul>
+            <li><a href="#statements--语句"><small>8.1</small> Statements  语句</a></li>
+            <li><a href="#global-variables--全局变量"><small>8.2</small> Global Variables  全局变量</a></li>
+            <li><a href="#environments--环境"><small>8.3</small> Environments  环境</a></li>
+            <li><a href="#assignment--赋值"><small>8.4</small> Assignment  赋值</a></li>
+            <li><a href="#scope"><small>8.5</small> Scope</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="evaluating-expressions.html" title="求值表达式" class="left">&larr;&nbsp;Previous</a>
+            <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
+            <a href="control-flow.html" title="控制流" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#statements--语句"><small>8.1</small> Statements  语句</a></li>
-    <li><a href="#global-variables--全局变量"><small>8.2</small> Global Variables  全局变量</a></li>
-    <li><a href="#environments--环境"><small>8.3</small> Environments  环境</a></li>
-    <li><a href="#assignment--赋值"><small>8.4</small> Assignment  赋值</a></li>
-    <li><a href="#scope--作用域"><small>8.5</small> Scope  作用域</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">8</div>
+    <h1>语句和状态</h1>
 
-<div class="prev-next">
-    <a href="evaluating-expressions.html" title="Evaluating Expressions" class="left">&larr;&nbsp;Previous</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter">&uarr;&nbsp;Up</a>
-    <a href="control-flow.html" title="Control Flow" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">8</div>
-  <h1>Statements and State</h1>
-
-<blockquote>
+    <blockquote>
 <p>All my life, my heart has yearned for a thing I cannot name.
 <cite>Andr&eacute; Breton, <em>Mad Love</em></cite></p>
 </blockquote>
@@ -1265,7 +1265,7 @@ it&rsquo;s time for <em>scope</em>.
 <p>Maybe a little better than that. Unlike some old BASICs, Lox can handle variable
 names longer than two characters.</p>
 </aside>
-<h2><a href="#scope--作用域" id="scope--作用域"><small>8&#8202;.&#8202;5</small>Scope  作用域</a></h2>
+<h2><a href="#scope" id="scope"><small>8&#8202;.&#8202;5</small>Scope</a></h2>
 <p>A <strong>scope</strong> defines a region where a name maps to a certain entity. Multiple
 scopes enable the same name to refer to different things in different contexts.
 In my house, &ldquo;Bob&rdquo; usually refers to me. But maybe in your town you know a
@@ -1830,14 +1830,16 @@ create a new variable or reuse a surrounding one.</p>
 <p>So I prefer explicitly declaring variables, which is why Lox requires it.</p>
 </div>
 
-<footer>
-<a href="control-flow.html" class="next">
-  Next Chapter: &ldquo;Control Flow&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="control-flow.html" class="next">
+        下一节: &ldquo;控制流&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>

@@ -1,9 +1,21 @@
+## 写在前面
+本项目是对"[Crafting Interpreters][]"一文的翻译。[在线阅读](zaslee.github.io/craftinginterpreters/)。
+
+这本书在 Github 上已有完整翻译 [craftinginterpreters_zh][]，但是排版和原文有较大差异，原文的阅读体验更好。故本项目做了一次搬运，将两个项目结合，在不破坏原文排版的基础上进行了搬运和查漏补缺。
+
+由于本人英语水平有限，大部分翻译内容取自 [craftinginterpreters_zh][] 或 ChatGPT 或者翻译网站，若发现有任何出错的地方，欢迎提交 PR 或者 [联系我][zhihu]。
+
+项目尚未开发完毕，正在持续更新中，预计 2023.08.14 号前全部完工。
+## Crafting Interpreters
 This is the repo used for the in-progress book "[Crafting Interpreters][]". It
 contains the Markdown text of the book, full implementations of both
 interpreters, as well as the build system to weave the two together into the
 final site.
 
 [crafting interpreters]: http://craftinginterpreters.com
+[craftinginterpreters_zh]: https://github.com/GuoYaxiang/craftinginterpreters_zh
+[zhihu]: https://www.zhihu.com/people/an-you-wo
+
 
 If you find an error or have a suggestion, please do file an issue here. Thank
 you!

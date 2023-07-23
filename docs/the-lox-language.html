@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-<title>The Lox Language &middot; Crafting Interpreters</title>
+<title>Lox语言 &middot; Crafting Interpreters</title>
 
 <!-- Tell mobile browsers we're optimized for them and they don't need to crop
      the viewport. -->
@@ -32,81 +32,81 @@
 
 <!-- <div class="scrim"></div> -->
 <nav class="wide">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
   <div class="contents">
-<h3><a href="#top">The Lox Language<small>3</small></a></h3>
-
-<ul>
-    <li><a href="#hello-lox--hello-lox"><small>3.1</small> Hello, Lox  Hello, Lox</a></li>
-    <li><a href="#a-high-level-language--高级语言"><small>3.2</small> A High-Level Language  高级语言</a></li>
-    <li><a href="#data-types"><small>3.3</small> Data Types</a></li>
-    <li><a href="#数据类型"><small>3.4</small> 数据类型</a></li>
-    <li><a href="#expressions--表达式"><small>3.5</small> Expressions  表达式</a></li>
-    <li><a href="#statements--语句"><small>3.6</small> Statements  语句</a></li>
-    <li><a href="#variables--变量"><small>3.7</small> Variables  变量</a></li>
-    <li><a href="#control-flow--控制流"><small>3.8</small> Control Flow  控制流</a></li>
-    <li><a href="#functions--函数"><small>3.9</small> Functions  函数</a></li>
-    <li><a href="#classes--类"><small>3.10</small> Classes  类</a></li>
-    <li><a href="#the-standard-library--标准库"><small>3.11</small> The Standard Library  标准库</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Expressions and Statements</a></li>
-</ul>
-
-
-<div class="prev-next">
-    <a href="a-map-of-the-territory.html" title="A Map of the Territory" class="left">&larr;&nbsp;Previous</a>
-    <a href="welcome.html" title="Welcome">&uarr;&nbsp;Up</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
+        <h3><a href="#top">Lox语言<small>3</small></a></h3>
+    
+    <ul>
+        <li><a href="#hello-lox--hello-lox"><small>3.1</small> Hello, Lox  Hello, Lox</a></li>
+        <li><a href="#a-high-level-language--高级语言"><small>3.2</small> A High-Level Language  高级语言</a></li>
+        <li><a href="#data-types"><small>3.3</small> Data Types</a></li>
+        <li><a href="#数据类型"><small>3.4</small> 数据类型</a></li>
+        <li><a href="#expressions--表达式"><small>3.5</small> Expressions  表达式</a></li>
+        <li><a href="#statements--语句"><small>3.6</small> Statements  语句</a></li>
+        <li><a href="#variables--变量"><small>3.7</small> Variables  变量</a></li>
+        <li><a href="#control-flow--控制流"><small>3.8</small> Control Flow  控制流</a></li>
+        <li><a href="#functions--函数"><small>3.9</small> Functions  函数</a></li>
+        <li><a href="#classes--类"><small>3.10</small> Classes  类</a></li>
+        <li><a href="#the-standard-library--标准库"><small>3.11</small> The Standard Library  标准库</a></li>
+        <li class="divider"></li>
+        <li class="end-part"><a href="#challenges">Challenges</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Expressions and Statements</a></li>
+    </ul>
+    
+    
+        <div class="prev-next">
+        <a href="a-map-of-the-territory.html" title="领域概览" class="left">&larr;&nbsp;Previous</a>
+        <a href="welcome.html" title="Welcome">&uarr;&nbsp;Up</a>
+        <a href="a-tree-walk-interpreter.html" title="树遍历解释器" class="right">Next&nbsp;&rarr;</a>
+    </div> </div>
 </nav>
 
 <nav class="narrow">
-<a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-<a href="a-map-of-the-territory.html" title="A Map of the Territory" class="prev">←</a>
-<a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter" class="next">→</a>
+  <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+  <a href="a-map-of-the-territory.html" title="领域概览" class="prev">←</a>
+  <a href="a-tree-walk-interpreter.html" title="树遍历解释器" class="next">→</a>
 </nav>
 
 <div class="page">
-<div class="nav-wrapper">
-<nav class="floating">
-  <a href="/"><img src="image/logotype.png" title="Crafting Interpreters"></a>
-  <div class="expandable">
-<h3><a href="#top">The Lox Language<small>3</small></a></h3>
+  <div class="nav-wrapper">
+    <nav class="floating">
+      <a href="contents.html"><img src="image/logotype.png" title="Crafting Interpreters"></a>
+      <div class="expandable">
+        <h3><a href="#top">Lox语言<small>3</small></a></h3>
+        
+        <ul>
+            <li><a href="#hello-lox--hello-lox"><small>3.1</small> Hello, Lox  Hello, Lox</a></li>
+            <li><a href="#a-high-level-language--高级语言"><small>3.2</small> A High-Level Language  高级语言</a></li>
+            <li><a href="#data-types"><small>3.3</small> Data Types</a></li>
+            <li><a href="#数据类型"><small>3.4</small> 数据类型</a></li>
+            <li><a href="#expressions--表达式"><small>3.5</small> Expressions  表达式</a></li>
+            <li><a href="#statements--语句"><small>3.6</small> Statements  语句</a></li>
+            <li><a href="#variables--变量"><small>3.7</small> Variables  变量</a></li>
+            <li><a href="#control-flow--控制流"><small>3.8</small> Control Flow  控制流</a></li>
+            <li><a href="#functions--函数"><small>3.9</small> Functions  函数</a></li>
+            <li><a href="#classes--类"><small>3.10</small> Classes  类</a></li>
+            <li><a href="#the-standard-library--标准库"><small>3.11</small> The Standard Library  标准库</a></li>
+            <li class="divider"></li>
+            <li class="end-part"><a href="#challenges">Challenges</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Expressions and Statements</a></li>
+        </ul>
+        
+        
+                <div class="prev-next">
+            <a href="a-map-of-the-territory.html" title="领域概览" class="left">&larr;&nbsp;Previous</a>
+            <a href="welcome.html" title="Welcome">&uarr;&nbsp;Up</a>
+            <a href="a-tree-walk-interpreter.html" title="树遍历解释器" class="right">Next&nbsp;&rarr;</a>
+        </div>      </div>
+      <a id="expand-nav">≡</a>
+    </nav>
+  </div>
 
-<ul>
-    <li><a href="#hello-lox--hello-lox"><small>3.1</small> Hello, Lox  Hello, Lox</a></li>
-    <li><a href="#a-high-level-language--高级语言"><small>3.2</small> A High-Level Language  高级语言</a></li>
-    <li><a href="#data-types"><small>3.3</small> Data Types</a></li>
-    <li><a href="#数据类型"><small>3.4</small> 数据类型</a></li>
-    <li><a href="#expressions--表达式"><small>3.5</small> Expressions  表达式</a></li>
-    <li><a href="#statements--语句"><small>3.6</small> Statements  语句</a></li>
-    <li><a href="#variables--变量"><small>3.7</small> Variables  变量</a></li>
-    <li><a href="#control-flow--控制流"><small>3.8</small> Control Flow  控制流</a></li>
-    <li><a href="#functions--函数"><small>3.9</small> Functions  函数</a></li>
-    <li><a href="#classes--类"><small>3.10</small> Classes  类</a></li>
-    <li><a href="#the-standard-library--标准库"><small>3.11</small> The Standard Library  标准库</a></li>
-    <li class="divider"></li>
-    <li class="end-part"><a href="#challenges">Challenges</a></li>
-    <li class="end-part"><a href="#design-note"><small>note</small>Expressions and Statements</a></li>
-</ul>
+  <article class="chapter">
 
+    <div class="number">3</div>
+    <h1>Lox语言</h1>
 
-<div class="prev-next">
-    <a href="a-map-of-the-territory.html" title="A Map of the Territory" class="left">&larr;&nbsp;Previous</a>
-    <a href="welcome.html" title="Welcome">&uarr;&nbsp;Up</a>
-    <a href="a-tree-walk-interpreter.html" title="A Tree-Walk Interpreter" class="right">Next&nbsp;&rarr;</a>
-</div>  </div>
-  <a id="expand-nav">≡</a>
-</nav>
-</div>
-
-<article class="chapter">
-
-  <div class="number">3</div>
-  <h1>The Lox Language</h1>
-
-<blockquote>
+    <blockquote>
 <p>What nicer thing can you do for somebody than make them breakfast?</p>
 <p><cite>Anthony Bourdain</cite>
 还有什么能比给别人做顿早餐，更能体现你对他的好呢？</p>
@@ -301,7 +301,7 @@ than having it.</p>
 <p>If built-in data types and their literals are atoms, then <strong>expressions</strong> must
 be the molecules. Most of these will be familiar.
 如果内置数据类型及其字面量是原子，那么表达式必须是分子。其中大部分大家都很熟悉。</p>
-<h3><a href="#arithmetic--算术运算" id="arithmetic--算术运算"><small>3&#8202;.&#8202;5&#8202;.&#8202;1</small>Arithmetic  算术运算</a></h3>
+<h3><a href="#arithmetic" id="arithmetic"><small>3&#8202;.&#8202;5&#8202;.&#8202;1</small>Arithmetic</a></h3>
 <p>Lox features the basic arithmetic operators you know and love from C and other
 languages:
 Lox具备了您从C和其他语言中了解到的基本算术运算符：</p>
@@ -588,7 +588,7 @@ using a <code>return</code> statement.
 <aside name="sneaky">
 <p>See, I told you <code>nil</code> would sneak in when we weren&rsquo;t looking.</p>
 </aside>
-<h3><a href="#closures--闭包" id="closures--闭包"><small>3&#8202;.&#8202;9&#8202;.&#8202;1</small>Closures  闭包</a></h3>
+<h3><a href="#closures" id="closures"><small>3&#8202;.&#8202;9&#8202;.&#8202;1</small>Closures</a></h3>
 <p>Functions are <em>first class</em> in Lox, which just means they are real values that
 you can get a reference to, store in variables, pass around, etc. This works:
 在Lox中，函数是一等公民，这意味着它们都是真实的值，你可以对这些值进行引用、存储在变量中、传递等等。下面的代码是有效的：</p>
@@ -851,8 +851,7 @@ That means, in the universe of objects, the set of subclass objects is smaller
 than the superclass&rsquo;s set, though type nerds usually use <code>&lt;:</code> for that relation.</p>
 </aside>
 <p>Here, Brunch is the <strong>derived class</strong> or <strong>subclass</strong>, and Breakfast is the
-<strong>base class</strong> or <strong>superclass</strong>.
-这里，Brunch是<strong>派生类</strong>或<strong>子类</strong>，而Breakfast是<strong>基类</strong>或<strong>超类</strong>。父类中定义的每个方法对其子类也可用：</p>
+<strong>base class</strong> or <strong>superclass</strong>.</p>
 <p>Every method defined in the superclass is also available to its subclasses.</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">benedict</span> = <span class="t">Brunch</span>(<span class="s">&quot;ham&quot;</span>, <span class="s">&quot;English muffin&quot;</span>);
 <span class="i">benedict</span>.<span class="i">serve</span>(<span class="s">&quot;Noble Reader&quot;</span>);
@@ -1010,14 +1009,16 @@ familiarity&rsquo;s sake, and trying to take the existing C statement syntax and
 interpret it like expressions gets weird pretty fast.</p>
 </div>
 
-<footer>
-<a href="a-tree-walk-interpreter.html" class="next">
-  Next Part: &ldquo;A Tree-Walk Interpreter&rdquo; &rarr;
-</a>
-Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy; 2015&hairsp;&ndash;&hairsp;2021</a>
-</footer>
-</article>
+    <footer>
+      <a href="a-tree-walk-interpreter.html" class="next">
+        下一章: &ldquo;树遍历解释器&rdquo; &rarr;
+      </a>
+      Handcrafted by Robert Nystrom&ensp;&mdash;&ensp;<a
+        href="https://github.com/munificent/craftinginterpreters/blob/master/LICENSE" target="_blank">&copy;
+        2015&hairsp;&ndash;&hairsp;2021</a>
+    </footer>
+  </article>
 
-</div>
-</body>
-</html>
+  </div>
+  </body>
+  </html>
