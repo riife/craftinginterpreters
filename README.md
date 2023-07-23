@@ -1,5 +1,5 @@
 ## 写在前面
-本项目是对"[Crafting Interpreters][]"一文的翻译。[在线阅读](zaslee.github.io/craftinginterpreters/)。
+本项目是对"[Crafting Interpreters][]"一文的翻译。[在线阅读][reading online]
 
 这本书在 Github 上已有完整翻译 [craftinginterpreters_zh][]，但是排版和原文有较大差异，原文的阅读体验更好。故本项目做了一次搬运，将两个项目结合，在不破坏原文排版的基础上进行了搬运和查漏补缺。
 
@@ -13,6 +13,7 @@ interpreters, as well as the build system to weave the two together into the
 final site.
 
 [crafting interpreters]: http://craftinginterpreters.com
+[reading online]: https://zaslee.github.io/craftinginterpreters/
 [craftinginterpreters_zh]: https://github.com/GuoYaxiang/craftinginterpreters_zh
 [zhihu]: https://www.zhihu.com/people/an-you-wo
 
