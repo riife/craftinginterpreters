@@ -1,46 +1,18 @@
-> You must have a map, no matter how rough. Otherwise you wander all over the
-> place. In *The Lord of the Rings* I never made anyone go farther than he could
-> on a given day.
+> 你必须要有一张地图，无论它是多么粗糙。否则你就会到处乱逛。在《指环王》中，我从未让任何人在某一天走得超出他力所能及的范围。
 >
 > <cite>J. R. R. Tolkien</cite>
-你必须要有一张地图，无论它是多么粗糙。否则你就会到处乱逛。在《指环王》中，我从未让任何人在某一天走得超出他力所能及的范围。
 
-We don't want to wander all over the place, so before we set off, let's scan
-the territory charted by previous language implementers. It will help us
-understand where we are going and the alternate routes others have taken.
-我们不想到处乱逛，所以在我们开始之前，让我们先浏览一下以前的语言实现者所绘制的领土。它能帮助我们了解我们的目的地和其他人采用的备选路线。
+我们不想到处乱逛，所以在我们开始之前，让我们先浏览一下以前的语言实现者所绘制的领土。它能帮助我们了解我们的目的地以及其他人采用的备选路线。
 
-First, let me establish a shorthand. Much of this book is about a language's
-*implementation*, which is distinct from the *language itself* in some sort of
-Platonic ideal form. Things like "stack", "bytecode", and "recursive descent",
-are nuts and bolts one particular implementation might use. From the user's
-perspective, as long as the resulting contraption faithfully follows the
-language's specification, it's all implementation detail.
-首先，我先做个简单说明。本书的大部分内容都是关于语言的*实现*，它与*语言本身*这种柏拉图式的理想形式有所不同。诸如“堆栈”，“字节码”和“递归下降”之类的东西是某个特定实现中可能使用的基本要素。从用户的角度来说，只要最终产生的装置能够忠实地遵循语言规范，它内部的都是实现细节。
+首先，我先做个简单说明。本书的大部分内容都是关于语言的*实现*，它与*语言本身*这种柏拉图式的理想形式有所不同。诸如“堆栈”，“字节码”和“递归下降”之类的东西是某个特定实现中可能使用的基本要素。从用户的角度来说，只要最终产生的装置能够忠实地遵循语言规范，那些都只是实现的细节。
 
-We're going to spend a lot of time on those details, so if I have to write
-"language *implementation*" every single time I mention them, I'll wear my
-fingers off. Instead, I'll use "language" to refer to either a language or an
-implementation of it, or both, unless the distinction matters.
-我们将会花很多时间在这些细节上，所以如果我每次提及的时候都写“语言实现”，我的手指都会被磨掉。相反，除非有重要的区别，否则我将使用“语言”来指代一种语言或该语言的一种实现，或两者皆有。
+我们将会花很多时间在这些细节上，所以如果我每次提及的时候都写“语言*实现*”，我的手指就会被磨掉皮了。相反，除非有重要的区别，否则我将使用“语言”来指代一种语言或该语言的一种实现，或两者皆有。
 
-## The Parts of a Language  语言的各部分
+## 语言的各组成部分
 
-Engineers have been building programming languages since the Dark Ages of
-computing. As soon as we could talk to computers, we discovered doing so was too
-hard, and we enlisted their help. I find it fascinating that even though today's
-machines are literally a million times faster and have orders of magnitude more
-storage, the way we build programming languages is virtually unchanged.
 自计算机的黑暗时代以来，工程师们就一直在构建编程语言。当我们可以和计算机对话的时候，我们发现这样做太难了，于是我们寻求电脑的帮助。我觉得很有趣的是，即使今天的机器确实快了一百万倍，存储空间也大了几个数量级，但我们构建编程语言的方式几乎没有改变。
 
-Though the area explored by language designers is vast, the trails they've
-carved through it are <span name="dead">few</span>. Not every language takes the
-exact same path -- some take a shortcut or two -- but otherwise they are
-reassuringly similar, from Rear Admiral Grace Hopper's first COBOL compiler all
-the way to some hot, new, transpile-to-JavaScript language whose "documentation"
-consists entirely of a single, poorly edited README in a Git repository
-somewhere.
-尽管语言设计师所探索的领域辽阔，但他们往往都走到相似的几条路上。 并非每种语言都采用完全相同的路径（有些会采用一种或两种捷径），但除此之外，从海军少将Grace Hopper的第一个COBOL编译器，一直到一些热门的新移植到JavaScript的语言（JS的 "文档 "甚至完全是由Git仓库中一个编辑得很差的README组成的），都呈现出相似的特征，这令人十分欣慰。
+尽管语言设计师所探索的领域辽阔，但他们往往都走到<span name="dead">相似</span>的几条路上。 并非每种语言都采用完全相同的路径（有些会采用一种或两种捷径），但除此之外，从海军少将 Grace Hopper 的第一个COBOL编译器，一直到一些热门的新移植到JavaScript的语言（JS的"文档"甚至完全是由Git仓库中一个编辑得很差的README组成的），都呈现出相似的特征，这令人十分欣慰。
 
 <aside name="dead">
 
@@ -50,45 +22,22 @@ measured in individual bytes.
 
 </aside>
 
-I visualize the network of paths an implementation may choose as climbing a
-mountain. You start off at the bottom with the program as raw source text,
-literally just a string of characters. Each phase analyzes the program and
-transforms it to some higher-level representation where the semantics -- what
-the author wants the computer to do -- become more apparent.
 我把一个语言实现可能选择的路径网络类比为爬山。你从最底层开始，程序是原始的源文本，实际上只是一串字符。每个阶段都会对程序进行分析，并将其转换为更高层次的表现形式，从而使语义（作者希望计算机做什么）变得更加明显。
 
-Eventually we reach the peak. We have a bird's-eye view of the user's program
-and can see what their code *means*. We begin our descent down the other side of
-the mountain. We transform this highest-level representation down to
-successively lower-level forms to get closer and closer to something we know how
-to make the CPU actually execute.
 最终我们达到了峰顶。我们可以鸟瞰用户的程序，可以看到他们的代码含义是什么。我们开始从山的另一边下山。我们将这个最高级的表示形式转化为连续的较低级别的形式，从而越来越接近我们所知道的如何让CPU真正执行的形式。
 
 <img src="image/a-map-of-the-territory/mountain.png" alt="The branching paths a language may take over the mountain." class="wide" />
 
-Let's trace through each of those trails and points of interest. Our journey
-begins on the left with the bare text of the user's source code:
-让我们开始遍历所有有趣的路线和地点。我们的旅程从左边的用户源代码的纯文本开始
-![var average = (min + max) / 2;](2.领土地图/string.png)
+让我们开始遍历所有有趣的路线和地点。我们的旅程从左边的用户源代码的纯文本开始:
 
 <img src="image/a-map-of-the-territory/string.png" alt="var average = (min + max) / 2;" />
 
-### Scanning  扫描
+### 扫描
 
-The first step is **scanning**, also known as **lexing**, or (if you're trying
-to impress someone) **lexical analysis**. They all mean pretty much the same
-thing. I like "lexing" because it sounds like something an evil supervillain
-would do, but I'll use "scanning" because it seems to be marginally more
-commonplace.
-第一步是**扫描**，也就是所谓的**词法分析** ( lexing 或者强调写法 lexical analysis )。扫描和词法分析的意思相近。我喜欢词法分析，因为这听起来像是一个邪恶的超级大坏蛋会做的事情，但我还是用扫描，因为它似乎更常见一些。
+第一步是**扫描**，也就是所谓的**词法分析**(**lexing**) ( lexing 或者强调写法 lexical analysis )。扫描和词法分析的意思相近。我喜欢词法分析，因为这听起来像是一个邪恶的超级大坏蛋会做的事情，但我还是用扫描，因为它似乎更常见一些。
 
-A **scanner** (or **lexer**) takes in the linear stream of characters and chunks
-them together into a series of something more akin to <span
-name="word">"words"</span>. In programming languages, each of these words is
-called a **token**. Some tokens are single characters, like `(` and `,`. Others
-may be several characters long, like numbers (`123`), string literals (`"hi!"`),
-and identifiers (`min`).
-扫描器(或词法解析器)接收线性字符流，并将它们组合成一系列更类似于 "单词 "的东西。在编程语言中，这些词的每一个都被称为**词法单元**。有些词法单元是单个字符，比如`(`和 `,`。其他的可能是几个字符长的，比如数字（`123`）、字符串字元（`"hi!"`）和标识符（`min`）。
+**扫描器**(或**词法解析器**)接收线性字符流，并将它们组合成一系列更类似于 <span
+name="word">"单词"</span>的东西。在编程语言中，这些词的每一个都被称为**词法单元**(**token**)。有些词法单元是单个字符，比如`(`和 `,`。其他的可能是几个字符长的，比如数字（`123`）、字符串字元（`"hi!"`）和标识符（`min`）。
 
 <aside name="word">
 
@@ -96,12 +45,7 @@ and identifiers (`min`).
 
 </aside>
 
-Some characters in a source file don't actually mean anything. Whitespace is
-often insignificant, and comments, by definition, are ignored by the language.
-The scanner usually discards these, leaving a clean sequence of meaningful
-tokens.
 源文件中的一些字符实际上没有任何意义。空格通常是无关紧要的，而注释，从定义就能看出来，会被语言忽略。扫描仪通常会丢弃这些字符，留下一个干净的有意义的词法单元序列。
-![[var] [average] [=] [(] [min] [+] [max] [)] [/] [2] [;]](2.领土地图/tokens.png)
 
 <img src="image/a-map-of-the-territory/tokens.png" alt="[var] [average] [=] [(] [min] [+] [max] [)] [/] [2] [;]" />
 
