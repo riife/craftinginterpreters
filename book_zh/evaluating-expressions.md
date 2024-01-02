@@ -1,4 +1,5 @@
 > You are my creator, but I am your master; Obey!
+> 你是我的创造者，但我是你的主人；服从！
 >
 > <cite>Mary Shelley, <em>Frankenstein</em></cite>
 
@@ -15,6 +16,7 @@ chapter, our interpreter will take breath, open its eyes, and execute some code.
 <aside name="spooky">
 
 A decrepit Victorian mansion is optional, but adds to the ambiance.
+一座破旧的维多利亚式豪宅可有可无，但却增添了不少情调。
 
 </aside>
 
@@ -57,11 +59,13 @@ represent that?
 <aside name="value">
 
 Here, I'm using "value" and "object" pretty much interchangeably.
+在这里，我基本可以互换地使用 "值 "和 "对象"。
 
 Later in the C interpreter we'll make a slight distinction between them, but
 that's mostly to have unique terms for two different corners of the
 implementation -- in-place versus heap-allocated data. From the user's
 perspective, the terms are synonymous.
+稍后在C解释器中，我们会对它们稍作区分，但这主要是针对实现的两个不同方面（本地数据和堆分配数据）使用不同的术语。从用户的角度来看，这些术语是同义的。
 
 </aside>
 
@@ -130,6 +134,7 @@ are sufficient for the types we need right now.
 Another thing we need to do with values is manage their memory, and Java does
 that too. A handy object representation and a really nice garbage collector are
 the main reasons we're writing our first interpreter in Java.
+我们需要对值做的另一件事是管理它们的内存，Java也能做到这一点。方便的对象表示和非常好的垃圾收集器是我们用Java编写第一个解释器的主要原因。
 
 </aside>
 
@@ -179,6 +184,7 @@ parser's domain. Values are an interpreter concept, part of the runtime's world.
 
 In the [next chapter][vars], when we implement variables, we'll add identifier
 expressions, which are also leaf nodes.
+在[下一章][vars]，当我们实现变量时，我们将添加标识符表达式，它也是叶子节点。
 
 [vars]: statements-and-state.html
 
@@ -219,6 +225,7 @@ Some parsers don't define tree nodes for parentheses. Instead, when parsing a
 parenthesized expression, they simply return the node for the inner expression.
 We do create a node for parentheses in Lox because we'll need it later to
 correctly handle the left-hand sides of assignment expressions.
+有些解析器不为圆括号单独定义树节点。相应地，在解析带圆括号的表达式时，它们只返回内部表达式的节点。在Lox中，我们确实为圆括号创建了一个节点，因为稍后我们需要用它来正确处理赋值表达式的左值。
 
 </aside>
 
@@ -249,6 +256,7 @@ a language dynamically typed right there.
 
 You're probably wondering what happens if the cast fails. Fear not, we'll get
 into that soon.
+你可能想知道，如果执行失败会发生什么。不用担心，我们很快就会说到这个问题。
 
 </aside>
 
@@ -289,14 +297,18 @@ arbitrary and gets <span name="weird">weird</span> in a few languages.
 In JavaScript, strings are truthy, but empty strings are not. Arrays are truthy
 but empty arrays are... also truthy. The number `0` is falsey, but the *string*
 `"0"` is truthy.
+在JavaScript中，字符串是True，但空字符串不是。数组是True，但空数组也是...True。数字`0`是False，但字符串 `"0"`是True。
 
 In Python, empty strings are falsey like in JS, but other empty sequences are
 falsey too.
+在 Python 中，空字符串是False，就像在 JS 中一样。但其他空序列也是False。
 
 In PHP, both the number `0` and the string `"0"` are falsey. Most other
 non-empty strings are truthy.
+在PHP中，数字`0`和字符串 `"0"` 都是False的。大多数其他非空字符串是True。
 
 Get all that?
+明白了吗？
 
 </aside>
 
@@ -320,9 +332,11 @@ Did you notice we pinned down a subtle corner of the language semantics here?
 In a binary expression, we evaluate the operands in left-to-right order. If
 those operands have side effects, that choice is user visible, so this isn't
 simply an implementation detail.
+你是否注意到我们在这里固定了语言语义的一个细微的点？在二元表达式中，我们按从左到右的顺序计算操作数。如果这些操作数有副作用，那这个选择应该是用户可见的，所以这不是一个简单的实现细节。
 
 If we want our two interpreters to be consistent (hint: we do), we'll need to
 make sure clox does the same thing.
+如果我们希望我们的两个解释器是一致的（提示：我们是一致的），我们就需要确保 clox 也是这样做的。
 
 </aside>
 
@@ -345,12 +359,14 @@ we need our object representation to support `instanceof`.
 
 We could have defined an operator specifically for string concatenation. That's
 what Perl (`.`), Lua (`..`), Smalltalk (`,`), Haskell (`++`), and others do.
+我们本可以定义一个专门用于字符串连接的操作符。Perl (`.`)、Lua (`..`)、Smalltalk (`,`)、Haskell (`++`) 和其他语言都是这么做的。
 
 I thought it would make Lox a little more approachable to use the same syntax as
 Java, JavaScript, Python, and others. This means that the `+` operator is
 **overloaded** to support both adding numbers and concatenating strings. Even in
 languages that don't use `+` for strings, they still often overload it for
 adding both integers and floating-point numbers.
+我认为使用与 Java、JavaScript、Python 和其他语言相同的语法会让 Lox 更容易接受。这意味着 `+` 运算符被 **重载**以支持数字加法和字符串连接。即使在不使用 `+` 来处理字符串的语言中，也经常会重载 `+` 来处理整数和浮点数的加法运算。
 
 </aside>
 
@@ -378,6 +394,7 @@ it.
 <aside name="equal">
 
 Spoiler alert: it's not.
+剧透警告：不是这样的。
 
 </aside>
 
@@ -401,6 +418,7 @@ on Boolean, Double, and String have the behavior we want for Lox.
 <aside name="nan">
 
 What do you expect this to evaluate to:
+你希望这个表达式的计算结果是什么？
 
 ```lox
 (0 / 0) == (0 / 0)
@@ -409,11 +427,13 @@ What do you expect this to evaluate to:
 According to [IEEE 754][], which specifies the behavior of double-precision
 numbers, dividing a zero by zero gives you the special **NaN** ("not a number")
 value. Strangely enough, NaN is *not* equal to itself.
+根据[IEEE 754][]（它规定了双精度数的行为），用0除以0会得到特殊的**NaN**（不是一个数字）值。奇怪的是，NaN*不*等于它自己。
 
 In Java, the `==` operator on primitive doubles preserves that behavior, but the
 `equals()` method on the Double class does not. Lox uses the latter, so doesn't
 follow IEEE. These kinds of subtle incompatibilities occupy a dismaying fraction
 of language implementers' lives.
+在Java中，基本类型double的`==`操作满足该规范，但是封装类Double的`equals()`方法不满足。Lox使用了后者，因此不遵循IEEE。这类微妙的不兼容问题占据了语言开发者生活中令人沮丧的一部分。
 
 [ieee 754]: https://en.wikipedia.org/wiki/IEEE_754
 
@@ -440,11 +460,13 @@ We could simply not detect or report a type error at all. This is what C does if
 you cast a pointer to some type that doesn't match the data that is actually
 being pointed to. C gains flexibility and speed by allowing that, but is
 also famously dangerous. Once you misinterpret bits in memory, all bets are off.
+我们完全可以不检测或报告一个类型错误。当你在C语言中把一个指针转换到与实际被指向的数据不匹配的类型上，C语言就是这样做的。C语言通过允许这样的操作获得了灵活性和速度，但它也是出了名的危险。一旦你错误地解释了内存中的数据，一切都完了。
 
 Few modern languages accept unsafe operations like that. Instead, most are
 **memory safe** and ensure -- through a combination of static and runtime checks
 -- that a program can never incorrectly interpret the value stored in a piece of
 memory.
+很少有现代语言接受这样的不安全操作。相反，大多数语言都是**内存安全**的，并通过静态和运行时检查的组合，确保程序永远不会错误地解释存储在内存中的值。
 
 </aside>
 
@@ -483,6 +505,7 @@ all the way out.
 <aside name="muffin">
 
 I don't know, man, *can* you negate a muffin?
+我不知道，伙计，你*能*对松饼取负吗？
 
 <img src="image/evaluating-expressions/muffin.png" alt="A muffin, negated." />
 
@@ -535,6 +558,7 @@ I admit the name "RuntimeError" is confusing since Java defines a
 RuntimeException class. An annoying thing about building interpreters is your
 names often collide with ones already taken by the implementation language. Just
 wait until we support Lox classes.
+我承认 "RuntimeError" 这个名字令人困惑，因为Java定义了一个RuntimeException类。关于构建解释器的一件恼人的事情就是，您使用的名称经常与实现语言中已经使用的名称冲突。等我们支持Lox类就好了。
 
 </aside>
 
@@ -589,6 +613,7 @@ one:
 Another subtle semantic choice: We evaluate *both* operands before checking the
 type of *either*. Imagine we have a function `say()` that prints its argument
 then returns it. Using that, we write:
+另一个微妙的语义选择：在检查两个操作数的类型之前，我们先计算这两个操作数。假设我们有一个函数`say()`，它会打印其介绍的参数，然后返回。 我们使用这个函数写出表达式：
 
 ```lox
 say("left") - say("right");
@@ -597,6 +622,7 @@ say("left") - say("right");
 Our interpreter prints "left" and "right" before reporting the runtime error. We
 could have instead specified that the left operand is checked before even
 evaluating the right.
+我们的解释器在报告运行时错误之前会先打印"left"和"right"。相对地，我们也可以指定在计算右操作数之前先检查左操作数。
 
 </aside>
 
@@ -651,10 +677,12 @@ Lox即使对整数值也使用双精度数字。在这种情况下，打印时�
 Yet again, we take care of this edge case with numbers to ensure that jlox and
 clox work the same. Handling weird corners of the language like this will drive
 you crazy but is an important part of the job.
+同样，我们要处理这种数字的边界情况，以确保jlox和clox的工作方式相同。像这样处理语言的一个奇怪的边界可能会让你抓狂，但这是工作的一个重要部分。
 
 Users rely on these details -- either deliberately or inadvertently -- and if
 the implementations aren't consistent, their program will break when they run it
 on different interpreters.
+用户会有意或无意地依赖于这些细节，如果实现不一致，他们的程序在不同的解释器上运行时将会中断。
 
 </aside>
 
@@ -695,6 +723,7 @@ calling process know. Not everyone cares about shell etiquette, but we do.
 If the user is running the REPL, we don't care about tracking runtime errors.
 After they are reported, we simply loop around and let them input new code and
 keep going.
+如果用户正在运行REPL，则我们不必跟踪运行时错误。在错误被报告之后，我们只需要循环，让用户输入新的代码，然后继续执行。
 
 </aside>
 
@@ -728,18 +757,6 @@ and the Visitor pattern we've set up today form the skeleton that later chapters
 will stuff full of interesting guts -- variables, functions, etc. Right now, the
 interpreter doesn't do very much, but it's alive!
 如您所见，这个解释器是非常简陋的。但是我们今天建立的解释器类和访问者模式构成了一个骨架，后面的章节中将填充入有趣的内容（变量，函数等）。现在，解释器的功能并不多，但它是活的!
-: 在这里，我基本可以互换地使用 "值 "和 "对象"。稍后在C解释器中，我们会对它们稍作区分，但这主要是针对实现的两个不同方面（本地数据和堆分配数据）使用不同的术语。从用户的角度来看，这些术语是同义的。
-: 我们需要对值做的另一件事是管理它们的内存，Java也能做到这一点。方便的对象表示和非常好的垃圾收集器是我们用Java编写第一个解释器的主要原因。
-: 在下一章，当我们实现变量时，我们将添加标识符表达式，它也是叶子节点。
-: 有些解析器不为圆括号单独定义树节点。相应地，在解析带圆括号的表达式时，它们只返回内部表达式的节点。在Lox中，我们确实为圆括号创建了一个节点，因为稍后我们需要用它来正确处理赋值表达式的左值。
-: 在JavaScript中，字符串是真的，但空字符串不是。数组是真的，但空数组是......也是真的。数字0是假的，但字符串 "0 "是真的。<br/>在 Python 中，空字符串是假的，就像在 JS 中一样，但其他空序列也是假的。<br/>在PHP中，数字0和字符串 "0 "都是假的。大多数其他非空字符串是真实的。明白了吗？
-: 你是否注意到我们在这里固定了语言语义的一个细微的点？在二元表达式中，我们按从左到右的顺序计算操作数。如果这些操作数有副作用，那这个选择应该是用户可见的，所以这不是一个简单的实现细节。如果我们希望我们的两个解释器是一致的（提示：我们是一致的），我们就需要确保 clox 也是这样做的。
-: 你希望这个表达式的计算结果是什么？`(0 / 0) == (0 / 0)`。根据[IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)（它规定了双精度数的行为），用0除以0会得到特殊的**NaN**（不是一个数字）值。奇怪的是，NaN不等于它自己。<br/>在Java中，基本类型double的`==`操作满足该规范，但是封装类Double的`equals()`方法不满足。Lox使用了后者，因此不遵循IEEE。这类微妙的不兼容问题占据了语言开发者生活中令人沮丧的一部分。
-: 我们完全可以不检测或报告一个类型错误。当你在C语言中把一个指针转换到与实际被指向的数据不匹配的类型上，C语言就是这样做的。C语言通过允许这样的操作获得了灵活性和速度，但它也是出了名的危险。一旦你错误地解释了内存中的数据，一切都完了。很少有现代语言接受这样的不安全操作。相反，大多数语言都是**内存安全**的，并通过静态和运行时检查的组合，确保程序永远不会错误地解释存储在内存中的值。
-: 我承认 "RuntimeError "这个名字令人困惑，因为Java定义了一个RuntimeException类。关于构建解释器的一件恼人的事情就是，您使用的名称经常与实现语言中已经使用的名称冲突。等我们支持Lox类就好了。
-: 另一个微妙的语义选择：在检查两个操作数的类型之前，我们先计算这两个操作数。假设我们有一个函数`say()`，它会打印其介绍的参数，然后返回。 我们使用这个函数写出表达式：`say("left") - say("right");`。我们的解释器在报告运行时错误之前会先打印"left"和"right"。相对地，我们也可以指定在计算右操作数之前先检查左操作数。
-: 同样，我们要处理这种数字的边界情况，以确保jlox和clox的工作方式相同。像这样处理语言的一个奇怪的边界可能会让你抓狂，但这是工作的一个重要部分。用户会有意或无意地依赖于这些细节，如果实现不一致，他们的程序在不同的解释器上运行时将会中断。
-: 如果用户正在运行REPL，则我们不必跟踪运行时错误。在错误被报告之后，我们只需要循环，让用户输入新的代码，然后继续执行。
 
 <img src="image/evaluating-expressions/skeleton.png" alt="A skeleton waving hello." />
 

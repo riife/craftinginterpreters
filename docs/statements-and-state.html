@@ -96,6 +96,7 @@
 
     <blockquote>
 <p>All my life, my heart has yearned for a thing I cannot name.
+在我的一生中，我的心一直渴望着一种我无法命名的东西。
 <cite>Andr&eacute; Breton, <em>Mad Love</em></cite></p>
 </blockquote>
 <p>The interpreter we have so far feels less like programming a real language and
@@ -122,7 +123,8 @@ other named entities.
 both create a binding and produce a value. The only language I know that does
 that is Tcl. Scheme seems like a contender, but note that after a <code>let</code>
 expression is evaluated, the variable it bound is forgotten. The <code>define</code> syntax
-is not an expression.</p>
+is not an expression.
+你可以创建一种语言，将变量声明视为既能创建绑定又能产生值的表达式。据我所知，唯一能做到这一点的语言是 Tcl。Scheme 似乎是一个不错的选择，但要注意的是，<code>let</code> 表达式求值后，它绑定的变量就会被遗忘。<code>define</code> 语法不是表达式。</p>
 </aside>
 <p>In this chapter, we&rsquo;ll do all of that. We&rsquo;ll define statements that produce
 output (<code>print</code>) and create state (<code>var</code>). We&rsquo;ll add expressions to access and
@@ -157,7 +159,8 @@ statement.</p>
 <p>Pascal is an outlier. It distinguishes between <em>procedures</em> and <em>functions</em>.
 Functions return values, but procedures cannot. There is a statement form
 for calling a procedure, but functions can only be called where an
-expression is expected. There are no expression statements in Pascal.</p>
+expression is expected. There are no expression statements in Pascal.
+Pascal是一个异类。它区分了 <em>过程</em> 和 <em>函数</em>。函数可以返回值，但过程不能。语言中有一个语句形式用于调用过程，但函数只能在需要表达式的地方被调用。在Pascal中没有表达式语句。</p>
 </aside></li>
 <li>
 <p>A <strong><code>print</code> statement</strong> evaluates an expression and displays the result to
@@ -171,7 +174,8 @@ side effects.</p>
 <aside name="print">
 <p>I will note with only a modicum of defensiveness that BASIC and Python
 have dedicated <code>print</code> statements and they are real languages. Granted,
-Python did remove their <code>print</code> statement in 3.0<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
+Python did remove their <code>print</code> statement in 3.0<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
+我只想说，BASIC和Python有专门的<code>print</code>语句，而且它们是真正的语言。当然，Python确实在3.0中删除了<code>print</code>语句。</p>
 </aside></li>
 </ol>
 <p>New syntax means new grammar rules. In this chapter, we finally gain the ability
@@ -219,7 +223,8 @@ another call to define Stmt and its <span name="stmt-ast">subclasses</span>.
 <p>新节点对应的生成代码可以参考附录： <a href="http://craftinginterpreters.com/appendix-ii.html">Appendix II</a>: <a href="http://craftinginterpreters.com/appendix-ii.html#expression-statement">Expression statement</a>, <a href="http://craftinginterpreters.com/appendix-ii.html#print-statement">Print statement</a>.</p>
 <aside name="foresight">
 <p>Not really foresight: I wrote all the code for the book before I sliced it into
-chapters.</p>
+chapters.
+其实也算不上先见之明：我在把书切成章节之前就写好了所有的代码。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">      &quot;Unary    : Token operator, Expr right&quot;
     ));
@@ -236,7 +241,8 @@ in <em>main</em>()</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>main</em>()</div>
 
 <aside name="stmt-ast">
-<p>The generated code for the new nodes is in <a href="appendix-ii.html">Appendix II</a>: <a href="appendix-ii.html#expression-statement">Expression statement</a>, <a href="appendix-ii.html#print-statement">Print statement</a>.</p>
+<p>The generated code for the new nodes is in <a href="appendix-ii.html">Appendix II</a>: <a href="appendix-ii.html#expression-statement">Expression statement</a>, <a href="appendix-ii.html#print-statement">Print statement</a>.
+新节点的生成代码见<a href="appendix-ii.html">附录 II</a>：<a href="appendix-ii.html#expression-statement">表达式语句</a>、<a href="appendix-ii.html#print-statement">打印语句</a>。</p>
 </aside>
 <p>Run the AST generator script and behold the resulting &ldquo;Stmt.java&rdquo; file with the
 syntax tree classes we need for expression and <code>print</code> statements. Don&rsquo;t forget
@@ -264,7 +270,8 @@ replace 7 lines</div>
 <aside name="parse-error-handling">
 <p>What about the code we had in here for catching <code>ParseError</code> exceptions? We&rsquo;ll
 put better parse error handling in place soon when we add support for additional
-statement types.</p>
+statement types.
+我们在这里捕获 <code>ParseError</code> 异常的代码怎么样了？当我们添加对其他语句类型的支持时，我们将很快提供更好的解析错误处理。</p>
 </aside>
 <p>This parses a series of statements, as many as it can find until it hits the end
 of the input. This is a pretty direct translation of the <code>program</code> rule into
@@ -353,7 +360,8 @@ replace 1 line</div>
 <p>Java doesn&rsquo;t let you use lowercase &ldquo;void&rdquo; as a generic type argument for obscure
 reasons having to do with type erasure and the stack. Instead, there is a
 separate &ldquo;Void&rdquo; type specifically for this use. Sort of a &ldquo;boxed void&rdquo;, like
-&ldquo;Integer&rdquo; is for &ldquo;int&rdquo;.</p>
+&ldquo;Integer&rdquo; is for &ldquo;int&rdquo;.
+Java不允许使用小写的void作为泛型类型参数，这是因为一些与类型擦除和堆栈有关的隐晦原因。相应的，提供了一个单独的Void类型专门用于此用途，相当于装箱后的void，就像Integer与int的关系。</p>
 </aside>
 <p>Unlike expressions, statements produce no values, so the return type of the
 visit methods is Void, not Object. We have two statement types, and we need a
@@ -376,7 +384,8 @@ what can you do?
 我们使用现有的<code>evaluate()</code>方法计算内部表达式，并丢弃其结果值。然后我们返回<code>null</code>，因为Java要求为特殊的大写Void返回类型返回该值。很奇怪，但你能有什么办法呢？</p>
 <aside name="discard">
 <p>Appropriately enough, we discard the value returned by <code>evaluate()</code> by placing
-that call inside a <em>Java</em> expression statement.</p>
+that call inside a <em>Java</em> expression statement.
+我们将 evaluate() 调用放在 <em>Java</em> 表达式语句中，这样就可以适当地丢弃它返回的值。</p>
 </aside>
 <p>The <code>print</code> statement&rsquo;s visit method isn&rsquo;t much different.
 <code>print</code>语句的visit方法没有太大的不同。</p>
@@ -517,12 +526,14 @@ to that name and returns it.</p>
 <aside name="globals">
 <p>Global state gets a bad rap. Sure, lots of global state<span class="em">&mdash;</span>especially <em>mutable</em>
 state<span class="em">&mdash;</span>makes it hard to maintain large programs. It&rsquo;s good software
-engineering to minimize how much you use.</p>
+engineering to minimize how much you use.
+全局状态的名声不好。当然，过多的全局状态（尤其是可变状态）使维护大型程序变得困难。一个出色的软件工程师会尽量减少使用全局变量。</p>
 <p>But when you&rsquo;re slapping together a simple programming language or, heck, even
 learning your first language, the flat simplicity of global variables helps. My
 first language was BASIC and, though I outgrew it eventually, it was nice that I
 didn&rsquo;t have to wrap my head around scoping rules before I could make a computer
-do fun stuff.</p>
+do fun stuff.
+但是，如果你正在拼凑一种简单的编程语言，甚至是在学习第一种语言时，全局变量的简单性会有所帮助。我学习的第一门语言是BASIC，虽然我最后不再使用了，但是在我能够熟练使用计算机完成有趣的工作之前，如果能够不需要考虑作用域规则，这一点很好。</p>
 </aside>
 <h3><a href="#variable-syntax--变量语法" id="variable-syntax--变量语法"><small>8&#8202;.&#8202;2&#8202;.&#8202;1</small>Variable syntax  变量语法</a></h3>
 <p>As before, we&rsquo;ll work through the implementation from front to back, starting
@@ -558,7 +569,8 @@ expressions. A block is itself in the &ldquo;higher&rdquo; precedence level and 
 anywhere, like in the clauses of an <code>if</code> statement. But the statements it
 <em>contains</em> can be lower precedence. You&rsquo;re allowed to declare variables and
 other names inside the block. The curlies let you escape back into the full
-statement grammar from a place where only some statements are allowed.</p>
+statement grammar from a place where only some statements are allowed.
+代码块语句的形式类似于表达式中的括号。“块”本身处于“较高”的优先级，并且可以在任何地方使用，如<code>if</code>语句的子语句中。而其中<em>包含的</em>可以是优先级较低的语句。你可以在块中声明变量或其它名称。通过大括号，你可以在只允许某些语句的位置书写完整的语句语法。</p>
 </aside>
 <p>To accommodate the distinction, we add another rule for kinds of statements that
 declare names.
@@ -611,7 +623,8 @@ add <em>&ldquo;,&rdquo;</em> to previous line</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>main</em>(), add <em>&ldquo;,&rdquo;</em> to previous line</div>
 
 <aside name="var-stmt-ast">
-<p>The generated code for the new node is in <a href="appendix-ii.html#variable-statement">Appendix II</a>.</p>
+<p>The generated code for the new node is in <a href="appendix-ii.html#variable-statement">Appendix II</a>.
+新节点的生成代码见<a href="appendix-ii.html#variable-statement">附录 II</a>。</p>
 </aside>
 <p>It stores the name token so we know what it&rsquo;s declaring, along with the
 initializer expression. (If there isn&rsquo;t an initializer, that field is <code>null</code>.)
@@ -633,7 +646,8 @@ variable name. That&rsquo;s it. As always, don&rsquo;t forget to run the AST gen
 script so that you get updated &ldquo;Expr.java&rdquo; and &ldquo;Stmt.java&rdquo; files.
 这只是对变量名称标记的简单包装，就是这样。像往常一样，别忘了运行AST生成器脚本，这样你就能得到更新的 &ldquo;Expr.java &ldquo;和 &ldquo;Stmt.java &ldquo;文件。</p>
 <aside name="var-expr-ast">
-<p>The generated code for the new node is in <a href="appendix-ii.html#variable-expression">Appendix II</a>.</p>
+<p>The generated code for the new node is in <a href="appendix-ii.html#variable-expression">Appendix II</a>.
+新节点的生成代码见<a href="appendix-ii.html#variable-expression">附录 II</a>。</p>
 </aside>
 <h3><a href="#parsing-variables--解析变量" id="parsing-variables--解析变量"><small>8&#8202;.&#8202;2&#8202;.&#8202;2</small>Parsing variables  解析变量</a></h3>
 <p>Before we parse variable statements, we need to shift around some code to make
@@ -748,7 +762,8 @@ called an <span name="env"><strong>environment</strong></span>.
 变量与值之间的绑定关系需要保存在某个地方。自从Lisp发明圆括号以来，这种数据结构就被称为<strong>环境</strong>。</p><img src="image/statements-and-state/environment.png" alt="An environment containing two bindings." />
 <aside name="env">
 <p>I like to imagine the environment literally, as a sylvan wonderland where
-variables and values frolic.</p>
+variables and values frolic.
+我喜欢从字面上把环境想象成变量和数值嬉戏的仙境。</p>
 </aside>
 <p>You can think of it like a <span name="map">map</span> where the keys are
 variable names and the values are the variable&rsquo;s, uh, values. In fact, that&rsquo;s
@@ -762,7 +777,8 @@ pull it out into its own class.
 <p>Java calls them <strong>maps</strong> or <strong>hashmaps</strong>. Other languages call them <strong>hash
 tables</strong>, <strong>dictionaries</strong> (Python and C#), <strong>hashes</strong> (Ruby and Perl),
 <strong>tables</strong> (Lua), or <strong>associative arrays</strong> (PHP). Way back when, they were
-known as <strong>scatter tables</strong>.</p>
+known as <strong>scatter tables</strong>.
+Java中称之为<strong>映射</strong>或<strong>哈希映射</strong>。其他语言称它们为<strong>哈希表</strong>、<strong>字典</strong>(Python和c#)、<strong>哈希表</strong>(Ruby和Perl)、<strong>表</strong>(Lua)或<strong>关联数组</strong>(PHP)。很久以前，它们被称为<strong>分散表</strong>。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/Environment.java</em><br>
 create new file</div>
@@ -820,8 +836,10 @@ form to the other might not work.
 The Scheme folks have probably spent more time thinking about variable scope
 than we ever will<span class="em">&mdash;</span>one of the main goals of Scheme was to introduce lexical
 scoping to the world<span class="em">&mdash;</span>so it&rsquo;s hard to go wrong if you follow in their
-footsteps.</p>
-<p>Scheme allows redefining variables at the top level.</p>
+footsteps.
+我关于变量和作用域的原则是，“如果有疑问，参考Scheme的做法”。Scheme的开发人员可能比我们花了更多的时间来考虑变量范围的问题——Scheme的主要目标之一就是向世界介绍词法作用域，所以如果你跟随他们的脚步，就很难出错。</p>
+<p>Scheme allows redefining variables at the top level.
+Scheme允许在顶层重新定义变量。</p>
 </aside>
 <p>So, to keep the two modes consistent, we&rsquo;ll allow it<span class="em">&mdash;</span>at least for global
 variables. Once a variable exists, we need a way to look it up.
@@ -909,7 +927,8 @@ help with mutually recursive procedures that call each other. Consider:
 <aside name="contrived">
 <p>Granted, this is probably not the most efficient way to tell if a number is even
 or odd (not to mention the bad things that happen if you pass a non-integer or
-negative number to them). Bear with me.</p>
+negative number to them). Bear with me.
+当然，这可能不是判断一个数字是奇偶性的最有效方法（更不用说如果传入一个非整数或负数，程序会发生不可控的事情）。忍耐一下吧。</p>
 </aside>
 <p>The <code>isEven()</code> function isn&rsquo;t defined by the <span name="declare">time</span> we
 are looking at the body of <code>isOdd()</code> where it&rsquo;s called. If we swap the order of
@@ -921,13 +940,15 @@ the two functions, then <code>isOdd()</code> isn&rsquo;t defined when we&rsquo;r
 the top level of a program isn&rsquo;t a sequence of imperative statements. Instead, a
 program is a set of declarations which all come into being simultaneously. The
 implementation declares <em>all</em> of the names before looking at the bodies of <em>any</em>
-of the functions.</p>
+of the functions.
+一些静态类型的语言，如Java和C#，通过规定程序的顶层不是一连串的命令式语句来解决这个问题。相应的，它们认为程序是一组同时出现的声明。语言实现在查看任何函数的主体之前，会先声明所有的名字。</p>
 <p>Older languages like C and Pascal don&rsquo;t work like this. Instead, they force you
 to add explicit <em>forward declarations</em> to declare a name before it&rsquo;s fully
 defined. That was a concession to the limited computing power at the time. They
 wanted to be able to compile a source file in one single pass through the text,
 so those compilers couldn&rsquo;t gather up all of the declarations first before
-processing function bodies.</p>
+processing function bodies.
+像C和Pascal这样的老式语言并不是这样工作的。相反，它们会强制用户添加明确的前向声明，从而在名称完全定义之前先声明它。这是对当时有限的计算能力的一种让步。它们希望能够通过一次文本遍历就编译完一个源文件，因此这些编译器不能在处理函数体之前先收集所有声明。</p>
 </aside>
 <p>Since making it a <em>static</em> error makes recursive declarations too difficult,
 we&rsquo;ll defer the error to runtime. It&rsquo;s OK to refer to a variable before it&rsquo;s
@@ -1033,7 +1054,8 @@ Lox没有这么严苛。Lox是一个命令式语言，可变性是与生俱来�
 <p>I find it delightful that the same group of people who pride themselves on
 dispassionate logic are also the ones who can&rsquo;t resist emotionally loaded terms
 for their work: &ldquo;pure&rdquo;, &ldquo;side effect&rdquo;, &ldquo;lazy&rdquo;, &ldquo;persistent&rdquo;, &ldquo;first-class&rdquo;,
-&ldquo;higher-order&rdquo;.</p>
+&ldquo;higher-order&rdquo;.
+我觉得很有趣的是，这群以冷静的逻辑思维为傲的人，也会忍不住为自己的作品使用充满感情色彩的词汇： &ldquo;纯粹&ldquo;、&ldquo;副作用&ldquo;、&ldquo;懒惰&ldquo;、&ldquo;顽固&ldquo;、&ldquo;一流&ldquo;、&ldquo;高阶&ldquo;。</p>
 </aside>
 <p>Lox is not so austere. Lox is an imperative language, and mutation comes with
 the territory. Adding support for assignment doesn&rsquo;t require much work. Global
@@ -1047,7 +1069,8 @@ rule slots between <code>expression</code> and <code>equality</code> (the next l
 expression).
 这个小小的<code>=</code>语法比看起来要更复杂。像大多数C派生语言一样，赋值是一个表达式，而不是一个语句。和C语言中一样，它是优先级最低的表达式形式。这意味着该规则在语法中处于 <code>expression</code> 和<code>equality</code>（下一个优先级的表达式）之间。</p>
 <aside name="assign">
-<p>In some other languages, like Pascal, Python, and Go, assignment is a statement.</p>
+<p>In some other languages, like Pascal, Python, and Go, assignment is a statement.
+在其他一些语言中，如 Pascal、Python 和 Go，赋值是一个语句。</p>
 </aside>
 <div class="codehilite"><pre><span class="i">expression</span>     → <span class="i">assignment</span> ;
 <span class="i">assignment</span>     → <span class="t">IDENTIFIER</span> <span class="s">&quot;=&quot;</span> <span class="i">assignment</span>
@@ -1071,7 +1094,8 @@ in <em>main</em>()</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>main</em>()</div>
 
 <aside name="assign-ast">
-<p>The generated code for the new node is in <a href="appendix-ii.html#assign-expression">Appendix II</a>.</p>
+<p>The generated code for the new node is in <a href="appendix-ii.html#assign-expression">Appendix II</a>.
+新节点的生成代码见<a href="appendix-ii.html#assign-expression">附录 II</a>。</p>
 </aside>
 <p>It has a token for the variable being assigned to, and an expression for the new
 value. After you run the AstGenerator to get the new Expr.Assign class, swap out
@@ -1109,7 +1133,8 @@ l-value &ldquo;evaluates&rdquo; to a storage location that you can assign into.
 在第二行中，我们不会对<code>a</code>进行求值（如果求值会返回“before”）。我们要弄清楚<code>a</code>指向的是什么变量，这样我们就知道该在哪里保存右侧表达式的值。这两个概念的<a href="https://en.wikipedia.org/wiki/Value_(computer_science)#lrvalue">经典术语</a>是<strong>左值</strong>和<strong>右值</strong>。到目前为止，我们看到的所有产生值的表达式都是右值。左值&ldquo;计算&ldquo;会得到一个存储位置，你可以向其赋值。</p>
 <aside name="l-value">
 <p>In fact, the names come from assignment expressions: <em>l</em>-values appear on the
-<em>left</em> side of the <code>=</code> in an assignment, and <em>r</em>-values on the <em>right</em>.</p>
+<em>left</em> side of the <code>=</code> in an assignment, and <em>r</em>-values on the <em>right</em>.
+事实上，这些名称来自赋值表达式：在赋值中，<em>左</em> 值出现在 <code>=</code> 的 <em>左</em>边，<em>右</em> 值出现在 <em>右</em>边。</p>
 </aside>
 <p>We want the syntax tree to reflect that an l-value isn&rsquo;t evaluated like a normal
 expression. That&rsquo;s why the Expr.Assign node has a <em>Token</em> for the left-hand
@@ -1122,7 +1147,8 @@ name="many">many</span> tokens later.
 <aside name="many">
 <p>Since the receiver of a field assignment can be any expression, and expressions
 can be as long as you want to make them, it may take an <em>unbounded</em> number of
-tokens of lookahead to find the <code>=</code>.</p>
+tokens of lookahead to find the <code>=</code>.
+由于字段赋值的接收方可以是任何表达式，而表达式的长度可以随心所欲，因此可能需要花费 <em>大量</em>的查找符才能找到 <code>=</code>。</p>
 </aside>
 <p>We have only a single token of lookahead, so what do we do? We use a little
 trick, and it looks like this:
@@ -1157,7 +1183,8 @@ side and then wrap it all up in an assignment expression tree node.
 <aside name="no-throw">
 <p>We <em>report</em> an error if the left-hand side isn&rsquo;t a valid assignment target, but
 we don&rsquo;t <em>throw</em> it because the parser isn&rsquo;t in a confused state where we need
-to go into panic mode and synchronize.</p>
+to go into panic mode and synchronize.
+如果左侧不是有效的赋值目标，我们会 <em>报告</em> 一个错误，但我们不会 <em>抛出</em> 该错误，因为解析器并没有处于需要进入恐慌模式和同步的混乱状态。</p>
 </aside>
 <p>One slight difference from binary operators is that we don&rsquo;t loop to build up a
 sequence of the same operator. Since assignment is right-associative, we instead
@@ -1177,7 +1204,8 @@ valid expressions. Define a <strong>cover grammar</strong>, a looser grammar tha
 all of the valid expression <em>and</em> assignment target syntaxes. When you hit
 an <code>=</code>, report an error if the left-hand side isn&rsquo;t within the valid assignment
 target grammar. Conversely, if you <em>don&rsquo;t</em> hit an <code>=</code>, report an error if the
-left-hand side isn&rsquo;t a valid <em>expression</em>.</p>
+left-hand side isn&rsquo;t a valid <em>expression</em>.
+即使存在不是有效表达式的赋值目标，你也可以使用这个技巧。定义一个<strong>覆盖语法</strong>，一个可以接受所有有效表达式和赋值目标的宽松语法。如果你遇到了<code>=</code>，并且左侧不是有效的赋值目标则报告错误。相对地，如果 <em>没有</em> 遇到<code>=</code>，而且左侧不是有效的表达式也报告一个错误。</p>
 </aside>
 <div class="codehilite"><pre><span class="i">newPoint</span>(<span class="i">x</span> + <span class="n">2</span>, <span class="n">0</span>).<span class="i">y</span> = <span class="n">3</span>;
 </pre></div>
@@ -1198,7 +1226,8 @@ on code like this:
 <aside name="paren">
 <p>Way back in the parsing chapter, I said we represent parenthesized expressions
 in the syntax tree because we&rsquo;ll need them later. This is why. We need to be
-able to distinguish these cases:</p>
+able to distinguish these cases:
+早在解析一章，我就说过我们要在语法树中表示圆括号表达式，因为我们以后会用到。这就是为什么。我们需要能够区分这些情况：</p>
 <div class="codehilite"><pre><span class="i">a</span> = <span class="n">3</span>;   <span class="c">// OK.</span>
 (<span class="i">a</span>) = <span class="n">3</span>; <span class="c">// Error.</span>
 </pre></div>
@@ -1246,7 +1275,8 @@ implementation, that means it&rsquo;s a runtime error if the key doesn&rsquo;t a
 in the environment&rsquo;s variable map.
 赋值与定义的主要区别在于，赋值操作不允许创建新变量。就我们的实现而言，这意味着如果环境的变量映射中不存在变量的键，那就是一个运行时错误。</p>
 <aside name="new">
-<p>Unlike Python and Ruby, Lox doesn&rsquo;t do <a href="#design-note">implicit variable declaration</a>.</p>
+<p>Unlike Python and Ruby, Lox doesn&rsquo;t do <a href="#design-note">implicit variable declaration</a>.
+与Python和Ruby不同，Lox不做<a href="#design-note">隐式变量声明</a>。</p>
 </aside>
 <p>The last thing the <code>visit()</code> method does is return the assigned value. That&rsquo;s
 because assignment is an expression that can be nested inside other expressions,
@@ -1263,7 +1293,8 @@ it&rsquo;s time for <em>scope</em>.
 我们的解释器现在可以创建、读取和修改变量。这和早期的BASICs一样复杂。全局变量很简单，但是在编写一个大型程序时，任何两块代码都可能不小心修改对方的状态，这就不好玩了。我们需要<em>局部</em>变量，这意味着是时候讨论<em>作用域</em>了。</p>
 <aside name="basic">
 <p>Maybe a little better than that. Unlike some old BASICs, Lox can handle variable
-names longer than two characters.</p>
+names longer than two characters.
+也许比这更好一点。与一些老式 BASIC 不同，Lox 可以处理长度超过两个字符的变量名。</p>
 </aside>
 <h2><a href="#scope" id="scope"><small>8&#8202;.&#8202;5</small>Scope</a></h2>
 <p>A <strong>scope</strong> defines a region where a name maps to a certain entity. Multiple
@@ -1281,15 +1312,18 @@ statically reading the code.
 <aside name="lexical">
 <p>&ldquo;Lexical&rdquo; comes from the Greek &ldquo;lexikos&rdquo; which means &ldquo;related to words&rdquo;. When we
 use it in programming languages, it usually means a thing you can figure out
-from source code itself without having to execute anything.</p>
+from source code itself without having to execute anything.
+“词法”来自希腊语“ lexikos”，意思是“与单词有关”。 当我们在编程语言中使用它时，通常意味着您无需执行任何操作即可从源代码本身中获取到一些东西。</p>
 <p>Lexical scope came onto the scene with ALGOL. Earlier languages were often
 dynamically scoped. Computer scientists back then believed dynamic scope was
 faster to execute. Today, thanks to early Scheme hackers, we know that isn&rsquo;t
-true. If anything, it&rsquo;s the opposite.</p>
+true. If anything, it&rsquo;s the opposite.
+词法作用域是随着ALGOL出现的。早期的语言通常是动态作用域的。当时的计算机科学家认为，动态作用域的执行速度更快。今天，多亏了早期的Scheme研究者，我们知道这不是真的。甚至可以说，情况恰恰相反。</p>
 <p>Dynamic scope for variables lives on in some corners. Emacs Lisp defaults to
 dynamic scope for variables. The <a href="http://clojuredocs.org/clojure.core/binding"><code>binding</code></a> macro in Clojure provides
 it. The widely disliked <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with"><code>with</code> statement</a> in JavaScript turns properties
-on an object into dynamically scoped variables.</p>
+on an object into dynamically scoped variables.
+变量的动态作用域仍然存在于某些角落。Emacs Lisp默认为变量的动态作用域。Clojure中的<a href="http://clojuredocs.org/clojure.core/binding"><code>binding</code></a>宏也提供了。JavaScript中普遍不被喜欢的<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with"><code>with</code>语句</a>将对象上的属性转换为动态作用域变量。</p>
 </aside>
 <p>For example:
 举例来说：</p>
@@ -1430,9 +1464,11 @@ variables shadow outer ones.
 objects, but consider the full set of environments created during the entire
 execution. An outer scope may have multiple blocks nested within it, and each
 will point to the outer one, giving a tree-like structure, though only one path
-through the tree exists at a time.</p>
+through the tree exists at a time.
+在解释器运行时，环境会形成一个线性的对象列表，但在整个执行过程中，我们可以考虑创建一整套环境。一个外层作用域可能嵌套有多个区块，每个区块都指向外层作用域，从而形成一个树状结构，但每次只有一条路径穿过树状结构。</p>
 <p>The boring name for this is a <a href="https://en.wikipedia.org/wiki/Parent_pointer_tree"><strong>parent-pointer tree</strong></a>, but I
-much prefer the evocative <strong>cactus stack</strong>.</p><img class="above" src="image/statements-and-state/cactus.png" alt="Each branch points to its parent. The root is global scope." />
+much prefer the evocative <strong>cactus stack</strong>.
+它的正式名称是<a href="https://en.wikipedia.org/wiki/Parent_pointer_tree">带父指针的树(<strong>parent-pointer tree</strong>)</a>，但我更喜欢称它<strong>令人回味的仙人掌堆</strong>(<strong>cactus stack</strong>)。</p><img class="above" src="image/statements-and-state/cactus.png" alt="Each branch points to its parent. The root is global scope." />
 </aside>
 <p>Before we add block syntax to the grammar, we&rsquo;ll beef up our Environment class
 with support for this nesting. First, we give each environment a reference to
@@ -1493,7 +1529,8 @@ an error as before.
 赋值也是如此。</p>
 <aside name="recurse">
 <p>It&rsquo;s likely faster to iteratively walk the chain, but I think the recursive
-solution is prettier. We&rsquo;ll do something <em>much</em> faster in clox.</p>
+solution is prettier. We&rsquo;ll do something <em>much</em> faster in clox.
+迭代走链可能更快，但我认为递归解决方案更漂亮。我们将在 clox 中使用<em>更</em>快的方法。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">      values.put(name.lexeme, value);
       return;
@@ -1536,7 +1573,8 @@ in <em>main</em>()</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>main</em>()</div>
 
 <aside name="block-ast">
-<p>The generated code for the new node is in <a href="appendix-ii.html#block-statement">Appendix II</a>.</p>
+<p>The generated code for the new node is in <a href="appendix-ii.html#block-statement">Appendix II</a>.
+新节点的生成代码见<a href="appendix-ii.html#block-statement">附录 II</a>。</p>
 </aside>
 <p><span name="generate">It</span> contains the list of statements that are inside
 the block. Parsing is straightforward. Like other statements, we detect the
@@ -1544,7 +1582,8 @@ beginning of a block by its leading token<span class="em">&mdash;</span>in this 
 <code>statement()</code> method, we add:
 它包含块中语句的列表。解析很简单。与其他语句一样，我们通过块的前缀标记(在本例中是<code>{</code>)来检测块的开始。在<code>statement()</code>方法中，我们添加代码：</p>
 <aside name="generate">
-<p>As always, don&rsquo;t forget to run &ldquo;GenerateAst.java&rdquo;.</p>
+<p>As always, don&rsquo;t forget to run &ldquo;GenerateAst.java&rdquo;.
+别忘了运行 &ldquo;GenerateAst.java&rdquo;。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">    if (match(PRINT)) return printStatement();
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
@@ -1583,7 +1622,8 @@ forgets a closing <code>}</code>, the parser needs to not get stuck.
 <p>Having <code>block()</code> return the raw list of statements and leaving it to
 <code>statement()</code> to wrap the list in a Stmt.Block looks a little odd. I did it that
 way because we&rsquo;ll reuse <code>block()</code> later for parsing function bodies and we don&rsquo;t
-want that body wrapped in a Stmt.Block.</p>
+want that body wrapped in a Stmt.Block.
+让<code>block()</code>返回原始的语句列表，并在<code>statement()</code>方法中将该列表封装在Stmt.Block中，这看起来有点奇怪。我这样做是因为稍后我们会重用<code>block()</code>来解析函数体，我们当然不希望函数体被封装在Stmt.Block中。</p>
 </aside>
 <p>That&rsquo;s it for syntax. For semantics, we add another visit method to Interpreter.
 语法到此为止。对于语义，我们要在Interpreter中添加另一个访问方法。</p>
@@ -1636,10 +1676,12 @@ Another classic approach is to explicitly pass the environment as a parameter to
 each visit method. To &ldquo;change&rdquo; the environment, you pass a different one as you
 recurse down the tree. You don&rsquo;t have to restore the old one, since the new one
 lives on the Java stack and is implicitly discarded when the interpreter returns
-from the block&rsquo;s visit method.</p>
+from the block&rsquo;s visit method.
+手动修改和恢复一个可变的<code>environment</code>字段感觉很不优雅。另一种经典方法是显式地将环境作为参数传递给每个访问方法。如果要“改变”环境，就在沿树向下递归时传入一个不同的环境。你不必恢复旧的环境，因为新的环境存在于 Java 堆栈中，当解释器从块的访问方法返回时，该环境会被隐式丢弃。</p>
 <p>I considered that for jlox, but it&rsquo;s kind of tedious and verbose adding an
 environment parameter to every single visit method. To keep the book a little
-simpler, I went with the mutable field.</p>
+simpler, I went with the mutable field.
+我曾考虑过在jlox中这样做，但在每一个访问方法中加入一个环境参数，这有点繁琐和冗长。为了让这本书更简单，我选择了可变字段。</p>
 </aside>
 <p>Surprisingly, that&rsquo;s all we need to do in order to fully support local
 variables, nesting, and shadowing. Go ahead and try this out:
@@ -1666,23 +1708,7 @@ variables, nesting, and shadowing. Go ahead and try this out:
 </pre></div>
 <p>Our little interpreter can remember things now. We are inching closer to
 something resembling a full-featured programming language.
-我们的小解释器现在可以记住东西了，我们距离全功能编程语言又近了一步。
-: Pascal是一个异类。它区分了过程和函数。函数可以返回值，但过程不能。语言中有一个语句形式用于调用过程，但函数只能在需要表达式的地方被调用。在Pascal中没有表达式语句。
-: 我只想说，BASIC和Python有专门的<code>print</code>语句，而且它们是真正的语言。当然，Python确实在3.0中删除了<code>print</code>语句。
-: Java不允许使用小写的void作为泛型类型参数，这是因为一些与类型擦除和堆栈有关的隐晦原因。相应的，提供了一个单独的Void类型专门用于此用途，相当于装箱后的void，就像Integer与int的关系。
-: 全局状态的名声不好。当然，过多的全局状态（尤其是可变状态）使维护大型程序变得困难。一个出色的软件工程师会尽量减少使用全局变量。但是，如果你正在拼凑一种简单的编程语言，甚至是在学习第一种语言时，全局变量的简单性会有所帮助。我学习的第一门语言是BASIC，虽然我最后不再使用了，但是在我能够熟练使用计算机完成有趣的工作之前，如果能够不需要考虑作用域规则，这一点很好。
-: 代码块语句的形式类似于表达式中的括号。“块”本身处于“较高”的优先级，并且可以在任何地方使用，如<code>if</code>语句的子语句中。而其中<em>包含的</em>可以是优先级较低的语句。你可以在块中声明变量或其它名称。通过大括号，你可以在只允许某些语句的位置书写完整的语句语法。
-: Java中称之为<strong>映射</strong>或<strong>哈希映射</strong>。其他语言称它们为<strong>哈希表</strong>、<strong>字典</strong>(Python和c#)、<strong>哈希表</strong>(Ruby和Perl)、<strong>表</strong>(Lua)或<strong>关联数组</strong>(PHP)。很久以前，它们被称为<strong>分散表</strong>。
-: 我关于变量和作用域的原则是，“如果有疑问，参考Scheme的做法”。Scheme的开发人员可能比我们花了更多的时间来考虑变量范围的问题——Scheme的主要目标之一就是向世界介绍词法作用域，所以如果你跟随他们的脚步，就很难出错。Scheme允许在顶层重新定义变量。
-: 当然，这可能不是判断一个数字是奇偶性的最有效方法（更不用说如果传入一个非整数或负数，程序会发生不可控的事情）。忍耐一下吧。
-: 一些静态类型的语言，如Java和C#，通过规定程序的顶层不是一连串的命令式语句来解决这个问题。相应的，它们认为程序是一组同时出现的声明。语言实现在查看任何函数的主体之前，会先声明所有的名字。&lt;br/>像C和Pascal这样的老式语言并不是这样工作的。相反，它们会强制用户添加明确的前向声明，从而在名称完全定义之前先声明它。这是对当时有限的计算能力的一种让步。它们希望能够通过一次文本遍历就编译完一个源文件，因此这些编译器不能在处理函数体之前先收集所有声明。
-: 如果左侧不是有效的赋值目标，我们会报告一个错误，但我们不会抛出该错误，因为解析器并没有处于需要进入恐慌模式和同步的混乱状态。
-: 即使存在不是有效表达式的赋值目标，你也可以使用这个技巧。定义一个<strong>覆盖语法</strong>，一个可以接受所有有效表达式和赋值目标的宽松语法。如果你遇到了<code>=</code>，并且左侧不是有效的赋值目标则报告错误。相对地，如果没有遇到<code>=</code>，而且左侧不是有效的表达式也报告一个错误。
-: 早在解析一章，我就说过我们要在语法树中表示圆括号表达式，因为我们以后会用到。这就是为什么。我们需要能够区分这些情况：
-: 与Python和Ruby不同，Lox不做<a href="http://craftinginterpreters.com/statements-and-state.html#design-note">隐式变量声明</a>。
-: “词法”来自希腊语“ lexikos”，意思是“与单词有关”。 当我们在编程语言中使用它时，通常意味着您无需执行任何操作即可从源代码本身中获取到一些东西。词法作用域是随着ALGOL出现的。早期的语言通常是动态作用域的。当时的计算机科学家认为，动态作用域的执行速度更快。今天，多亏了早期的Scheme研究者，我们知道这不是真的。甚至可以说，情况恰恰相反。变量的动态作用域仍然存在于某些角落。Emacs Lisp默认为变量的动态作用域。Clojure中的<a href="http://clojuredocs.org/clojure.core/binding"><code>binding</code></a>宏也提供了。JavaScript中普遍不被喜欢的<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with"><code>with</code>语句</a>将对象上的属性转换为动态作用域变量。
-: 让<code>block()</code>返回原始的语句列表，并在<code>statement()</code>方法中将该列表封装在Stmt.Block中，这看起来有点奇怪。我这样做是因为稍后我们会重用<code>block()</code>来解析函数体，我们当然不希望函数体被封装在Stmt.Block中。
-: 手动修改和恢复一个可变的<code>environment</code>字段感觉很不优雅。另一种经典方法是显式地将环境作为参数传递给每个访问方法。如果要“改变”环境，就在沿树向下递归时传入一个不同的环境。你不必恢复旧的环境，因为新的环境存在于 Java 堆栈中，当解释器从块的访问方法返回时，该环境会被隐式丢弃。我曾考虑过在jlox中这样做，但在每一个访问方法中加入一个环境参数，这有点繁琐和冗长。为了让这本书更简单，我选择了可变字段。</p>
+我们的小解释器现在可以记住东西了，我们距离全功能编程语言又近了一步。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>

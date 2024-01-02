@@ -1,5 +1,5 @@
 > Take big bites. Anything worth doing is worth overdoing.
->
+> 全力以赴。任何值得做的事都值得竭尽全力。
 > <cite>Robert A. Heinlein, <em>Time Enough for Love</em></cite>
 
 The first step in any compiler or interpreter is <span
@@ -17,10 +17,12 @@ had less memory than your watch, some people used "scanner" only to refer to the
 piece of code that dealt with reading raw source code characters from disk and
 buffering them in memory. Then "lexing" was the subsequent phase that did useful
 stuff with the characters.
+一直以来，这项工作被称为 "扫描(scanning) "和 "词法分析(lexing)"（ "词法分析(lexical analysis)"的简称）。早在计算机还像Winnebagos一样大，但内存比你的手表还小的时候，有些人就用 "扫描 "来指代从磁盘上读取原始源代码字符并在内存中缓冲的那段代码。然后，"lexing "是后续阶段，对字符做有用的操作。
 
 These days, reading a source file into memory is trivial, so it's rarely a
 distinct phase in the compiler. Because of that, the two terms are basically
 interchangeable.
+现在，将源文件读入内存是很平常的事情，因此在编译器中很少出现不同的阶段。 因此，这两个术语基本上可以互换。
 
 </aside>
 
@@ -48,6 +50,7 @@ starts with a class in Java.
 For exit codes, I'm using the conventions defined in the UNIX
 ["sysexits.h"][sysexits] header. It's the closest thing to a standard I could
 find.
+对于退出代码，我使用 UNIX ["sysexits.h"][sysexits]头文件中定义的约定。这是我能找到的最接近标准的东西。
 
 [sysexits]: https://www.freebsd.org/cgi/man.cgi?query=sysexits&amp;apropos=0&amp;sektion=0&amp;manpath=FreeBSD+4.3-RELEASE&amp;format=html
 
@@ -74,6 +77,7 @@ prompt where you can enter and execute code one line at a time.
 An interactive prompt is also called a "REPL" (pronounced like "rebel" but with
 a "p"). The name comes from Lisp where implementing one is as simple as
 wrapping a loop around a few built-in functions:
+交互式提示符也被称为"REPL"(发音像rebel，但替换为p)。它的名称来自于Lisp，实现Lisp非常简单，只需围绕几个内置函数进行循环:
 
 ```lisp
 (print (eval (read)))
@@ -81,6 +85,7 @@ wrapping a loop around a few built-in functions:
 
 Working outwards from the most nested call, you **R**ead a line of input,
 **E**valuate it, **P**rint the result, then **L**oop and do it all over again.
+从最嵌套的调用开始，你读取(**R**ead)一行输入，对其进行评估(**E**valuate)，打印结果(**P**rint)，然后循环(**L**oop)再做一遍。
 
 </aside>
 
@@ -128,6 +133,7 @@ handling all through the implementation of our interpreter, starting now.
 Having said all that, for *this* interpreter, what we'll build is pretty bare
 bones. I'd love to talk about interactive debuggers, static analyzers, and other
 fun stuff, but there's only so much ink in the pen.
+说了这么多，对于这个解释器，我们要构建的只是基本框架。我很想谈谈交互式调试器、静态分析器和其它有趣的东西，但是篇幅实在有限。
 
 </aside>
 
@@ -205,6 +211,7 @@ error reporting into a different class.
 
 I had exactly that when I first implemented jlox. I ended up tearing it out
 because it felt over-engineered for the minimal interpreter in this book.
+我第一次实现jlox的时候正是如此。最后我把它拆出去了，因为对于本书的最小解释器来说，这有点过度设计了。
 
 </aside>
 
@@ -261,6 +268,7 @@ punctuation, and literal type.
 
 After all, string comparison ends up looking at individual characters, and isn't
 that the scanner's job?
+毕竟，字符串比较最终也会比对单个字符，这不正是扫描器的工作吗？
 
 </aside>
 
@@ -288,6 +296,7 @@ Some token implementations store the location as two numbers: the offset from
 the beginning of the source file to the beginning of the lexeme, and the length
 of the lexeme. The scanner needs to know these anyway, so there's no overhead to
 calculate them.
+一些标记实现将位置存储为两个数字：从源文件开始到词素开始的偏移量，以及词素的长度。扫描器无论如何都会知道这些数字，因此计算这些数字没有任何开销。
 
 An offset can be converted to line and column positions later by looking back at
 the source file and counting the preceding newlines. That sounds slow, and it
@@ -295,6 +304,7 @@ is. However, you need to do it *only when you need to actually display a line
 and column to the user*. Most tokens never appear in an error message. For
 those, the less time you spend calculating position information ahead of time,
 the better.
+通过回头查看源文件并计算前面的换行数，可以将偏移量转换为行和列位置。这听起来很慢，确实如此。然而，只有当你需要向用户实际显示行和列的时候，你才需要这样做。大多数标记从来不会出现在错误信息中。对于这些标记，你花在提前计算位置信息上的时间越少越好。
 
 </aside>
 
@@ -327,7 +337,7 @@ excreting tokens, until it reaches the end of the input.
 
 <aside name="alligator">
 
-Lexical analygator.
+词汇分析器.
 
 </aside>
 
@@ -359,6 +369,7 @@ interesting as I think the [Chomsky hierarchy][] and [finite-state machines][]
 are. But the honest truth is other books cover this better than I could.
 [*Compilers: Principles, Techniques, and Tools*][dragon] (universally known as
 "the dragon book") is the canonical reference.
+我很痛心要对理论做这么多掩饰，尤其是当它像[乔姆斯基谱系][Chomsky hierarchy]和[有限状态机][finite-state machines]那样有趣的时候。但说实话，其他的书比我写得好。[*Compilers: Principles, Techniques, and Tools*][dragon](常被称为“龙书”)是最经典的参考书。
 
 [chomsky hierarchy]: https://en.wikipedia.org/wiki/Chomsky_hierarchy
 [dragon]: https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools
@@ -378,6 +389,7 @@ Lex was created by Mike Lesk and Eric Schmidt. Yes, the same Eric Schmidt who
 was executive chairman of Google. I'm not saying programming languages are a
 surefire path to wealth and fame, but we *can* count at least one
 mega billionaire among us.
+Lex是由Mike Lesk和Eric Schmidt创建的。是的，就是那个曾任谷歌执行董事长的Eric Schmidt。我并不是说编程语言是通往财富和名声的必经之路，但我们中至少已经有一位超级亿万富翁。
 
 </aside>
 
@@ -401,6 +413,7 @@ Without further ado, let's make ourselves a scanner.
 I know static imports are considered bad style by some, but they save me from
 having to sprinkle `TokenType.` all over the scanner and parser. Forgive me, but
 every character counts in a book.
+我知道很多人认为静态导入是一种不好的代码风格，但这样我就不必在扫描器和解析器中到处写`TokenType`了。恕我直言，在一本书中，每个字符都很重要。
 
 </aside>
 
@@ -408,7 +421,6 @@ We store the raw source code as a simple string, and we have a list ready to
 fill with tokens we're going to generate. The aforementioned loop that does that
 looks like this:
 我们将原始的源代码存储为一个简单的字符串，并且我们已经准备了一个列表来保存扫描时产生的标记。前面提到的循环看起来类似于：
-*：
 
 ^code scan-tokens
 
@@ -450,6 +462,7 @@ those.
 <aside name="slash">
 
 Wondering why `/` isn't in here? Don't worry, we'll get to it.
+想知道这里为什么没有`/`吗？别担心，我们会解决的。
 
 </aside>
 
@@ -497,6 +510,7 @@ The code reports each invalid character separately, so this shotguns the user
 with a blast of errors if they accidentally paste a big blob of weird text.
 Coalescing a run of invalid characters into a single error would give a nicer
 user experience.
+代码会单独报告每个无效字符，因此如果用户不小心粘贴了一大堆奇怪的文本，就会出现大量错误。如果将一系列无效字符合并为一个错误，用户体验会更好。
 
 </aside>
 
@@ -567,6 +581,7 @@ use peek only one or two characters ahead.
 
 Technically, `match()` is doing lookahead too. `advance()` and `peek()` are the
 fundamental operators and `match()` combines them.
+技术上来说，`match()`方法也是在做前瞻。`advance()`和`peek()`是基本运算符，`match()`将它们结合起来。
 
 </aside>
 
@@ -644,6 +659,7 @@ Since we look only for a digit to start a number, that means `-123` is not a
 number *literal*. Instead, `-123`, is an *expression* that applies `-` to the
 number literal `123`. In practice, the result is the same, though it has one
 interesting edge case if we were to add method calls on numbers. Consider:
+因为我们只会根据数字来判断数字字面量，这就意味着`-123`不是一个数字*字面量*。相反，`-123`是一个*表达式*，将`-`应用到数字字面量`123`。在实践中，结果是一样的，尽管它有一个有趣的边缘情况。试想一下，如果我们要在数字上添加方法调用：
 
 ```lox
 print -123.abs();
@@ -651,6 +667,7 @@ print -123.abs();
 
 This prints `-123` because negation has lower precedence than method calls. We
 could fix that by making `-` part of the number literal. But then consider:
+这里会输出`-123`，因为负号的优先级低于方法调用。我们可以通过将`-`作为数字字面值的一部分来解决这个问题。但接着考虑：
 
 ```lox
 var n = 123;
@@ -659,6 +676,7 @@ print -n.abs();
 
 This still produces `-123`, so now the language seems inconsistent. No matter
 what you do, some case ends up weird.
+结果仍然是`-123`，所以现在语言似乎不一致。无论你怎么做，有些情况最后都会变得很奇怪。
 
 </aside>
 
@@ -695,6 +713,7 @@ This relies on this little utility:
 The Java standard library provides [`Character.isDigit()`][is-digit], which seems
 like a good fit. Alas, that method allows things like Devanagari digits,
 full-width numbers, and other funny stuff we don't want.
+Java标准库中提供了[Character.isDigit()][is-digit]，这似乎是个不错的选择。唉，该方法中还允许梵文数字、全宽数字和其他我们不想要的有趣的东西。
 
 [is-digit]: http://docs.oracle.com/javase/7/docs/api/java/lang/Character.html#isDigit(char)
 
@@ -725,6 +744,7 @@ I could have made `peek()` take a parameter for the number of characters ahead
 to look instead of defining two functions, but that would allow *arbitrarily*
 far lookahead. Providing these two functions makes it clearer to a reader of the
 code that our scanner looks ahead at most two characters.
+我本可以让`peek()`方法接受一个参数来表示要前瞻的字符数，而不需要定义两个函数。但这样做就会允许前瞻*任意*长度的字符。提供两个函数可以让读者更清楚地知道，我们的扫描器最多只能向前看两个字符。
 
 </aside>
 
@@ -772,6 +792,7 @@ that `<=` should be scanned as a single `<=` token and not `<` followed by `=`.
 <aside name="maximal">
 
 Consider this nasty bit of C code:
+看一下这段讨厌的C代码：
 
 ```c
 ---a;
@@ -779,6 +800,7 @@ Consider this nasty bit of C code:
 
 Is it valid? That depends on how the scanner splits the lexemes. What if the scanner
 sees it like this:
+它有效吗？这取决于扫描器如何分割词素。如果扫描器看到的是:
 
 ```c
 - --a;
@@ -787,6 +809,7 @@ sees it like this:
 Then it could be parsed. But that would require the scanner to know about the
 grammatical structure of the surrounding code, which entangles things more than
 we want. Instead, the maximal munch rule says that it is *always* scanned like:
+那它就可以被解析。但是这需要扫描器知道代码前后的语法结构，这比我们需要的更复杂。相反，最大匹配原则表明，扫描结果*总是*:
 
 ```c
 -- -a;
@@ -794,6 +817,7 @@ we want. Instead, the maximal munch rule says that it is *always* scanned like:
 
 It scans it that way even though doing so leads to a syntax error later in the
 parser.
+它就会这样扫描，尽管这样做会在解析器中导致后面的语法错误。
 
 </aside>
 
@@ -842,22 +866,6 @@ grammar. Fire up the REPL and type in some valid and invalid code. Does it
 produce the tokens you expect? Try to come up with some interesting edge cases
 and see if it handles them as it should.
 至此，我们就有了一个完整的扫描器，可以扫描整个Lox词法语法。启动REPL，输入一些有效和无效的代码。它是否产生了你所期望的词法单元？试着想出一些有趣的边界情况，看看它是否能正确地处理它们。
-: 一直以来，这项工作被称为 "扫描(scanning) "和 "词法分析(lexing)"（ "词法分析(lexical analysis)"的简称）。早在计算机还像Winnebagos一样大，但内存比你的手表还小的时候，有些人就用 "扫描 "来指代从磁盘上读取原始源代码字符并在内存中缓冲的那段代码。然后，"lexing "是后续阶段，对字符做有用的操作。现在，将源文件读入内存是很平常的事情，因此在编译器中很少出现不同的阶段。 因此，这两个术语基本上可以互换。
-: `System.exit(64)`，对于退出代码，我使用UNIX sysexts .h头文件中定义的约定。这是我能找到的最接近标准的东西。
-: 交互式提示符也被称为REPL(发音像rebel，但替换为p)。它的名称来自于Lisp，实现Lisp非常简单，只需围绕几个内置函数进行循环:`(print (eval (read)))`从嵌套最内的调用向外执行，读取一行输入，求值，打印结果，然后循环并再次执行。
-: 说了这么多，对于这个解释器，我们要构建的只是基本框架。我很想谈谈交互式调试器、静态分析器和其它有趣的东西，但是篇幅实在有限。
-: 我第一次实现jlox的时候正是如此。最后我把它拆出去了，因为对于本书的最小解释器来说，这有点过度设计了。
-: 毕竟，字符串比较最终也会比对单个字符，这不正是扫描器的工作吗？
-: 一些标记实现将位置存储为两个数字：从源文件开始到词素开始的偏移量，以及词素的长度。扫描器无论如何都会知道这些数字，因此计算这些数字没有任何开销。通过回头查看源文件并计算前面的换行数，可以将偏移量转换为行和列位置。这听起来很慢，确实如此。然而，只有当你需要向用户实际显示行和列的时候，你才需要这样做。大多数标记从来不会出现在错误信息中。对于这些标记，你花在提前计算位置信息上的时间越少越好。
-: 我很痛心要对理论做这么多掩饰，尤其是当它像[乔姆斯基谱系](https://en.wikipedia.org/wiki/Chomsky_hierarchy)和[有限状态机](https://en.wikipedia.org/wiki/Finite-state_machine)那样有趣的时候。但说实话，其他的书比我写得好。[*Compilers: Principles, Techniques, and Tools*](https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools)(常被称为“龙书”)是最经典的参考书。
-: Lex是由Mike Lesk和Eric Schmidt创建的。是的，就是那个曾任谷歌执行董事长的Eric Schmidt。我并不是说编程语言是通往财富和名声的必经之路，但我们中至少已经有一位超级亿万富翁。
-: 我知道很多人认为静态导入是一种不好的代码风格，但这样我就不必在扫描器和解析器中到处写`TokenType`了。恕我直言，在一本书中，每个字符都很重要
-: 想知道这里为什么没有`/`吗？别担心，我们会解决的。
-: 技术上来说，`match()`方法也是在做前瞻。`advance()`和`peek()`是基本运算符，`match()`将它们结合起来。
-: 因为我们只会根据数字来判断数字字面量，这就意味着`-123`不是一个数字*字面量*。相反，`-123`是一个*表达式*，将`-`应用到数字字面量`123`。在实践中，结果是一样的，尽管它有一个有趣的边缘情况。试想一下，如果我们要在数字上添加方法调用：`print -123.abs();`，这里会输出`-123`，因为负号的优先级低于方法调用。我们可以通过将`-`作为数字字面值的一部分来解决这个问题。但接着考虑：`var n = 123; print -n.abs();`，结果仍然是`-123`，所以现在语言似乎不一致。无论你怎么做，有些情况最后都会变得很奇怪。
-: Java标准库中提供了[Character.isDigit()](http://docs.oracle.com/javase/7/docs/api/java/lang/Character.html#isDigit(char))，这似乎是个不错的选择。唉，该方法中还允许梵文数字、全宽数字和其他我们不想要的有趣的东西。
-: 我本可以让`peek()`方法接受一个参数来表示要前瞻的字符数，而不需要定义两个函数。但这样做就会允许前瞻任意长度的字符。提供两个函数可以让读者更清楚地知道，我们的扫描器最多只能向前看两个字符。
-: 看一下这段讨厌的C代码：`a;`，它有效吗？这取决于扫描器如何分割词素。如果扫描器看到的是`- --a;`，那它就可以被解析。但是这需要扫描器知道代码前后的语法结构，这比我们需要的更复杂。相反，最大匹配原则表明，扫描结果总是：`-- -a;`，它就会这样扫描，尽管这样做会在解析器中导致后面的语法错误。
 
 <div class="challenges">
 
@@ -990,6 +998,7 @@ separators. Here are a couple:
 <aside name="lambda">
 
 And now you know why Python's `lambda` allows only a single expression body.
+现在你知道为什么 Python 的 `lambda` 只允许一个表达式体了吧。
 
 </aside>
 

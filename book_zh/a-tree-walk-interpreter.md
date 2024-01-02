@@ -17,6 +17,7 @@ exactly as we've specified. The first few chapters work front-to-back through
 the phases of the interpreter -- [scanning][], [parsing][], and
 [evaluating code][]. After that, we add language features one at a time,
 growing a simple calculator into a full-fledged scripting language.
+在不到两千行简洁的 Java 代码中，我们将为 Lox 构建一个完整的解释器，完全按照我们的要求实现该语言的所有功能。前几章将前后贯穿解释器的各个阶段--[扫描][scanning]、[解析][parsing]和[评估代码][evaluating code]。之后，我们将逐次添加语言特性，将一个简单的计算器发展成为一个成熟的脚本语言。
 
 [scanning]: scanning.html
 [parsing]: parsing-expressions.html

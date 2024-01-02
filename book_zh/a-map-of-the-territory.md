@@ -1,14 +1,11 @@
-> You must have a map, no matter how rough. Otherwise you wander all over the
-> place. In *The Lord of the Rings* I never made anyone go farther than he could
-> on a given day.
+> 你必须要有一张地图，无论它是多么粗糙。否则你就会到处乱逛。在《指环王》中，我从未让任何人在某一天走得超出他力所能及的范围。
 >
 > <cite>J. R. R. Tolkien</cite>
-你必须要有一张地图，无论它是多么粗糙。否则你就会到处乱逛。在《指环王》中，我从未让任何人在某一天走得超出他力所能及的范围。
 
 We don't want to wander all over the place, so before we set off, let's scan
 the territory charted by previous language implementers. It will help us
 understand where we are going and the alternate routes others have taken.
-我们不想到处乱逛，所以在我们开始之前，让我们先浏览一下以前的语言实现者所绘制的领土。它能帮助我们了解我们的目的地和其他人采用的备选路线。
+我们不想到处乱跑，所以在出发之前，让我们先浏览一下以前的语言实现者所描绘的领域。这将有助于我们了解自己的前进方向，以及别人走过的其他路线。
 
 First, let me establish a shorthand. Much of this book is about a language's
 *implementation*, which is distinct from the *language itself* in some sort of
@@ -22,7 +19,7 @@ We're going to spend a lot of time on those details, so if I have to write
 "language *implementation*" every single time I mention them, I'll wear my
 fingers off. Instead, I'll use "language" to refer to either a language or an
 implementation of it, or both, unless the distinction matters.
-我们将会花很多时间在这些细节上，所以如果我每次提及的时候都写“语言实现”，我的手指都会被磨掉。相反，除非有重要的区别，否则我将使用“语言”来指代一种语言或该语言的一种实现，或两者皆有。
+我们将会花很多时间在这些细节上，所以如果我每次提及的时候都写“语言*实现*”，我的手指都会被磨掉。相反，除非有重要的区别，否则我将使用“语言”来指代一种语言或该语言的一种实现，或两者皆有。
 
 ## The Parts of a Language  语言的各部分
 
@@ -40,13 +37,14 @@ reassuringly similar, from Rear Admiral Grace Hopper's first COBOL compiler all
 the way to some hot, new, transpile-to-JavaScript language whose "documentation"
 consists entirely of a single, poorly edited README in a Git repository
 somewhere.
-尽管语言设计师所探索的领域辽阔，但他们往往都走到相似的几条路上。 并非每种语言都采用完全相同的路径（有些会采用一种或两种捷径），但除此之外，从海军少将Grace Hopper的第一个COBOL编译器，一直到一些热门的新移植到JavaScript的语言（JS的 "文档 "甚至完全是由Git仓库中一个编辑得很差的README组成的），都呈现出相似的特征，这令人十分欣慰。
+尽管语言设计师所探索的领域辽阔，但他们往往都走到<span name="dead">相似的几条路上</span>。 并非每种语言都采用完全相同的路径（有些会采用一种或两种捷径），但除此之外，从海军少将Grace Hopper的第一个COBOL编译器，一直到一些热门的新移植到JavaScript的语言（JS的 "文档 "甚至完全是由Git仓库中一个编辑得很差的README组成的），都呈现出相似的特征，这令人十分欣慰。
 
 <aside name="dead">
 
 There are certainly dead ends, sad little cul-de-sacs of CS papers with zero
 citations and now-forgotten optimizations that only made sense when memory was
 measured in individual bytes.
+当然也有一些死胡同，比如引用次数为零的 CS 论文；以及在内存以单个字节计算内存时才有意义的、现已被遗忘的优化方法。
 
 </aside>
 
@@ -69,7 +67,6 @@ to make the CPU actually execute.
 Let's trace through each of those trails and points of interest. Our journey
 begins on the left with the bare text of the user's source code:
 让我们开始遍历所有有趣的路线和地点。我们的旅程从左边的用户源代码的纯文本开始
-![var average = (min + max) / 2;](2.领土地图/string.png)
 
 <img src="image/a-map-of-the-territory/string.png" alt="var average = (min + max) / 2;" />
 
@@ -93,6 +90,7 @@ and identifiers (`min`).
 <aside name="word">
 
 "Lexical" comes from the Greek root "lex", meaning "word".
+"词法 "源于希腊词根 "lex"，意为 "词"。
 
 </aside>
 
@@ -101,7 +99,6 @@ often insignificant, and comments, by definition, are ignored by the language.
 The scanner usually discards these, leaving a clean sequence of meaningful
 tokens.
 源文件中的一些字符实际上没有任何意义。空格通常是无关紧要的，而注释，从定义就能看出来，会被语言忽略。扫描仪通常会丢弃这些字符，留下一个干净的有意义的词法单元序列。
-![[var] [average] [=] [(] [min] [+] [max] [)] [/] [2] [;]](2.领土地图/tokens.png)
 
 <img src="image/a-map-of-the-territory/tokens.png" alt="[var] [average] [=] [(] [min] [+] [max] [)] [/] [2] [;]" />
 
@@ -167,6 +164,7 @@ report a **type error**.
 
 The language we'll build in this book is dynamically typed, so it will do its
 type checking later, at runtime.
+我们将在本书中构建的语言是动态类型的，因此它将在运行时进行类型检查。
 
 </aside>
 
@@ -217,6 +215,7 @@ between these two languages.
 There are a few well-established styles of IRs out there. Hit your search engine
 of choice and look for "control flow graph", "static single-assignment",
 "continuation-passing style", and "three-address code".
+有几种成熟的IR风格。点击你熟悉的搜索引擎，搜索 "控制流图"、"静态单赋值形式"、"延续传递形式 "和 "三位址码"。
 
 </aside>
 
@@ -239,6 +238,7 @@ If you've ever wondered how [GCC][] supports so many crazy languages and
 architectures, like Modula-3 on Motorola 68k, now you know. Language front ends
 target one of a handful of IRs, mainly [GIMPLE][] and [RTL][]. Target back ends
 like the one for 68k then take those IRs and produce native code.
+如果你曾经好奇[GCC][]如何支持这么多疯狂的语言和体系结构，例如Motorola 68k上的Modula-3，现在你就明白了。 语言前端针对的是少数IR，主要是[GIMPLE][]和[RTL][]。 目标后端如68k，会接受这些IR并生成本机代码。
 
 [gcc]: https://en.wikipedia.org/wiki/GNU_Compiler_Collection
 [gimple]: https://gcc.gnu.org/onlinedocs/gccint/GIMPLE.html
@@ -291,6 +291,7 @@ If you can't resist poking your foot into that hole, some keywords to get you
 started are "constant propagation", "common subexpression elimination", "loop
 invariant code motion", "global value numbering", "strength reduction", "scalar
 replacement of aggregates", "dead code elimination", and "loop unrolling".
+如果你无法抗拒要进入这个领域，可以从以下关键字开始，例如“常量折叠”，“公共表达式消除”，“循环不变代码外提”，“全局值编号”，“强度降低”，“ 聚合量标量替换”，“死码删除”和“循环展开”。
 
 </aside>
 
@@ -330,6 +331,7 @@ For example, the [AAD][] ("ASCII Adjust AX Before Division") instruction lets
 you perform division, which sounds useful. Except that instruction takes, as
 operands, two binary-coded decimal digits packed into a single 16-bit register.
 When was the last time *you* needed BCD on a 16-bit machine?
+例如，[AAD]（"ASCII Adjust AX Before Division",除法前ASCII调整AX）指令可以让你执行除法，这听起来很有用。除了该指令将两个二进制编码的十进制数字作为操作数打包到一个16位寄存器中。*你*最后一次在16位机器上使用BCD是什么时候？
 
 [aad]: http://www.felixcloutier.com/x86/AAD.html
 
@@ -369,11 +371,13 @@ bytecode as an intermediate representation.
 The basic principle here is that the farther down the pipeline you push the
 architecture-specific work, the more of the earlier phases you can share across
 architectures.
+这里的基本原则是，你把特定于体系架构的工作推得越靠后，你就可以在不同架构之间共享更多的早期阶段。
 
 There is a tension, though. Many optimizations, like register allocation and
 instruction selection, work best when they know the strengths and capabilities
 of a specific chip. Figuring out which parts of your compiler can be shared and
 which should be target-specific is an art.
+不过，这里存在一些矛盾。 许多优化（例如寄存器分配和指令选择）在了解特定芯片的优势和功能时才能发挥最佳效果。 弄清楚编译器的哪些部分可以共享，哪些应该针对特定目标是一门艺术。
 
 </aside>
 
@@ -394,9 +398,11 @@ system in software. This is how you can play Windows games on your Linux
 machine, and how cloud providers give customers the user experience of
 controlling their own "server" without needing to physically allocate separate
 computers for each user.
+术语“虚拟机”也指另一种抽象。 **系统虚拟机** 在软件中模拟整个硬件平台和操作系统。 这就是你可以在Linux机器上玩Windows游戏的原因，也是云提供商为什么可以给客户提供控制自己的“服务器”的用户体验，而无需为每个用户实际分配单独的计算机。
 
 The kind of VMs we'll talk about in this book are **language virtual machines**
 or **process virtual machines** if you want to be unambiguous.
+在本书中，我们将要讨论的虚拟机类型是 **语言虚拟机** 或 **进程虚拟机**（如果你需要明确的话）。
 
 </aside>
 
@@ -452,6 +458,7 @@ these all-at-once compilers. You associate an *action* with each piece of the
 grammar, usually one that generates output code. Then, whenever the parser
 matches that chunk of syntax, it executes the action, building up the target
 code one rule at a time.
+[语法导向翻译][pass]是一种结构化的技术，用于构建这些一次性编译器。你可以将一个*操作*与语法的每个片段(通常是生成输出代码的语法片段)相关联。然后，每当解析器匹配该语法块时，它就执行操作，一次构建一个规则的目标代码。
 
 [pass]: https://en.wikipedia.org/wiki/Syntax-directed_translation
 
@@ -488,6 +495,7 @@ A notable exception is early versions of Ruby, which were tree walkers. At 1.9,
 the canonical implementation of Ruby switched from the original MRI (Matz's Ruby
 Interpreter) to Koichi Sasada's YARV (Yet Another Ruby VM). YARV is a
 bytecode virtual machine.
+一个明显的例外是早期版本的Ruby，它们是树遍历型解释器。在1.9时，Ruby的规范实现从最初的MRI（"Matz' Ruby Interpreter"）切换到了Koichi Sasada的YARV（"Yet Another Ruby VM"）。YARV是一个字节码虚拟机。
 
 </aside>
 
@@ -520,17 +528,20 @@ That might seem straightforward, but keep in mind the 8080 was an 8-bit chip and
 the 8086 a 16-bit chip that could use each register as a pair of 8-bit ones.
 XLT86 did data flow analysis to track register usage in the source program and
 then efficiently map it to the register set of the 8086.
+第一个转编译器XLT86将8080程序集转换为8086程序集。 这看似简单，但请记住8080是8位芯片，而8086是16位芯片，可以将每个寄存器用作一对8位寄存器。 XLT86进行了数据流分析，以跟踪源程序中的寄存器使用情况，然后将其有效地映射到8086的寄存器集。
 
 It was written by Gary Kildall, a tragic hero of computer science if there
 ever was one. One of the first people to recognize the promise of
 microcomputers, he created PL/M and CP/M, the first high-level language and OS
 for them.
+它是由悲惨的计算机科学英雄加里·基尔达尔（Gary Kildall）撰写的。 他是最早认识到微型计算机前景的人之一，他创建了PL / M和CP / M，这是它们的第一种高级语言和操作系统。
 
 He was a sea captain, business owner, licensed pilot, and motorcyclist. A TV
 host with the Kris Kristofferson-esque look sported by dashing bearded dudes in
 the '80s. He took on Bill Gates and, like many, lost, before meeting his end in
 a biker bar under mysterious circumstances. He died too young, but sure as hell
 lived before he did.
+他是船长、企业主、持证飞行员和摩托车手。他是一位电视节目主持人，有着克里斯-克里斯托弗森（Kris Kristofferson）式的长相、80 年代的潇洒大胡子，帅哥们都喜欢这样的长相。他曾与比尔-盖茨对决，和许多人一样，他输了，最后在一家摩托车酒吧里神秘地死去。他死得太早了，但却活得很精彩。
 
 </aside>
 
@@ -555,6 +566,7 @@ Web浏览器是今天的 "机器"，它们的 "机器代码 "是JavaScript，所
 JS used to be the *only* way to execute code in a browser. Thanks to
 [WebAssembly][], compilers now have a second, lower-level language they can
 target that runs on the web.
+JS曾经是在浏览器中执行代码的唯一方式。多亏了[Web Assembly][webassembly]，编译器现在有了第二种可以在Web上运行的低级语言。
 
 [webassembly]: https://github.com/webassembly/
 
@@ -602,6 +614,7 @@ name="hot">hot spots</span> with more advanced optimizations.
 <aside name="hot">
 
 This is, of course, exactly where the HotSpot JVM gets its name.
+当然，这正是HotSpot JVM名称的来源。
 
 </aside>
 
@@ -630,9 +643,11 @@ Peanuts (which are not even nuts) and cereals like wheat are actually fruit, but
 I got this drawing wrong. What can I say, I'm a software engineer, not a
 botanist. I should probably erase the little peanut guy, but he's so cute that I
 can't bear to.
+花生（连真正的坚果都算不上）和小麦等谷类其实都是水果，但我把这个图画错了。我能说什么呢，我是个软件工程师，不是植物学家。我也许应该抹掉这个花生小家伙，但他太可爱了，我不忍心。
 
 Now *pine nuts*, on the other hand, are plant-based foods that are neither
 fruits nor vegetables. At least as far as I can tell.
+而*松子*则是既不是水果也不是蔬菜的植物性食品。至少在我看来是这样。
 
 </aside>
 
@@ -680,11 +695,13 @@ this way, as you can see:
 The [Go tool][go] is even more of a horticultural curiosity. If you run `go
 build`, it compiles your Go source code to machine code and stops. If you type
 `go run`, it does that, then immediately executes the generated executable.
+[Go工具][go]更是一个奇葩。如果你运行`go build`，它就会把你的go源代码编译成机器代码然后停止。如果你输入`go run`，它也会这样做，然后立即执行生成的可执行文件。
 
 So `go` *is* a compiler (you can use it as a tool to compile code without
 running it), *is* an interpreter (you can invoke it to immediately run a program
 from source), and also *has* a compiler (when you use it as an interpreter, it
 is still compiling internally).
+所以，可以说`go`*是*一个编译器（你可以把它当做一个工具来编译代码而不运行）；*也可以说是*一个解释器（你可以调用它立即从源码中运行一个程序），并且*有*一个编译器（当你把它当做解释器使用时，它仍然在内部编译）。
 
 [go tool]: https://golang.org/cmd/go/
 
@@ -713,25 +730,11 @@ But, for now, it's time for our own journey to begin. Tighten your bootlaces,
 cinch up your pack, and come along. From <span name="here">here</span> on out,
 all you need to focus on is the path in front of you.
 但是，现在，是我们自己的旅程开始的时候了。系好你的鞋带，背好你的包，走吧。从这里开始，你需要关注的是你面前的路。
-: 毫无疑问，CS论文也有死胡同，被引为零的悲惨小众论文以及如今被遗忘的优化方法，这些优化方法只有在以单个字节为单位来衡量内存时才有意义。
-: 我们在本书中构建的语言是动态类型的，因此将在稍后的运行时中进行类型检查。
-: 有几种成熟的IR风格。点击你熟悉的搜索引擎，搜索 "控制流图"、"静态单赋值形式"、"延续传递形式 "和 "三位址码"。
-: 如果你曾经好奇[GCC](https://en.wikipedia.org/wiki/GNU_Compiler_Collection)如何支持这么多疯狂的语言和体系结构，例如Motorola 68k上的Modula-3，现在你就明白了。 语言前端针对的是少数IR，主要是[GIMPLE](https://gcc.gnu.org/onlinedocs/gccint/GIMPLE.html)和[RTL](https://gcc.gnu.org/onlinedocs/gccint/RTL.html)。 目标后端如68k，会接受这些IR并生成本机代码。
-: 如果你无法抗拒要进入这个领域，可以从以下关键字开始，例如“常量折叠”，“公共表达式消除”，“循环不变代码外提”，“全局值编号”，“强度降低”，“ 聚合量标量替换”，“死码删除”和“循环展开”。
-: 例如，[AAD](http://www.felixcloutier.com/x86/AAD.html)（"ASCII Adjust AX Before Division",除法前ASCII调整AX）指令可以让你执行除法，这听起来很有用。除了该指令将两个二进制编码的十进制数字作为操作数打包到一个16位寄存器中。你最后一次在16位机器上使用BCD是什么时候？
-: 这里的基本原则是，你把特定于体系架构的工作推得越靠后，你就可以在不同架构之间共享更多的早期阶段。不过，这里存在一些矛盾。 许多优化（例如寄存器分配和指令选择）在了解特定芯片的优势和功能时才能发挥最佳效果。 弄清楚编译器的哪些部分可以共享，哪些应该针对特定目标是一门艺术。
-: 术语“虚拟机”也指另一种抽象。 “系统虚拟机”在软件中模拟整个硬件平台和操作系统。 这就是你可以在Linux机器上玩Windows游戏的原因，也是云提供商为什么可以给客户提供控制自己的“服务器”的用户体验，而无需为每个用户实际分配单独的计算机。在本书中，我们将要讨论的虚拟机类型是“语言虚拟机”或“进程虚拟机”（如果你需要明确的话）。
-: [语法导向翻译](https://en.wikipedia.org/wiki/Syntax-directed_translation)是一种结构化的技术，用于构建这些一次性编译器。你可以将一个操作与语法的每个片段(通常是生成输出代码的语法片段)相关联。然后，每当解析器匹配该语法块时，它就执行操作，一次构建一个规则的目标代码。
-: 一个明显的例外是早期版本的Ruby，它们是树遍历型解释器。在1.9时，Ruby的规范实现从最初的MRI（"Matz' Ruby Interpreter"）切换到了Koichi Sasada的YARV（"Yet Another Ruby VM"）。YARV是一个字节码虚拟机。
-: 第一个转编译器XLT86将8080程序集转换为8086程序集。 这看似简单，但请记住8080是8位芯片，而8086是16位芯片，可以将每个寄存器用作一对8位寄存器。 XLT86进行了数据流分析，以跟踪源程序中的寄存器使用情况，然后将其有效地映射到8086的寄存器集。它是由悲惨的计算机科学英雄加里·基尔达尔（Gary Kildall）撰写的。 他是最早认识到微型计算机前景的人之一，他创建了PL / M和CP / M，这是它们的第一种高级语言和操作系统。
-: JS曾经是在浏览器中执行代码的唯一方式。多亏了[Web Assembly](https://github.com/webassembly/)，编译器现在有了第二种可以在Web上运行的低级语言。
-: 当然，这正是HotSpot JVM名称的来源。
-: 花生（连真正的坚果都算不上）和小麦等谷类其实都是水果，但我把这个图画错了。我能说什么呢，我是个软件工程师，不是植物学家。我也许应该抹掉这个花生小家伙，但他太可爱了，我不忍心。
-: [Go工具](https://golang.org/)更是一个奇葩。如果你运行`go build`，它就会把你的go源代码编译成机器代码然后停止。如果你输入`go run`，它也会这样做，然后立即执行生成的可执行文件。所以，可以说go是一个编译器（你可以把它当做一个工具来编译代码而不运行）；也可以说是一个解释器（你可以调用它立即从源码中运行一个程序），并且有一个编译器（当你把它当做解释器使用时，它仍然在内部编译）。
 
 <aside name="here">
 
 Henceforth, I promise to tone down the whole mountain metaphor thing.
+从今往后，我保证不再用山做比喻了。
 
 </aside>
 

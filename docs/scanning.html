@@ -103,8 +103,9 @@
     <h1>扫描</h1>
 
     <blockquote>
-<p>Take big bites. Anything worth doing is worth overdoing.</p>
-<p><cite>Robert A. Heinlein, <em>Time Enough for Love</em></cite></p>
+<p>Take big bites. Anything worth doing is worth overdoing.
+全力以赴。任何值得做的事都值得竭尽全力。
+<cite>Robert A. Heinlein, <em>Time Enough for Love</em></cite></p>
 </blockquote>
 <p>The first step in any compiler or interpreter is <span
 name="lexing">scanning</span>. The scanner takes in raw source code as a series
@@ -118,10 +119,12 @@ analysis&rdquo;) over the years. Way back when computers were as big as Winnebag
 had less memory than your watch, some people used &ldquo;scanner&rdquo; only to refer to the
 piece of code that dealt with reading raw source code characters from disk and
 buffering them in memory. Then &ldquo;lexing&rdquo; was the subsequent phase that did useful
-stuff with the characters.</p>
+stuff with the characters.
+一直以来，这项工作被称为 &ldquo;扫描(scanning) &ldquo;和 &ldquo;词法分析(lexing)&ldquo;（ &ldquo;词法分析(lexical analysis)&ldquo;的简称）。早在计算机还像Winnebagos一样大，但内存比你的手表还小的时候，有些人就用 &ldquo;扫描 &ldquo;来指代从磁盘上读取原始源代码字符并在内存中缓冲的那段代码。然后，&ldquo;lexing &ldquo;是后续阶段，对字符做有用的操作。</p>
 <p>These days, reading a source file into memory is trivial, so it&rsquo;s rarely a
 distinct phase in the compiler. Because of that, the two terms are basically
-interchangeable.</p>
+interchangeable.
+现在，将源文件读入内存是很平常的事情，因此在编译器中很少出现不同的阶段。 因此，这两个术语基本上可以互换。</p>
 </aside>
 <p>Scanning is a good starting point for us too because the code isn&rsquo;t very hard<span class="em">&mdash;</span>pretty much a <code>switch</code> statement with delusions of grandeur. It will help us
 warm up before we tackle some of the more interesting material later. By the end
@@ -166,7 +169,8 @@ create new file</div>
 <aside name="64">
 <p>For exit codes, I&rsquo;m using the conventions defined in the UNIX
 <a href="https://www.freebsd.org/cgi/man.cgi?query=sysexits&amp;apropos=0&amp;sektion=0&amp;manpath=FreeBSD+4.3-RELEASE&amp;format=html">&ldquo;sysexits.h&rdquo;</a> header. It&rsquo;s the closest thing to a standard I could
-find.</p>
+find.
+对于退出代码，我使用 UNIX <a href="https://www.freebsd.org/cgi/man.cgi?query=sysexits&amp;apropos=0&amp;sektion=0&amp;manpath=FreeBSD+4.3-RELEASE&amp;format=html">&ldquo;sysexits.h&rdquo;</a>头文件中定义的约定。这是我能找到的最接近标准的东西。</p>
 </aside>
 <p>Stick that in a text file, and go get your IDE or Makefile or whatever set up.
 I&rsquo;ll be right here when you&rsquo;re ready. Good? OK!
@@ -191,11 +195,13 @@ prompt where you can enter and execute code one line at a time.
 <aside name="repl">
 <p>An interactive prompt is also called a &ldquo;REPL&rdquo; (pronounced like &ldquo;rebel&rdquo; but with
 a &ldquo;p&rdquo;). The name comes from Lisp where implementing one is as simple as
-wrapping a loop around a few built-in functions:</p>
+wrapping a loop around a few built-in functions:
+交互式提示符也被称为&ldquo;REPL&rdquo;(发音像rebel，但替换为p)。它的名称来自于Lisp，实现Lisp非常简单，只需围绕几个内置函数进行循环:</p>
 <div class="codehilite"><pre>(<span class="i">print</span> (<span class="i">eval</span> (<span class="i">read</span>)))
 </pre></div>
 <p>Working outwards from the most nested call, you <strong>R</strong>ead a line of input,
-<strong>E</strong>valuate it, <strong>P</strong>rint the result, then <strong>L</strong>oop and do it all over again.</p>
+<strong>E</strong>valuate it, <strong>P</strong>rint the result, then <strong>L</strong>oop and do it all over again.
+从最嵌套的调用开始，你读取(<strong>R</strong>ead)一行输入，对其进行评估(<strong>E</strong>valuate)，打印结果(<strong>P</strong>rint)，然后循环(<strong>L</strong>oop)再做一遍。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/Lox.java</em><br>
 add after <em>runFile</em>()</div>
@@ -258,7 +264,8 @@ handling all through the implementation of our interpreter, starting now.
 <aside name="errors">
 <p>Having said all that, for <em>this</em> interpreter, what we&rsquo;ll build is pretty bare
 bones. I&rsquo;d love to talk about interactive debuggers, static analyzers, and other
-fun stuff, but there&rsquo;s only so much ink in the pen.</p>
+fun stuff, but there&rsquo;s only so much ink in the pen.
+说了这么多，对于这个解释器，我们要构建的只是基本框架。我很想谈谈交互式调试器、静态分析器和其它有趣的东西，但是篇幅实在有限。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/Lox.java</em><br>
 add after <em>run</em>()</div>
@@ -352,7 +359,8 @@ error reporting into a different class.
 理想情况下，我们应该有一个实际的抽象，即传递给扫描程序和解析器的某种ErrorReporter接口，这样我们就可以交换不同的报告策略。对于我们这里的简单解释器，我没有那样做，但我至少将错误报告代码移到了一个不同的类中。</p>
 <aside name="reporter">
 <p>I had exactly that when I first implemented jlox. I ended up tearing it out
-because it felt over-engineered for the minimal interpreter in this book.</p>
+because it felt over-engineered for the minimal interpreter in this book.
+我第一次实现jlox的时候正是如此。最后我把它拆出去了，因为对于本书的最小解释器来说，这有点过度设计了。</p>
 </aside>
 <p>With some rudimentary error handling in place, our application shell is ready.
 Once we have a Scanner class with a <code>scanTokens()</code> method, we can start running
@@ -392,7 +400,8 @@ punctuation, and literal type.
 解析器可以通过比较字符串对原始词素中的标记进行分类，但这样做很慢，而且有点难看。相反，在我们识别一个词素的时候，我们还要记住它代表的是哪种词素。我们为每个关键字、操作符、标点位和字面量都有不同的类型。</p>
 <aside name="ugly">
 <p>After all, string comparison ends up looking at individual characters, and isn&rsquo;t
-that the scanner&rsquo;s job?</p>
+that the scanner&rsquo;s job?
+毕竟，字符串比较最终也会比对单个字符，这不正是扫描器的工作吗？</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/TokenType.java</em><br>
 create new file</div>
@@ -437,13 +446,15 @@ sophisticated implementations include the column and length too.
 <p>Some token implementations store the location as two numbers: the offset from
 the beginning of the source file to the beginning of the lexeme, and the length
 of the lexeme. The scanner needs to know these anyway, so there&rsquo;s no overhead to
-calculate them.</p>
+calculate them.
+一些标记实现将位置存储为两个数字：从源文件开始到词素开始的偏移量，以及词素的长度。扫描器无论如何都会知道这些数字，因此计算这些数字没有任何开销。</p>
 <p>An offset can be converted to line and column positions later by looking back at
 the source file and counting the preceding newlines. That sounds slow, and it
 is. However, you need to do it <em>only when you need to actually display a line
 and column to the user</em>. Most tokens never appear in an error message. For
 those, the less time you spend calculating position information ahead of time,
-the better.</p>
+the better.
+通过回头查看源文件并计算前面的换行数，可以将偏移量转换为行和列位置。这听起来很慢，确实如此。然而，只有当你需要向用户实际显示行和列的时候，你才需要这样做。大多数标记从来不会出现在错误信息中。对于这些标记，你花在提前计算位置信息上的时间越少越好。</p>
 </aside>
 <p>We take all of this data and wrap it in a class.
 我们将所有这些数据打包到一个类中。</p>
@@ -487,7 +498,7 @@ excreting tokens, until it reaches the end of the input.
 然后再循环一次，它又循环回来，从源代码中的下一个字符开始再做一次。它一直这样做，吃掉字符，偶尔，呃，排出标记，直到它到达输入的终点。</p>
 <p><span name="alligator"></span></p><img src="image/scanning/lexigator.png" alt="An alligator eating characters and, well, you don't want to know." />
 <aside name="alligator">
-<p>Lexical analygator.</p>
+<p>词汇分析器.</p>
 </aside>
 <p>The part of the loop where we look at a handful of characters to figure out
 which kind of lexeme it &ldquo;matches&rdquo; may sound familiar. If you know regular
@@ -509,7 +520,8 @@ as in regular expressions.
 interesting as I think the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a> and <a href="https://en.wikipedia.org/wiki/Finite-state_machine">finite-state machines</a>
 are. But the honest truth is other books cover this better than I could.
 <a href="https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools"><em>Compilers: Principles, Techniques, and Tools</em></a> (universally known as
-&ldquo;the dragon book&rdquo;) is the canonical reference.</p>
+&ldquo;the dragon book&rdquo;) is the canonical reference.
+我很痛心要对理论做这么多掩饰，尤其是当它像<a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">乔姆斯基谱系</a>和<a href="https://en.wikipedia.org/wiki/Finite-state_machine">有限状态机</a>那样有趣的时候。但说实话，其他的书比我写得好。<a href="https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools"><em>Compilers: Principles, Techniques, and Tools</em></a>(常被称为“龙书”)是最经典的参考书。</p>
 </aside>
 <p>You very precisely <em>can</em> recognize all of the different lexemes for Lox using
 regexes if you want to, and there&rsquo;s a pile of interesting theory underlying why
@@ -520,7 +532,8 @@ at them, and they give you a complete scanner <span name="lex">back</span>.</p>
 <p>Lex was created by Mike Lesk and Eric Schmidt. Yes, the same Eric Schmidt who
 was executive chairman of Google. I&rsquo;m not saying programming languages are a
 surefire path to wealth and fame, but we <em>can</em> count at least one
-mega billionaire among us.</p>
+mega billionaire among us.
+Lex是由Mike Lesk和Eric Schmidt创建的。是的，就是那个曾任谷歌执行董事长的Eric Schmidt。我并不是说编程语言是通往财富和名声的必经之路，但我们中至少已经有一位超级亿万富翁。</p>
 </aside>
 <p>Since our goal is to understand how a scanner does what it does, we won&rsquo;t be
 delegating that task. We&rsquo;re about handcrafted goods.
@@ -554,13 +567,13 @@ create new file</div>
 <aside name="static-import">
 <p>I know static imports are considered bad style by some, but they save me from
 having to sprinkle <code>TokenType.</code> all over the scanner and parser. Forgive me, but
-every character counts in a book.</p>
+every character counts in a book.
+我知道很多人认为静态导入是一种不好的代码风格，但这样我就不必在扫描器和解析器中到处写<code>TokenType</code>了。恕我直言，在一本书中，每个字符都很重要。</p>
 </aside>
 <p>We store the raw source code as a simple string, and we have a list ready to
 fill with tokens we&rsquo;re going to generate. The aforementioned loop that does that
 looks like this:
-我们将原始的源代码存储为一个简单的字符串，并且我们已经准备了一个列表来保存扫描时产生的标记。前面提到的循环看起来类似于：
-*：</p>
+我们将原始的源代码存储为一个简单的字符串，并且我们已经准备了一个列表来保存扫描时产生的标记。前面提到的循环看起来类似于：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Scanner.java</em><br>
 add after <em>Scanner</em>()</div>
 <pre>  <span class="t">List</span>&lt;<span class="t">Token</span>&gt; <span class="i">scanTokens</span>() {
@@ -640,7 +653,8 @@ add after <em>scanTokens</em>()</div>
 <div class="source-file-narrow"><em>lox/Scanner.java</em>, add after <em>scanTokens</em>()</div>
 
 <aside name="slash">
-<p>Wondering why <code>/</code> isn&rsquo;t in here? Don&rsquo;t worry, we&rsquo;ll get to it.</p>
+<p>Wondering why <code>/</code> isn&rsquo;t in here? Don&rsquo;t worry, we&rsquo;ll get to it.
+想知道这里为什么没有<code>/</code>吗？别担心，我们会解决的。</p>
 </aside>
 <p>Again, we need a couple of helper methods.
 同样，我们也需要一些辅助方法。</p>
@@ -702,7 +716,8 @@ code, even though we keep going and scan the rest of it.)
 <p>The code reports each invalid character separately, so this shotguns the user
 with a blast of errors if they accidentally paste a big blob of weird text.
 Coalescing a run of invalid characters into a single error would give a nicer
-user experience.</p>
+user experience.
+代码会单独报告每个无效字符，因此如果用户不小心粘贴了一大堆奇怪的文本，就会出现大量错误。如果将一系列无效字符合并为一个错误，用户体验会更好。</p>
 </aside>
 <h3><a href="#operators" id="operators"><small>4&#8202;.&#8202;7&#8202;.&#8202;2</small>Operators</a></h3>
 <p>We have single-character lexemes working, but that doesn&rsquo;t cover all of Lox&rsquo;s
@@ -808,7 +823,8 @@ use peek only one or two characters ahead.
 这有点像<code>advance()</code>方法，只是不会消费字符。这就是所谓的<strong>lookahead(前瞻)</strong>。因为它只关注当前未消费的字符，所以我们有<em>一个前瞻字符</em>。一般来说，前瞻的字符越少，扫描器运行速度就越快。词法语法的规则决定了我们需要前瞻多少字符。幸运的是，大多数广泛使用的语言只需要提前一到两个字符。</p>
 <aside name="match">
 <p>Technically, <code>match()</code> is doing lookahead too. <code>advance()</code> and <code>peek()</code> are the
-fundamental operators and <code>match()</code> combines them.</p>
+fundamental operators and <code>match()</code> combines them.
+技术上来说，<code>match()</code>方法也是在做前瞻。<code>advance()</code>和<code>peek()</code>是基本运算符，<code>match()</code>将它们结合起来。</p>
 </aside>
 <p>Comments are lexemes, but they aren&rsquo;t meaningful, and the parser doesn&rsquo;t want
 to deal with them. So when we reach the end of the comment, we <em>don&rsquo;t</em> call
@@ -918,16 +934,19 @@ digits.
 <p>Since we look only for a digit to start a number, that means <code>-123</code> is not a
 number <em>literal</em>. Instead, <code>-123</code>, is an <em>expression</em> that applies <code>-</code> to the
 number literal <code>123</code>. In practice, the result is the same, though it has one
-interesting edge case if we were to add method calls on numbers. Consider:</p>
+interesting edge case if we were to add method calls on numbers. Consider:
+因为我们只会根据数字来判断数字字面量，这就意味着<code>-123</code>不是一个数字<em>字面量</em>。相反，<code>-123</code>是一个<em>表达式</em>，将<code>-</code>应用到数字字面量<code>123</code>。在实践中，结果是一样的，尽管它有一个有趣的边缘情况。试想一下，如果我们要在数字上添加方法调用：</p>
 <div class="codehilite"><pre><span class="k">print</span> -<span class="n">123</span>.<span class="i">abs</span>();
 </pre></div>
 <p>This prints <code>-123</code> because negation has lower precedence than method calls. We
-could fix that by making <code>-</code> part of the number literal. But then consider:</p>
+could fix that by making <code>-</code> part of the number literal. But then consider:
+这里会输出<code>-123</code>，因为负号的优先级低于方法调用。我们可以通过将<code>-</code>作为数字字面值的一部分来解决这个问题。但接着考虑：</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">n</span> = <span class="n">123</span>;
 <span class="k">print</span> -<span class="i">n</span>.<span class="i">abs</span>();
 </pre></div>
 <p>This still produces <code>-123</code>, so now the language seems inconsistent. No matter
-what you do, some case ends up weird.</p>
+what you do, some case ends up weird.
+结果仍然是<code>-123</code>，所以现在语言似乎不一致。无论你怎么做，有些情况最后都会变得很奇怪。</p>
 </aside>
 <div class="codehilite"><pre><span class="n">1234</span>
 <span class="n">12.34</span>
@@ -969,7 +988,8 @@ add after <em>peek</em>()</div>
 <aside name="is-digit">
 <p>The Java standard library provides <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Character.html#isDigit(char)"><code>Character.isDigit()</code></a>, which seems
 like a good fit. Alas, that method allows things like Devanagari digits,
-full-width numbers, and other funny stuff we don&rsquo;t want.</p>
+full-width numbers, and other funny stuff we don&rsquo;t want.
+Java标准库中提供了<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Character.html#isDigit(char)">Character.isDigit()</a>，这似乎是个不错的选择。唉，该方法中还允许梵文数字、全宽数字和其他我们不想要的有趣的东西。</p>
 </aside>
 <p>Once we know we are in a number, we branch to a separate method to consume the
 rest of the literal, like we do with strings.
@@ -1015,7 +1035,8 @@ add after <em>peek</em>()</div>
 <p>I could have made <code>peek()</code> take a parameter for the number of characters ahead
 to look instead of defining two functions, but that would allow <em>arbitrarily</em>
 far lookahead. Providing these two functions makes it clearer to a reader of the
-code that our scanner looks ahead at most two characters.</p>
+code that our scanner looks ahead at most two characters.
+我本可以让<code>peek()</code>方法接受一个参数来表示要前瞻的字符数，而不需要定义两个函数。但这样做就会允许前瞻<em>任意</em>长度的字符。提供两个函数可以让读者更清楚地知道，我们的扫描器最多只能向前看两个字符。</p>
 </aside>
 <p>Finally, we convert the lexeme to its numeric value. Our interpreter uses Java&rsquo;s
 <code>Double</code> type to represent numbers, so we produce a value of that type. We&rsquo;re
@@ -1050,20 +1071,24 @@ keyword, then the former wins. This is also why we tacitly assumed, previously,
 that <code>&lt;=</code> should be scanned as a single <code>&lt;=</code> token and not <code>&lt;</code> followed by <code>=</code>.
 该规则规定，如果我们可以将<code>orchid</code>匹配为一个标识符，也可以将<code>or</code>匹配为一个关键字，那就采用第一种结果。这也就是为什么我们在前面会默认为，<code>&lt;=</code>应该识别为单一的<code>&lt;=</code>标记，而不是<code>&lt;</code>后面跟了一个<code>=</code>。</p>
 <aside name="maximal">
-<p>Consider this nasty bit of C code:</p>
+<p>Consider this nasty bit of C code:
+看一下这段讨厌的C代码：</p>
 <div class="codehilite"><pre>---<span class="i">a</span>;
 </pre></div>
 <p>Is it valid? That depends on how the scanner splits the lexemes. What if the scanner
-sees it like this:</p>
+sees it like this:
+它有效吗？这取决于扫描器如何分割词素。如果扫描器看到的是:</p>
 <div class="codehilite"><pre>- --<span class="i">a</span>;
 </pre></div>
 <p>Then it could be parsed. But that would require the scanner to know about the
 grammatical structure of the surrounding code, which entangles things more than
-we want. Instead, the maximal munch rule says that it is <em>always</em> scanned like:</p>
+we want. Instead, the maximal munch rule says that it is <em>always</em> scanned like:
+那它就可以被解析。但是这需要扫描器知道代码前后的语法结构，这比我们需要的更复杂。相反，最大匹配原则表明，扫描结果<em>总是</em>:</p>
 <div class="codehilite"><pre>-- -<span class="i">a</span>;
 </pre></div>
 <p>It scans it that way even though doing so leads to a syntax error later in the
-parser.</p>
+parser.
+它就会这样扫描，尽管这样做会在解析器中导致后面的语法错误。</p>
 </aside>
 <p>Maximal munch means we can&rsquo;t easily detect a reserved word until we&rsquo;ve reached
 the end of what might instead be an identifier. After all, a reserved word <em>is</em>
@@ -1168,23 +1193,7 @@ identifier.
 grammar. Fire up the REPL and type in some valid and invalid code. Does it
 produce the tokens you expect? Try to come up with some interesting edge cases
 and see if it handles them as it should.
-至此，我们就有了一个完整的扫描器，可以扫描整个Lox词法语法。启动REPL，输入一些有效和无效的代码。它是否产生了你所期望的词法单元？试着想出一些有趣的边界情况，看看它是否能正确地处理它们。
-: 一直以来，这项工作被称为 &ldquo;扫描(scanning) &ldquo;和 &ldquo;词法分析(lexing)&ldquo;（ &ldquo;词法分析(lexical analysis)&ldquo;的简称）。早在计算机还像Winnebagos一样大，但内存比你的手表还小的时候，有些人就用 &ldquo;扫描 &ldquo;来指代从磁盘上读取原始源代码字符并在内存中缓冲的那段代码。然后，&ldquo;lexing &ldquo;是后续阶段，对字符做有用的操作。现在，将源文件读入内存是很平常的事情，因此在编译器中很少出现不同的阶段。 因此，这两个术语基本上可以互换。
-: <code>System.exit(64)</code>，对于退出代码，我使用UNIX sysexts .h头文件中定义的约定。这是我能找到的最接近标准的东西。
-: 交互式提示符也被称为REPL(发音像rebel，但替换为p)。它的名称来自于Lisp，实现Lisp非常简单，只需围绕几个内置函数进行循环:<code>(print (eval (read)))</code>从嵌套最内的调用向外执行，读取一行输入，求值，打印结果，然后循环并再次执行。
-: 说了这么多，对于这个解释器，我们要构建的只是基本框架。我很想谈谈交互式调试器、静态分析器和其它有趣的东西，但是篇幅实在有限。
-: 我第一次实现jlox的时候正是如此。最后我把它拆出去了，因为对于本书的最小解释器来说，这有点过度设计了。
-: 毕竟，字符串比较最终也会比对单个字符，这不正是扫描器的工作吗？
-: 一些标记实现将位置存储为两个数字：从源文件开始到词素开始的偏移量，以及词素的长度。扫描器无论如何都会知道这些数字，因此计算这些数字没有任何开销。通过回头查看源文件并计算前面的换行数，可以将偏移量转换为行和列位置。这听起来很慢，确实如此。然而，只有当你需要向用户实际显示行和列的时候，你才需要这样做。大多数标记从来不会出现在错误信息中。对于这些标记，你花在提前计算位置信息上的时间越少越好。
-: 我很痛心要对理论做这么多掩饰，尤其是当它像<a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">乔姆斯基谱系</a>和<a href="https://en.wikipedia.org/wiki/Finite-state_machine">有限状态机</a>那样有趣的时候。但说实话，其他的书比我写得好。<a href="https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools"><em>Compilers: Principles, Techniques, and Tools</em></a>(常被称为“龙书”)是最经典的参考书。
-: Lex是由Mike Lesk和Eric Schmidt创建的。是的，就是那个曾任谷歌执行董事长的Eric Schmidt。我并不是说编程语言是通往财富和名声的必经之路，但我们中至少已经有一位超级亿万富翁。
-: 我知道很多人认为静态导入是一种不好的代码风格，但这样我就不必在扫描器和解析器中到处写<code>TokenType</code>了。恕我直言，在一本书中，每个字符都很重要
-: 想知道这里为什么没有<code>/</code>吗？别担心，我们会解决的。
-: 技术上来说，<code>match()</code>方法也是在做前瞻。<code>advance()</code>和<code>peek()</code>是基本运算符，<code>match()</code>将它们结合起来。
-: 因为我们只会根据数字来判断数字字面量，这就意味着<code>-123</code>不是一个数字<em>字面量</em>。相反，<code>-123</code>是一个<em>表达式</em>，将<code>-</code>应用到数字字面量<code>123</code>。在实践中，结果是一样的，尽管它有一个有趣的边缘情况。试想一下，如果我们要在数字上添加方法调用：<code>print -123.abs();</code>，这里会输出<code>-123</code>，因为负号的优先级低于方法调用。我们可以通过将<code>-</code>作为数字字面值的一部分来解决这个问题。但接着考虑：<code>var n = 123; print -n.abs();</code>，结果仍然是<code>-123</code>，所以现在语言似乎不一致。无论你怎么做，有些情况最后都会变得很奇怪。
-: Java标准库中提供了<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Character.html#isDigit(char)">Character.isDigit()</a>，这似乎是个不错的选择。唉，该方法中还允许梵文数字、全宽数字和其他我们不想要的有趣的东西。
-: 我本可以让<code>peek()</code>方法接受一个参数来表示要前瞻的字符数，而不需要定义两个函数。但这样做就会允许前瞻任意长度的字符。提供两个函数可以让读者更清楚地知道，我们的扫描器最多只能向前看两个字符。
-: 看一下这段讨厌的C代码：<code>a;</code>，它有效吗？这取决于扫描器如何分割词素。如果扫描器看到的是<code>- --a;</code>，那它就可以被解析。但是这需要扫描器知道代码前后的语法结构，这比我们需要的更复杂。相反，最大匹配原则表明，扫描结果总是：<code>-- -a;</code>，它就会这样扫描，尽管这样做会在解析器中导致后面的语法错误。</p>
+至此，我们就有了一个完整的扫描器，可以扫描整个Lox词法语法。启动REPL，输入一些有效和无效的代码。它是否产生了你所期望的词法单元？试着想出一些有趣的边界情况，看看它是否能正确地处理它们。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -1304,7 +1313,8 @@ newlines should become meaningful while still nested inside brackets.</p>
 </li>
 </ul>
 <aside name="lambda">
-<p>And now you know why Python&rsquo;s <code>lambda</code> allows only a single expression body.</p>
+<p>And now you know why Python&rsquo;s <code>lambda</code> allows only a single expression body.
+现在你知道为什么 Python 的 <code>lambda</code> 只允许一个表达式体了吧。</p>
 </aside>
 <ul>
 <li>

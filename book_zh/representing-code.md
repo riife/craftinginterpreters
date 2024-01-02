@@ -1,12 +1,13 @@
 > To dwellers in a wood, almost every species of tree has its voice as well as
 > its feature.
+> 对于森林中的居民来说，几乎每一种树都有它的声音和特点。
 > <cite>Thomas Hardy, <em>Under the Greenwood Tree</em></cite>
-对于森林中的居民来说，几乎每一种树都有它的声音和特点。
 
 In the [last chapter][scanning], we took the raw source code as a string and
 transformed it into a slightly higher-level representation: a series of tokens.
 The parser we'll write in the [next chapter][parsing] takes those tokens and
 transforms them yet again, into an even richer, more complex representation.
+在[上一章][scanning]中，我们将原始源代码转换为字符串，并将其转换为稍高级的表示形式：一系列标记。我们将在[下一章][parsing]编写的解析器将这些标记再次转换为更丰富、更复杂的表示法。
 
 [scanning]: scanning.html
 [parsing]: parsing-expressions.html
@@ -22,6 +23,7 @@ metaprogramming.
 
 I was so worried about this being one of the most boring chapters in the book
 that I kept stuffing more fun ideas into it until I ran out of room.
+我非常担心这一章会成为这本书中最无聊的章节之一，所以我尽可能多地往里面塞入了很多有趣的想法。
 
 </aside>
 
@@ -62,12 +64,16 @@ from the leaves up to the root -- a *post-order* traversal:
 <aside name="tree-steps">
 
 A. Starting with the full tree, evaluate the bottom-most operation, `2 * 3`.
+从整棵树开始，评估最底层的运算，即 `2 * 3`。
 
 B. Now we can evaluate the `+`.
+现在我们可以评估 `+`。
 
 C. Next, the `-`.
+下一个是 `-`。
 
 D. The final answer.
+最后是结果。
 
 </aside>
 
@@ -83,6 +89,7 @@ nesting -- of the language.
 That's not to say a tree is the *only* possible representation of our code. In
 [Part III][], we'll generate bytecode, another representation that isn't as
 human friendly but is closer to the machine.
+这并不是说树是我们代码的唯一可能的表示方式。在[第三部分][Part III]，我们将生成字节码，这是另一种对人类不友好但更接近机器的表示方式。
 
 [part iii]: a-bytecode-virtual-machine.html
 
@@ -194,6 +201,7 @@ delectable flavors:
 Restricting heads to a single symbol is a defining feature of context-free
 grammars. More powerful formalisms like **[unrestricted grammars][]** allow a
 sequence of symbols in the head as well as in the body.
+将头部限制为单个符号是上下文无关语法的定义特性。更强大的形式，如[无限制文法][unrestricted grammars]，允许在头部和主体中都包含一系列的符号。
 
 [unrestricted grammars]: https://en.wikipedia.org/wiki/Unrestricted_grammar
 
@@ -239,6 +247,7 @@ words.
 Yes, we need to define a syntax to use for the rules that define our syntax.
 Should we specify that *metasyntax* too? What notation do we use for *it?* It's
 languages all the way down!
+是的，我们需要为定义语法的规则定义一个语法。我们也应该指定这个 *元语法*吗?我们用什么符号来表示 *它*?从上到下都是语言
 
 </aside>
 
@@ -249,6 +258,7 @@ Using that, here's a grammar for <span name="breakfast">breakfast</span> menus:
 
 Yes, I really am going to be using breakfast examples throughout this entire
 book. Sorry.
+是的，我真的会在整本书中使用早餐的例子。抱歉。
 
 </aside>
 
@@ -316,6 +326,7 @@ Tracking the number of required trailing parts is beyond the capabilities of a
 regular grammar. Regular grammars can express *repetition*, but they can't *keep
 count* of how many repetitions there are, which is necessary to ensure that the
 string has the same number of `with` and `on the side` parts.
+想象一下，我们在这里递归扩展几次`breakfast`规则，比如 "bacon with bacon with bacon with . . ." ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 "on the side "词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达*重复*，但它们无法*统计*有多少重复，但是这（种跟踪）对于确保字符串的`with`和`on the side`部分的数量相同是必要的。
 
 </aside>
 
@@ -391,6 +402,7 @@ allow a few other kinds of expressions in the body of a rule:
 This is how the Scheme programming language works. It has no built-in looping
 functionality at all. Instead, *all* repetition is expressed in terms of
 recursion.
+Scheme编程语言就是这样工作的。它根本没有内置的循环功能。相反，所有重复都用递归来表示。
 
 </aside>
 
@@ -516,6 +528,7 @@ But it's good enough for now.
 If you're so inclined, try using this grammar to generate a few expressions like
 we did with the breakfast grammar before. Do the resulting expressions look
 right to you? Can you make it generate anything wrong like `1 + / 3`?
+如果你愿意，可以尝试使用这个语法生成一些表达式，就像我们之前用早餐语法做的那样。生成的表达式你觉得对吗？你能让它生成任何错误的东西，比如`1 + / 3`吗？
 
 </aside>
 
@@ -533,6 +546,7 @@ name="ast">**syntax tree**</span>.
 In particular, we're defining an **abstract syntax tree** (**AST**). In a
 **parse tree**, every single grammar production becomes a node in the tree. An
 AST elides productions that aren't needed by later phases.
+特别是，我们要定义一个**抽象语法树（AST）**。在**解析树**中，每一个语法生成式都成为树中的一个节点。AST省略了后面阶段不需要的生成式。
 
 </aside>
 
@@ -558,6 +572,7 @@ Tokens aren't entirely homogeneous either. Tokens for literals store the value,
 but other kinds of lexemes don't need that state. I have seen scanners that use
 different classes for literals and other kinds of lexemes, but I figured I'd
 keep things simpler.
+词法单元也不是完全同质的。字面值的标记存储值，但其他类型的词素不需要该状态。我曾经见过一些扫描器使用不同的类来处理字面量和其他类型的词素，但我认为我应该把事情简单化。
 
 </aside>
 
@@ -589,6 +604,7 @@ abstract class Expr { // [expr]
 I avoid abbreviations in my code because they trip up a reader who doesn't know
 what they stand for. But in compilers I've looked at, "Expr" and "Stmt" are so
 ubiquitous that I may as well start getting you used to them now.
+我尽量避免在代码中使用缩写，因为这会让不知道其含义的读者犯错误。但是在我所研究过的编译器中，“Expr”和“Stmt”是如此普遍，我最好现在就开始让您习惯它们。
 
 </aside>
 
@@ -647,6 +663,7 @@ name="automate">automate</span>.
 <aside name="automate">
 
 Picture me doing an awkward robot dance when you read that. "AU-TO-MATE."
+当你读到这句话时，想象一下我在跳笨拙的机器人舞。"AU -TO-MATE"
 
 </aside>
 
@@ -665,9 +682,11 @@ This script is a tiny Java command-line app that generates a file named
 
 I got the idea of scripting the syntax tree classes from Jim Hugunin, creator of
 Jython and IronPython.
+我从Jython和IronPython的创建者Jim Hugunin那里得到了编写语法树类脚本的想法。
 
 An actual scripting language would be a better fit for this than Java, but I'm
 trying not to throw too many languages at you.
+真正的脚本语言比Java更适合这种情况，但我尽量不向您提供太多的语言。
 
 </aside>
 
@@ -712,6 +731,7 @@ Inside the base class, we define each subclass.
 This isn't the world's most elegant string manipulation code, but that's fine.
 It only runs on the exact set of class definitions we give it. Robustness ain't
 a priority.
+这不是世界上最优雅的字符串操作代码，但也很好。它只在我们给它的类定义集上运行。稳健性不是优先考虑的问题。
 
 </aside>
 
@@ -734,6 +754,7 @@ about to get even longer.
 
 [Appendix II][] contains the code generated by this script once we've finished
 implementing jlox and defined all of its syntax tree nodes.
+[附录II][Appendix II]包含了在我们完成jlox的实现并定义了它的所有语法树节点之后，这个脚本生成的代码。
 
 [appendix ii]: appendix-ii.html
 
@@ -778,6 +799,7 @@ which each subclass would then implement to interpret itself.
 This exact thing is literally called the ["Interpreter pattern"][interp] in
 *Design Patterns: Elements of Reusable Object-Oriented Software*, by Erich
 Gamma, et al.
+这就是Erich Gamma等人在《设计模式:可重用的面向对象软件的元素》一书中所谓的[解释器模式][interp]。
 
 [interp]: https://en.wikipedia.org/wiki/Interpreter_pattern
 
@@ -839,9 +861,11 @@ ML, short for "metalanguage" was created by Robin Milner and friends and forms
 one of the main branches in the great programming language family tree. Its
 children include SML, Caml, OCaml, Haskell, and F#. Even Scala, Rust, and Swift
 bear a strong resemblance.
+ML，是元语言(metalanguage)的简称，它是由Robin Milner和他的朋友们创建的，是伟大的编程语言家族的主要分支之一。它的子程序包括SML、Caml、OCaml、Haskell和F#。甚至Scala、Rust和Swift都有很强的相似性。
 
 Much like Lisp, it is one of those languages that is so full of good ideas that
 language designers today are still rediscovering them over forty years later.
+就像Lisp一样，它也是那种充满了好点子的语言之一，即使在40多年后的今天，语言设计者仍然在重新发现它们。
 
 </aside>
 
@@ -873,6 +897,7 @@ syntax tree nodes in a compiler.
 Languages with *multimethods*, like Common Lisp's CLOS, Dylan, and Julia do
 support adding both new types and operations easily. What they typically
 sacrifice is either static type checking, or separate compilation.
+诸如Common Lisp的CLOS，Dylan和Julia这样的支持*多方法*的语言都能轻松添加新类型和操作。它们通常牺牲的是静态类型检查或单独编译。
 
 </aside>
 
@@ -920,11 +945,13 @@ A beignet (pronounced "ben-yay", with equal emphasis on both syllables) is a
 deep-fried pastry in the same family as doughnuts. When the French colonized
 North America in the 1700s, they brought beignets with them. Today, in the US,
 they are most strongly associated with the cuisine of New Orleans.
+贝奈特饼（beignet, 发音为 "ben-yay"，两个音节重音相同）是一种油炸糕点，与甜甜圈同属一个家族。1700 年代，法国人在北美殖民时，带来了贝奈特饼。如今，在美国，贝奈特饼与新奥尔良的美食联系最为紧密。
 
 My preferred way to consume them is fresh out of the fryer at Café du Monde,
 piled high in powdered sugar, and washed down with a cup of café au lait while I
 watch tourists staggering around trying to shake off their hangover from the
 previous night's revelry.
+我最喜欢的吃法是在世界咖啡馆（Café du Monde）刚从油炸锅里取出贝奈特饼，裹上高高的糖粉，再配上一杯咖啡，一边看着游客们踉踉跄跄地走来走去，试图摆脱前一晚狂欢后的宿醉。
 
 </aside>
 
@@ -944,9 +971,11 @@ they rely on overloading to distinguish them. This leads some readers to think
 that the correct visit method is chosen *at runtime* based on its parameter
 type. That isn't the case. Unlike over*riding*, over*loading* is statically
 dispatched at compile time.
+在设计模式中，这两种方法的名字都叫`visit()`，很容易混淆，需要依赖重载来区分不同方法。这也导致一些读者认为正确的visit方法是在运行时根据其参数类型选择的。事实并非如此。与重写不同，重载是在编译时静态分派的。
 
 Using distinct names for each method makes the dispatch more obvious, and also
 shows you how to apply this pattern in languages that don't support overloading.
+为每个方法使用不同的名称使分派更加明显，同时还向您展示了如何在不支持重载的语言中应用此模式。
 
 </aside>
 
@@ -1005,6 +1034,7 @@ Another common refinement is an additional "context" parameter that is passed to
 the visit methods and then sent back through as a parameter to `accept()`. That
 lets operations take an additional parameter. The visitors we'll define in the
 book don't need that, so I omitted it.
+另一种常见的细化方法是将额外的 "上下文" 参数传递给访问方法，然后作为参数传递回 `accept()`。这样，操作就可以接受一个额外的参数。我们将在书中定义的访问者不需要这个参数，所以我省略了它。
 
 </aside>
 
@@ -1118,6 +1148,7 @@ tree.
 
 This recursion is also why people think the Visitor pattern itself has to do
 with trees.
+这种递归性也是人们认为游客模式本身与树有关的原因。
 
 </aside>
 
@@ -1142,24 +1173,6 @@ you), go ahead and add them yourself. It will come in handy in the next chapter
 when we start parsing Lox code into syntax trees. Or, if you don't care to
 maintain AstPrinter, feel free to delete it. We won't need it again.
 您可以继续删除这个方法，我们后面不再需要它了。另外，当我们添加新的语法树类型时，我不会在AstPrinter中展示它们对应的visit方法。如果你想这样做(并且希望Java编译器不会报错)，那么你可以自行添加这些方法。在下一章，当我们开始将Lox代码解析为语法树时，它将会派上用场。或者，如果你不想维护AstPrinter，可以随意删除它。我们不再需要它了。
-: 我非常担心这一章会成为这本书中最无聊的章节之一，所以我尽可能多地往里面塞入了很多有趣的想法。
-: 在美国，运算符优先级常缩写为**PEMDAS**，分别表示*P*arentheses(括号), *E*xponents(指数), *M*ultiplication/*D*ivision(乘除), *A*ddition/*S*ubtraction(加减)。为了便于记忆，将缩写词扩充为“**Please Excuse My Dear Aunt Sally**”。
-: 这并不是说树是我们代码的唯一可能的表示方式。在第三部分，我们将生成字节码，这是另一种对人类不友好但更接近机器的表示方式。
-: 将头部限制为单个符号是上下文无关语法的定义特性。更强大的形式，如[无限制文法](https://en.wikipedia.org/wiki/Unrestricted_grammar)，允许在头部和主体中都包含一系列的符号。
-: 是的，我们需要为定义语法的规则定义一个语法。我们也应该指定这个元语法吗?我们用什么符号来表示它?从上到下都是语言
-: 想象一下，我们在这里递归扩展几次`breakfast`规则，比如 "bacon with bacon with bacon with . . ." ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 "on the side "词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达*重复*，但它们无法*统计*有多少重复，但是这（种跟踪）对于确保字符串的`with`和`on the side`部分的数量相同是必要的。
-: Scheme编程语言就是这样工作的。它根本没有内置的循环功能。相反，所有重复都用递归来表示。
-: 如果你愿意，可以尝试使用这个语法生成一些表达式，就像我们之前用早餐语法做的那样。生成的表达式你觉得对吗？你能让它生成任何错误的东西，比如1+/3吗？
-: 特别是，我们要定义一个**抽象语法树（AST）**。在**解析树**中，每一个语法生成式都成为树中的一个节点。AST省略了后面阶段不需要的生成式。
-: 词法单元也不是完全同质的。字面值的标记存储值，但其他类型的词素不需要该状态。我曾经见过一些扫描器使用不同的类来处理字面量和其他类型的词素，但我认为我应该把事情简单化。
-: 我尽量避免在代码中使用缩写，因为这会让不知道其含义的读者犯错误。但是在我所研究过的编译器中，“Expr”和“Stmt”是如此普遍，我最好现在就开始让您习惯它们。
-: 我从Jython和IronPython的创建者Jim Hugunin那里得到了编写语法树类脚本的想法。真正的脚本语言比Java更适合这种情况，但我尽量不向您提供太多的语言。
-: 这不是世界上最优雅的字符串操作代码，但也很好。它只在我们给它的类定义集上运行。稳健性不是优先考虑的问题。
-: 附录II包含了在我们完成jlox的实现并定义了它的所有语法树节点之后，这个脚本生成的代码。
-: 这就是Erich Gamma等人在《设计模式:可重用的面向对象软件的元素》一书中所谓的[解释器模式](https://en.wikipedia.org/wiki/Interpreter_pattern)。
-: ML，是元语言(metalanguage)的简称，它是由Robin Milner和他的朋友们创建的，是伟大的编程语言家族的主要分支之一。它的子程序包括SML、Caml、OCaml、Haskell和F#。甚至Scala、Rust和Swift都有很强的相似性。就像Lisp一样，它也是那种充满了好点子的语言之一，即使在40多年后的今天，语言设计者仍然在重新发现它们。
-: 诸如Common Lisp的CLOS，Dylan和Julia这样的支持多方法(多分派)的语言都能轻松添加新类型和操作。它们通常牺牲的是静态类型检查或单独编译。
-: 在设计模式中，这两种方法的名字都叫`visit()`，很容易混淆，需要依赖重载来区分不同方法。这也导致一些读者认为正确的visit方法是在运行时根据其参数类型选择的。事实并非如此。与重写不同，重载是在编译时静态分派的。为每个方法使用不同的名称使分派更加明显，同时还向您展示了如何在不支持重载的语言中应用此模式。
 
 <div class="challenges">
 

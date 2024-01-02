@@ -5,7 +5,7 @@
 
 由于本人英语水平有限，大部分翻译内容取自 [craftinginterpreters_zh][] 或 ChatGPT 或者翻译网站，若发现有任何出错的地方，欢迎提交 PR 或者 [联系我][zhihu]。
 
-项目尚未开发完毕，正在持续更新中，预计 2023.08.14 号前全部完工。
+项目尚未开发完毕，正在持续更新中。
 ## Crafting Interpreters
 This is the repo used for the in-progress book "[Crafting Interpreters][]". It
 contains the Markdown text of the book, full implementations of both

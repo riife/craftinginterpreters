@@ -93,7 +93,8 @@
     <h1>求值表达式</h1>
 
     <blockquote>
-<p>You are my creator, but I am your master; Obey!</p>
+<p>You are my creator, but I am your master; Obey!
+你是我的创造者，但我是你的主人；服从！</p>
 <p><cite>Mary Shelley, <em>Frankenstein</em></cite></p>
 </blockquote>
 <p>If you want to properly set the mood for this chapter, try to conjure up a
@@ -103,7 +104,8 @@ chapter, our interpreter will take breath, open its eyes, and execute some code.
 如果你想为这一章适当地设定气氛，试着想象一场雷雨，那种在故事高潮时喜欢拉开百叶窗的漩涡式暴风雨。也许再加上几道闪电。在这一章中，我们的解释器将开始呼吸，睁开眼睛，并执行一些代码。</p>
 <p><span name="spooky"></span></p><img src="image/evaluating-expressions/lightning.png" alt="A bolt of lightning strikes a Victorian mansion. Spooky!" />
 <aside name="spooky">
-<p>A decrepit Victorian mansion is optional, but adds to the ambiance.</p>
+<p>A decrepit Victorian mansion is optional, but adds to the ambiance.
+一座破旧的维多利亚式豪宅可有可无，但却增添了不少情调。</p>
 </aside>
 <p>There are all manner of ways that language implementations make a computer do
 what the user&rsquo;s source code commands. They can compile it to machine code,
@@ -149,11 +151,13 @@ of different types at different points in time. What Java type might we use to
 represent that?
 在Lox中，值由字面量创建，由表达式计算，并存储在变量中。用户将其视作Lox对象，但它们是用编写解释器的底层语言实现的。这意味着要在Lox的动态类型和Java的静态类型之间架起桥梁。Lox中的变量可以存储任何（Lox）类型的值，甚至可以在不同时间存储不同类型的值。我们可以用什么Java类型来表示？</p>
 <aside name="value">
-<p>Here, I&rsquo;m using &ldquo;value&rdquo; and &ldquo;object&rdquo; pretty much interchangeably.</p>
+<p>Here, I&rsquo;m using &ldquo;value&rdquo; and &ldquo;object&rdquo; pretty much interchangeably.
+在这里，我基本可以互换地使用 &ldquo;值 &ldquo;和 &ldquo;对象&ldquo;。</p>
 <p>Later in the C interpreter we&rsquo;ll make a slight distinction between them, but
 that&rsquo;s mostly to have unique terms for two different corners of the
 implementation<span class="em">&mdash;</span>in-place versus heap-allocated data. From the user&rsquo;s
-perspective, the terms are synonymous.</p>
+perspective, the terms are synonymous.
+稍后在C解释器中，我们会对它们稍作区分，但这主要是针对实现的两个不同方面（本地数据和堆分配数据）使用不同的术语。从用户的角度来看，这些术语是同义的。</p>
 </aside>
 <p>Given a Java variable with that static type, we must also be able to determine
 which kind of value it holds at runtime. When the interpreter executes a <code>+</code>
@@ -213,7 +217,8 @@ are sufficient for the types we need right now.
 <aside name="jvm">
 <p>Another thing we need to do with values is manage their memory, and Java does
 that too. A handy object representation and a really nice garbage collector are
-the main reasons we&rsquo;re writing our first interpreter in Java.</p>
+the main reasons we&rsquo;re writing our first interpreter in Java.
+我们需要对值做的另一件事是管理它们的内存，Java也能做到这一点。方便的对象表示和非常好的垃圾收集器是我们用Java编写第一个解释器的主要原因。</p>
 </aside>
 <h2><a href="#evaluating-expressions--表达式求值" id="evaluating-expressions--表达式求值"><small>7&#8202;.&#8202;2</small>Evaluating Expressions  表达式求值</a></h2>
 <p>Next, we need blobs of code to implement the evaluation logic for each kind of
@@ -255,7 +260,8 @@ parser&rsquo;s domain. Values are an interpreter concept, part of the runtime&rs
 一个表达式树的叶子节点（构成其它表达式的语法原子单位）是字面量。字面符号几乎已经是值了，但两者的区别很重要。字面量是产生一个值的语法单元。字面量总是出现在用户的源代码中的某个地方。而很多值是通过计算产生的，并不存在于代码中的任何地方，这些都不是字面量。字面量来自于解析器领域，而值是一个解释器的概念，是运行时世界的一部分。</p>
 <aside name="leaf">
 <p>In the <a href="statements-and-state.html">next chapter</a>, when we implement variables, we&rsquo;ll add identifier
-expressions, which are also leaf nodes.</p>
+expressions, which are also leaf nodes.
+在<a href="statements-and-state.html">下一章</a>，当我们实现变量时，我们将添加标识符表达式，它也是叶子节点。</p>
 </aside>
 <p>So, much like we converted a literal <em>token</em> into a literal <em>syntax tree node</em>
 in the parser, now we convert the literal tree node into a runtime value. That
@@ -298,7 +304,8 @@ interpreter&rsquo;s visitor implementation:
 <p>Some parsers don&rsquo;t define tree nodes for parentheses. Instead, when parsing a
 parenthesized expression, they simply return the node for the inner expression.
 We do create a node for parentheses in Lox because we&rsquo;ll need it later to
-correctly handle the left-hand sides of assignment expressions.</p>
+correctly handle the left-hand sides of assignment expressions.
+有些解析器不为圆括号单独定义树节点。相应地，在解析带圆括号的表达式时，它们只返回内部表达式的节点。在Lox中，我们确实为圆括号创建了一个节点，因为稍后我们需要用它来正确处理赋值表达式的左值。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 in class <em>Interpreter</em></div>
@@ -342,7 +349,8 @@ a language dynamically typed right there.
 这里展示的是<code>-</code>，它会对子表达式的结构取负。子表达式结果必须是数字。因为我们在Java中无法<em>静态地</em>知道这一点，所以我们在执行操作之前先对其进行强制转换。这个类型转换是在运行时对<code>-</code>求值时发生的。这就是将语言动态类型化的核心所在。</p>
 <aside name="cast">
 <p>You&rsquo;re probably wondering what happens if the cast fails. Fear not, we&rsquo;ll get
-into that soon.</p>
+into that soon.
+你可能想知道，如果执行失败会发生什么。不用担心，我们很快就会说到这个问题。</p>
 </aside>
 <p>You can start to see how evaluation recursively traverses the tree. We can&rsquo;t
 evaluate the unary operator itself until after we evaluate its operand
@@ -379,12 +387,16 @@ arbitrary and gets <span name="weird">weird</span> in a few languages.
 <aside name="weird" class="bottom">
 <p>In JavaScript, strings are truthy, but empty strings are not. Arrays are truthy
 but empty arrays are<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>also truthy. The number <code>0</code> is falsey, but the <em>string</em>
-<code>"0"</code> is truthy.</p>
+<code>"0"</code> is truthy.
+在JavaScript中，字符串是True，但空字符串不是。数组是True，但空数组也是<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>True。数字<code>0</code>是False，但字符串 <code>"0"</code>是True。</p>
 <p>In Python, empty strings are falsey like in JS, but other empty sequences are
-falsey too.</p>
+falsey too.
+在 Python 中，空字符串是False，就像在 JS 中一样。但其他空序列也是False。</p>
 <p>In PHP, both the number <code>0</code> and the string <code>"0"</code> are falsey. Most other
-non-empty strings are truthy.</p>
-<p>Get all that?</p>
+non-empty strings are truthy.
+在PHP中，数字<code>0</code>和字符串 <code>"0"</code> 都是False的。大多数其他非空字符串是True。</p>
+<p>Get all that?
+明白了吗？</p>
 </aside>
 <p>Lox follows Ruby&rsquo;s simple rule: <code>false</code> and <code>nil</code> are falsey, and everything else
 is truthy. We implement that like so:
@@ -429,9 +441,11 @@ add after <em>evaluate</em>()</div>
 <p>Did you notice we pinned down a subtle corner of the language semantics here?
 In a binary expression, we evaluate the operands in left-to-right order. If
 those operands have side effects, that choice is user visible, so this isn&rsquo;t
-simply an implementation detail.</p>
+simply an implementation detail.
+你是否注意到我们在这里固定了语言语义的一个细微的点？在二元表达式中，我们按从左到右的顺序计算操作数。如果这些操作数有副作用，那这个选择应该是用户可见的，所以这不是一个简单的实现细节。</p>
 <p>If we want our two interpreters to be consistent (hint: we do), we&rsquo;ll need to
-make sure clox does the same thing.</p>
+make sure clox does the same thing.
+如果我们希望我们的两个解释器是一致的（提示：我们是一致的），我们就需要确保 clox 也是这样做的。</p>
 </aside>
 <p>I think you can figure out what&rsquo;s going on here. The main difference from the
 unary negation operator is that we have two operands to evaluate.
@@ -464,12 +478,14 @@ we need our object representation to support <code>instanceof</code>.
 <code>+</code>操作符也可以用来拼接两个字符串。为此，我们不能只是假设操作数是某种类型并将其强制转换，而是要动态地检查操作数类型并选择适当的操作。这就是为什么我们需要对象表示能支持<code>instanceof</code>。</p>
 <aside name="plus">
 <p>We could have defined an operator specifically for string concatenation. That&rsquo;s
-what Perl (<code>.</code>), Lua (<code>..</code>), Smalltalk (<code>,</code>), Haskell (<code>++</code>), and others do.</p>
+what Perl (<code>.</code>), Lua (<code>..</code>), Smalltalk (<code>,</code>), Haskell (<code>++</code>), and others do.
+我们本可以定义一个专门用于字符串连接的操作符。Perl (<code>.</code>)、Lua (<code>..</code>)、Smalltalk (<code>,</code>)、Haskell (<code>++</code>) 和其他语言都是这么做的。</p>
 <p>I thought it would make Lox a little more approachable to use the same syntax as
 Java, JavaScript, Python, and others. This means that the <code>+</code> operator is
 <strong>overloaded</strong> to support both adding numbers and concatenating strings. Even in
 languages that don&rsquo;t use <code>+</code> for strings, they still often overload it for
-adding both integers and floating-point numbers.</p>
+adding both integers and floating-point numbers.
+我认为使用与 Java、JavaScript、Python 和其他语言相同的语法会让 Lox 更容易接受。这意味着 <code>+</code> 运算符被 <strong>重载</strong>以支持数字加法和字符串连接。即使在不使用 <code>+</code> 来处理字符串的语言中，也经常会重载 <code>+</code> 来处理整数和浮点数的加法运算。</p>
 </aside>
 <p>Next up are the comparison operators.
 接下来是比较操作符。</p>
@@ -507,7 +523,8 @@ than <code>"three"</code>, but you can ask if it&rsquo;s <span name="equal"><em>
 it.
 与需要数字的比较运算符不同，等式运算符支持任何类型的操作数，甚至是混合类型。你不能问Lox 3是否<em>小于</em><code>"three"</code>，但你可以问它3是否等于<code>"three"</code>。</p>
 <aside name="equal">
-<p>Spoiler alert: it&rsquo;s not.</p>
+<p>Spoiler alert: it&rsquo;s not.
+剧透警告：不是这样的。</p>
 </aside>
 <p>Like truthiness, the equality logic is hoisted out into a separate method.
 与真假判断一样，相等判断也被提取到了单独的方法中。</p>
@@ -533,16 +550,19 @@ so that we don&rsquo;t throw a NullPointerException if we try to call <code>equa
 on Boolean, Double, and String have the behavior we want for Lox.
 幸运的是，这两者很相似。Lox不会在等式中做隐式转换，Java也不会。我们必须对 <code>nil</code>/<code>null</code> 做特殊处理，这样就不会在对<code>null</code>调用<code>equals()</code>方法时抛出NullPointerException。其它情况下，都是没问题的。Java中的<code>.equals()</code>方法对Boolean、Double和 String的处理都符合Lox的要求。</p>
 <aside name="nan">
-<p>What do you expect this to evaluate to:</p>
+<p>What do you expect this to evaluate to:
+你希望这个表达式的计算结果是什么？</p>
 <div class="codehilite"><pre>(<span class="n">0</span> / <span class="n">0</span>) == (<span class="n">0</span> / <span class="n">0</span>)
 </pre></div>
 <p>According to <a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</a>, which specifies the behavior of double-precision
 numbers, dividing a zero by zero gives you the special <strong>NaN</strong> (&ldquo;not a number&rdquo;)
-value. Strangely enough, NaN is <em>not</em> equal to itself.</p>
+value. Strangely enough, NaN is <em>not</em> equal to itself.
+根据<a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</a>（它规定了双精度数的行为），用0除以0会得到特殊的<strong>NaN</strong>（不是一个数字）值。奇怪的是，NaN<em>不</em>等于它自己。</p>
 <p>In Java, the <code>==</code> operator on primitive doubles preserves that behavior, but the
 <code>equals()</code> method on the Double class does not. Lox uses the latter, so doesn&rsquo;t
 follow IEEE. These kinds of subtle incompatibilities occupy a dismaying fraction
-of language implementers&rsquo; lives.</p>
+of language implementers&rsquo; lives.
+在Java中，基本类型double的<code>==</code>操作满足该规范，但是封装类Double的<code>equals()</code>方法不满足。Lox使用了后者，因此不遵循IEEE。这类微妙的不兼容问题占据了语言开发者生活中令人沮丧的一部分。</p>
 </aside>
 <p>And that&rsquo;s it! That&rsquo;s all the code we need to correctly interpret a valid Lox
 expression. But what about an <em>invalid</em> one? In particular, what happens when a
@@ -560,10 +580,12 @@ gracefully.
 <p>We could simply not detect or report a type error at all. This is what C does if
 you cast a pointer to some type that doesn&rsquo;t match the data that is actually
 being pointed to. C gains flexibility and speed by allowing that, but is
-also famously dangerous. Once you misinterpret bits in memory, all bets are off.</p>
+also famously dangerous. Once you misinterpret bits in memory, all bets are off.
+我们完全可以不检测或报告一个类型错误。当你在C语言中把一个指针转换到与实际被指向的数据不匹配的类型上，C语言就是这样做的。C语言通过允许这样的操作获得了灵活性和速度，但它也是出了名的危险。一旦你错误地解释了内存中的数据，一切都完了。</p>
 <p>Few modern languages accept unsafe operations like that. Instead, most are
 <strong>memory safe</strong> and ensure<span class="em">&mdash;</span>through a combination of static and runtime checks<span class="em">&mdash;</span>that a program can never incorrectly interpret the value stored in a piece of
-memory.</p>
+memory.
+很少有现代语言接受这样的不安全操作。相反，大多数语言都是<strong>内存安全</strong>的，并通过静态和运行时检查的组合，确保程序永远不会错误地解释存储在内存中的值。</p>
 </aside>
 <p>It&rsquo;s time for us to talk about <strong>runtime errors</strong>. I spilled a lot of ink in the
 previous chapters talking about error handling, but those were all <em>syntax</em> or
@@ -592,7 +614,8 @@ the <code>/</code> expression since it has no meaningful right operand. Likewise
 all the way out.
 你无法对&ldquo;muffin&rdquo;取负，所以我们需要在内部的<code>-</code>表达式中报告一个运行时错误。这又意味着我们无法计算<code>/</code>表达式，因为它的右操作数无意义，对于<code>*</code>表达式也是如此。因此，当某个表达式深处出现运行时错误时，我们需要一直跳出到最外层。</p>
 <aside name="muffin">
-<p>I don&rsquo;t know, man, <em>can</em> you negate a muffin?</p><img src="image/evaluating-expressions/muffin.png" alt="A muffin, negated." />
+<p>I don&rsquo;t know, man, <em>can</em> you negate a muffin?
+我不知道，伙计，你<em>能</em>对松饼取负吗？</p><img src="image/evaluating-expressions/muffin.png" alt="A muffin, negated." />
 </aside>
 <p>We could print a runtime error and then abort the process and exit the
 application entirely. That has a certain melodramatic flair. Sort of the
@@ -657,7 +680,8 @@ with static errors, this helps the user know where to fix their code.
 <p>I admit the name &ldquo;RuntimeError&rdquo; is confusing since Java defines a
 RuntimeException class. An annoying thing about building interpreters is your
 names often collide with ones already taken by the implementation language. Just
-wait until we support Lox classes.</p>
+wait until we support Lox classes.
+我承认 &ldquo;RuntimeError&rdquo; 这个名字令人困惑，因为Java定义了一个RuntimeException类。关于构建解释器的一件恼人的事情就是，您使用的名称经常与实现语言中已经使用的名称冲突。等我们支持Lox类就好了。</p>
 </aside>
 <p>We need similar checking for the binary operators. Since I promised you every
 single line of code needed to implement the interpreters, I&rsquo;ll run through them
@@ -750,12 +774,14 @@ add after <em>checkNumberOperand</em>()</div>
 <aside name="operand">
 <p>Another subtle semantic choice: We evaluate <em>both</em> operands before checking the
 type of <em>either</em>. Imagine we have a function <code>say()</code> that prints its argument
-then returns it. Using that, we write:</p>
+then returns it. Using that, we write:
+另一个微妙的语义选择：在检查两个操作数的类型之前，我们先计算这两个操作数。假设我们有一个函数<code>say()</code>，它会打印其介绍的参数，然后返回。 我们使用这个函数写出表达式：</p>
 <div class="codehilite"><pre><span class="i">say</span>(<span class="s">&quot;left&quot;</span>) - <span class="i">say</span>(<span class="s">&quot;right&quot;</span>);
 </pre></div>
 <p>Our interpreter prints &ldquo;left&rdquo; and &ldquo;right&rdquo; before reporting the runtime error. We
 could have instead specified that the left operand is checked before even
-evaluating the right.</p>
+evaluating the right.
+我们的解释器在报告运行时错误之前会先打印&ldquo;left&rdquo;和&ldquo;right&rdquo;。相对地，我们也可以指定在计算右操作数之前先检查左操作数。</p>
 </aside>
 <p>The last remaining operator, again the odd one out, is addition. Since <code>+</code> is
 overloaded for numbers and strings, it already has code to check the types. All
@@ -835,10 +861,12 @@ Lox即使对整数值也使用双精度数字。在这种情况下，打印时�
 <aside name="number">
 <p>Yet again, we take care of this edge case with numbers to ensure that jlox and
 clox work the same. Handling weird corners of the language like this will drive
-you crazy but is an important part of the job.</p>
+you crazy but is an important part of the job.
+同样，我们要处理这种数字的边界情况，以确保jlox和clox的工作方式相同。像这样处理语言的一个奇怪的边界可能会让你抓狂，但这是工作的一个重要部分。</p>
 <p>Users rely on these details<span class="em">&mdash;</span>either deliberately or inadvertently<span class="em">&mdash;</span>and if
 the implementations aren&rsquo;t consistent, their program will break when they run it
-on different interpreters.</p>
+on different interpreters.
+用户会有意或无意地依赖于这些细节，如果实现不一致，他们的程序在不同的解释器上运行时将会中断。</p>
 </aside>
 <h3><a href="#reporting-runtime-errors--报告运行时错误" id="reporting-runtime-errors--报告运行时错误"><small>7&#8202;.&#8202;4&#8202;.&#8202;1</small>Reporting runtime errors  报告运行时错误</a></h3>
 <p>If a runtime error is thrown while evaluating the expression, <code>interpret()</code>
@@ -893,7 +921,8 @@ calling process know. Not everyone cares about shell etiquette, but we do.
 <aside name="repl">
 <p>If the user is running the REPL, we don&rsquo;t care about tracking runtime errors.
 After they are reported, we simply loop around and let them input new code and
-keep going.</p>
+keep going.
+如果用户正在运行REPL，则我们不必跟踪运行时错误。在错误被报告之后，我们只需要循环，让用户输入新的代码，然后继续执行。</p>
 </aside>
 <h3><a href="#running-the-interpreter--运行解释器" id="running-the-interpreter--运行解释器"><small>7&#8202;.&#8202;4&#8202;.&#8202;2</small>Running the interpreter  运行解释器</a></h3>
 <p>Now that we have an interpreter, the Lox class can start using it.
@@ -932,19 +961,7 @@ execution. Congratulations, you now have your very own arithmetic calculator.
 and the Visitor pattern we&rsquo;ve set up today form the skeleton that later chapters
 will stuff full of interesting guts<span class="em">&mdash;</span>variables, functions, etc. Right now, the
 interpreter doesn&rsquo;t do very much, but it&rsquo;s alive!
-如您所见，这个解释器是非常简陋的。但是我们今天建立的解释器类和访问者模式构成了一个骨架，后面的章节中将填充入有趣的内容（变量，函数等）。现在，解释器的功能并不多，但它是活的!
-: 在这里，我基本可以互换地使用 &ldquo;值 &ldquo;和 &ldquo;对象&ldquo;。稍后在C解释器中，我们会对它们稍作区分，但这主要是针对实现的两个不同方面（本地数据和堆分配数据）使用不同的术语。从用户的角度来看，这些术语是同义的。
-: 我们需要对值做的另一件事是管理它们的内存，Java也能做到这一点。方便的对象表示和非常好的垃圾收集器是我们用Java编写第一个解释器的主要原因。
-: 在下一章，当我们实现变量时，我们将添加标识符表达式，它也是叶子节点。
-: 有些解析器不为圆括号单独定义树节点。相应地，在解析带圆括号的表达式时，它们只返回内部表达式的节点。在Lox中，我们确实为圆括号创建了一个节点，因为稍后我们需要用它来正确处理赋值表达式的左值。
-: 在JavaScript中，字符串是真的，但空字符串不是。数组是真的，但空数组是<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>也是真的。数字0是假的，但字符串 &ldquo;0 &ldquo;是真的。&lt;br/>在 Python 中，空字符串是假的，就像在 JS 中一样，但其他空序列也是假的。&lt;br/>在PHP中，数字0和字符串 &ldquo;0 &ldquo;都是假的。大多数其他非空字符串是真实的。明白了吗？
-: 你是否注意到我们在这里固定了语言语义的一个细微的点？在二元表达式中，我们按从左到右的顺序计算操作数。如果这些操作数有副作用，那这个选择应该是用户可见的，所以这不是一个简单的实现细节。如果我们希望我们的两个解释器是一致的（提示：我们是一致的），我们就需要确保 clox 也是这样做的。
-: 你希望这个表达式的计算结果是什么？<code>(0 / 0) == (0 / 0)</code>。根据<a href="https://en.wikipedia.org/wiki/IEEE_754">IEEE 754</a>（它规定了双精度数的行为），用0除以0会得到特殊的<strong>NaN</strong>（不是一个数字）值。奇怪的是，NaN不等于它自己。&lt;br/>在Java中，基本类型double的<code>==</code>操作满足该规范，但是封装类Double的<code>equals()</code>方法不满足。Lox使用了后者，因此不遵循IEEE。这类微妙的不兼容问题占据了语言开发者生活中令人沮丧的一部分。
-: 我们完全可以不检测或报告一个类型错误。当你在C语言中把一个指针转换到与实际被指向的数据不匹配的类型上，C语言就是这样做的。C语言通过允许这样的操作获得了灵活性和速度，但它也是出了名的危险。一旦你错误地解释了内存中的数据，一切都完了。很少有现代语言接受这样的不安全操作。相反，大多数语言都是<strong>内存安全</strong>的，并通过静态和运行时检查的组合，确保程序永远不会错误地解释存储在内存中的值。
-: 我承认 &ldquo;RuntimeError &ldquo;这个名字令人困惑，因为Java定义了一个RuntimeException类。关于构建解释器的一件恼人的事情就是，您使用的名称经常与实现语言中已经使用的名称冲突。等我们支持Lox类就好了。
-: 另一个微妙的语义选择：在检查两个操作数的类型之前，我们先计算这两个操作数。假设我们有一个函数<code>say()</code>，它会打印其介绍的参数，然后返回。 我们使用这个函数写出表达式：<code>say("left") - say("right");</code>。我们的解释器在报告运行时错误之前会先打印&ldquo;left&rdquo;和&ldquo;right&rdquo;。相对地，我们也可以指定在计算右操作数之前先检查左操作数。
-: 同样，我们要处理这种数字的边界情况，以确保jlox和clox的工作方式相同。像这样处理语言的一个奇怪的边界可能会让你抓狂，但这是工作的一个重要部分。用户会有意或无意地依赖于这些细节，如果实现不一致，他们的程序在不同的解释器上运行时将会中断。
-: 如果用户正在运行REPL，则我们不必跟踪运行时错误。在错误被报告之后，我们只需要循环，让用户输入新的代码，然后继续执行。</p><img src="image/evaluating-expressions/skeleton.png" alt="A skeleton waving hello." />
+如您所见，这个解释器是非常简陋的。但是我们今天建立的解释器类和访问者模式构成了一个骨架，后面的章节中将填充入有趣的内容（变量，函数等）。现在，解释器的功能并不多，但它是活的!</p><img src="image/evaluating-expressions/skeleton.png" alt="A skeleton waving hello." />
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>

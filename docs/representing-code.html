@@ -93,13 +93,14 @@
     <blockquote>
 <p>To dwellers in a wood, almost every species of tree has its voice as well as
 its feature.
-<cite>Thomas Hardy, <em>Under the Greenwood Tree</em></cite>
-对于森林中的居民来说，几乎每一种树都有它的声音和特点。</p>
+对于森林中的居民来说，几乎每一种树都有它的声音和特点。
+<cite>Thomas Hardy, <em>Under the Greenwood Tree</em></cite></p>
 </blockquote>
 <p>In the <a href="scanning.html">last chapter</a>, we took the raw source code as a string and
 transformed it into a slightly higher-level representation: a series of tokens.
 The parser we&rsquo;ll write in the <a href="parsing-expressions.html">next chapter</a> takes those tokens and
-transforms them yet again, into an even richer, more complex representation.</p>
+transforms them yet again, into an even richer, more complex representation.
+在<a href="scanning.html">上一章</a>中，我们将原始源代码转换为字符串，并将其转换为稍高级的表示形式：一系列标记。我们将在<a href="parsing-expressions.html">下一章</a>编写的解析器将这些标记再次转换为更丰富、更复杂的表示法。</p>
 <p>Before we can produce that representation, we need to define it. That&rsquo;s the
 subject of this chapter. Along the way, we&rsquo;ll <span name="boring">cover</span>
 some theory around formal grammars, feel the difference between functional and
@@ -108,7 +109,8 @@ metaprogramming.
 在我们能够输出这种表示形式之前，我们需要先对其进行定义。这就是本章的主题。在这一过程中，我们将围绕形式化语法进行一些理论讲解，感受函数式编程和面向对象编程的区别，会介绍几种设计模式，并进行一些元编程。</p>
 <aside name="boring">
 <p>I was so worried about this being one of the most boring chapters in the book
-that I kept stuffing more fun ideas into it until I ran out of room.</p>
+that I kept stuffing more fun ideas into it until I ran out of room.
+我非常担心这一章会成为这本书中最无聊的章节之一，所以我尽可能多地往里面塞入了很多有趣的想法。</p>
 </aside>
 <p>Before we do all that, let&rsquo;s focus on the main goal<span class="em">&mdash;</span>a representation for
 code. It should be simple for the parser to produce and easy for the
@@ -137,10 +139,14 @@ from the leaves up to the root<span class="em">&mdash;</span>a <em>post-order</e
 </ul>
 <p><span name="tree-steps"></span></p><img src="image/representing-code/tree-evaluate.png" alt="Evaluating the tree from the bottom up." />
 <aside name="tree-steps">
-<p>A. Starting with the full tree, evaluate the bottom-most operation, <code>2 * 3</code>.</p>
-<p>B. Now we can evaluate the <code>+</code>.</p>
-<p>C. Next, the <code>-</code>.</p>
-<p>D. The final answer.</p>
+<p>A. Starting with the full tree, evaluate the bottom-most operation, <code>2 * 3</code>.
+从整棵树开始，评估最底层的运算，即 <code>2 * 3</code>。</p>
+<p>B. Now we can evaluate the <code>+</code>.
+现在我们可以评估 <code>+</code>。</p>
+<p>C. Next, the <code>-</code>.
+下一个是 <code>-</code>。</p>
+<p>D. The final answer.
+最后是结果。</p>
 </aside>
 <p>If I gave you an arithmetic expression, you could draw one of these trees pretty
 easily. Given a tree, you can evaluate it without breaking a sweat. So it
@@ -151,7 +157,8 @@ nesting<span class="em">&mdash;</span>of the language.
 <aside name="only">
 <p>That&rsquo;s not to say a tree is the <em>only</em> possible representation of our code. In
 <a href="a-bytecode-virtual-machine.html">Part III</a>, we&rsquo;ll generate bytecode, another representation that isn&rsquo;t as
-human friendly but is closer to the machine.</p>
+human friendly but is closer to the machine.
+这并不是说树是我们代码的唯一可能的表示方式。在<a href="a-bytecode-virtual-machine.html">第三部分</a>，我们将生成字节码，这是另一种对人类不友好但更接近机器的表示方式。</p>
 </aside>
 <p>We need to get more precise about what that grammar is then. Like lexical
 grammars in the last chapter, there is a long ton of theory around syntactic
@@ -238,7 +245,8 @@ delectable flavors:
 <aside name="name">
 <p>Restricting heads to a single symbol is a defining feature of context-free
 grammars. More powerful formalisms like <strong><a href="https://en.wikipedia.org/wiki/Unrestricted_grammar">unrestricted grammars</a></strong> allow a
-sequence of symbols in the head as well as in the body.</p>
+sequence of symbols in the head as well as in the body.
+将头部限制为单个符号是上下文无关语法的定义特性。更强大的形式，如<a href="https://en.wikipedia.org/wiki/Unrestricted_grammar">无限制文法</a>，允许在头部和主体中都包含一系列的符号。</p>
 </aside>
 <ul>
 <li>
@@ -276,13 +284,15 @@ words.
 <aside name="turtles">
 <p>Yes, we need to define a syntax to use for the rules that define our syntax.
 Should we specify that <em>metasyntax</em> too? What notation do we use for <em>it?</em> It&rsquo;s
-languages all the way down!</p>
+languages all the way down!
+是的，我们需要为定义语法的规则定义一个语法。我们也应该指定这个 <em>元语法</em>吗?我们用什么符号来表示 <em>它</em>?从上到下都是语言</p>
 </aside>
 <p>Using that, here&rsquo;s a grammar for <span name="breakfast">breakfast</span> menus:
 以此为基础，下面是一个早餐菜单语法：</p>
 <aside name="breakfast">
 <p>Yes, I really am going to be using breakfast examples throughout this entire
-book. Sorry.</p>
+book. Sorry.
+是的，我真的会在整本书中使用早餐的例子。抱歉。</p>
 </aside>
 <div class="codehilite"><pre><span class="i">breakfast</span>  → <span class="i">protein</span> <span class="s">&quot;with&quot;</span> <span class="i">breakfast</span> <span class="s">&quot;on the side&quot;</span> ;
 <span class="i">breakfast</span>  → <span class="i">protein</span> ;
@@ -334,7 +344,8 @@ correctly, we need to add an <em>equal</em> number of &ldquo;on the side&rdquo; 
 Tracking the number of required trailing parts is beyond the capabilities of a
 regular grammar. Regular grammars can express <em>repetition</em>, but they can&rsquo;t <em>keep
 count</em> of how many repetitions there are, which is necessary to ensure that the
-string has the same number of <code>with</code> and <code>on the side</code> parts.</p>
+string has the same number of <code>with</code> and <code>on the side</code> parts.
+想象一下，我们在这里递归扩展几次<code>breakfast</code>规则，比如 &ldquo;bacon with bacon with bacon with . . .&rdquo; ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 &ldquo;on the side &ldquo;词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达<em>重复</em>，但它们无法<em>统计</em>有多少重复，但是这（种跟踪）对于确保字符串的<code>with</code>和<code>on the side</code>部分的数量相同是必要的。</p>
 </aside>
 <p>We could keep picking the first production for <code>breakfast</code> over and over again
 yielding all manner of breakfasts like &ldquo;bacon with sausage with scrambled eggs
@@ -419,7 +430,8 @@ more times.</p>
 <aside name="purity">
 <p>This is how the Scheme programming language works. It has no built-in looping
 functionality at all. Instead, <em>all</em> repetition is expressed in terms of
-recursion.</p>
+recursion.
+Scheme编程语言就是这样工作的。它根本没有内置的循环功能。相反，所有重复都用递归来表示。</p>
 </aside>
 <ul>
 <li>
@@ -544,7 +556,8 @@ But it&rsquo;s good enough for now.
 <aside name="play">
 <p>If you&rsquo;re so inclined, try using this grammar to generate a few expressions like
 we did with the breakfast grammar before. Do the resulting expressions look
-right to you? Can you make it generate anything wrong like <code>1 + / 3</code>?</p>
+right to you? Can you make it generate anything wrong like <code>1 + / 3</code>?
+如果你愿意，可以尝试使用这个语法生成一些表达式，就像我们之前用早餐语法做的那样。生成的表达式你觉得对吗？你能让它生成任何错误的东西，比如<code>1 + / 3</code>吗？</p>
 </aside>
 <h2><a href="#implementing-syntax-trees--实现语法树" id="implementing-syntax-trees--实现语法树"><small>5&#8202;.&#8202;2</small>Implementing Syntax Trees  实现语法树</a></h2>
 <p>Finally, we get to write some code. That little expression grammar is our
@@ -556,7 +569,8 @@ name="ast"><strong>syntax tree</strong></span>.
 <aside name="ast">
 <p>In particular, we&rsquo;re defining an <strong>abstract syntax tree</strong> (<strong>AST</strong>). In a
 <strong>parse tree</strong>, every single grammar production becomes a node in the tree. An
-AST elides productions that aren&rsquo;t needed by later phases.</p>
+AST elides productions that aren&rsquo;t needed by later phases.
+特别是，我们要定义一个<strong>抽象语法树（AST）</strong>。在<strong>解析树</strong>中，每一个语法生成式都成为树中的一个节点。AST省略了后面阶段不需要的生成式。</p>
 </aside>
 <p>Our scanner used a single Token class to represent all kinds of lexemes. To
 distinguish the different kinds<span class="em">&mdash;</span>think the number <code>123</code> versus the string
@@ -576,7 +590,8 @@ expression.
 <p>Tokens aren&rsquo;t entirely homogeneous either. Tokens for literals store the value,
 but other kinds of lexemes don&rsquo;t need that state. I have seen scanners that use
 different classes for literals and other kinds of lexemes, but I figured I&rsquo;d
-keep things simpler.</p>
+keep things simpler.
+词法单元也不是完全同质的。字面值的标记存储值，但其他类型的词素不需要该状态。我曾经见过一些扫描器使用不同的类来处理字面量和其他类型的词素，但我认为我应该把事情简单化。</p>
 </aside>
 <p>Something like this:
 类似这样：</p>
@@ -601,7 +616,8 @@ keep things simpler.</p>
 <aside name="expr">
 <p>I avoid abbreviations in my code because they trip up a reader who doesn&rsquo;t know
 what they stand for. But in compilers I&rsquo;ve looked at, &ldquo;Expr&rdquo; and &ldquo;Stmt&rdquo; are so
-ubiquitous that I may as well start getting you used to them now.</p>
+ubiquitous that I may as well start getting you used to them now.
+我尽量避免在代码中使用缩写，因为这会让不知道其含义的读者犯错误。但是在我所研究过的编译器中，“Expr”和“Stmt”是如此普遍，我最好现在就开始让您习惯它们。</p>
 </aside>
 <p>Expr is the base class that all expression classes inherit from. As you can see
 from <code>Binary</code>, the subclasses are nested inside of it. There&rsquo;s no technical need
@@ -646,7 +662,8 @@ We&rsquo;re smart language hackers, right? Let&rsquo;s <span
 name="automate">automate</span>.
 我不想浪费你的时间或我的墨水把这些都写下来。真的，每个子类的本质是什么?一个名称和一个字段列表而已。我们是聪明的语言黑客，对吧?我们把它自动化。</p>
 <aside name="automate">
-<p>Picture me doing an awkward robot dance when you read that. &ldquo;AU-TO-MATE.&rdquo;</p>
+<p>Picture me doing an awkward robot dance when you read that. &ldquo;AU-TO-MATE.&rdquo;
+当你读到这句话时，想象一下我在跳笨拙的机器人舞。&ldquo;AU -TO-MATE&rdquo;</p>
 </aside>
 <p>Instead of tediously handwriting each class definition, field declaration,
 constructor, and initializer, we&rsquo;ll hack together a <span
@@ -659,9 +676,11 @@ define a class with that name and state.
 该脚本是一个微型Java命令行应用程序，它生成一个名为“ Expr.java”的文件：</p>
 <aside name="python">
 <p>I got the idea of scripting the syntax tree classes from Jim Hugunin, creator of
-Jython and IronPython.</p>
+Jython and IronPython.
+我从Jython和IronPython的创建者Jim Hugunin那里得到了编写语法树类脚本的想法。</p>
 <p>An actual scripting language would be a better fit for this than Java, but I&rsquo;m
-trying not to throw too many languages at you.</p>
+trying not to throw too many languages at you.
+真正的脚本语言比Java更适合这种情况，但我尽量不向您提供太多的语言。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>tool/GenerateAst.java</em><br>
 create new file</div>
@@ -756,7 +775,8 @@ in <em>defineAst</em>()</div>
 <aside name="robust">
 <p>This isn&rsquo;t the world&rsquo;s most elegant string manipulation code, but that&rsquo;s fine.
 It only runs on the exact set of class definitions we give it. Robustness ain&rsquo;t
-a priority.</p>
+a priority.
+这不是世界上最优雅的字符串操作代码，但也很好。它只在我们给它的类定义集上运行。稳健性不是优先考虑的问题。</p>
 </aside>
 <p>That code, in turn, calls:
 这段代码依次调用：</p>
@@ -801,7 +821,8 @@ about to get even longer.
 现在编译并运行这个Java程序，它会生成一个新的“. Java”文件，其中包含几十行代码。那份文件还会变得更长。</p>
 <aside name="longer">
 <p><a href="appendix-ii.html">Appendix II</a> contains the code generated by this script once we&rsquo;ve finished
-implementing jlox and defined all of its syntax tree nodes.</p>
+implementing jlox and defined all of its syntax tree nodes.
+<a href="appendix-ii.html">附录II</a>包含了在我们完成jlox的实现并定义了它的所有语法树节点之后，这个脚本生成的代码。</p>
 </aside>
 <h2><a href="#working-with-trees--处理树结构" id="working-with-trees--处理树结构"><small>5&#8202;.&#8202;3</small>Working with Trees  处理树结构</a></h2>
 <p>Put on your imagination hat for a moment. Even though we aren&rsquo;t there yet,
@@ -833,7 +854,8 @@ which each subclass would then implement to interpret itself.
 <aside name="interpreter-pattern">
 <p>This exact thing is literally called the <a href="https://en.wikipedia.org/wiki/Interpreter_pattern">&ldquo;Interpreter pattern&rdquo;</a> in
 <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>, by Erich
-Gamma, et al.</p>
+Gamma, et al.
+这就是Erich Gamma等人在《设计模式:可重用的面向对象软件的元素》一书中所谓的<a href="https://en.wikipedia.org/wiki/Interpreter_pattern">解释器模式</a>。</p>
 </aside>
 <p>This works alright for tiny projects, but it scales poorly. Like I noted before,
 these tree classes span a few domains. At the very least, both the parser and
@@ -873,9 +895,11 @@ ML家族中的函数式范型反过来了。在这些语言中，没有带方法
 <p>ML, short for &ldquo;metalanguage&rdquo; was created by Robin Milner and friends and forms
 one of the main branches in the great programming language family tree. Its
 children include SML, Caml, OCaml, Haskell, and F#. Even Scala, Rust, and Swift
-bear a strong resemblance.</p>
+bear a strong resemblance.
+ML，是元语言(metalanguage)的简称，它是由Robin Milner和他的朋友们创建的，是伟大的编程语言家族的主要分支之一。它的子程序包括SML、Caml、OCaml、Haskell和F#。甚至Scala、Rust和Swift都有很强的相似性。</p>
 <p>Much like Lisp, it is one of those languages that is so full of good ideas that
-language designers today are still rediscovering them over forty years later.</p>
+language designers today are still rediscovering them over forty years later.
+就像Lisp一样，它也是那种充满了好点子的语言之一，即使在40多年后的今天，语言设计者仍然在重新发现它们。</p>
 </aside>
 <p>This makes it trivial to add new operations<span class="em">&mdash;</span>simply define another function
 that pattern matches on all of the types.
@@ -897,7 +921,8 @@ syntax tree nodes in a compiler.
 <aside name="multi">
 <p>Languages with <em>multimethods</em>, like Common Lisp&rsquo;s CLOS, Dylan, and Julia do
 support adding both new types and operations easily. What they typically
-sacrifice is either static type checking, or separate compilation.</p>
+sacrifice is either static type checking, or separate compilation.
+诸如Common Lisp的CLOS，Dylan和Julia这样的支持<em>多方法</em>的语言都能轻松添加新类型和操作。它们通常牺牲的是静态类型检查或单独编译。</p>
 </aside>
 <p>People have thrown all sorts of language features, design patterns, and
 programming tricks to try to knock that problem down but no perfect language has
@@ -934,11 +959,13 @@ name="beignet">beignets</span> and crullers.
 <p>A beignet (pronounced &ldquo;ben-yay&rdquo;, with equal emphasis on both syllables) is a
 deep-fried pastry in the same family as doughnuts. When the French colonized
 North America in the 1700s, they brought beignets with them. Today, in the US,
-they are most strongly associated with the cuisine of New Orleans.</p>
+they are most strongly associated with the cuisine of New Orleans.
+贝奈特饼（beignet, 发音为 &ldquo;ben-yay&rdquo;，两个音节重音相同）是一种油炸糕点，与甜甜圈同属一个家族。1700 年代，法国人在北美殖民时，带来了贝奈特饼。如今，在美国，贝奈特饼与新奥尔良的美食联系最为紧密。</p>
 <p>My preferred way to consume them is fresh out of the fryer at Café du Monde,
 piled high in powdered sugar, and washed down with a cup of café au lait while I
 watch tourists staggering around trying to shake off their hangover from the
-previous night&rsquo;s revelry.</p>
+previous night&rsquo;s revelry.
+我最喜欢的吃法是在世界咖啡馆（Café du Monde）刚从油炸锅里取出贝奈特饼，裹上高高的糖粉，再配上一杯咖啡，一边看着游客们踉踉跄跄地走来走去，试图摆脱前一晚狂欢后的宿醉。</p>
 </aside>
 <div class="codehilite"><pre>  <span class="k">abstract</span> <span class="k">class</span> <span class="t">Pastry</span> {
   }
@@ -965,9 +992,11 @@ time. Here&rsquo;s how we do it. First, we define a separate interface.
 they rely on overloading to distinguish them. This leads some readers to think
 that the correct visit method is chosen <em>at runtime</em> based on its parameter
 type. That isn&rsquo;t the case. Unlike over<em>riding</em>, over<em>loading</em> is statically
-dispatched at compile time.</p>
+dispatched at compile time.
+在设计模式中，这两种方法的名字都叫<code>visit()</code>，很容易混淆，需要依赖重载来区分不同方法。这也导致一些读者认为正确的visit方法是在运行时根据其参数类型选择的。事实并非如此。与重写不同，重载是在编译时静态分派的。</p>
 <p>Using distinct names for each method makes the dispatch more obvious, and also
-shows you how to apply this pattern in languages that don&rsquo;t support overloading.</p>
+shows you how to apply this pattern in languages that don&rsquo;t support overloading.
+为每个方法使用不同的名称使分派更加明显，同时还向您展示了如何在不支持重载的语言中应用此模式。</p>
 </aside>
 <p>Each operation that can be performed on pastries is a new class that implements
 that interface. It has a concrete method for each type of pastry. That keeps the
@@ -1026,7 +1055,8 @@ type, so we&rsquo;ll use generics to let each implementation fill in a return ty
 <p>Another common refinement is an additional &ldquo;context&rdquo; parameter that is passed to
 the visit methods and then sent back through as a parameter to <code>accept()</code>. That
 lets operations take an additional parameter. The visitors we&rsquo;ll define in the
-book don&rsquo;t need that, so I omitted it.</p>
+book don&rsquo;t need that, so I omitted it.
+另一种常见的细化方法是将额外的 &ldquo;上下文&rdquo; 参数传递给访问方法，然后作为参数传递回 <code>accept()</code>。这样，操作就可以接受一个额外的参数。我们将在书中定义的访问者不需要这个参数，所以我省略了它。</p>
 </aside>
 <p>First, we define the visitor interface. Again, we nest it inside the base class
 so that we can keep everything in one file.
@@ -1216,7 +1246,8 @@ tree.
 请注意，它在每个子表达式上调用<code>accept()</code>并将自身传递进去。 这是递归步骤，可让我们打印整棵树。</p>
 <aside name="tree">
 <p>This recursion is also why people think the Visitor pattern itself has to do
-with trees.</p>
+with trees.
+这种递归性也是人们认为游客模式本身与树有关的原因。</p>
 </aside>
 <p>We don&rsquo;t have a parser yet, so it&rsquo;s hard to see this in action. For now, we&rsquo;ll
 hack together a little <code>main()</code> method that manually instantiates a tree and
@@ -1248,25 +1279,7 @@ in AstPrinter. If you want to (and you want the Java compiler to not yell at
 you), go ahead and add them yourself. It will come in handy in the next chapter
 when we start parsing Lox code into syntax trees. Or, if you don&rsquo;t care to
 maintain AstPrinter, feel free to delete it. We won&rsquo;t need it again.
-您可以继续删除这个方法，我们后面不再需要它了。另外，当我们添加新的语法树类型时，我不会在AstPrinter中展示它们对应的visit方法。如果你想这样做(并且希望Java编译器不会报错)，那么你可以自行添加这些方法。在下一章，当我们开始将Lox代码解析为语法树时，它将会派上用场。或者，如果你不想维护AstPrinter，可以随意删除它。我们不再需要它了。
-: 我非常担心这一章会成为这本书中最无聊的章节之一，所以我尽可能多地往里面塞入了很多有趣的想法。
-: 在美国，运算符优先级常缩写为<strong>PEMDAS</strong>，分别表示<em>P</em>arentheses(括号), <em>E</em>xponents(指数), <em>M</em>ultiplication/<em>D</em>ivision(乘除), <em>A</em>ddition/<em>S</em>ubtraction(加减)。为了便于记忆，将缩写词扩充为“<strong>Please Excuse My Dear Aunt Sally</strong>”。
-: 这并不是说树是我们代码的唯一可能的表示方式。在第三部分，我们将生成字节码，这是另一种对人类不友好但更接近机器的表示方式。
-: 将头部限制为单个符号是上下文无关语法的定义特性。更强大的形式，如<a href="https://en.wikipedia.org/wiki/Unrestricted_grammar">无限制文法</a>，允许在头部和主体中都包含一系列的符号。
-: 是的，我们需要为定义语法的规则定义一个语法。我们也应该指定这个元语法吗?我们用什么符号来表示它?从上到下都是语言
-: 想象一下，我们在这里递归扩展几次<code>breakfast</code>规则，比如 &ldquo;bacon with bacon with bacon with . . .&rdquo; ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 &ldquo;on the side &ldquo;词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达<em>重复</em>，但它们无法<em>统计</em>有多少重复，但是这（种跟踪）对于确保字符串的<code>with</code>和<code>on the side</code>部分的数量相同是必要的。
-: Scheme编程语言就是这样工作的。它根本没有内置的循环功能。相反，所有重复都用递归来表示。
-: 如果你愿意，可以尝试使用这个语法生成一些表达式，就像我们之前用早餐语法做的那样。生成的表达式你觉得对吗？你能让它生成任何错误的东西，比如1+/3吗？
-: 特别是，我们要定义一个<strong>抽象语法树（AST）</strong>。在<strong>解析树</strong>中，每一个语法生成式都成为树中的一个节点。AST省略了后面阶段不需要的生成式。
-: 词法单元也不是完全同质的。字面值的标记存储值，但其他类型的词素不需要该状态。我曾经见过一些扫描器使用不同的类来处理字面量和其他类型的词素，但我认为我应该把事情简单化。
-: 我尽量避免在代码中使用缩写，因为这会让不知道其含义的读者犯错误。但是在我所研究过的编译器中，“Expr”和“Stmt”是如此普遍，我最好现在就开始让您习惯它们。
-: 我从Jython和IronPython的创建者Jim Hugunin那里得到了编写语法树类脚本的想法。真正的脚本语言比Java更适合这种情况，但我尽量不向您提供太多的语言。
-: 这不是世界上最优雅的字符串操作代码，但也很好。它只在我们给它的类定义集上运行。稳健性不是优先考虑的问题。
-: 附录II包含了在我们完成jlox的实现并定义了它的所有语法树节点之后，这个脚本生成的代码。
-: 这就是Erich Gamma等人在《设计模式:可重用的面向对象软件的元素》一书中所谓的<a href="https://en.wikipedia.org/wiki/Interpreter_pattern">解释器模式</a>。
-: ML，是元语言(metalanguage)的简称，它是由Robin Milner和他的朋友们创建的，是伟大的编程语言家族的主要分支之一。它的子程序包括SML、Caml、OCaml、Haskell和F#。甚至Scala、Rust和Swift都有很强的相似性。就像Lisp一样，它也是那种充满了好点子的语言之一，即使在40多年后的今天，语言设计者仍然在重新发现它们。
-: 诸如Common Lisp的CLOS，Dylan和Julia这样的支持多方法(多分派)的语言都能轻松添加新类型和操作。它们通常牺牲的是静态类型检查或单独编译。
-: 在设计模式中，这两种方法的名字都叫<code>visit()</code>，很容易混淆，需要依赖重载来区分不同方法。这也导致一些读者认为正确的visit方法是在运行时根据其参数类型选择的。事实并非如此。与重写不同，重载是在编译时静态分派的。为每个方法使用不同的名称使分派更加明显，同时还向您展示了如何在不支持重载的语言中应用此模式。</p>
+您可以继续删除这个方法，我们后面不再需要它了。另外，当我们添加新的语法树类型时，我不会在AstPrinter中展示它们对应的visit方法。如果你想这样做(并且希望Java编译器不会报错)，那么你可以自行添加这些方法。在下一章，当我们开始将Lox代码解析为语法树时，它将会派上用场。或者，如果你不想维护AstPrinter，可以随意删除它。我们不再需要它了。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>

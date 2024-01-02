@@ -1,7 +1,6 @@
 > What nicer thing can you do for somebody than make them breakfast?
->
+> 还有什么能比给别人做顿早餐，更能体现你对他的好呢？
 > <cite>Anthony Bourdain</cite>
-还有什么能比给别人做顿早餐，更能体现你对他的好呢？
 
 We'll spend the rest of this book illuminating every dark and sundry corner of
 the Lox language, but it seems cruel to have you immediately start grinding out
@@ -20,8 +19,10 @@ for those later.
 
 A tutorial isn't very fun if you can't try the code out yourself. Alas, you
 don't have a Lox interpreter yet, since you haven't built one!
+如果你不亲自运行代码，那教程就毫无意义。唉，你还没有Lox解释器，因为你还没有建立一个!
 
 Fear not. You can use [mine][repo].
+不要害怕。你可以用[我的][repo]。
 
 [repo]: https://github.com/munificent/craftinginterpreters
 
@@ -36,6 +37,7 @@ Here's your very first taste of <span name="salmon">Lox</span>:
 
 Your first taste of Lox, the language, that is. I don't know if you've ever had
 the cured, cold-smoked salmon before. If not, give it a try too.
+您对熏鲑鱼的第一次体验，也就是 Lox。我不知道您以前是否吃过这种冷熏腌制的三文鱼。如果没有，也不妨一试。
 
 </aside>
 
@@ -62,10 +64,12 @@ grammar problems are around types. Dennis Ritchie had this idea called
 "[declaration reflects use][use]", where variable declarations mirror the
 operations you would have to perform on the variable to get to a value of the
 base type. Clever idea, but I don't think it worked out great in practice.
+我肯定有偏见，但我认为Lox的语法很干净。 C语言最严重的语法问题就是关于类型的。丹尼斯·里奇（Dennis Ritchie）有个想法叫“声明反映[使用][use]”，其中变量声明反映了为获得基本类型的值而必须对变量执行的操作。这主意不错，但是我认为实践中效果不太好。Lox没有静态类型，所以我们避免了这一点。
 
 [use]: http://softwareengineering.stackexchange.com/questions/117024/why-was-the-c-syntax-for-arrays-pointers-and-functions-designed-this-way
 
 Lox doesn't have static types, so we avoid that.
+Lox 没有静态类型，因此我们要避免这种情况。
 
 </aside>
 
@@ -100,13 +104,16 @@ applications, it's hard to think of it as a "little scripting language". But
 Brendan Eich hacked the first JS interpreter into Netscape Navigator in *ten
 days* to make buttons animate on web pages. JavaScript has grown up since then,
 but it was once a cute little language.
+现在，JavaScript已席卷全球，并已用于构建大量应用程序，很难将其视为“小脚本语言”。但是Brendan Eich曾在十天内将第一个JS解释器嵌入了Netscape Navigator，以使网页上的按钮具有动画效果。 从那时起，JavaScript逐渐发展起来，但是它曾经是一种可爱的小语言。
 
 Because Eich slapped JS together with roughly the same raw materials and time as
 an episode of MacGyver, it has some weird semantic corners where the duct tape
 and paper clips show through. Things like variable hoisting, dynamically bound
 `this`, holes in arrays, and implicit conversions.
+因为Eich大概只用了一集MacGyver的时间把JS糅合在一起，所以它有一些奇怪的语义，会有明显的拼凑痕迹。比如变量提升、动态绑定`this`、数组中的漏洞和隐式转换等。
 
 I had the luxury of taking my time on Lox, so it should be a little cleaner.
+我有幸在Lox上多花了点时间，所以它应该更干净一些。
 
 </aside>
 
@@ -132,6 +139,7 @@ executing bits of code sooner if we defer our type checking to runtime.
 
 After all, the two languages we'll be using to *implement* Lox are both
 statically typed.
+毕竟，我们用于实现Lox的两种语言都是静态类型的。
 
 </aside>
 
@@ -159,8 +167,10 @@ In practice, ref counting and tracing are more ends of a continuum than
 opposing sides. Most ref counting systems end up doing some tracing to handle
 cycles, and the write barriers of a generational collector look a bit like
 retain calls if you squint.
+在实践中，引用计数和追踪更像是连续体的两端，而不是对立的双方。大多数引用计数系统最终会执行一些跟踪来处理循环，如果你仔细观察的话，分代收集器的写屏障看起来有点像保留调用。
 
 For lots more on this, see "[A Unified Theory of Garbage Collection][gc]" (PDF).
+有关这方面的更多信息，请参阅"[垃圾收集统一理论][gc]" (PDF)
 
 [gc]: https://researcher.watson.ibm.com/researcher/files/us-bacon/Bacon04Unified.pdf
 
@@ -197,6 +207,7 @@ data types. There are only a few:
     century before digital computers turned his algebra into electricity. I
     wonder what he'd think to see his name all over billions of lines of Java
     code.
+    布尔变量是Lox中唯一以人名George Boole命名的数据类型，这也是为什么 "Boolean" 是大写的原因。他死于1864年，比数字计算机把他的代数变成电子信息的时间早了近一个世纪。我很好奇他看到自己的名字出现在数十亿行Java代码中时会怎么想。
 
     </aside>
 
@@ -240,6 +251,7 @@ data types. There are only a few:
     Even that word "character" is a trickster. Is it ASCII? Unicode? A
     code point or a "grapheme cluster"? How are characters encoded? Is each
     character a fixed size, or can they vary?
+    就连那个 "character "一词也是个骗局。是ASCII码？是Unicode？一个码点，还是一个 "字词群"？字符是如何编码的？每个字符是固定的大小，还是可以变化的？
 
     </aside>
 
@@ -287,6 +299,7 @@ operator comes before the operands, and **postfix** where it comes after).
 There are some operators that have more than two operands and the operators are
 interleaved between them. The only one in wide usage is the "conditional" or
 "ternary" operator of C and friends:
+有些操作符有两个以上的操作数，并且操作符与操作数之间是交错的。唯一广泛使用的是C及其相近语言中的“条件”或“三元”操作符
 
 ```c
 condition ? thenArm : elseArm;
@@ -294,6 +307,7 @@ condition ? thenArm : elseArm;
 
 Some call these **mixfix** operators. A few languages let you define your own
 operators and control how they are positioned -- their "fixity".
+有些人称这些为**mixfix**操作符。有一些语言允许您定义自己的操作符，并控制它们的定位方式——它们的 "固定性"。
 
 </aside>
 
@@ -384,9 +398,11 @@ true or false;  // true.
 I used `and` and `or` for these instead of `&&` and `||` because Lox doesn't use
 `&` and `|` for bitwise operators. It felt weird to introduce the
 double-character forms without the single-character ones.
+我使用了 `and` 和 `or` ，而不是 `&&` 和 `||`，因为Lox不使用 `&` 和 `|` 作为位元操作符。不存在单字符形式的情况下引入双字符形式感觉很奇怪。
 
 I also kind of like using words for these since they are really control flow
 structures and not simple operators.
+我还有点喜欢用单词来表示运算，也是因为它们实际上是控制流结构，而不是简单的操作符。
 
 </aside>
 
@@ -444,6 +460,7 @@ Baking `print` into the language instead of just making it a core library
 function is a hack. But it's a *useful* hack for us: it means our in-progress
 interpreter can start producing output before we've implemented all of the
 machinery required to define functions, look them up by name, and call them.
+将 `print` 融入到语言中，而不是仅仅将其作为一个核心库函数，这是一种入侵。但对我们来说，这是一个很有用的“入侵”：这意味着在我们实现所有定义函数、按名称查找和调用函数所需的机制之前，我们的解释器可以就开始产生输出。
 
 </aside>
 
@@ -481,6 +498,7 @@ name="omit">omit</span> the initializer, the variable's value defaults to `nil`.
 This is one of those cases where not having `nil` and forcing every variable to
 be initialized to some value would be more annoying than dealing with `nil`
 itself.
+这是一种情况，没有`nil`并强制每个变量初始化为某个值，会比处理`nil`本身更麻烦。
 
 </aside>
 
@@ -505,6 +523,7 @@ print breakfast; // "beignets".
 
 Can you tell that I tend to work on this book in the morning before I've had
 anything to eat?
+你能看出我倾向于在早上吃东西之前写这本书吗？
 
 </aside>
 
@@ -526,10 +545,12 @@ from C.
 We already have `and` and `or` for branching, and we *could* use recursion to
 repeat code, so that's theoretically sufficient. It would be pretty awkward to
 program that way in an imperative-styled language, though.
+我们已经有`and`和`or`可以进行分支处理，我们可以用递归来重复代码，所以理论上这就足够了。但是，在命令式语言中这样编程会很尴尬。
 
 Scheme, on the other hand, has no built-in looping constructs. It *does* rely on
 recursion for repetition. Smalltalk has no built-in branching constructs, and
 relies on dynamic dispatch for selectively executing code.
+另一方面，Scheme没有内置的循环结构。它确实依赖递归进行重复执行代码。Smalltalk没有内置的分支结构，并且依赖动态分派来选择性地执行代码。
 
 </aside>
 
@@ -561,6 +582,7 @@ while (a < 10) {
 I left `do while` loops out of Lox because they aren't that common and wouldn't
 teach you anything that you won't already learn from `while`. Go ahead and add
 it to your implementation if it makes you happy. It's your party.
+我没有在Lox中使用`do-while`循环，因为它们并不常见，相比`while`循环也没有多余的内涵。如果你高兴的话，就把它加入到你的实现中去吧。你自己做主吧。
 
 </aside>
 
@@ -587,6 +609,7 @@ chapters. A `for-in` loop needs some sort of dynamic dispatch in the iterator
 protocol to handle different kinds of sequences, but we don't get that until
 after we're done with control flow. We could circle back and add `for-in` loops
 later, but I didn't think doing so would teach you anything super interesting.
+这是我做出的让步，因为本书中的实现是按章节划分的。`for-in`循环需要迭代器协议中的某种动态分派来处理不同类型的序列，但我们完成控制流之后才能实现这种分派。我们可以回过头来，添加for-in循环，但我认为这样做不会教给你什么超级有趣的东西。
 
 </aside>
 
@@ -618,6 +641,7 @@ that with <span name="fun">`fun`</span>.
 
 I've seen languages that use `fn`, `fun`, `func`, and `function`. I'm still
 hoping to discover a `funct`, `functi`, or `functio` somewhere.
+我见过使用 `fn`、`fun`、`func` 和 `function` 的语言。我仍然希望能在某个地方发现 `funct`、`functi` 或 `functio`。
 
 </aside>
 
@@ -647,9 +671,11 @@ distinction between *declaring* a function and *defining* it. A declaration
 binds the function's type to its name so that calls can be type-checked but does
 not provide a body. A definition declares the function and also fills in the
 body so that the function can be compiled.
+说到术语，一些静态类型的语言，比如C语言，会对函数的 *声明* 和 *定义* 进行区分。声明是将函数的类型和它的名字绑定在一起，所以调用时可以进行类型检查，但不提供函数体。定义也会填入函数的主体，这样就可以进行编译。
 
 Since Lox is dynamically typed, this distinction isn't meaningful. A function
 declaration fully specifies the function including its body.
+由于Lox是动态类型的，所以这种区分没有意义。一个函数声明完全指定了函数，包括它的主体。
 
 </aside>
 
@@ -670,6 +696,7 @@ If execution reaches the end of the block without hitting a `return`, it
 <aside name="sneaky">
 
 See, I told you `nil` would sneak in when we weren't looking.
+看吧，我就说`nil`会趁我们不注意的时候溜进来。
 
 </aside>
 
@@ -742,6 +769,7 @@ happen to close over any variables.
 Peter J. Landin coined the term "closure". Yes, he invented damn near half the
 terms in programming languages. Most of them came out of one incredible paper,
 "[The Next 700 Programming Languages][svh]".
+Peter J. Landin创造了这个词。没错，几乎一半的编程语言术语都是他创造的。它们中的大部分都出自一篇不可思议的论文 "[The Next 700 Programming Languages][svh]"。
 
 [svh]: https://homepages.inf.ed.ac.uk/wadler/papers/papers-we-love/landin-next-700.pdf
 
@@ -749,6 +777,7 @@ In order to implement these kind of functions, you need to create a data
 structure that bundles together the function's code and the surrounding
 variables it needs. He called this a "closure" because it *closes over* and
 holds on to the variables it needs.
+为了实现这类函数，您需要创建一个数据结构，将函数代码和它所需要的周围变量绑定在一起。他称它为“闭包”，是因为函数 *闭合* 并保留了它需要的变量。
 
 </aside>
 
@@ -837,6 +866,7 @@ compile time based on the *static* type of the instance, giving you **static
 dispatch**. In contrast, **dynamic dispatch** looks up the class of the actual
 instance object at runtime. This is how virtual methods in statically typed
 languages and all methods in a dynamically typed language like Lox work.
+在 C++ 这样的静态类型语言中，方法查找通常是在编译时根据实例的*静态*类型进行的，这样就可以实现**静态调度**。相比之下，**动态调度**则是在运行时查找实际实例对象的类。这就是静态类型语言中的虚拟方法和 Lox 等动态类型语言中的所有方法的工作原理。
 
 </aside>
 
@@ -854,6 +884,7 @@ In practice the line between class-based and prototype-based languages blurs.
 JavaScript's "constructor function" notion [pushes you pretty hard][js new]
 towards defining class-like objects. Meanwhile, class-based Ruby is perfectly
 happy to let you attach methods to individual instances.
+实际上，基于类的语言和基于原型的语言之间的界限变得模糊了。JavaScript的“构造函数”概念[使您很难][js new]定义类对象。 同时，基于类的Ruby非常乐意让您将方法附加到单个实例中。
 
 [js new]: http://gameprogrammingpatterns.com/prototype.html#what-about-javascript
 
@@ -884,6 +915,7 @@ classes right in.
 Larry Wall, Perl's inventor/prophet calls this the "[waterbed theory][]". Some
 complexity is essential and cannot be eliminated. If you push it down in one
 place, it swells up in another.
+Perl的发明家/先知Larry Wall将其称为“[水床理论][waterbed theory]”。 某些复杂性是必不可少的，无法消除。 如果在某个位置将其向下推，则在另一个位置会出现膨胀。原型语言并没有消除类的复杂性，因为它们确实让用户通过构建近似类的元编程库来承担这种复杂性。
 
 [waterbed theory]: http://wiki.c2.com/?WaterbedTheory
 
@@ -922,6 +954,7 @@ Lox.
 <aside name="method">
 
 They are still just as fun, though.
+不过，它们还是一样有趣。
 
 </aside>
 
@@ -1018,12 +1051,15 @@ class Brunch < Breakfast {
 Why the `<` operator? I didn't feel like introducing a new keyword like
 `extends`. Lox doesn't use `:` for anything else so I didn't want to reserve
 that either. Instead, I took a page from Ruby and used `<`.
+为什么用`<`操作符？我不喜欢引入一个新的关键字，比如`extends`。Lox不使用`:`来做其他事情，所以我也不想保留它。相反，我借鉴了Ruby的做法，使用了`<`。
 
 If you know any type theory, you'll notice it's not a *totally* arbitrary
 choice. Every instance of a subclass is an instance of its superclass too, but
 there may be instances of the superclass that are not instances of the subclass.
 That means, in the universe of objects, the set of subclass objects is smaller
 than the superclass's set, though type nerds usually use `<:` for that relation.
+如果你了解任何类型理论，你会发现这并不是一个完全任意的选择。一个子类的每一个实例也是它的超类的一个实例，但可能有超类的实例不是子类的实例。这意味着，在对象的宇宙中，子类对象的集合比超类的集合要小，尽管类型迷们通常用`<:`来表示这种关系。
+
 
 </aside>
 
@@ -1048,6 +1084,7 @@ our own *methods*.
 
 Lox is different from C++, Java, and C#, which do not inherit constructors, but
 similar to Smalltalk and Ruby, which do.
+Lox不同于不继承构造函数的C++、Java和C#，而是类似于Smalltalk和Ruby，它们继承了构造函数。
 
 </aside>
 
@@ -1108,28 +1145,6 @@ interesting, so I've left it out.
 Don't worry, we'll have plenty of exciting stuff in the language itself to keep
 us busy.
 别担心，这门语言本身就有很多精彩的内容让我们忙个不停。
-: 如果你不亲自运行代码，那教程就毫无意义。唉，你还没有Lox解释器，因为你还没有建立一个!不要害怕。你可以用[我的](https://github.com/munificent/craftinginterpreters)。
-: 我肯定有偏见，但我认为Lox的语法很干净。 C语言最严重的语法问题就是关于类型的。丹尼斯·里奇（Dennis Ritchie）有个想法叫“声明反映使用”，其中变量声明反映了为获得基本类型的值而必须对变量执行的操作。这主意不错，但是我认为实践中效果不太好。Lox没有静态类型，所以我们避免了这一点。
-: 现在，JavaScript已席卷全球，并已用于构建大量应用程序，很难将其视为“小脚本语言”。但是Brendan Eich曾在十天内将第一个JS解释器嵌入了Netscape Navigator，以使网页上的按钮具有动画效果。 从那时起，JavaScript逐渐发展起来，但是它曾经是一种可爱的小语言。因为Eich大概只用了一集MacGyver的时间把JS糅合在一起，所以它有一些奇怪的语义，会有明显的拼凑痕迹。比如变量提升、动态绑定`this`、数组中的漏洞和隐式转换等。我有幸在Lox上多花了点时间，所以它应该更干净一些。
-: 毕竟，我们用于实现Lox的两种语言都是静态类型的。
-: 在实践中，引用计数和追踪更像是连续体的两端，而不是对立的双方。大多数引用计数系统最终会执行一些跟踪来处理循环，如果你仔细观察的话，分代收集器的写屏障看起来有点像保留调用。有关这方面的更多信息，请参阅[垃圾收集统一理论](https://researcher.watson.ibm.com/researcher/files/us-bacon/Bacon04Unified.pdf)(PDF)。
-: 布尔变量是Lox中唯一以人名George Boole命名的数据类型，这也是为什么 "Boolean "是大写的原因。他死于1864年，比数字计算机把他的代数变成电子信息的时间早了近一个世纪。我很好奇他看到自己的名字出现在数十亿行Java代码中时会怎么想。
-: 就连那个 "character "一词也是个骗局。是ASCII码？是Unicode？一个码点，还是一个 "字词群"？字符是如何编码的？每个字符是固定的大小，还是可以变化的？
-: 有些操作符有两个以上的操作数，并且操作符与操作数之间是交错的。唯一广泛使用的是C及其相近语言中的“条件”或“三元”操作符:`condition ?thenArm: elseArm;`，有些人称这些为mixfix操作符。有一些语言允许您定义自己的操作符，并控制它们的定位方式——它们的 "固定性"。。
-: 我使用了and和or，而不是&&和||，因为Lox不使用&和|作为位元操作符。不存在单字符形式的情况下引入双字符形式感觉很奇怪。我喜欢用单词来表示运算，也是因为它们实际上是控制流结构，而不是简单的操作符。
-: 将 print 融入到语言中，而不是仅仅将其作为一个核心库函数，这是一种入侵。但对我们来说，这是一个很有用的“入侵”：这意味着在我们实现所有定义函数、按名称查找和调用函数所需的机制之前，我们的解释器可以就开始产生输出。
-: 这是一种情况，没有nil并强制每个变量初始化为某个值，会比处理nil本身更麻烦。
-: 我们已经有and和or可以进行分支处理，我们可以用递归来重复代码，所以理论上这就足够了。但是，在命令式语言中这样编程会很尴尬。另一方面，Scheme没有内置的循环结构。它确实依赖递归进行重复执行代码。Smalltalk没有内置的分支结构，并且依赖动态分派来选择性地执行代码。
-: 我没有在Lox中使用do-while循环，因为它们并不常见，相比while循环也没有多余的内涵。如果你高兴的话，就把它加入到你的实现中去吧。你自己做主。
-: 这是我做出的让步，因为本书中的实现是按章节划分的。for-in循环需要迭代器协议中的某种动态分派来处理不同类型的序列，但我们完成控制流之后才能实现这种分派。我们可以回过头来，添加for-in循环，但我认为这样做不会教给你什么超级有趣的东西。
-: 说到术语，一些静态类型的语言，比如C语言，会对函数的声明和定义进行区分。声明是将函数的类型和它的名字绑定在一起，所以调用时可以进行类型检查，但不提供函数体。定义也会填入函数的主体，这样就可以进行编译。由于Lox是动态类型的，所以这种区分没有意义。一个函数声明完全指定了函数，包括它的主体。
-: Peter J. Landin创造了这个词。没错，几乎一半的编程语言术语都是他创造的。它们中的大部分都出自一篇不可思议的论文 "[The Next 700 Programming Languages](https://homepages.inf.ed.ac.uk/wadler/papers/papers-we-love/landin-next-700.pdf)"。为了实现这类函数，您需要创建一个数据结构，将函数代码和它所需要的周围变量绑定在一起。他称它为“闭包”，是因为函数“闭合”并保留了它需要的变量。
-: 实际上，基于类的语言和基于原型的语言之间的界限变得模糊了。JavaScript的“构造函数”概念[使您很难](http://gameprogrammingpatterns.com/prototype.html#what-about-javascript)定义类对象。 同时，基于类的Ruby非常乐意让您将方法附加到单个实例中。
-: Perl的发明家/先知Larry Wall将其称为“水床理论”。 某些复杂性是必不可少的，无法消除。 如果在某个位置将其向下推，则在另一个位置会出现膨胀。原型语言并没有消除类的复杂性，因为它们确实让用户通过构建近似类的元编程库来承担这种复杂性。
-: 为什么用<操作符？我不喜欢引入一个新的关键字，比如extends。Lox不使用:来做其他事情，所以我也不想保留它。相反，我借鉴了Ruby的做法，使用了<。如果你了解任何类型理论，你会发现这并不是一个完全任意的选择。一个子类的每一个实例也是它的超类的一个实例，但可能有超类的实例不是子类的实例。这意味着，在对象的宇宙中，子类对象的集合比超类的集合要小，尽管类型迷们通常用<:来表示这种关系。
-: Lox不同于不继承构造函数的c++、Java和c#，而是类似于Smalltalk和Ruby，它们继承了构造函数。
-: 这里的8轨音乐指的是磁带。在中国大陆，通常“磁带”或者“录音带”一词都指紧凑音频盒带，因为它的应用非常广泛。在中国台湾，reel-to-reel tape被称为盘式录音带、紧凑音频盒带（Compact audio cassette）被称为卡式录音带、8轨软片（8-track cartridges)）被称为匣式录音带。
-
 <div class="challenges">
 
 ## Challenges

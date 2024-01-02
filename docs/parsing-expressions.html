@@ -94,6 +94,7 @@
 
     <blockquote>
 <p>Grammar, which knows how to control even kings.
+语法，它甚至知道如何控制国王。
 <cite>Molière</cite></p>
 </blockquote>
 <p><span name="parse">This</span> chapter marks the first major milestone of the
@@ -108,11 +109,14 @@ it.
 <p>&ldquo;Parse&rdquo; comes to English from the Old French &ldquo;pars&rdquo; for &ldquo;part of speech&rdquo;. It
 means to take a text and map each word to the grammar of the language. We use it
 here in the same sense, except that our language is a little more modern than
-Old French.</p>
-</aside>
-<aside name="attain">
+Old French.
+英语中的&ldquo;Parse &ldquo;来自古法语 &ldquo;pars&rdquo;，意为 &ldquo;语言的一部分&ldquo;。它的意思是取一篇文章，把每一个词都映射到语言的语法上。我们在这里使用它也是这个意思，只不过我们的语言比古法语更现代一些。</p><!-- </aside>
+
+<aside name="attain"> -->
 <p>Like many rites of passage, you&rsquo;ll probably find it looks a little smaller, a
-little less daunting when it&rsquo;s behind you than when it loomed ahead.</p>
+little less daunting when it&rsquo;s behind you than when it loomed ahead.
+就像许多成人仪式一样，你可能会发现，当它在你身后时，比它在你前方时看起来要小一点，没有那么令人生畏。
+当它在你身后时，比它在你前方时看起来不那么令人生畏。</p>
 </aside>
 <p>It&rsquo;s easier than you think, partially because we front-loaded a lot of the hard
 work in the <a href="representing-code.html">last chapter</a>. You already know your way around a formal grammar.
@@ -126,7 +130,8 @@ for the primitive computers of the time.
 一些CS教科书在解析器上大做文章。在60年代，计算机科学家——他们理所当然地厌倦了用汇编语言编程——开始设计更复杂的、对人类友好的语言，比如Fortran和ALGOL。唉，对于当时原始的计算机来说，这些语言对机器并不友好。</p>
 <aside name="human">
 <p>Imagine how harrowing assembly programming on those old machines must have been
-that they considered <em>Fortran</em> to be an improvement.</p>
+that they considered <em>Fortran</em> to be an improvement.
+可以想象，在那些老机器上进行汇编编程是多么痛苦，以至于他们认为<em>Fortran</em>是一种改进。</p>
 </aside>
 <p>These pioneers designed languages that they honestly weren&rsquo;t even sure how to
 write compilers for, and then did groundbreaking work inventing parsing and
@@ -257,10 +262,12 @@ Since <code>-</code> is left-associative, this expression:</p>
 <aside name="nonassociative">
 <p>While not common these days, some languages specify that certain pairs of
 operators have <em>no</em> relative precedence. That makes it a syntax error to mix
-those operators in an expression without using explicit grouping.</p>
+those operators in an expression without using explicit grouping.
+虽然现在并不常见，但有些语言规定某些运算符之间 <em>没有</em>相对优先级。这种语言中，在表达式中混合使用这些操作符而不使用显式分组是一种语法错误。</p>
 <p>Likewise, some operators are <strong>non-associative</strong>. That means it&rsquo;s an error to
 use that operator more than once in a sequence. For example, Perl&rsquo;s range
-operator isn&rsquo;t associative, so <code>a .. b</code> is OK, but <code>a .. b .. c</code> is an error.</p>
+operator isn&rsquo;t associative, so <code>a .. b</code> is OK, but <code>a .. b .. c</code> is an error.
+同样，有些运算符是<strong>非结合</strong>的。这意味着在语句序列中多次使用该操作符是错误的。例如，Perl的范围操作符是非结合的，所以<code>a ..b</code>是可以的，但是<code>a ..b . .c</code>是错误的。</p>
 </aside>
 <p>Without well-defined precedence and associativity, an expression that uses
 multiple operators is ambiguous<span class="em">&mdash;</span>it can be parsed into different syntax trees,
@@ -330,7 +337,8 @@ separate rule for each precedence level.
 <p>Instead of baking precedence right into the grammar rules, some parser
 generators let you keep the same ambiguous-but-simple grammar and then add in a
 little explicit operator precedence metadata on the side in order to
-disambiguate.</p>
+disambiguate.
+一些解析器生成器并没有将优先级直接写入语法规则中，而是允许你保持同样的模糊但简单的语法，然后在旁边添加一点明确的操作符优先级元数据，以消除歧义。</p>
 </aside>
 <p>Each rule here only matches expressions at its precedence level or higher. For
 example, <code>unary</code> matches a unary expression like <code>!negated</code> or a primary
@@ -346,10 +354,12 @@ precedence, if we match that, then it covers everything.
 <aside name="equality">
 <p>We could eliminate <code>expression</code> and simply use <code>equality</code> in the other rules
 that contain expressions, but using <code>expression</code> makes those other rules read a
-little better.</p>
+little better.
+我们可以取消<code>expression</code>，而只是在其他包含表达式的规则中使用<code>equality</code>，但使用<code>expression</code>会使这些其他规则可读性更好。</p>
 <p>Also, in later chapters when we expand the grammar to include assignment and
 logical operators, we&rsquo;ll only need to change the production for <code>expression</code>
-instead of touching every rule that contains an expression.</p>
+instead of touching every rule that contains an expression.
+另外，在后面的章节中，当我们将语法扩展到包括赋值和逻辑运算符时，我们只需要改变<code>expression</code>的生成式，而不需要修改每条包含<code>expression</code>的规则。</p>
 </aside>
 <div class="codehilite"><pre><span class="i">expression</span>     → <span class="i">equality</span>
 </pre></div>
@@ -390,14 +400,16 @@ recursive production on the left side and <code>unary</code> on the right makes 
 <p>In principle, it doesn&rsquo;t matter whether you treat multiplication as left- or
 right-associative<span class="em">&mdash;</span>you get the same result either way. Alas, in the real world
 with limited precision, roundoff and overflow mean that associativity can affect
-the result of a sequence of multiplications. Consider:</p>
+the result of a sequence of multiplications. Consider:
+原则上，你把乘法当作左关联还是右关联都没有关系——无论你使用哪种方式都可以得到相同的结果。但是，在精度有限的情况下，舍入和溢出意味着关联性会影响乘法序列的计算结果。如:</p>
 <div class="codehilite"><pre><span class="k">print</span> <span class="n">0.1</span> * (<span class="n">0.2</span> * <span class="n">0.3</span>);
 <span class="k">print</span> (<span class="n">0.1</span> * <span class="n">0.2</span>) * <span class="n">0.3</span>;
 </pre></div>
 <p>In languages like Lox that use <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754</a> double-precision floating-point
 numbers, the first evaluates to <code>0.006</code>, while the second yields
 <code>0.006000000000000001</code>. Sometimes that tiny difference matters.
-<a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">This</a> is a good place to learn more.</p>
+<a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">This</a> is a good place to learn more.
+在Lox等使用<a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754</a>双精度浮点数的语言中，第一个算式的计算结果是<code>0.006</code>，而第二个算式的计算结果是<code>0.006000000000000001</code>。有时，这种微小的差异很重要。可以在<a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">这里</a>了解更多信息。</p>
 </aside>
 <p>All of this is correct, but the fact that the first symbol in the body of the
 rule is the same as the head of the rule means this production is
@@ -459,10 +471,12 @@ and larger chunks of syntax.
 Confusingly, we also use direction metaphorically when talking about &ldquo;high&rdquo; and
 &ldquo;low&rdquo; precedence, but the orientation is reversed. In a top-down parser, you
 reach the lowest-precedence expressions first because they may in turn contain
-subexpressions of higher precedence.</p><img src="image/parsing-expressions/direction.png" alt="Top-down grammar rules in order of increasing precedence." />
+subexpressions of higher precedence.
+该方法之所以被称为“递归<em>下降</em>”，是因为它是沿着语法<em>向下</em>运行的。令人困惑的是，在谈论“高”和“低”优先级时，我们也使用方向来比喻，但是方向却是相反的。在自顶向下的解析器中，首先达到优先级最低的表达式，因为其中可能包含优先级更高的子表达式。</p><img src="image/parsing-expressions/direction.png" alt="Top-down grammar rules in order of increasing precedence." />
 <p>CS people really need to get together and straighten out their metaphors. Don&rsquo;t
 even get me started on which direction a stack grows or why trees have their
-roots on top.</p>
+roots on top.
+CS的人真的需要聚在一起理清他们的隐喻。甚至不要让我开始讨论堆栈向哪个方向生长，或者为什么树的根在上面。</p>
 </aside>
 <p>A recursive descent parser is a literal translation of the grammar&rsquo;s rules
 straight into imperative code. Each rule becomes a function. The body of the
@@ -540,7 +554,8 @@ method.
 <aside name="left">
 <p>This is why left recursion is problematic for recursive descent. The function
 for a left-recursive rule immediately calls itself, which calls itself again,
-and so on, until the parser hits a stack overflow and dies.</p>
+and so on, until the parser hits a stack overflow and dies.
+这就是为什么左递归对于递归下降是有问题的。左递归规则的函数会立即调用自身，并循环往复，直到解析器遇到堆栈溢出并崩溃。</p>
 </aside>
 <p>The rule for equality is a little more complex.
 <code>equality</code>规则有一点复杂：</p>
@@ -656,7 +671,8 @@ binary operator nodes.
 <p><span name="sequence"></span></p><img src="image/parsing-expressions/sequence.png" alt="The syntax tree created by parsing 'a == b == c == d == e'" />
 <aside name="sequence">
 <p>Parsing <code>a == b == c == d == e</code>. For each iteration, we create a new binary
-expression using the previous one as the left operand.</p>
+expression using the previous one as the left operand.
+解析<code>a==b==c==d</code>。对于每一次迭代，使用前一个子式结果作为左操作数并创建一个新的二元表达式。</p>
 </aside>
 <p>The parser falls out of the loop once it hits a token that&rsquo;s not an equality
 operator. Finally, it returns the expression. Note that if the parser never
@@ -698,7 +714,8 @@ follow the same pattern.
 <aside name="handle">
 <p>If you wanted to do some clever Java 8, you could create a helper method for
 parsing a left-associative series of binary operators given a list of token
-types, and an operand method handle to simplify this redundant code.</p>
+types, and an operand method handle to simplify this redundant code.
+如果您想在 Java 8 中发挥一些聪明才智，可以创建一个辅助方法，用于在给定标记类型列表的情况下解析二元运算符的左关联系列，并创建一个操作数方法句柄来简化这些冗余代码。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
 add after <em>comparison</em>()</div>
@@ -764,7 +781,8 @@ Wrap that all up in a unary expression syntax tree and we&rsquo;re done.
 同样的，我们先检查当前的标记以确认要如何进行解析。如果是<code>!</code>或<code>-</code>，我们一定有一个一元表达式。在这种情况下，我们使用当前的标记递归调用<code>unary()</code>来解析操作数。将所有这些都包装到一元表达式语法树中，我们就完成了。</p>
 <aside name="current">
 <p>The fact that the parser looks ahead at upcoming tokens to decide how to parse
-puts recursive descent into the category of <strong>predictive parsers</strong>.</p>
+puts recursive descent into the category of <strong>predictive parsers</strong>.
+解析器提前观察即将到来的标记来决定如何解析，这就把递归下降纳入了<strong>预测性解析器</strong>的范畴。</p>
 </aside>
 <p>Otherwise, we must have reached the highest level of precedence, primary
 expressions.
@@ -841,7 +859,8 @@ name="telepathy">mind</span>.
 当用户没有意识到语法错误时，解析器要帮助引导他们回到正确的道路上。在你的语言的人机交互中，错误反馈占据了很大的比重。良好的语法错误处理是很难的。根据定义，代码并不是处于良好定义的状态，所以没有可靠的方法能够知道用户<em>想要</em>写什么。解析器无法读懂你的思想。</p>
 <aside name="telepathy">
 <p>Not yet at least. With the way things are going in machine learning these days,
-who knows what the future will bring?</p>
+who knows what the future will bring?
+至少现在还没有。以目前机器学习的发展态势，谁知道未来会发生什么呢？</p>
 </aside>
 <p>There are a couple of hard requirements for when the parser runs into a syntax
 error. A parser must:
@@ -867,7 +886,8 @@ name="error">error</span> and passes the resulting malformed syntax tree on
 to the interpreter, all manner of horrors may be summoned.</p>
 <aside name="error">
 <p>Philosophically speaking, if an error isn&rsquo;t detected and the interpreter
-runs the code, is it <em>really</em> an error?</p>
+runs the code, is it <em>really</em> an error?
+从哲学上讲，如果一个错误没有被检测到，而解释器运行了代码，那它真的是一个错误吗？</p>
 </aside></li>
 <li>
 <p><strong>Avoid crashing or hanging.</strong> Syntax errors are a fact of life, and
@@ -940,7 +960,8 @@ issue. Simple, fast error recovery is fine.
 如今，解析器在您甚至还没有完成输入之前就完成解析了，这不再是一个问题。 简单，快速的错误恢复就可以了。</p>
 <h3><a href="#panic-mode-error-recovery--恐慌模式错误恢复" id="panic-mode-error-recovery--恐慌模式错误恢复"><small>6&#8202;.&#8202;3&#8202;.&#8202;1</small>Panic mode error recovery  恐慌模式错误恢复</a></h3>
 <aside name="panic">
-<p>You know you want to push it.</p><img src="image/parsing-expressions/panic.png" alt="A big shiny 'PANIC' button." />
+<p>You know you want to push it.
+你知道你想推动它。</p><img src="image/parsing-expressions/panic.png" alt="A big shiny 'PANIC' button." />
 </aside>
 <p>Of all the recovery techniques devised in yesteryear, the one that best stood
 the test of time is called<span class="em">&mdash;</span>somewhat alarmingly<span class="em">&mdash;</span><span name="panic"><strong>panic
@@ -1043,20 +1064,24 @@ into panic mode.
 <p>Another way to handle common syntax errors is with <strong>error productions</strong>. You
 augment the grammar with a rule that <em>successfully</em> matches the <em>erroneous</em>
 syntax. The parser safely parses it but then reports it as an error instead of
-producing a syntax tree.</p>
+producing a syntax tree.
+另一种处理常见语法错误的方法是<strong>错误生成式</strong>。你可以使用一个能 <em>成功</em>匹配 <em>错误</em>语法的规则来扩充语法。解析器可以对其进行安全地解析，但是不会生成语法树，而是会报告一个错误。</p>
 <p>For example, some languages have a unary <code>+</code> operator, like <code>+123</code>, but Lox does
 not. Instead of getting confused when the parser stumbles onto a <code>+</code> at the
-beginning of an expression, we could extend the unary rule to allow it.</p>
+beginning of an expression, we could extend the unary rule to allow it.
+举例来说，有些语言中有一元运算符<code>+</code>，如<code>+123</code>，但是Lox不支持。当解析器在表达式的开头遇到一个<code>+</code>时，我们不必感到困惑，我们可以扩展一元规则来允许该语法。</p>
 <div class="codehilite"><pre><span class="i">unary</span> → ( <span class="s">&quot;!&quot;</span> | <span class="s">&quot;-&quot;</span> | <span class="s">&quot;+&quot;</span> ) <span class="i">unary</span>
       | <span class="i">primary</span> ;
 </pre></div>
 <p>This lets the parser consume <code>+</code> without going into panic mode or leaving the
-parser in a weird state.</p>
+parser in a weird state.
+这样解析器就会消费<code>+</code>标记，而不是进入恐慌模式或让解析器陷入奇怪的状态。</p>
 <p>Error productions work well because you, the parser author, know <em>how</em> the code
 is wrong and what the user was likely trying to do. That means you can give a
 more helpful message to get the user back on track, like, &ldquo;Unary &lsquo;+&rsquo; expressions
 are not supported.&rdquo; Mature parsers tend to accumulate error productions like
-barnacles since they help users fix common mistakes.</p>
+barnacles since they help users fix common mistakes.
+错误生成式的效果很好。因为你作为解析器的作者，知道代码的<em>如何</em>出错的以及用户想要做什么。这意味着你可以给出一个更有用的信息来帮助用户回到正轨，比如，&ldquo;不支持一元&rsquo;+&rsquo;表达式&ldquo;。成熟的解析器往往会积累错误生成式，因为它们可以帮助用户修复常见的错误。</p>
 </aside>
 <p>In our case, though, the syntax error is nasty enough that we want to panic and
 synchronize. Discarding tokens is pretty easy, but how do we synchronize the
@@ -1074,7 +1099,7 @@ we <em>throw</em> that ParseError object. Higher up in the method for the gramma
 we are synchronizing to, we&rsquo;ll catch it. Since we synchronize on statement
 boundaries, we&rsquo;ll catch the exception there. After the exception is caught, the
 parser is in the right state. All that&rsquo;s left is to synchronize the tokens.
-在Java中，最自然的实现方式是异常。当我们想要同步时，我们抛出ParseError对象。在我们正同步的语法规则的方法上层，我们将捕获它。因为我们在语句边界上同步，所以我们可以在那里捕获异常。捕获异常后，解析器就处于正确的状态。剩下的就是同步标记了。</p>
+在Java中，最自然的实现方式是异常。当我们想要同步时，我们<em>抛出</em>ParseError对象。在我们正同步的语法规则的方法上层，我们将捕获它。因为我们在语句边界上同步，所以我们可以在那里捕获异常。捕获异常后，解析器就处于正确的状态。剩下的就是同步标记了。</p>
 <p>We want to discard tokens until we&rsquo;re right at the beginning of the next
 statement. That boundary is pretty easy to spot<span class="em">&mdash;</span>it&rsquo;s one of the main reasons
 we picked it. <em>After</em> a semicolon, we&rsquo;re <span name="semicolon">probably</span>
@@ -1085,7 +1110,8 @@ about to start a statement.
 <aside name="semicolon">
 <p>I say &ldquo;probably&rdquo; because we could hit a semicolon separating clauses in a <code>for</code>
 loop. Our synchronization isn&rsquo;t perfect, but that&rsquo;s OK. We&rsquo;ve already reported
-the first error precisely, so everything after that is kind of &ldquo;best effort&rdquo;.</p>
+the first error precisely, so everything after that is kind of &ldquo;best effort&rdquo;.
+我说&ldquo;可能&ldquo;是因为我们可以在 <code>for</code>循环中碰到分隔子句的分号。我们的同步并不完美，但这没关系。我们已经准确地报告了第一个错误，所以之后的一切都算是 &ldquo;尽力而为&rdquo; 了。</p>
 </aside>
 <p>This method encapsulates that logic:
 下面的方法封装了这个逻辑：</p>
@@ -1124,7 +1150,8 @@ the next statement.
 <p>Alas, we don&rsquo;t get to see this method in action, since we don&rsquo;t have statements
 yet. We&rsquo;ll get to that <a href="statements-and-state.html">in a couple of chapters</a>. For now, if an
 error occurs, we&rsquo;ll panic and unwind all the way to the top and stop parsing.
-Since we can parse only a single expression anyway, that&rsquo;s no big loss.</p>
+Since we can parse only a single expression anyway, that&rsquo;s no big loss.
+可惜的是，由于我们还没有语句，所以无法看到这种方法的实际应用。我们将在<a href="statements-and-state.html">后面几章</a>讨论这个问题。现在，如果出现错误，我们就会惊慌失措地一直向顶端展开并停止解析。反正我们只能解析单个表达式，这也没什么损失。</p>
 <h2><a href="#wiring-up-the-parser--调整解析器" id="wiring-up-the-parser--调整解析器"><small>6&#8202;.&#8202;4</small>Wiring up the Parser  调整解析器</a></h2>
 <p>We are mostly done parsing expressions now. There is one other place where we
 need to add a little error handling. As the parser descends through the parsing
@@ -1201,28 +1228,17 @@ any more complex than the binary operators we tackled here.
 <aside name="harder">
 <p>It is possible to define a more complex grammar than Lox&rsquo;s that&rsquo;s difficult to
 parse using recursive descent. Predictive parsing gets tricky when you may need
-to look ahead a large number of tokens to figure out what you&rsquo;re sitting on.</p>
+to look ahead a large number of tokens to figure out what you&rsquo;re sitting on.
+你可能会定义一个比Lox更复杂的语法，使用递归下降法难以对其解析。当你可能需要预先查看大量的标记以弄清你面临的情况时，预测性解析就变得很棘手。</p>
 <p>In practice, most languages are designed to avoid that. Even in cases where they
 aren&rsquo;t, you can usually hack around it without too much pain. If you can parse
 C++ using recursive descent<span class="em">&mdash;</span>which many C++ compilers do<span class="em">&mdash;</span>you can parse
-anything.</p>
+anything.
+实际上，大多数语言都是为了避免这种情况而设计的。即使情况并非如此，您通常也可以毫不费力地解决问题。 既然您可以使用递归下降来解析C ++（许多C ++编译器都可以做到），那么您就可以解析任何内容。</p>
 </aside>
 <p>Fire up the interpreter and type in some expressions. See how it handles
 precedence and associativity correctly? Not bad for less than 200 lines of code.
-启动解释器并输入一些表达式。查看它是如何正确处理优先级和结合性的?这对于不到200行代码来说已经很不错了。
-: 英语中的&ldquo;Parse &ldquo;来自古法语 &ldquo;pars&rdquo;，意为 &ldquo;语言的一部分&ldquo;。它的意思是取一篇文章，把每一个词都映射到语言的语法上。我们在这里使用它也是这个意思，只不过我们的语言比古法语更现代一些。
-: 可以想见，在那些老机器上进行汇编编程是多么痛苦，以至于他们认为Fortran是一种改进。
-: 虽然现在并不常见，但有些语言规定某些运算符之间没有相对优先级。这种语言中，在表达式中混合使用这些操作符而不使用显式分组是一种语法错误。同样，有些运算符是<strong>非结合</strong>的。这意味着在语句序列中多次使用该操作符是错误的。例如，Perl的范围操作符是非结合的，所以<code>a ..b</code>是可以的，但是<code>a ..b . .c</code>是错误的。
-: 一些解析器生成器并没有将优先级直接写入语法规则中，而是允许你保持同样的模糊但简单的语法，然后在旁边添加一点明确的操作符优先级元数据，以消除歧义。
-: 我们可以取消<code>expression</code>，而只是在其他包含表达式的规则中使用<code>equality</code>，但使用<code>expression</code>会使这些其他规则可读性更好。另外，在后面的章节中，当我们将语法扩展到包括赋值和逻辑运算符时，我们只需要改变<code>expression</code>的生成式，而不需要修改每条包含<code>expression</code>的规则。
-: 原则上，你把乘法当作左关联还是右关联都没有关系——无论你使用哪种方式都可以得到相同的结果。但是，在精度有限的情况下，舍入和溢出意味着关联性会影响乘法序列的计算结果。如<code>print 0. 1 * (0. 2 * 0. 3);</code>和<code>print (0.1 * 0.2) * 0.3;</code>，在Lox等使用<a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754</a>双精度浮点数的语言中，第一个算式的计算结果是<code>0.006</code>，而第二个算式的计算结果是<code>0.006000000000000001</code>。有时，这种微小的差异很重要。可以在<a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">这里</a>了解更多信息。
-: 该方法之所以被称为“递归<em>下降</em>”，是因为它是沿着语法<em>向下</em>运行的。令人困惑的是，在谈论“高”和“低”优先级时，我们也使用方向来比喻，但是方向却是相反的。在自顶向下的解析器中，首先达到优先级最低的表达式，因为其中可能包含优先级更高的子表达式。&lt;br/>&lt;br/>CS的人真的需要聚在一起理清他们的隐喻。甚至不要让我开始讨论堆栈向哪个方向生长，或者为什么树的根在上面。
-: 这就是为什么左递归对于递归下降是有问题的。左递归规则的函数会立即调用自身，并循环往复，直到解析器遇到堆栈溢出并崩溃。
-: 解析<code>a==b==c==d</code>。对于每一次迭代，使用前一个子式结果作为左操作数并创建一个新的二元表达式。
-: 解析器提前观察即将到来的标记来决定如何解析，这就把递归下降纳入了<strong>预测性解析器</strong>的范畴。
-: 另一种处理常见语法错误的方法是<strong>错误生成式</strong>。你可以使用一个能<em>成功</em>匹配<em>错误</em>语法的规则来扩充语法。解析器可以对其进行安全地解析，但是不会生成语法树，而是会报告一个错误。&lt;br/>举例来说，有些语言中有一元运算符<code>+</code>，如<code>+123</code>，但是Lox不支持。当解析器在表达式的开头遇到一个<code>+</code>时，我们不必感到困惑，我们可以扩展一元规则来允许该语法。&lt;br/><code>unary → ( "!" | "-" | "+" ) unary | primary ;</code>&lt;br/>这样解析器就会消费<code>+</code>标记，而不是进入恐慌模式或让解析器陷入奇怪的状态。&lt;br/>错误生成式的效果很好。因为你作为解析器的作者，知道代码的<em>如何</em>出错的以及用户想要做什么。这意味着你可以给出一个更有用的信息来帮助用户回到正轨，比如，&ldquo;不支持一元&rsquo;+&rsquo;表达式&ldquo;。成熟的解析器往往会积累错误生成式，因为它们可以帮助用户修复常见的错误。
-: 我说 &ldquo;可能 &ldquo;是因为我们可以在for循环中碰到分隔子句的分号。我们的同步并不完美，但这没关系。我们已经准确地报告了第一个错误，所以之后的一切都算是 &ldquo;尽力而为 &ldquo;了。
-: 你可能会定义一个比Lox更复杂的语法，使用递归下降法难以对其解析。当你可能需要预先查看大量的标记以弄清你面临的情况时，预测性解析就变得很棘手。实际上，大多数语言都是为了避免这种情况而设计的。 即使情况并非如此，您通常也可以毫不费力地解决问题。 既然您可以使用递归下降来解析C ++（许多C ++编译器都可以做到），那么您就可以解析任何内容。</p>
+启动解释器并输入一些表达式。查看它是如何正确处理优先级和结合性的?这对于不到200行代码来说已经很不错了。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
