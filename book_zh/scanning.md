@@ -40,8 +40,6 @@ Since this is our first real chapter, before we get to actually scanning some
 code we need to sketch out the basic shape of our interpreter, jlox. Everything
 starts with a class in Java.
 由于这是我们的第一个真正的章节，在我们开始实际扫描代码之前，我们需要先勾勒出我们的解释器jlox的基本形态。在Java中，一切都是从一个类开始的。
-【译者注：原作者在代码的侧边栏标注了代码名及对应的操作（创建文件、追加代码、删除代码等），由于翻译版的格式受限，将这部分信息迁移到代码块之前，以带下划线的斜体突出，后同】
-<u>*lox/Lox.java，创建新文件*</u>
 
 ^code lox-class
 

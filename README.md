@@ -1,61 +1,33 @@
 ## 写在前面
-本项目是对"[Crafting Interpreters][]"一文的翻译。[在线阅读][reading online]
+本项目是对 《[Crafting Interpreters][en reading online]》 一文的翻译。[📖在线阅读][zh reading online]
 
 这本书在 Github 上已有完整翻译 [craftinginterpreters_zh][]，但是排版和原文有较大差异，原文的阅读体验更好。故本项目做了一次搬运，将两个项目结合，在不破坏原文排版的基础上进行了搬运和查漏补缺。
+相比与[原项目][crafting interpreters github]，改动的内容主要有:
+- 对原书的翻译，翻译后的文本保存在 `/book_zh` 目录下
+- 对网页相关位置的翻译，主要涉及 `/asset` 目录下的静态网页
+- 为了适应翻译和部署，对原项目中的部分 Dart 代码进行了修改。主要是将 `/book` 替换为了 `/book_zh`；将`/site` 替换为了 `/docs`
 
 由于本人英语水平有限，大部分翻译内容取自 [craftinginterpreters_zh][] 或 ChatGPT 或者翻译网站，若发现有任何出错的地方，欢迎提交 PR 或者 [联系我][zhihu]。
 
 项目尚未开发完毕，正在持续更新中。
-## Crafting Interpreters
-This is the repo used for the in-progress book "[Crafting Interpreters][]". It
-contains the Markdown text of the book, full implementations of both
-interpreters, as well as the build system to weave the two together into the
-final site.
 
-[crafting interpreters]: http://craftinginterpreters.com
-[reading online]: https://zaslee.github.io/craftinginterpreters/
+[zh reading online]: https://zaslee.github.io/craftinginterpreters/
+[en reading online]: http://craftinginterpreters.com
 [craftinginterpreters_zh]: https://github.com/GuoYaxiang/craftinginterpreters_zh
 [zhihu]: https://www.zhihu.com/people/an-you-wo
 
+## Crafting Interpreters
+本项目包含该书的 Markdown 文本、两个解释器的完整实现，以及将两者编织成最终网站的构建系统。原仓库地址: [Crafting Interpreters][crafting interpreters github]
 
-If you find an error or have a suggestion, please do file an issue here. Thank
-you!
+[crafting interpreters github]: https://github.com/munificent/craftinginterpreters
 
-## Contributing
+## 构建
 
-One of the absolute best things about writing a book online and putting it out
-there before it's done is that people like you have been kind enough to give me
-feedback, point out typos, and find other errors or unclear text.
+### 前提条件
 
-If you'd like to do that, great! You can just file bugs here on the repo, or
-send a pull request if you're so inclined. If you want to send a pull request,
-but don't want to get the build system set up to regenerate the HTML too, don't
-worry about it. I'll do that when I pull it in.
+原项目在 OS X 机器上开发的，但任何 POSIX 系统都可以。
 
-## Ports and implementations
-
-Another way to get involved is by sharing your own implementation of Lox. Ports
-to other languages are particularly useful since not every reader likes Java and
-C. Feel free to add your Lox port or implementation to the wiki:
-
-* [Lox implementations][]
-
-[lox implementations]: https://github.com/munificent/craftinginterpreters/wiki/Lox-implementations
-
-## Building Stuff
-
-I am a terribly forgetful, error-prone mammal, so I automated as much as I
-could.
-
-### Prerequisites
-
-I develop on an OS X machine, but any POSIX system should work too. With a
-little extra effort, you should be able to get this working on Windows as well,
-though I can't help you out much.
-
-Most of the work is orchestrated by make. The build scripts, test runner, and
-other utilities are all written in [Dart][]. Instructions to install Dart are
-[here][install]. Once you have Dart installed and on your path, run:
+大部分工作都由 make 协调完成。构建脚本、测试运行程序和其他工具都是用 [Dart][] 编写的。[这里][install]有安装 Dart 的说明。安装好 Dart 并放在路径上后，运行
 
 ```sh
 $ make get
@@ -64,157 +36,114 @@ $ make get
 [dart]: https://dart.dev/
 [install]: https://dart.dev/get-dart
 
-This downloads all of the packages used by the build and test scripts.
+这会下载编译和测试脚本使用的所有软件包。
 
-In order to compile the two interpreters, you also need a C compiler on your
-path as well as `javac`.
+为了编译这两个解释器，还需要一个 C 编译器和 `javac`。
 
-### Building
+### 构建
 
-Once you've got that setup, try:
+完成上述设置后，请尝试：
 
 ```sh
 $ make
 ```
 
-If everything is working, that will generate the site for the book as well as
-compiling the two interpreters clox and jlox. You can run either interpreter
-right from the root of the repo:
+如果一切正常，就会生成本书的网站，并编译两个解释器 clox 和 jlox。你可以直接从 repo 的根目录运行这两个解释器：
 
 ```sh
 $ ./clox
 $ ./jlox
 ```
 
-### Hacking on the book
+### 本书的黑科技
 
-The Markdown and snippets of source code are woven together into the final HTML
-using a hand-written static site generator that started out as a [single tiny
-Python script][py] for [my first book][gpp] and somehow grew into something
-approximating a real program.
+Markdown和源代码片段使用手工编写的静态站点生成器编织成最终的HTML，该生成器最初是作者[第一本书][gpp]的一个小[Python脚本][py] ，后来以某种方式发展成了一个接近真实程序的东西。
 
 [py]: https://github.com/munificent/game-programming-patterns/blob/master/script/format.py
 [gpp]: http://gameprogrammingpatterns.com/
 
-The generated HTML is committed in the repo under `site/`. It is built from a
-combination of Markdown for prose, which lives in `book/`, and snippets of code
-that are weaved in from the Java and C implementations in `java/` and `c/`. (All
-of those funny looking comments in the source code are how it knows which
-snippet goes where.)
+生成的 HTML 保存在`docs/`下的软件仓库中。它由 Markdown 和代码片段组合而成，前者放在 `book/` 目录中，后者放在 `java/` 和 `c/` 目录中。
 
-The script that does all the magic is `tool/bin/build.dart`. You can run that
-directly, or run:
+执行所有魔法的脚本是 `tool/bin/build.dart`。你可以直接运行它，或者运行：
 
 ```sh
 $ make book
 ```
 
-That generates the entire site in one batch. If you are incrementally working
-on it, you'll want to run the development server:
+这样就能一次性生成整个网站。如果你是渐进式开发，则需要运行开发服务器：
 
 ```sh
 $ make serve
 ```
 
-This runs a little HTTP server on localhost rooted at the `site/` directory.
-Any time you request a page, it regenerates any files whose sources have been
-changed, including Markdown files, interpreter source files, templates, and
-assets. Just let that keep running, edit files locally, and refresh your
-browser to see the changes.
+它在本地主机上运行一个小小的 HTTP 服务器，根植于 `docs/` 目录。只要你请求一个页面，它就会重新生成源文件已更改的任何文件，包括 Markdown 文件、解释器源文件、模板和资产。只需让它继续运行，在本地编辑文件，然后刷新浏览器即可看到更改。
 
-### Building the interpreters
+### 构建解释器
 
-You can build each interpreter like so:
+你可以这样构建各个解释器：
 
 ```sh
 $ make clox
 $ make jlox
 ```
 
-This builds the final version of each interpreter as it appears at the end of
-its part in the book.
+这将构建每个解释器的最终版本，该版本将出现在本书各部分的结尾处。
 
-You can also see what the interpreters look like at the end of each chapter. (I
-use this to make sure they are working even in the middle of the book.) This is
-driven by a script, `tool/bin/split_chapters.dart` that uses the same comment
-markers for the code snippets to determine which chunks of code are present in
-each chapter. It takes only the snippets that have been seen by the end of each
-chapter and produces a new copy of the source in `gen/`, one directory for each
-chapter's code. (These are also an easier way to view the source code since they
-have all of the distracting marker comments stripped out.)
+你还可以在每章末尾看到解释器的样子（我用它来确保解释器在书的中间部分也能正常工作）。这是由脚本 `tool/bin/split_chapters.dart` 驱动的，它使用代码片段的相同注释标记来确定每章中的代码块。该脚本只提取每章末尾的代码片段，并在 `gen/` 目录中生成一份新的源代码副本，每章的代码放在一个目录中。(这也是一种更简单的查看源代码的方法，因为它们去除了所有分散注意力的标记注释)。
 
-Then, each of those can be built separately. Run:
+这样，就可以分别编译这些代码了。运行：
 
 ```sh
 $ make c_chapters
 ```
 
-And in the `build/` directory, you'll get an executable for each chapter, like
-`chap14_chunks`, etc. Likewise:
+在 `build/` 目录中，每一章都会有一个可执行文件，如 `chap14_chunks` 等。同样
 
 ```sh
 $ make java_chapters
 ```
 
-This compiles the Java code to classfiles in `build/gen/` in a subdirectory for
-each chapter.
+这将把 Java 代码编译到每章子目录下 `build/gen/` 中的类文件中。
 
-## Testing
+## 测试
 
-I have a full Lox test suite that I use to ensure the interpreters in the book
-do what they're supposed to do. The test cases live in `test/`. The Dart
-program `tool/bin/test.dart` is a test runner that runs each of those test
-files on a Lox interpreter, parses the result, and validates that that the test
-does what it's expected to do.
+我有一套完整的 Lox 测试套件，用来确保书中的解释器能完成它们应该做的事情。测试用例位于 `test/`。Dart 程序 `tool/bin/test.dart` 是一个测试运行器，它可以在 Lox 解释器上运行每个测试文件，解析结果，并验证测试是否完成了预期的工作。
 
-There are various interpreters you can run the tests against:
+你可以使用多种解释器来运行测试：
+
 
 ```sh
-$ make test       # The final versions of clox and jlox.
-$ make test_clox  # The final version of clox.
-$ make test_jlox  # The final version of jlox.
-$ make test_c     # Every chapter's version of clox.
-$ make test_java  # Every chapter's version of jlox.
-$ make test_all   # All of the above.
+$ make test       # 测试 clox 和 jlox 的最终版本
+$ make test_clox  # 测试 clox 的最终版本
+$ make test_jlox  # 测试 jlox 的最终版本
+$ make test_c     # 测试每一章的 clox
+$ make test_java  # 测试每一章的 jlox
+$ make test_all   # 测试以上所有的选项
 ```
 
-### Testing your implementation
+### 测试你的实现
 
-You are welcome to use the test suite and the test runner to test your own Lox
-implementation. The test runner is at `tool/bin/test.dart` and can be given a
-custom interpreter executable to run using `--interpreter`. For example, if you
-had an interpreter executable at `my_code/boblox`, you could test it like:
+欢迎使用测试套件和测试运行程序来测试你自己的 Lox 实现。测试运行器位于 `tool/bin/test.dart` 中，可以使用 `--interpreter` 给出一个自定义解释器可执行文件来运行。例如，如果你有一个位于 `my_code/boblox` 的解释器可执行文件，你可以像下面这样测试它：
 
 ```sh
 $ dart tool/bin/test.dart clox --interpreter my_code/boblox
 ```
 
-You still need to tell it which suite of tests to run because that determines
-the test expectations. If your interpreter should behave like jlox, use "jlox"
-as the suite name. If it behaves like clox, use "clox". If your interpreter is
-only complete up to the end of one of the chapters in the book, you can use
-that chapter as the suite, like "chap10_functions". See the Makefile for the
-names of all of the chapters.
+你仍然需要告诉它要运行哪个测试套件，因为这决定了测试的预期。如果解释器的行为类似 jlox，则使用 "jlox "作为测试套件名称。如果解释器的行为类似于 clox，则使用 "clox"。如果你的解释器只完成到书中某一章的结尾，你可以使用该章作为套件，如 "chap10_functions"。有关所有章节的名称，请参阅 Makefile。
 
-If your interpreter needs other command line arguments passed to use, pass them
-to the test runner using `--arguments` and it will forward to your interpreter.
+如果解释器需要其他命令行参数，请使用 `--arguments` 将参数传递给测试运行器，测试运行器将转发给解释器。
 
-## Repository Layout
+## 仓库布局
 
-*   `asset/` – Sass files and jinja2 templates used to generate the site.
-*   `book/` - Markdown files for the text of each chapter.
-*   `build/` - Intermediate files and other build output (except for the site
-    itself) go here. Not committed to Git.
-*   `c/` – Source code of clox, the interpreter written in C. Also contains an
-    XCode project, if that's your thing.
-*   `gen/` – Java source files generated by GenerateAst.java go here. Not
-    committed.
-*   `java/` – Source code of jlox, the interpreter written in Java.
-*   `note/` – Various research, notes, TODOs, and other miscellanea.
-*   `note/answers` – Sample answers for the challenges. No cheating!
-*   `site/` – The final generated site. The contents of this directory directly
-    mirror craftinginterpreters.com. Most content here is generated by build.py,
-    but fonts, images, and JS only live here. Everything is committed, even the
-    generated content.
-*   `test/` – Test cases for the Lox implementations.
-*   `tool/` – Dart package containing the build, test, and other scripts.
+*   `asset/` – 用于生成网站的 Sass 文件和 jinja2 模板。
+*   `book/` - 每章文本的 Markdown 文件。
+*   `book_zh/` - 每章翻译的 Markdown 文件。
+*   `build/` - 中间文件和其他构建输出（网站本身除外）放在这里。将不会提交到 Git。
+*   `c/` –  用 C 编写的解释器 clox 的源代码。如果你喜欢，这里还包含一个 XCode 项目。
+*   `gen/` –  由 GenerateAst.java 生成的 Java 源文件。将不会提交。
+*   `java/` – 用 Java 编写的解释器 jlox 的源代码。
+*   `note/` – 各种研究、笔记、TODO 和其他杂项。
+*   `note/answers` – 习题的答案示例。不准作弊！
+*   `docs/` – 最终生成的网站。这里的大部分内容由 build.py 生成，但是字体、图片和 JS 只存在于此文件夹。所有内容都将提交。
+*   `test/` – Lox 的测试用例。
+*   `tool/` – 包含联编、测试和其他脚本的 Dart 包。
