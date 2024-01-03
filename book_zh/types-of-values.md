@@ -40,19 +40,19 @@ decide how many of those bytes to use and what they mean.
 
 In order to choose a value representation, we need to answer two key questions:
 为了选择一种值的表示形式，我们需要先回答两个关键问题：
-1. > **How do we represent the type of a value?** If you try to, say, multiply a number by `true`, we need to detect that error at runtime and report it. In order to do that, we need to be able to tell what a value’s type is.
-**我们如何表示一个值的类型？** 比如说，如果你将一个数字乘以`true`，我们需要在运行时检测到这个错误并报告它。为此，我们需要知道值的类型是什么？
-2. > **How do we store the value itself?** We need to not only be able to tell that three is a number, but that it’s different from the number four. I know, seems obvious, right? But we’re operating at a level where it’s good to spell these things out.
-**我们如何存储该值本身？** 我们不仅要能分辨出3是一个数字，还要能分辨出它与4是不同的。我知道，这是显而易见的对吧？但是在我们所讨论的层面，最好把这些事情说清楚。
 
 1.  **How do we represent the type of a value?** If you try to, say, multiply a
     number by `true`, we need to detect that error at runtime and report it. In
     order to do that, we need to be able to tell what a value's type is.
 
+    **我们如何表示一个值的类型？** 比如说，如果你将一个数字乘以`true`，我们需要在运行时检测到这个错误并报告它。为此，我们需要知道值的类型是什么？
+
 2.  **How do we store the value itself?** We need to not only be able to tell
     that three is a number, but that it's different from the number four. I
     know, seems obvious, right? But we're operating at a level where it's good
     to spell these things out.
+
+    **我们如何存储该值本身？** 我们不仅要能分辨出3是一个数字，还要能分辨出它与4是不同的。我知道，这是显而易见的对吧？但是在我们所讨论的层面，最好把这些事情说清楚。
 
 Since we're not just designing this language but building it ourselves, when
 answering these two questions we also have to keep in mind the implementer's
@@ -766,21 +766,6 @@ Those are much more complex because strings can vary in size. That tiny
 difference turns out to have implications so large that we give strings [their
 very own chapter][strings].
 好吧，我承认这可能不是最*有用的*表达式，但我们正在取得进展。我们还缺少一种自带字面量形式的内置类型：字符串。它们要复杂得多，因为字符串的大小可以不同。这个微小的差异会产生巨大的影响，以至于我们给字符串单独开了一章。
-: 在静态类型和动态类型之外，还有第三类：单一类型（**unityped**）。在这种范式中，所有的变量都是一个类型，通常是一个机器寄存器整数。单一类型的语言在今天并不常见，但一些Forth派生语言和BCPL（启发了C的语言）是这样工作的。从这一刻起，clox是单一类型的。
-: 这个案例中涵盖了*虚拟机中内置支持*的每一种值。等到我们在语言中添加类时，用户定义的每个类并不需要在这个枚举中添加对应的条目。对于虚拟机而言，一个类的每个实例都是相同的类型：“instance”。换句话说，这是虚拟机中的“类型”概念，而不是用户的。
-: 使用联合体将比特位解释为不同类型是C语言的精髓。它提供了许多巧妙的优化，让你能够以内存安全型语言中不允许的方式对内存中的每个字节进行切分。但它也是非常不安全的，如果你不小心，它就可能会锯掉你的手指。
-: 一个聪明的语言黑客给了我一个想法，把“as”作为联合体字段名称，因为当你取出各种值时，读起来感觉很好，就像是强制转换一样。
-: 我们可以把标签字段移动到联合体字段之后，但这也没有多大帮助。每当我们创建一个Value数组时（这也是我们对Value的主要内存使用），C编译器都会在每个数值之间插入相同的填充，以保持双精度数对齐。
-: 没有`AS_NIL`宏，因为只有一个`nil`值，所以一个类型为`VAL_NIL`的Value不会携带任何额外的数据。
-: Lox的错误处理方法是相当……简朴的。所有的错误都是致命的，会立即停止解释器。用户代码无法从错误中恢复。如果Lox是一种真正的语言，这是我首先要补救的事情之一。
-: 为什么不直接弹出操作数然后验证它呢？我们可以这么做。在后面的章节中，将操作数留在栈上是很重要的，可以确保在运行过程中触发垃圾收集时，垃圾收集器能够找到它们。我在这里做了同样的事情，主要是出于习惯。
-: 如果你在寻找一个C教程，我喜欢[C程序设计语言](https://www.cs.princeton.edu/~bwk/cbook.html)，通常被称为“K&R”，以纪念它的作者。它并不完全是最新的，但是写作质量足以弥补这一点。
-: 仅仅显示发生错误的那一行并不能提供太多的上下文信息。最后是提供完整的堆栈跟踪，但是我们目前甚至还没有函数调用，所以也没有调用堆栈可以跟踪。
-: 你知道可以将宏作为参数传递给宏吗？现在你知道了！
-: 我不是在开玩笑，对于某些常量值的专用操作会更快。字节码虚拟机的大部分执行时间都花在读取和解码指令上。对于一个特定的行为，你需要的指令越少、越简单，它就越快。专用于常见操作的短指令是一种典型的优化。<BR>例如，Java字节码指令集中有专门的指令用于加载0.0、1.0、2.0以及从-1到5之间的整数。（考虑到大多数成熟的JVM在执行前都会对字节码进行JIT编译，这最终成为了一种残留的优化）
-: 现在我忍不住想弄清楚，对其它类型的值取反意味着什么。`nil`可能有自己的非值，有点像一个奇怪的伪零。对字符串取反可以，呃……，反转？
-: `a<=b`总是与`!(a>b)`相同吗？根据IEEE 754标准，当操作数为NaN时，所有的比较运算符都返回假。这意味着`NaN <= 1`是假的，`NaN > 1`也是假的。但我们的脱糖操作假定了后者是前者的非值。<BR>在本书中，我们不必纠结于此，但这些细节在你的真正的语言实现中会很重要。
-: 有些语言支持“隐式转换”，如果某个类型的值可以转换为另一个类型，那么这两种类型的值就可以被认为是相等的。举例来说，在JavaScript中，数字0等同于字符串“0”。这种松散性导致JS增加了一个单独的“严格相等”运算符，`===`。<BR>PHP认为字符串“1”和“01”是等价的，因为两者都可以转换成等价的数字，但是最根本的原因在于PHP是由Lovecraftian(译者注：洛夫克拉夫特，克苏鲁之父，可见作者对PHP怨念颇深)的邪神设计的，目的是摧毁人类心智。<BR>大多数具有单独的整数和浮点数类型的动态类型语言认为，如果数值相同，则不同数字类型的值是相等的（所以说，1.0等于1），但即便是这种看似无害的便利，如果一不小心也会让人吃不消。
 
 [strings]: strings.html
 

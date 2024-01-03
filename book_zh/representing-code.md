@@ -361,20 +361,11 @@ good language designer, we'll sprinkle a little syntactic sugar on top -- some
 extra convenience notation. In addition to terminals and nonterminals, we'll
 allow a few other kinds of expressions in the body of a rule:
 在少量的规则中可以填充无限多的字符串是相当奇妙的，但是我们可以更进一步。我们的符号是可行的，但有点乏味。所以，就像所有优秀的语言设计者一样，我们会在上面撒一些语法糖。除了终止符和非终止符之外，我们还允许在规则的主体中使用一些其他类型的表达式：
-- > Instead of repeating the rule name each time we want to add another production for it, we’ll allow a series of productions separated by a pipe (`|`).
-我们将允许一系列由管道符(`|`)分隔的生成式，避免在每次在添加另一个生成式时重复规则名称。
-- > Further, we’ll allow parentheses for grouping and then allow `|` within that to select one from a series of options within the middle of a production.
-此外，我们允许用括号进行分组，然后在分组中可以用`|`表示从一系列生成式中选择一个。
-- > Using recursion to support repeated sequences of symbols has a certain appealing purity, but it’s kind of a chore to make a separate named sub-rule each time we want to loop. So, we also use a postfix `*` to allow the previous symbol or group to be repeated zero or more times.
-使用递归来支持符号的重复序列有一定的吸引力，但每次我们要循环的时候，都要创建一个单独的命名子规则，有点繁琐。所以，我们也使用后缀`*`来允许前一个符号或组重复零次或多次。
-- > A postfix `+` is similar, but requires the preceding production to appear at least once.
-后缀`+`与此类似，但要求前面的生成式至少出现一次。
-- > A postfix `?` is for an optional production. The thing before it can appear zero or one time, but not more.
-后缀`？`表示可选生成式，它之前的生成式可以出现零次或一次，但不能出现多次。
 
 *   Instead of repeating the rule name each time we want to add another
     production for it, we'll allow a series of productions separated by a pipe
     (`|`).
+    我们将允许一系列由管道符(`|`)分隔的生成式，避免在每次在添加另一个生成式时重复规则名称。
 
     ```ebnf
     bread → "toast" | "biscuits" | "English muffin" ;
@@ -382,6 +373,7 @@ allow a few other kinds of expressions in the body of a rule:
 
 *   Further, we'll allow parentheses for grouping and then allow `|` within that
     to select one from a series of options within the middle of a production.
+    此外，我们允许用括号进行分组，然后在分组中可以用`|`表示从一系列生成式中选择一个。
 
     ```ebnf
     protein → ( "scrambled" | "poached" | "fried" ) "eggs" ;
@@ -392,6 +384,7 @@ allow a few other kinds of expressions in the body of a rule:
     make a separate named sub-rule each time we want to loop. So, we also use a
     postfix `*` to allow the previous symbol or group to be repeated zero or
     more times.
+    使用递归来支持符号的重复序列有一定的吸引力，但每次我们要循环的时候，都要创建一个单独的命名子规则，有点繁琐。所以， 我们也使用后缀`*`来允许前一个符号或组重复零次或多次。
 
     ```ebnf
     crispiness → "really" "really"* ;
@@ -408,6 +401,7 @@ Scheme编程语言就是这样工作的。它根本没有内置的循环功能�
 
 *   A postfix `+` is similar, but requires the preceding production to appear
     at least once.
+    后缀`+`与此类似，但要求前面的生成式至少出现一次。
 
     ```ebnf
     crispiness → "really"+ ;
@@ -415,6 +409,7 @@ Scheme编程语言就是这样工作的。它根本没有内置的循环功能�
 
 *   A postfix `?` is for an optional production. The thing before it can appear
     zero or one time, but not more.
+    后缀`？`表示可选生成式，它之前的生成式可以出现零次或一次，但不能出现多次。
 
     ```ebnf
     breakfast → protein ( "with" breakfast "on the side" )? ;
@@ -469,24 +464,20 @@ chapters. Once we have that mini-language represented, parsed, and interpreted,
 then later chapters will progressively add new features to it, including the new
 syntax. For now, we are going to worry about only a handful of expressions:
 相反，我们将在接下来的几章中摸索该语言的一个子集。一旦我们可以对这个迷你语言进行表示、解析和解释，那么在之后的章节中将逐步为它添加新的特性，包括新的语法。现在，我们只关心几个表达式：
-- > **Literals.** Numbers, strings, Booleans, and `nil`.
-**字面量**。数字、字符串、布尔值以及`nil`。
-- > **Unary expressions.** A prefix `!` to perform a logical not, and `-` to negate a number.
-**一元表达式**。前缀`!`执行逻辑非运算，`-`对数字求反。
-- > **Binary expressions.** The infix arithmetic (`+`, `-`, `*`, `/`) and logic operators (`==`, `!=`, `<`, `<=`, `>`, `>=`) we know and love.
-**二元表达式**。我们已经知道的中缀算术符（`+，-，*，/`）和逻辑运算符（`==，！=，<，<=，>，> =`）。
-- > **Parentheses.** A pair of `(` and `)` wrapped around an expression.
-**括号**。表达式前后的一对`（`和`）`。
 
 *   **Literals.** Numbers, strings, Booleans, and `nil`.
+    **字面量**。数字、字符串、布尔值以及`nil`。
 
 *   **Unary expressions.** A prefix `!` to perform a logical not, and `-` to
     negate a number.
+    **一元表达式**。前缀`!`执行逻辑非运算，`-`对数字求反。
 
 *   **Binary expressions.** The infix arithmetic (`+`, `-`, `*`, `/`) and logic
     operators (`==`, `!=`, `<`, `<=`, `>`, `>=`) we know and love.
+    **二元表达式**。我们已经知道的中缀算术符（`+，-，*，/`）和逻辑运算符（`==，！=，<，<=，>，> =`）。
 
 *   **Parentheses.** A pair of `(` and `)` wrapped around an expression.
+    **括号**。表达式前后的一对`（`和`）`。
 
 That gives us enough syntax for expressions like:
 这已经为表达式提供了足够的语法，例如：

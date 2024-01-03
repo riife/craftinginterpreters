@@ -389,12 +389,6 @@ some larger blob of data and "hashes" it to produce a fixed-size integer **hash
 code** whose value depends on all of the bits of the original data. A <span
 name="crypto">good</span> hash function has three main goals:
 终于，我们来到了“哈希表”的“哈希”部分。哈希函数接受一些更大的数据块，并将其“哈希”生成一个固定大小的整数**哈希码**，该值取决于原始数据的每一个比特。一个好的哈希函数有三个主要目标：
-- > **It must be *deterministic*.** The same input must always hash to the same number. If the same variable ends up in different buckets at different points in time, it’s gonna get really hard to find it.
-**它必须是*确定性*的**。相同的输入必须总是哈希到相同的数字。如果同一个变量在不同的时间点出现在不同的桶中，那就很难找到它了。
-- > **It must be *uniform*.** Given a typical set of inputs, it should produce a wide and evenly distributed range of output numbers, with as few clumps or patterns as possible. We want it to scatter values across the whole numeric range to minimize collisions and clustering.
-**它必须是*均匀*的**。给定一组典型的输入，它应该产生一个广泛而均匀分布的输出数字范围，尽可能少地出现簇或模式。我们希望它能在整个数字范围内分散数值，以尽量减少碰撞和聚类。
-- > **It must be *fast*.** Every operation on the hash table requires us to hash the key first. If hashing is slow, it can potentially cancel out the speed of the underlying array storage.
-**它必须是*快速*的**。对哈希表的每个操作都需要我们首先对键进行哈希。如果哈希计算很慢，就有可能会抵消底层数组存储的速度优势。
 
 <aside name="crypto">
 
@@ -407,15 +401,18 @@ hashed. We, thankfully, don't need to worry about those concerns for this book.
 *   **It must be *deterministic*.** The same input must always hash to the same
     number. If the same variable ends up in different buckets at different
     points in time, it's gonna get really hard to find it.
+    **它必须是*确定性*的**。相同的输入必须总是哈希到相同的数字。如果同一个变量在不同的时间点出现在不同的桶中，那就很难找到它了。
 
 *   **It must be *uniform*.** Given a typical set of inputs, it should produce a
     wide and evenly distributed range of output numbers, with as few clumps or
     patterns as possible. We want it to <span name="scatter">scatter</span>
     values across the whole numeric range to minimize collisions and clustering.
+    **它必须是*均匀*的**。给定一组典型的输入，它应该产生一个广泛而均匀分布的输出数字范围，尽可能少地出现簇或模式。我们希望它能在整个数字范围内分散数值，以尽量减少碰撞和聚类。
 
 *   **It must be *fast*.** Every operation on the hash table requires us to hash
     the key first. If hashing is slow, it can potentially cancel out the speed
     of the underlying array storage.
+    **它必须是*快速*的**。对哈希表的每个操作都需要我们首先对键进行哈希。如果哈希计算很慢，就有可能会抵消底层数组存储的速度优势。
 
 <aside name="scatter">
 
@@ -675,23 +672,19 @@ ideally, we'll be able to find or place the entry.
 
 There are a few cases to check for:
 有几种情况需要检查：
-- > If the key for the Entry at that array index is `NULL`, then the bucket is empty. If we’re using `findEntry()` to look up something in the hash table, this means it isn’t there. If we’re using it to insert, it means we’ve found a place to add the new entry.
-如果数组索引处的Entry的键为`NULL`，则表示桶为空。如果我们使用`findEntry()`在哈希表中查找东西，这意味着它不存在。如果我们用来插入，这表明我们找到了一个可以插入新条目的地方。
-- > If the key in the bucket is equal to the key we’re looking for, then that key is already present in the table. If we’re doing a lookup, that’s good—we’ve found the key we seek. If we’re doing an insert, this means we’ll be replacing the value for that key instead of adding a new entry.
-如果桶中的键等于我们要找的键，那么这个键已经存在于表中了。如果我们在做查找，这很好——我们已经找到了要查找的键。如果我们在做插入，这意味着我们要替换该键的值，而不是添加一个新条目。
-- > Otherwise, the bucket has an entry in it, but with a different key. This is a collision. In that case, we start probing. That’s what that `for` loop does. We start at the bucket where the entry would ideally go. If that bucket is empty or has the same key, we’re done. Otherwise, we advance to the next element—this is the *linear* part of “linear probing”—and check there. If we go past the end of the array, that second modulo operator wraps us back around to the beginning.
-否则，就是桶中有一个条目，但具有不同的键。这就是一个冲突。在这种情况下，我们要开始探测。这也就是`for`循环所做的。我们从条目理想的存放位置开始。如果这个桶是空的或者有相同的键，我们就完成了。否则，我们就前进到下一个元素——这就是“线性探测”的*线性*部分——并进行检查。如果我们超过了数组的末端，第二个模运算符就会把我们重新带回起点。
 
 *   If the key for the Entry at that array index is `NULL`, then the bucket is
     empty. If we're using `findEntry()` to look up something in the hash table,
     this means it isn't there. If we're using it to insert, it means we've found
     a place to add the new entry.
+    如果数组索引处的Entry的键为`NULL`，则表示桶为空。如果我们使用`findEntry()`在哈希表中查找东西，这意味着它不存在。如果我们用来插入，这表明我们找到了一个可以插入新条目的地方。
 
 *   If the key in the bucket is <span name="equal">equal</span> to the key we're
     looking for, then that key is already present in the table. If we're doing a
     lookup, that's good -- we've found the key we seek. If we're doing an insert,
     this means we'll be replacing the value for that key instead of adding a new
     entry.
+    如果桶中的键等于我们要找的键，那么这个键已经存在于表中了。如果我们在做查找，这很好——我们已经找到了要查找的键。如果我们在做插入，这意味着我们要替换该键的值，而不是添加一个新条目。
 
 <aside name="equal">
 
@@ -709,6 +702,7 @@ enough, it's a hash table that provides the tool we need.
     the next element -- this is the *linear* part of "linear probing" -- and
     check there. If we go past the end of the array, that second modulo operator
     wraps us back around to the beginning.
+    否则，就是桶中有一个条目，但具有不同的键。这就是一个冲突。在这种情况下，我们要开始探测。这也就是`for`循环所做的。我们从条目理想的存放位置开始。如果这个桶是空的或者有相同的键，我们就完成了。否则，我们就前进到下一个元素——这就是“线性探测”的*线性*部分——并进行检查。如果我们超过了数组的末端，第二个模运算符就会把我们重新带回起点。
 
 We exit the loop when we find either an empty bucket or a bucket with the same
 key as the one we're looking for. You might be wondering about an infinite loop.
@@ -1203,22 +1197,6 @@ at runtime. If testing a string for equality is slow, then that means looking up
 a method by name is slow. And if *that's* slow in your object-oriented language,
 then *everything* is slow.
 我们还加快了测试字符串是否相等的速度。这对于用户在字符串上的`==`操作是很好的。但在Lox这样的动态类型语言中，这一点更为关键，因为在这种语言中，方法调用和实例属性都是在运行时根据名称查找的。如果测试字符串是否相等是很慢的，那就意味着按名称查找方法也很慢。在面向对象的语言中，如果这一点很慢，那么一切都会变得很慢。
-: 更确切地说，平均查找时间是常数。最坏情况下，性能可能会更糟。在实践中，很容易可以避免退化行为并保持在快乐的道路上。
-: 这种限制并不算*太*牵强。达特茅斯大学的初版BASIC只允许变量名是一个字母，后面可以跟一个数字。
-: 同样，这个限制也不是那么疯狂。早期的C语言链接器只将外部标识符的前6个字符视为有意义的。后面的一切都被忽略了。如果你曾好奇为什么C语言标准库对缩写如此着迷——比如，`strncmp()`——事实证明，这并不完全是因为当时的小屏幕（或小电视）。
-: 我这里使用了2的幂作为数组的大小，但其实不需要这样。有些类型的哈希表在使用2的幂时效果最好，包括我们将在本书中建立的哈希表。其它类型则更偏爱素数作为数组大小或者是其它规则。
-: 有一些技巧可以优化这一点。许多实现将第一个条目直接存储在桶中，因此在通常只有一个条目的情况下，不需要额外的间接指针。你也可以让每个链表节点存储几个条目以减少指针的开销。
-: 它被称为“开放”地址，是因为条目最终可能会出现在其首选地址（桶）之外的地方。它被称为“封闭”哈希，是因为所有的条目都存储在桶数组内。
-: 如果你想了解更多（你应该了解，因为其中一些真的很酷），可以看看“双重哈希(double hashing)”、“布谷鸟哈希(cuckoo hashing)”以及“罗宾汉哈希(Robin Hood hashing)”。
-: 哈希函数也被用于密码学。在该领域中，“好”有一个更严格的定义，以避免暴露有关被哈希的数据的细节。值得庆幸的是，我们在本书中不需要担心这些问题。
-: 哈希表最初的名称之一是“散列表”，因为它会获取条目并将其分散到整个数组中。“哈希”这个词来自于这样的想法：哈希函数将输入数据分割开来，然后将其组合成一堆，从所有这些比特位中得出一个数字。
-: 在clox中，我们只需要支持字符串类型的键。处理其它类型的键不会增加太多复杂性。只要你能比较两个对象是否相等，并把它们简化为比特序列，就很容易将它们用作哈希键。
-: 理想的最大负载因子根据哈希函数、冲突处理策略和你将会看到的典型键集而变化。由于像Lox这样的玩具语言没有“真实世界”的数据集，所以很难对其进行优化，所以我随意地选择了75%。当你构建自己的哈希表时，请对其进行基准测试和调整。
-: 看起来我们在用`==`判断两个字符串是否相等。这行不通，对吧？相同的字符串可能会在内存的不同地方有两个副本。不要害怕，聪明的读者。我们会进一步解决这个问题。而且，奇怪的是，是一个哈希表提供了我们需要的工具。
-: 使用拉链法时，删除条目就像从链表中删除一个节点一样容易。
-:
-: 在实践中，我们会首先比较两个字符串的哈希码。这样可以快速检测到几乎所有不同的字符串——如果不能，它就不是一个很好的哈希函数。但是，当两个哈希值相同时，我们仍然需要比较字符，以确保没有在不同的字符串上出现哈希冲突。
-: 我猜想“intern”是“internal（内部）”的缩写。我认为这个想法是，语言的运行时保留了这些字符串的“内部”集合，而其它字符串可以由用户创建并漂浮在内存中。当你要驻留一个字符串时，你要求运行时将该字符串添加到该内部集合，并返回一个指向该字符串的指针。<BR>不同语言在字符串驻留程度以及对用户的暴露方式上有所不同。Lua会驻留*所有*字符串，这也是clox要做的事情。Lisp、Scheme、Smalltalk、Ruby和其他语言都有一个单独的类似字符串的类型“symbol（符号）”，它是隐式驻留的。（这就是为什么他们说Ruby中的符号“更快”）Java默认会驻留常量字符串，并提供一个API让你显式地驻留传入的任何字符串。
 
 <div class="challenges">
 

@@ -153,10 +153,6 @@ turn affects the result of evaluating the parsed tree. The way mathematicians
 have addressed this ambiguity since blackboards were first invented is by
 defining rules for precedence and associativity.
 换句话说，这个语法可以将该表达式看作是 `(6 / 3) - 1`或`6 / (3 - 1)`。`binary` 规则运行操作数以任意方式嵌套，这反过来又会影响解析数的计算结果。自从黑板被发明以来，数学家们解决这种模糊性的方法就是定义优先级和结合性规则。
-- > **Precedence** determines which operator is evaluated first in an expression containing a mixture of different operators. Precedence rules tell us that we evaluate the `/` before the `-` in the above example. Operators with higher precedence are evaluated before operators with lower precedence. Equivalently, higher precedence operators are said to “bind tighter”.
-- **优先级**决定了在一个包含不同运算符的混合表达式中，哪个运算符先被执行。优先级规则告诉我们，在上面的例子中，我们在`-`之前先计算`/`。优先级较高的运算符在优先级较低的运算符之前计算。同样，优先级较高的运算符被称为 "更严格的绑定"。
-- > **Associativity** determines which operator is evaluated first in a series of the *same* operator. When an operator is **left-associative** (think “left-to-right”), operators on the left evaluate before those on the right. Since `-` is left-associative, this expression:
-- **结合性**决定在一系列相同操作符中先计算哪个操作符。如果一个操作符是**左结合**的(可以认为是“从左到右”)时，左边的操作符在右边的操作符之前计算。因为`-`是左结合的，下面的表达式：
 
 *   <span name="nonassociative">**Precedence**</span> determines which operator
     is evaluated first in an expression containing a mixture of different
@@ -164,11 +160,13 @@ defining rules for precedence and associativity.
     in the above example. Operators with higher precedence are evaluated
     before operators with lower precedence. Equivalently, higher precedence
     operators are said to "bind tighter".
+    **优先级**决定了在一个包含不同运算符的混合表达式中，哪个运算符先被执行。优先级规则告诉我们，在上面的例子中，我们在`-`之前先计算`/`。优先级较高的运算符在优先级较低的运算符之前计算。同样，优先级较高的运算符被称为 "更严格的绑定"。
 
 *   **Associativity** determines which operator is evaluated first in a series
     of the *same* operator. When an operator is **left-associative** (think
     "left-to-right"), operators on the left evaluate before those on the right.
     Since `-` is left-associative, this expression:
+    **结合性**决定在一系列相同操作符中先计算哪个操作符。如果一个操作符是**左结合**的(可以认为是“从左到右”)时，左边的操作符在右边的操作符之前计算。因为`-`是左结合的，下面的表达式：
 
     ```lox
     5 - 3 - 1
@@ -736,15 +734,13 @@ we don't, that's an error.
 
 A parser really has two jobs:
 解析器实际上有两项工作：
-1. > Given a valid sequence of tokens, produce a corresponding syntax tree.
-给定一个有效的标记序列，生成相应的语法树。
-2. > Given an *invalid* sequence of tokens, detect any errors and tell the user about their mistakes.
-给定一个*无效*的标记序列，检测错误并告知用户。
 
 1.  Given a valid sequence of tokens, produce a corresponding syntax tree.
+给定一个有效的标记序列，生成相应的语法树。
 
 2.  Given an *invalid* sequence of tokens, detect any errors and tell the
     user about their mistakes.
+给定一个*无效*的标记序列，检测错误并告知用户。
 
 Don't underestimate how important the second job is! In modern IDEs and editors,
 the parser is constantly reparsing code -- often while the user is still editing
@@ -771,14 +767,11 @@ who knows what the future will bring?
 There are a couple of hard requirements for when the parser runs into a syntax
 error. A parser must:
 当解析器遇到语法错误时，有几个硬性要求。解析器必须能够：
-- > **Detect and report the error.** If it doesn’t detect the error and passes the resulting malformed syntax tree on to the interpreter, all manner of horrors may be summoned.
-**检测并报告错误。**如果它没有检测到错误，并将由此产生的畸形语法树传递给解释器，就会出现各种可怕的情况。
-- > **Avoid crashing or hanging.** Syntax errors are a fact of life, and language tools have to be robust in the face of them. Segfaulting or getting stuck in an infinite loop isn’t allowed. While the source may not be valid *code*, it’s still a valid *input to the parser* because users use the parser to learn what syntax is allowed.
-**避免崩溃或挂起。**语法错误是生活中不可避免的事实，面对语法错误，语言工具必须非常健壮。段错误或陷入无限循环是不允许的。虽然源代码可能不是有效的*代码*，但它仍然是*解析器的有效输入*，因为用户使用解析器来了解什么是允许的语法。
 
 *   **Detect and report the error.** If it doesn't detect the <span
     name="error">error</span> and passes the resulting malformed syntax tree on
     to the interpreter, all manner of horrors may be summoned.
+    **检测并报告错误。**如果它没有检测到错误，并将由此产生的畸形语法树传递给解释器，就会出现各种可怕的情况。
 
     <aside name="error">
 
@@ -793,16 +786,11 @@ error. A parser must:
     stuck in an infinite loop isn't allowed. While the source may not be valid
     *code*, it's still a valid *input to the parser* because users use the
     parser to learn what syntax is allowed.
+    **避免崩溃或挂起。**语法错误是生活中不可避免的事实，面对语法错误，语言工具必须非常健壮。段错误或陷入无限循环是不允许的。虽然源代码可能不是有效的*代码*，但它仍然是*解析器的有效输入*，因为用户使用解析器来了解什么是允许的语法。
 
 Those are the table stakes if you want to get in the parser game at all, but you
 really want to raise the ante beyond that. A decent parser should:
 如果你想参与到解析器的游戏中来，这些就是桌面的筹码，但你真的想提高赌注，除了这些。一个像样的解析器还应该：
-- > **Be fast.** Computers are thousands of times faster than they were when parser technology was first invented. The days of needing to optimize your parser so that it could get through an entire source file during a coffee break are over. But programmer expectations have risen as quickly, if not faster. They expect their editors to reparse files in milliseconds after every keystroke.
-**要快。**计算机的速度比最初发明解析器技术时快了几千倍。那种需要优化解析器，以便它能在喝咖啡的时候处理完整个源文件的日子已经一去不复返了。但是程序员的期望值也上升得同样快，甚至更快。他们希望他们的编辑器能在每次击键后的几毫秒内回复文件。
-- > **Report as many distinct errors as there are.** Aborting after the first error is easy to implement, but it’s annoying for users if every time they fix what they think is the one error in a file, a new one appears. They want to see them all.
-**尽可能多地报告出不同的错误**。在第一个错误后中止是很容易实现的，但是如果每次当用户修复文件中的一个错误时，又出现了另一个新的错误，这对用户来说是很烦人的。他们希望一次看到所有的错误。
-- > **Minimize \*cascaded\* errors.** Once a single error is found, the parser no longer really knows what’s going on. It tries to get itself back on track and keep going, but if it gets confused, it may report a slew of ghost errors that don’t indicate other real problems in the code. When the first error is fixed, those phantoms disappear, because they reflect only the parser’s own confusion. Cascaded errors are annoying because they can scare the user into thinking their code is in a worse state than it is.
-**最小化*级联*错误**。一旦发现一个错误，解析器就不再能知道发生了什么。它会试图让自己回到正轨并继续工作，但如果它感到混乱，它可能会报告大量的幽灵错误，而这些错误并不表明代码中存在其它问题。当第一个错误被修正后，这些幽灵错误就消失了，因为它们只反映了解析器自身的混乱。级联错误很烦人，因为它们会让用户害怕，让用户认为自己的代码比实际情况更糟糕。
 
 *   **Be fast.** Computers are thousands of times faster than they were when
     parser technology was first invented. The days of needing to optimize your
@@ -810,11 +798,13 @@ really want to raise the ante beyond that. A decent parser should:
     break are over. But programmer expectations have risen as quickly, if not
     faster. They expect their editors to reparse files in milliseconds after
     every keystroke.
+    **要快**。计算机的速度比最初发明解析器技术时快了几千倍。那种需要优化解析器，以便它能在喝咖啡的时候处理完整个源文件的日子已经一去不复返了。但是程序员的期望值也上升得同样快，甚至更快。他们希望他们的编辑器能在每次击键后的几毫秒内回复文件。
 
 *   **Report as many distinct errors as there are.** Aborting after the first
     error is easy to implement, but it's annoying for users if every time they
     fix what they think is the one error in a file, a new one appears. They
     want to see them all.
+    **尽可能多地报告出不同的错误**。在第一个错误后中止是很容易实现的，但是如果每次当用户修复文件中的一个错误时，又出现了另一个新的错误，这对用户来说是很烦人的。他们希望一次看到所有的错误。
 
 *   **Minimize *cascaded* errors.** Once a single error is found, the parser no
     longer really knows what's going on. It tries to get itself back on track
@@ -823,6 +813,7 @@ really want to raise the ante beyond that. A decent parser should:
     error is fixed, those phantoms disappear, because they reflect only the
     parser's own confusion. Cascaded errors are annoying because they can scare
     the user into thinking their code is in a worse state than it is.
+    **最小化*级联*错误**。一旦发现一个错误，解析器就不再能知道发生了什么。它会试图让自己回到正轨并继续工作，但如果它感到混乱，它可能会报告大量的幽灵错误，而这些错误并不表明代码中存在其它问题。当第一个错误被修正后，这些幽灵错误就消失了，因为它们只反映了解析器自身的混乱。级联错误很烦人，因为它们会让用户害怕，让用户认为自己的代码比实际情况更糟糕。
 
 The last two points are in tension. We want to report as many separate errors as
 we can, but we don't want to report ones that are merely side effects of an

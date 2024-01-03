@@ -540,33 +540,18 @@ is what we want Lox to do too. When this program runs, inside the body of
 执行流程看起来是这样的：</p>
 <ol>
 <li>
-<blockquote>
 <p>We call <code>test()</code> on an instance of C.
 我们在C的一个实例上调用<code>test()</code>。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>That enters the <code>test()</code> method inherited from B. That calls <code>super.method()</code>.
-这就进入了从B中继承的<code>test()</code>方法，其中又会调用<code>super.method()</code>。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>The superclass of B is A, so that chains to <code>method()</code> on A, and the program prints “A method”.
-B的超类是A，所以链接到A中的<code>method()</code>，程序会打印出“A method”。</p>
-</blockquote>
-</li>
-<li>
-<p>We call <code>test()</code> on an instance of C.</p>
 </li>
 <li>
 <p>That enters the <code>test()</code> method inherited from B. That calls
-<code>super.method()</code>.</p>
+<code>super.method()</code>.
+这就进入了从B中继承的<code>test()</code>方法，其中又会调用<code>super.method()</code>。</p>
 </li>
 <li>
 <p>The superclass of B is A, so that chains to <code>method()</code> on A, and the program
-prints &ldquo;A method&rdquo;.</p>
+prints &ldquo;A method&rdquo;.
+B的超类是A，所以链接到A中的<code>method()</code>，程序会打印出“A method”。</p>
 </li>
 </ol>
 </aside>
@@ -929,8 +914,7 @@ the Java standard library, and the JVM runtime.
 write a few fun Lox programs and run them in your interpreter. (You may want to
 add a few more native methods for things like reading user input.) When you&rsquo;re
 refreshed and ready, we&rsquo;ll embark on our <a href="a-bytecode-virtual-machine.html">next adventure</a>.
-这标志着第二部分的结束，但不是这本书的结束。休息一下，也许可以编写几个Lox程序在你的解释器中运行一下（你可能需要添加一些本地方法来支持读取用户的输入等操作）。当你重新振作之后，我们将开始下一次冒险。
-: “Super-”和“sub-”在拉丁语中表示“上面”和“下面”。把继承树想象成一个根在顶部的家族树——在这个图上，子类就在超类的下面。更一般地说，“sub-”指的是细化或被更一般的概念所包含的事物。在动物学中，子类指的是对更大的生物类的一个精细分类。在集合论中，子集被一个更大的超集包含，该超集中包含子集的所有元素，可能还有更多元素。集合论和编程语言在类型论中相遇，就产生了“超类型”和“子类型”。在静态类型的面向对象语言中，一个子类通常也是其超类的一个子类型。</p>
+这标志着第二部分的结束，但不是这本书的结束。休息一下，也许可以编写几个Lox程序在你的解释器中运行一下（你可能需要添加一些本地方法来支持读取用户的输入等操作）。当你重新振作之后，我们将开始下一次冒险。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>

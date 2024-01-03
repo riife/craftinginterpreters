@@ -33,14 +33,12 @@ we can parse -- literal, operator, etc. -- we need a corresponding chunk of code
 that knows how to evaluate that tree and produce a result. That raises two
 questions:
 现在，我们的解释器只支持表达式。因此，为了“执行”代码，我们要计算一个表达式时并生成一个值。对于我们可以解析的每一种表达式语法——字面量，操作符等——我们都需要一个相应的代码块，该代码块知道如何计算该语法树并产生结果。这也就引出了两个问题：
-1. > What kinds of values do we produce?
-我们要生成什么类型的值？
-2. > How do we organize those chunks of code?
-我们如何组织这些代码块？
 
 1. What kinds of values do we produce?
+我们要生成什么类型的值？
 
 2. How do we organize those chunks of code?
+我们如何组织这些代码块？
 
 Taking them on one at a time...
 让我们来逐个击破。

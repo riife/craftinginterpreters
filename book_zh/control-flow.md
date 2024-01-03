@@ -1,8 +1,8 @@
 > Logic, like whiskey, loses its beneficial effect when taken in too large
 > quantities.
->
+> 逻辑和威士忌一样，如果摄入太多，就会失去其有益的效果。
+> 
 > <cite>Edward John Moreton Drax Plunkett, Lord Dunsany</cite>
-逻辑和威士忌一样，如果摄入太多，就会失去其有益的效果。
 
 Compared to [last chapter's][statements] grueling marathon, today is a
 lighthearted frolic through a daisy meadow. But while the work is easy, the
@@ -35,12 +35,16 @@ The most famous is [**Russell's paradox**][russell]. Initially, set theory
 allowed you to define any sort of set. If you could describe it in English, it
 was valid. Naturally, given mathematicians' predilection for self-reference,
 sets can contain other sets. So Russell, rascal that he was, came up with:
+其中最著名的就是[罗素悖论][russell]。最初，集合理论允许你定义任何类型的集合。只要你能用英语描述它，它就是有效的。自然，鉴于数学家对自引用的偏爱，集合可以包含其他的集合。于是，罗素，这个无赖，提出了：
 
 *R is the set of all sets that do not contain themselves.*
+
+*R是所有不包含自身的集合的集合。*
 
 Does R contain itself? If it doesn't, then according to the second half of the
 definition it should. But if it does, then it no longer meets the definition.
 Cue mind exploding.
+R是否包含自己？如果不包含，那么根据定义的后半部分，它应该包含；如果包含，那么它就不满足定义。脑袋要炸了。
 
 [russell]: https://en.wikipedia.org/wiki/Russell%27s_paradox
 
@@ -73,6 +77,7 @@ minimum set of machinery that is still powerful enough to compute any of a
 They proved the answer to the first question is "no" by showing that the
 function that returns the truth value of a given statement is *not* a computable
 one.
+他们通过证明:返回给定语句真值的函数不是可计算的函数，从而证明了第一个问题的答案是 "否"。
 
 </aside>
 
@@ -88,6 +93,7 @@ calculus at their core.
 Turing called his inventions "a-machines" for "automatic". He wasn't so
 self-aggrandizing as to put his *own* name on them. Later mathematicians did
 that for him. That's how you get famous while still retaining some modesty.
+图灵把他的发明称为 “a-machines”，表示“automatic(自动)”。他并没有自吹自擂到把自己的名字放入其中。后来的数学家们为他做了这些。这就是你如何在成名的同时还能保持谦虚。
 
 </aside>
 
@@ -119,6 +125,7 @@ name="memory">second</span>.
 We *almost* have the third too. You can create and concatenate strings of
 arbitrary size, so you can *store* unbounded memory. But we don't have any way
 to access parts of a string.
+我们也 *基本上* 具备第三个条件了。你可以创建和拼接任意大小的字符串，因此也就可以存储无界 *内存* 。但我们还无法访问字符串的各个部分。
 
 </aside>
 
@@ -127,19 +134,19 @@ to access parts of a string.
 Enough history, let's jazz up our language. We can divide control flow roughly
 into two kinds:
 说完了历史，现在让我们把语言优化一下。我们大致可以把控制流分为两类：
-- > **Conditional** or **branching control flow** is used to *not* execute some piece of code. Imperatively, you can think of it as jumping *ahead* over a region of code.
-**条件**或**分支控制流**是用来不执行某些代码的。意思是，你可以把它看作是跳过了代码的一个区域。
-- > **Looping control flow** executes a chunk of code more than once. It jumps *back* so that you can do something again. Since you don’t usually want *infinite* loops, it typically has some conditional logic to know when to stop looping as well.
-**循环控制流**是用于多次执行一块代码的。它会*向回*跳转，从而能再次执行某些代码。用户通常不需要无限循环，所以一般也会有一些条件逻辑用于判断何时停止循环。
 
 *   **Conditional** or **branching control flow** is used to *not* execute
     some piece of code. Imperatively, you can think of it as jumping *ahead*
     over a region of code.
 
+    **条件**或**分支控制流**是用来不执行某些代码的。意思是，你可以把它看作是跳过了代码的一个区域。
+
 *   **Looping control flow** executes a chunk of code more than once. It jumps
     *back* so that you can do something again. Since you don't usually want
     *infinite* loops, it typically has some conditional logic to know when to
     stop looping as well.
+
+    **循环控制流**是用于多次执行一块代码的。它会*向回*跳转，从而能再次执行某些代码。用户通常不需要无限循环，所以一般也会有一些条件逻辑用于判断何时停止循环。
 
 Branching is simpler, so we'll start there. C-derived languages have two main
 conditional execution features, the `if` statement and the perspicaciously named
@@ -152,6 +159,7 @@ conditionally execute expressions.
 
 The conditional operator is also called the "ternary" operator because it's the
 only operator in C that takes three operands.
+条件操作符也称为三元操作符，因为它是C语言中唯一接受三个操作数的操作符。
 
 </aside>
 
@@ -177,6 +185,7 @@ The semicolons in the rules aren't quoted, which means they are part of the
 grammar metasyntax, not Lox's syntax. A block does not have a `;` at the end and
 an `if` statement doesn't either, unless the then or else statement happens to
 be one that ends in a semicolon.
+规则中的分号没有加引号，这意味着它们是语法元语法的一部分，而不是 Lox 的语法。块的末尾没有 `;`; `if` 语句也没有，除非 `then`或 `else` 语句恰好以分号结束。
 
 </aside>
 
@@ -191,6 +200,7 @@ if语句有一个表达式作为条件，然后是一个在条件为真时要执
 <aside name="if-ast">
 
 The generated code for the new node is in [Appendix II][appendix-if].
+新节点的生成代码见[附录 II][appendix-if]。
 
 [appendix-if]: appendix-ii.html#if-statement
 
@@ -215,11 +225,13 @@ can't tell when it has reached the end of the condition expression. But the
 *opening* parenthesis after `if` doesn't do anything useful. Dennis Ritchie put
 it there so he could use `)` as the ending delimiter without having unbalanced
 parentheses.
+条件周围的圆括号只有一半是有用的。您需要在条件和then语句之间设置某种分隔符，否则解析器无法判断是否到达条件表达式的末尾。但是` if` 后面的小括号并没有什么用处。Dennis Ritchie 把它放在那里是为了让他可以使用` )`作为结尾的分隔符，而且不会出现不对称的小括号。
 
 Other languages like Lua and some BASICs use a keyword like `then` as the ending
 delimiter and don't have anything before the condition. Go and Swift instead
 require the statement to be a braced block. That lets them use the `{` at the
 beginning of the statement to tell when the condition is done.
+其他语言，比如Lua和一些BASICs，使用`then`这样的关键字作为结束分隔符，在条件表达式之前没有任何内容。而Go和Swift则要求语句必须是一个带括号的块，这样就可以使用语句开头的`{`来判断条件表达式是否结束。
 
 </aside>
 
@@ -240,16 +252,15 @@ Here's the riddle: Which `if` statement does that else clause belong to? This
 isn't just a theoretical question about how we notate our grammar. It actually
 affects how the code executes:
 谜题是这样的:这里的`else`子句属于哪个`if`语句?这不仅仅是一个关于如何标注语法的理论问题。它实际上会影响代码的执行方式：
-- > If we attach the else to the first `if` statement, then `whenFalse()` is called if `first` is falsey, regardless of what value `second` has.
-如果我们将`else`语句关联到第一个`if`语句，那么当`first`为假时，无论`second`的值是多少，都将调用`whenFalse()`。
-- > If we attach it to the second `if` statement, then `whenFalse()` is only called if `first` is truthy and `second` is falsey.
-如果我们将`else`语句关联到第二个`if`语句，那么只有当`first`为真并且`second`为假时，才会调用`whenFalse()`。
+
 
 *   If we attach the else to the first `if` statement, then `whenFalse()` is
     called if `first` is falsey, regardless of what value `second` has.
+    如果我们将`else`语句关联到第一个`if`语句，那么当`first`为假时，无论`second`的值是多少，都将调用`whenFalse()`。
 
 *   If we attach it to the second `if` statement, then `whenFalse()` is only
     called if `first` is truthy and `second` is falsey.
+    如果我们将`else`语句关联到第二个`if`语句，那么只有当`first`为真并且`second`为假时，才会调用`whenFalse()`。
 
 Since else clauses are optional, and there is no explicit delimiter marking the
 end of the `if` statement, the grammar is ambiguous when you nest `if`s in this
@@ -267,6 +278,7 @@ way. This classic pitfall of syntax is called the **[dangling else][]** problem.
 Here, formatting highlights the two ways the else could be parsed. But note that
 since whitespace characters are ignored by the parser, this is only a guide to
 the human reader.
+在这里，格式化突出了其他内容的两种解析方式。但要注意的是，由于解析器会忽略空白字符，因此这只是给人类读者的一个指南。
 
 </aside>
 
@@ -337,6 +349,7 @@ right between `assignment` and `equality`.
 
 I've always wondered why they don't have the same precedence, like the various
 comparison or equality operators do.
+我一直在想，为什么它们不像各种比较或相等运算符那样具有相同的优先级？
 
 </aside>
 
@@ -358,6 +371,7 @@ expression rules.
 <aside name="same">
 
 The *syntax* doesn't care that they short-circuit. That's a semantic concern.
+语法并不关心它们是否会短路。这是语义问题。
 
 </aside>
 
@@ -374,6 +388,7 @@ own visit method.
 <aside name="logical-ast">
 
 The generated code for the new node is in [Appendix II][appendix-logical].
+新节点的生成代码见[附录 II][appendix-logical]。
 
 [appendix-logical]: appendix-ii.html#logical-expression
 
@@ -462,6 +477,7 @@ name="while-ast">syntax tree node</span>.
 <aside name="while-ast">
 
 The generated code for the new node is in [Appendix II][appendix-while].
+新节点的生成代码见[附录 II][appendix-while]。
 
 [appendix-while]: appendix-ii.html#while-statement
 
@@ -529,38 +545,37 @@ arbitrary user-defined sequences. C# has `foreach`, Java has "enhanced for",
 even C++ has range-based `for` statements now. Those offer cleaner syntax than
 C's `for` statement by implicitly calling into an iteration protocol that the
 object being looped over supports.
+大多数现代语言都有高级循环语句，用于迭代用户定义的任意序列。C# 有 `foreach`，Java 有 "enhanced for"，甚至 C++ 现在也有基于范围的 `for` 语句。这些语句通过隐式调用被循环对象所支持的迭代协议，提供了比 C 的 for 语句更简洁的语法。
 
 I love those. For Lox, though, we're limited by building up the interpreter a
 chapter at a time. We don't have objects and methods yet, so we have no way of
 defining an iteration protocol that the `for` loop could use. So we'll stick
 with the old school C `for` loop. Think of it as "vintage". The fixie of control
 flow statements.
+我喜欢这些语句。不过，对于 Lox 来说，我们只能一次一章地建立解释器。我们还没有对象和方法，因此无法定义 `for` 循环可以使用的迭代协议。因此，我们将坚持使用老式的 C `for` 循环。把它想象成 "老古董"。控制流语句的 "老古董"。
 
 </aside>
 
 Inside the parentheses, you have three clauses separated by semicolons:
 在括号内，有三个由分号分隔的子语句：
-1. > The first clause is the *initializer*. It is executed exactly once, before anything else. It’s usually an expression, but for convenience, we also allow a variable declaration. In that case, the variable is scoped to the rest of the `for` loop—the other two clauses and the body.
-第一个子句是*初始化式*。它只会在任何其它操作之前执行一次。它通常是一个表达式，但是为了便利，我们也允许一个变量声明。在这种情况下，变量的作用域就是`for`循环的其它部分——其余两个子式和循环体。
-2. > Next is the *condition*. As in a `while` loop, this expression controls when to exit the loop. It’s evaluated once at the beginning of each iteration, including the first. If the result is truthy, it executes the loop body. Otherwise, it bails.
-接下来是*条件表达式*。与`while`循环一样，这个表达式控制了何时退出循环。它会在每次循环开始之前执行一次（包括第一次）。如果结果是真，就执行循环体；否则，就结束循环。
-3. > The last clause is the *increment*. It’s an arbitrary expression that does some work at the end of each loop iteration. The result of the expression is discarded, so it must have a side effect to be useful. In practice, it usually increments a variable.
-最后一个子句是*增量式*。它是一个任意的表达式，会在每次循环结束的时候做一些工作。因为表达式的结果会被丢弃，所以它必须有副作用才能有用。在实践中，它通常会对变量进行递增。
 
 1.  The first clause is the *initializer*. It is executed exactly once, before
     anything else. It's usually an expression, but for convenience, we also
     allow a variable declaration. In that case, the variable is scoped to the
     rest of the `for` loop -- the other two clauses and the body.
+    第一个子句是*初始化式*。它只会在任何其它操作之前执行一次。它通常是一个表达式，但是为了便利，我们也允许一个变量声明。在这种情况下，变量的作用域就是`for`循环的其它部分——其余两个子式和循环体。
 
 2.  Next is the *condition*. As in a `while` loop, this expression controls when
     to exit the loop. It's evaluated once at the beginning of each iteration,
     including the first. If the result is truthy, it executes the loop body.
     Otherwise, it bails.
+    接下来是*条件表达式*。与`while`循环一样，这个表达式控制了何时退出循环。它会在每次循环开始之前执行一次（包括第一次）。如果结果是真，就执行循环体；否则，就结束循环。
 
 3.  The last clause is the *increment*. It's an arbitrary expression that does
     some work at the end of each loop iteration. The result of the expression is
     discarded, so it must have a side effect to be useful. In practice, it
     usually increments a variable.
+    最后一个子句是*增量式*。它是一个任意的表达式，会在每次循环结束的时候做一些工作。因为表达式的结果会被丢弃，所以它必须有副作用才能有用。在实践中，它通常会对变量进行递增。
 
 Any of these clauses can be omitted. Following the closing parenthesis is a
 statement for the body, which is typically a block.
@@ -587,6 +602,7 @@ This delightful turn of phrase was coined by Peter J. Landin in 1964 to describe
 how some of the nice expression forms supported by languages like ALGOL were a
 sweetener sprinkled over the more fundamental -- but presumably less palatable
 -- lambda calculus underneath.
+这个令人愉快的短语是由 Peter J. Landin 在1964年创造的，用来描述 ALGOL 等语言支持的一些很好的表达式形式是如何在更基本但可能不太令人满意的 lambda 演算的基础上增添一些小甜头的。
 
 <img class="above" src="image/control-flow/sugar.png" alt="Slightly more than a spoonful of sugar." />
 
@@ -619,6 +635,7 @@ primitive form that the back end already knows how to execute.
 
 Oh, how I wish the accepted term for this was "caramelization". Why introduce a
 metaphor if you aren't going to stick with it?
+哦，我多么希望这个公认的术语是 "焦糖化"。如果你不打算坚持，为什么要引入一个隐喻呢？
 
 </aside>
 
@@ -661,6 +678,7 @@ In a previous chapter, I said we can split expression and statement syntax trees
 into two separate class hierarchies because there's no single place in the
 grammar that allows both an expression and a statement. That wasn't *entirely*
 true, I guess.
+在前一章中，我说过我们可以将表达式和语句语法树分成两个独立的类层次结构，因为语法中没有一个地方同时允许表达式和语句。我想这并不 *完全* 正确。
 
 </aside>
 
@@ -682,6 +700,7 @@ closing parenthesis. All that remains is the <span name="body">body</span>.
 <aside name="body">
 
 Is it just me or does that sound morbid? "All that remained... was the *body*".
+是我的错觉，还是这听起来很病态？"剩下的......只有 *尸体(body, 主体)* "。
 
 </aside>
 
@@ -728,12 +747,6 @@ Finally, Lox is powerful enough to entertain us, at least for a few minutes.
 Here's a tiny program to print the first 21 elements in the Fibonacci
 sequence:
 最后，Lox已强大到足以娱乐我们，至少几分钟。下面是一个打印斐波那契数列前21个元素的小程序：
-: 其中最著名的就是罗素悖论。最初，集合理论允许你定义任何类型的集合。只要你能用英语描述它，它就是有效的。自然，鉴于数学家对自引用的偏爱，集合可以包含其他的集合。于是，罗素，这个无赖，提出了：<br/>R是所有不包含自身的集合的集合。<br/>R是否包含自己？如果不包含，那么根据定义的后半部分，它应该包含；如果包含，那么它就不满足定义。脑袋要炸了。
-: 图灵把他的发明称为 “a-machines”，表示“automatic(自动)”。他并没有自吹自擂到把自己的名字放入其中。后来的数学家们为他做了这些。这就是你如何在成名的同时还能保持谦虚。
-: 我们也基本上具备第三个条件了。你可以创建和拼接任意大小的字符串，因此也就可以存储无界内存。但我们还无法访问字符串的各个部分。
-: 条件操作符也称为三元操作符，因为它是C语言中唯一接受三个操作数的操作符。
-: 条件周围的圆括号只有一半是有用的。您需要在条件和then语句之间设置某种分隔符，否则解析器无法判断是否到达条件表达式的末尾。但是` if` 后面的小括号并没有什么用处。Dennis Ritchie 把它放在那里是为了让他可以使用` )`作为结尾的分隔符，而且不会出现不对称的小括号。其他语言，比如Lua和一些BASICs，使用`then`这样的关键字作为结束分隔符，在条件表达式之前没有任何内容。而Go和Swift则要求语句必须是一个带括号的块，这样就可以使用语句开头的`{`来判断条件表达式是否结束。
-: 这个令人愉快的短语是由Peter J. Landin在1964年创造的，用来描述ALGOL等语言支持的一些很好的表达式形式是如何在更基本但可能不太令人满意的lambda演算的基础上增添一些小甜头的。
 
 ```lox
 var a = 0;
@@ -754,12 +767,12 @@ for (var b = 1; a < 10000; b = temp + b) {
     dispatch, we technically won't *need* branching statements built into the
     language. Show how conditional execution can be implemented in terms of
     those. Name a language that uses this technique for its control flow.
-1、在接下来的几章中，当Lox支持一级函数和动态调度时，从技术上讲，我们就不需要在语言中内置分支语句。说明如何用这些特性来实现条件执行。说出一种在控制流中使用这种技术的语言。
+    在接下来的几章中，当Lox支持一级函数和动态调度时，从技术上讲，我们就不需要在语言中内置分支语句。说明如何用这些特性来实现条件执行。说出一种在控制流中使用这种技术的语言。
 
 2.  Likewise, looping can be implemented using those same tools, provided our
     interpreter supports an important optimization. What is it, and why is it
     necessary? Name a language that uses this technique for iteration.
-2、同样地，只要我们的解释器支持一个重要的优化，循环也可以用这些工具来实现。它是什么？为什么它是必要的？请说出一种使用这种技术进行迭代的语言。
+    同样地，只要我们的解释器支持一个重要的优化，循环也可以用这些工具来实现。它是什么？为什么它是必要的？请说出一种使用这种技术进行迭代的语言。
 
 3.  Unlike Lox, most other C-style languages also support `break` and `continue`
     statements inside loops. Add support for `break` statements.

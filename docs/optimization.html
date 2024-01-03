@@ -1360,43 +1360,23 @@ are some suggestions for which branches in the tunnel to explore:
 如果你确实想在编程语言领域中走得更远，这里有一些关于哪些方面可以探索的建议：</p>
 <ul>
 <li>
-<blockquote>
-<p>Our simple, single-pass bytecode compiler pushed us towards mostly runtime optimization. In a mature language implementation, compile-time optimization is generally more important, and the field of compiler optimizations is incredibly rich. Grab a classic compilers book, and rebuild the front end of clox or jlox to be a sophisticated compilation pipeline with some interesting intermediate representations and optimization passes.</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li>
 <p>Our simple, single-pass bytecode compiler pushed us towards mostly runtime
 optimization. In a mature language implementation, compile-time optimization
 is generally more important, and the field of compiler optimizations is
 incredibly rich. Grab a classic <span name="cooper">compilers</span> book,
 and rebuild the front end of clox or jlox to be a sophisticated compilation
 pipeline with some interesting intermediate representations and optimization
-passes.</p>
+passes.
+我们这个简单的、单遍字节码编译器将我们推向了运行时优化。在一个成熟的语言实现中，编译时优化通常更重要，而且编译器优化的领域也非常丰富。找一本经典的编译器书籍，将clox或jlox的前端重构为一个复杂的编译管道，其中要包含一些有趣的中间表示形式和优化遍历。</p>
 <p>Dynamic typing will place some restrictions on how far you can go, but there
 is still a lot you can do. Or maybe you want to take a big leap and add
 static types and a type checker to Lox. That will certainly give your front
 end a lot more to chew on.
-我们这个简单的、单遍字节码编译器将我们推向了运行时优化。在一个成熟的语言实现中，编译时优化通常更重要，而且编译器优化的领域也非常丰富。找一本经典的编译器书籍，将clox或jlox的前端重构为一个复杂的编译管道，其中要包含一些有趣的中间表示形式和优化遍历。
 动态类型会对你能走多远加以限制，但你仍然可以做很多事情。或者你想要来个大跃进，给Lox添加静态类型和类型检查器。这肯定会让你的前端有更多的东西可以细细咀嚼。</p>
-</li>
-</ul>
-<ul>
-<li>
-<blockquote>
-<p>In this book, I aim to be correct, but not particularly rigorous. My goal is mostly to give you an <em>intuition</em> and a feel for doing language work. If you like more precision, then the whole world of programming language academia is waiting for you. Languages and compilers have been studied formally since before we even had computers, so there is no shortage of books and papers on parser theory, type systems, semantics, and formal logic. Going down this path will also teach you how to read CS papers, which is a valuable skill in its own right.
-在本书中，我的目标是正确，但不是特别严谨。我的目标主要是给你一个<em>直观感受</em>和做语言工作的感觉。如果你想要更精确的感觉，那么整个编程语言学术界都在等着你。在我们拥有计算机之前，语言和编译器就已经被正式研究过了，因此在解析器理论、类型系统、语义学和形式逻辑方面并不缺乏书籍和论文。沿着这条路走下去也会教你如何阅读CS论文，这本身就是一项有价值的技能。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>Or, if you just really enjoy hacking on and making languages, you can take Lox and turn it into your own plaything. Change the syntax to something that delights your eye. Add missing features or remove ones you don’t like. Jam new optimizations in there.</p>
-</blockquote>  <aside name="cooper">
+<aside name="cooper">
 <p>I like Cooper and Torczon&rsquo;s <em>Engineering a Compiler</em> for this. Appel&rsquo;s
-  <em>Modern Compiler Implementation</em> books are also well regarded.</p></aside></li>
-</ul>
-<ul>
+<em>Modern Compiler Implementation</em> books are also well regarded.</p>
+</aside></li>
 <li>
 <p>In this book, I aim to be correct, but not particularly rigorous. My goal is
 mostly to give you an <em>intuition</em> and a feel for doing language work. If you
@@ -1405,13 +1385,15 @@ is waiting for you. Languages and compilers have been studied formally since
 before we even had computers, so there is no shortage of books and papers on
 parser theory, type systems, semantics, and formal logic. Going down this
 path will also teach you how to read CS papers, which is a valuable skill in
-its own right.</p>
+its own right.
+在本书中，我的目标是正确，但不是特别严谨。我的目标主要是给你一个<em>直观感受</em>和做语言工作的感觉。如果你想要更精确的感觉，那么整个编程语言学术界都在等着你。在我们拥有计算机之前，语言和编译器就已经被正式研究过了，因此在解析器理论、类型系统、语义学和形式逻辑方面并不缺乏书籍和论文。沿着这条路走下去也会教你如何阅读CS论文，这本身就是一项有价值的技能。</p>
 </li>
 <li>
 <p>Or, if you just really enjoy hacking on and making languages, you can take
 Lox and turn it into your own <span name="license">plaything</span>. Change
 the syntax to something that delights your eye. Add missing features or
-remove ones you don&rsquo;t like. Jam new optimizations in there.</p>
+remove ones you don&rsquo;t like. Jam new optimizations in there.
+或者，如果你真的喜欢钻研和制造语言，你可以把Lox变成你自己的玩物。把语法改成能让你满意的东西。增加缺失的功能或删除你不喜欢的功能。在其中添加新的优化。</p>
 <aside name="license">
 <p>The <em>text</em> of this book is copyrighted to me, but the <em>code</em> and the
 implementations of jlox and clox use the very permissive <a href="https://en.wikipedia.org/wiki/MIT_License">MIT license</a>.
@@ -1429,7 +1411,6 @@ languages vying for users. To thrive in that space you&rsquo;ll have to put on
 your marketing hat and <em>sell</em>. Not everyone enjoys that kind of
 public-facing work, but if you do, it can be incredibly gratifying to see
 people use your language to express themselves.
-或者，如果你真的喜欢钻研和制造语言，你可以把Lox变成你自己的玩物。把语法改成能让你满意的东西。增加缺失的功能或删除你不喜欢的功能。在其中添加新的优化。
 最终，你会达到某个境地，有了一些你认为其他人也可以使用的东西。这会带你进入非常独特的编程语言<em>流行度</em>的世界。预计你将花费大量的时间来编写文档、示例程序、工具和有用的库。这个领域充斥着很多争夺用户的语言。要想在这个领域取得成功，你将必须带上营销的帽子，进行销售。不是每个人都喜欢这种面对公众的工作，但如果你喜欢，能够看到人们使用你的语言来表达自己，你会感到无比欣慰。</p>
 </li>
 </ul>
@@ -1439,29 +1420,7 @@ I was, you may have initially been intimidated by programming languages. But in
 these chapters, you&rsquo;ve seen that even really challenging material can be tackled
 by us mortals if we get our hands dirty and take it a step at a time. If you can
 handle compilers and interpreters, you can do anything you put your mind to.
-或者，也许这本书已经满足了你的需求，你会在这里停下来。无论你走哪条路，或者不走哪条路，我都希望能把这个教训留在你心里。像我一样，你可能一开始就被编程语言吓到了。但在这些章节中，你已经看到，即使是真正具有挑战性的事情，只要亲自动手，一步一步来，我们这些凡人也可以解决。如果你能处理好编译器和解释器，你就可以做到任何你想做的事情。
-: 大多数基准程序测量的是运行时间。但是，当然，你最终会发现自己需要编写基准测试来测量内存分配、垃圾回收器花费的时间、启动时间等等。
-: 在JavaScript虚拟机的早期扩散中，第一个广泛使用的基准测试套件是WebKit的SunSpider。在浏览器大战期间，营销人员利用SunSpider的结果来宣称他们的浏览器是最快的。这极大地激励了虚拟机专家们根据这些基准进行优化。<BR>不幸的是，SunSpider程序往往与真实世界的JavaScript不匹配。它们大多是微基准测试——快速结束的小玩具程序。这些基准测试对复杂的即时编译器不利，因为它们一开始速度比较慢，但一旦JIT有足够的时间来优化并重新编译热点代码，就会变得快很多。这将虚拟机专家们置于一个不幸的境地：要么让SubSpider的数字变得更好，要么实际优化真实用户运行的程序类型。<BR>谷歌的V8团队分享了他们的Octane基准测试套件，这在当时更接近于真实世界的代码。多年以后，随着JavaScript使用模式的不断发展，甚至Octane也失去了作用。期待你的基准测试随着你的语言生态系统的发展而发展。<BR>记住，最终目标是使<em>用户程序</em>更快，而基准测试只是实现这个目标的一个代替物。
-: 这里的“你的程序”是指运行其它Lox程序的Lox虚拟机本身。我们要优化的是clox，而不是用户的Lox脚本。当然，选择哪一个Lox程序加载到虚拟机中会极大地影响clox的哪些部分会受到压力，这就是基准测试如此重要的原因。<BR>剖析器不会告诉我们正在运行的脚本中每个Lox函数花费了多少时间。我们必须编写自己的“Lox剖析器”才能做到这一点，这有点超出了本书的范围。
-: 这个基准测试的另一个注意点是要<em>使用</em>所执行的代码的结果。通过计算滚动求和与打印结果，我们确保虚拟机<em>必须</em>执行所有的Lox代码。这是一个重要的习惯。与我们这个简单的Lox虚拟机不同，很多编译器都做了积极的死码消除，并且聪明到会丢弃那些结果未被使用的计算逻辑。<BR>许多编程语言黑客都会对虚拟机在某些基准测试上的惊人表现印象深刻，最后才意识到这是因为编译器将整个基准测试程序优化到不存在了。
-: 如果你真的想要对哈希表的性能进行基准测试，那你应该使用许多不同大小的表。我们在这里给每个表添加的6个键甚至都没有超过哈希表中8个元素的最小阈值。但我不想向你抛出一个庞大的基准测试脚本。如果你喜欢，可以随意添加更多的小动物和食物。
-: 流水线使得我们很难讨论单个CPU指令的性能，但可以给你一个直观感受，在x86上，除法和模运算比加法和减法运算慢30-50<em>倍</em>。
-: 另一个潜在的改进是通过直接存储位掩码而不是存储容量值来消除减法。在我的测试中，这并没有什么区别。如果CPU在其它方面遇到瓶颈，指令流水线的存在使得一些操作基本上是无用的。
-: 我们最初的基准测试是固定工作量，然后测量时间。修改后的脚本计算它在10秒内可以执行多少批次的调用，是固定时间并测量工作量。对于性能的比较，我喜欢后一种方法，因为报告的数字代表了速度。你可以直接比较优化前后的数字。当测量执行时间时，你必须进行一些计算，才能得到一个良好的相对性能测量。
-: 我不确定是谁首先提出了这个技巧。我能找到的最早的资料是David Gudeman在1993年发表的论文 《在动态类型语言中表示类型信息（Representing Type Information in Dynamically Typed Languages）》。其他人都在引用这篇文章。但是Gudeman自己说这篇论文并不是什么新颖的工作，而是 &ldquo;收集了大量的民间传说&ldquo;。<BR>也许发明者已经消失在时间的迷雾中，也许它已经被重新发明了很多次。任何人对IEEE 754进行了足够长时间的思考，都可能会开始考虑在那些未使用的NaN中加入一些有用的信息。
-: 因为符号位一直存在，即使数字是零，这意味着“正零”和“负零”有不同的位表示形式，事实上，IEEE 754确实区分了它们。
-: 我不知道是否有CPU真正做到了捕获信号NaN并中止，规范中只是说它们<em>可以</em>。
-: 48比特位足以对262,114GB的内存进行寻找。现代操作系统也为每个进程提供了自己的地址空间，所以这应该足够了。
-: 规范的作者不喜欢类型双关，因为它使得优化变得更加困难。一个关键的优化技术是对指令进行重新排序，以填充CPU的执行管道。显然，编译器只有在重排序不会产生用户可见的影响时才可以这样做。<BR>指针使得这一点更加困难。如果两个指针指向同一个值，那么通过一个指针进行的写操作和通过另一个指针进行的读操作就不能被重新排序。但是，如果是两个<em>不同</em>类型的指针呢？如果这些指针可以指向同一个对象，那么基本上<em>任意</em>两个指针都可以成为同一个值的别名。这极大地限制了编译器可以自由地重新排列的代码量。<BR>为了避免这种情况，编译器希望采用<strong>严格别名</strong>——不兼容类型的指针不能指向相同的值。类型双关，从本质上来说，打破了这种假设。
-: 如果你发现自己的编译器没有对<code>memcpy()</code>进行优化，可以试试这个：
-: 非常肯定，但不是严格保证。据我所知，没有什么可以阻止CPU产生一个NaN值，作为某些操作的结果，而且这些操作的位表示形式会与我们声明的位表示形式相冲突。但在我跨多个架构的测试中，还没有看到这种情况发生。
-: 实际上，即使该值是一个Obj指针，我们也<em>可以</em>使用最低位来存储类型标签。这是因为Obj指针总是被对齐到8字节边界，因为Obj包含一个64位的字段。这反过来意味着Obj指针的最低三位始终是0。我们可以在其中存储任何我们想要的东西，只是在解引用指针之前要将这些屏蔽掉。<BR>这是另一种被称为<strong>指针标记</strong>的值表示形式优化方案。
-: 在涉及到本书中的代码时，我都试图遵循法律条文，所以这一段是值得怀疑的。在优化的时候，你会遇到一个问题，那就是你不仅要突破<em>规范所规定</em>的边界，还有突破真正的编译器和芯片所允许的边界。<BR>超出规范之外是有风险的，但在这个无法无天的领域也会有回报。这样做是否值得，取决于你自己。
-: 事实上，jlox把NaN相等性搞错了。当你使用<code>==</code>来比较基本类型double时，Java做的是正确的，但如果你把这些值包装在Double或Object中，并使用<code>equals()</code>来比较它们时，就是错的，而这正是jlox中使用相等性的方式。
-: 在做剖析工作时，你基本总是想剖析程序的优化后的“发布”构建版本，因为这反映了最终用户体验的性能情况。编译器的优化（如内联）会极大地影响代码中哪些部分是性能热点。手工优化一个调试构建版本，可能会让你去“修复”那些优化编译器本来就会为你解决的问题。<BR>请确保你不会意外地对调试构建版本进行基准测试和优化。我似乎每年都至少要犯一次这样的错误。
-: 这也适用于其它领域。我认为我在编程中所学到的任何一个主题——甚至在编程之外——最终都发现在其它领域中是有用的。我最喜欢软件工程的一个方面正是它对那些兴趣广泛的人的助益。
-: 在这方面，我喜欢Cooper和Torczon的《<em>编译器工程，Engineering a Compiler</em>》。Appel的《<em>现代编译器实现，Modern Compiler Implementation</em>》一书也广受好评。
-: 本书的文本版权归我所有，但jlox和clox的代码和实现采用了非常宽松的<a href="https://en.wikipedia.org/wiki/MIT_License">MIT许可</a>。我非常欢迎你使用<a href="https://github.com/munificent/craftinginterpreters">这些解释器</a>中的任何一个，对它们做任何你想做的事。去吧。<BR>如果你对语言做了重大改动，最好也能改一下名字，主要是为了避免人们对“Lox”这个名字的含义感到困惑。</p>
+或者，也许这本书已经满足了你的需求，你会在这里停下来。无论你走哪条路，或者不走哪条路，我都希望能把这个教训留在你心里。像我一样，你可能一开始就被编程语言吓到了。但在这些章节中，你已经看到，即使是真正具有挑战性的事情，只要亲自动手，一步一步来，我们这些凡人也可以解决。如果你能处理好编译器和解释器，你就可以做到任何你想做的事情。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <p>Assigning homework on the last day of school seems cruel but if you really want

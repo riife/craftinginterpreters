@@ -2,9 +2,9 @@
 > ideas into new structures that become new ideas that can themselves be used in
 > compounds, and round and round endlessly, growing ever more remote from the
 > basic earthbound imagery that is each language's soil.
->
+> 这也是人类思维的运作方式——将旧的想法复合成为新结构，成为新的想法，而这些想法本身又可以被用于复合，循环往复，无休无止，越来越远离每一种语言赖以生存的基本的土壤。
+> 
 > <cite>Douglas R. Hofstadter, <em>I Am a Strange Loop</em></cite>
-这也是人类思维的运作方式——将旧的想法复合成为新结构，成为新的想法，而这些想法本身又可以被用于复合，循环往复，无休无止，越来越远离每一种语言赖以生存的基本的土壤。
 
 This chapter marks the culmination of a lot of hard work. The previous chapters
 add useful functionality in their own right, but each also supplies a piece of a
@@ -41,6 +41,7 @@ example:
 
 The name *is* part of the call syntax in Pascal. You can call only named
 functions or functions stored directly in variables.
+名称 *是* Pascal 调用语法的一部分。你只能调用已命名的函数或直接存储在变量中的函数。
 
 </aside>
 
@@ -82,10 +83,12 @@ takes multiple arguments is as a series of nested functions. Each function takes
 one argument and returns a new function. That function consumes the next
 argument, returns yet another function, and so on. Eventually, once all of the
 arguments are consumed, the last function completes the operation.
+该规则中使用`*`符号匹配类似`fn(1)(2)(3)`的系列函数调用。这样的代码不是常见的C语言风格，但是在ML衍生的语言族中很常见。在ML中，定义接受多个参数的函数的常规方式是将其定义为一系列嵌套函数。每个函数接受一个参数并返回一个新函数。该函数使用下一个参数，返回另一个函数，以此类推。最终，一旦所有参数都被使用，最后一个函数就完成了操作。
 
 This style, called **currying**, after Haskell Curry (the same guy whose first
 name graces that *other* well-known functional language), is baked directly into
 the language syntax so it's not as weird looking as it would be here.
+这种风格被称为柯里化，是以Haskell Curry（他的名字出现在另一个广为人知的函数式语言中）的名字命名的，它被直接整合到语言的语法中，所以它不像这里看起来那么奇怪。
 
 </aside>
 
@@ -113,6 +116,7 @@ node</span>.
 <aside name="call-ast">
 
 The generated code for the new node is in [Appendix II][appendix-call].
+新节点的生成代码见[附录 II][appendix-call]。
 
 [appendix-call]: appendix-ii.html#call-expression
 
@@ -148,6 +152,7 @@ new `expr` and we loop to see if the result is itself called.
 This code would be simpler as `while (match(LEFT_PAREN))` instead of the silly
 `while (true)` and `break`. Don't worry, it will make sense when we expand the
 parser later to handle properties on objects.
+这段代码可以简化为`while (match(LEFT_PAREN))`形式，而不是使用这种愚蠢的`while (true)` 和 `break`形式。但是不用担心，稍后使用解析器处理对象属性的时候，这种写法就有意义了。
 
 </aside>
 
@@ -186,6 +191,7 @@ accept *no more than* <span name="254">255</span> arguments.
 The limit is 25*4* arguments if the method is an instance method. That's because
 `this` -- the receiver of the method -- works like an argument that is
 implicitly passed to the method, so it claims one of the slots.
+如果该方法是一个实例方法，则限制为 25*4* 个参数。因为`this`（方法的接收者）就像一个被隐式传递给方法的参数一样，所以也会占用一个参数位置。
 
 </aside>
 
@@ -235,6 +241,7 @@ may have side effects, the order they are evaluated could be user visible. Even
 so, some languages like Scheme and C don't specify an order. This gives
 compilers freedom to reorder them for efficiency, but means users may be
 unpleasantly surprised if arguments aren't evaluated in the order they expect.
+这是另一个微妙的语义选择。由于参数表达式可能有副作用，因此它们的执行顺序可能是用户可见的。即便如此，有些语言如Scheme和C并没有指定顺序。这样编译器可以自由地重新排序以提高效率，但这意味着如果参数没有按照用户期望的顺序计算，用户可能会感到不愉快。
 
 </aside>
 
@@ -251,6 +258,7 @@ We'll also use it for one more purpose shortly.
 
 I stuck "Lox" before the name to distinguish it from the Java standard library's
 own Callable interface. Alas, all the good simple names are already taken.
+我在名称前加上了 "Lox"，以区别于 Java 标准库的 Callable 接口。唉，所有简单的好名字都已经被用完了。
 
 </aside>
 
@@ -367,10 +375,12 @@ If you think of yourself as "living" within the runtime's implementation (in our
 case, Java) then functions written in that are "native". But if you have the
 mindset of a *user* of your language, then the runtime is implemented in some
 other "foreign" language.
+奇怪的是，这些函数的两个名称 "native" 和 "foreign" 是反义词。也许这取决于选择这个词的人的角度。如果您认为自己生活在运行时实现中(在我们的例子中是Java)，那么用它编写的函数就是 "native" 的。但是，如果您站在语言用户的角度，那么运行时就是用其他"foreign" 语言实现的。
 
 Or it may be that "native" refers to the machine code language of the underlying
 hardware. In Java, "native" methods are ones implemented in C or C++ and
 compiled to native machine code.
+或者 "native" 指的是底层硬件的机器代码语言。在Java中，"native" 方法是用C或c++实现并编译为 "native" 机器码的方法。
 
 <img src="image/functions/foreign.png" class="above" alt="All a matter of perspective." />
 
@@ -389,14 +399,17 @@ name="print">displays</span> a file.
 A classic native function almost every language provides is one to print text to
 stdout. In Lox, I made `print` a built-in statement so that we could get stuff
 on screen in the chapters before this one.
+几乎每种语言都提供的一个经典的本地函数是将文本打印到标准输出。在Lox中，我将`print`作为了内置语句，以便可以在前面的章节中看到代码结果。
 
 Once we have functions, we could simplify the language by tearing out the old
 print syntax and replacing it with a native function. But that would mean that
 examples early in the book wouldn't run on the interpreter from later chapters
 and vice versa. So, for the book, I'll leave it alone.
+一旦我们有了函数，我们就可以删除之前的`print`语法并用一个本机函数替换它，从而简化语言。但这意味着书中前面的例子不能在后面章节的解释器上运行，反之亦然。所以，在这本书中，我不去修改它。
 
 If you're building an interpreter for your *own* language, though, you may want
 to consider it.
+但是，如果您正在为自己的语言构建一个解释器，您可能需要考虑一下。
 
 </aside>
 
@@ -465,11 +478,13 @@ two live in their own worlds. A function and variable with the same name don't
 collide. If you call the name, it looks up the function. If you refer to it, it
 looks up the variable. This does require jumping through some hoops when you do
 want to refer to a function as a first-class value.
+在 Lox 中，函数和变量占据同一个命名空间。在 Common Lisp 中，函数和变量生活在各自的世界里。同名的函数和变量不会发生冲突。如果你调用变量名，它会查找函数。如果你引用它，它就会查找变量。如果你想将函数作为first-class value 引用，这确实会有一些障碍。
 
 Richard P. Gabriel and Kent Pitman coined the terms "Lisp-1" to refer to
 languages like Scheme that put functions and variables in the same namespace,
 and "Lisp-2" for languages like Common Lisp that partition them. Despite being
 totally opaque, those names have since stuck. Lox is a Lisp-1.
+Richard P. Gabriel 和 Kent Pitman 创造了 "Lisp-1" 这个术语，用来指像 Scheme 这样将函数和变量放在同一命名空间的语言，而 "Lisp-2" 则指像 Common Lisp 这样将它们分隔开来的语言。尽管完全不透明，但这些名称后来一直沿用至今。Lox 就是一种 Lisp-1。
 
 </aside>
 
@@ -496,6 +511,7 @@ A named function declaration isn't really a single primitive operation. It's
 syntactic sugar for two distinct steps: (1) creating a new function object, and
 (2) binding a new variable to it. If Lox had syntax for anonymous functions, we
 wouldn't need function declaration statements. You could just do:
+命名函数声明并不是一个真正的原始操作。它是两个不同步骤的语法糖： (1) 创建一个新的函数对象，以及 (2) 将一个新变量绑定到该对象上。如果 Lox 有匿名函数的语法，我们就不需要函数声明语句了。你只需:
 
 ```lox
 var add = fun (a, b) {
@@ -505,6 +521,7 @@ var add = fun (a, b) {
 
 However, since named functions are the common case, I went ahead and gave Lox
 nice syntax for them.
+不过，由于命名函数是常见的情况，我还是为它们提供了良好的 Lox 语法。
 
 </aside>
 
@@ -532,6 +549,7 @@ methods. Those look similar to function declarations, but aren't preceded by
 <aside name="fun">
 
 Methods are too classy to have fun.
+方法太高雅了，不好玩。
 
 </aside>
 
@@ -554,6 +572,7 @@ through, but the resulting AST <span name="fun-ast">node</span> isn't too bad.
 <aside name="fun-ast">
 
 The generated code for the new node is in [Appendix II][appendix-fun].
+新节点的生成代码见[附录 II][appendix-fun]。
 
 [appendix-fun]: appendix-ii.html#function-statement
 
@@ -644,6 +663,7 @@ of a language implementation. Functions are deeply tied to that.
 <aside name="env">
 
 We'll dig even deeper into environments in the [next chapter][].
+我们将在[下一章][next chapter]中更深入地探讨环境问题。
 
 [next chapter]: resolving-and-binding.html
 
@@ -805,6 +825,7 @@ sure you can guess the grammar already.
 <aside name="hotel">
 
 The Hotel California of data.
+数据的加利福尼亚酒店
 
 </aside>
 
@@ -860,6 +881,7 @@ Over in our AST generator, we add a <span name="return-ast">new node</span>.
 <aside name="return-ast">
 
 The generated code for the new node is in [Appendix II][appendix-return].
+新节点的生成代码在[附录 II][appendix-return]。
 
 [appendix-return]: appendix-ii.html#return-statement
 
@@ -955,6 +977,7 @@ But inside a heavily recursive tree-walk interpreter, it's the way to go. Since
 our own syntax tree evaluation is so heavily tied to the Java call stack, we're
 pressed to do some heavyweight call stack manipulation occasionally, and
 exceptions are a handy tool for that.
+郑重声明，我一般不喜欢在控制流中使用异常。但在重度递归的树形漫步解释器中，使用异常却是个不错的选择。由于我们自己的语法树评估与 Java 调用堆栈紧密相连，因此我们不得不偶尔进行一些重量级的调用堆栈操作，而异常就是一个方便的工具。
 
 </aside>
 
@@ -998,9 +1021,11 @@ variables, functions, function calls, parameter binding, and returns.
 You might notice this is pretty slow. Obviously, recursion isn't the most
 efficient way to calculate Fibonacci numbers, but as a microbenchmark, it does
 a good job of stress testing how fast our interpreter implements function calls.
+你可能会注意到这是很慢的。显然，递归并不是计算斐波那契数的最有效方法，但作为一个微基准测试，它很好地测试了我们的解释器实现函数调用的速度。
 
 As you can see, the answer is "not very fast". That's OK. Our C interpreter will
 be faster.
+如您所见，答案是 "不快"。没关系。我们的 C 语言解释器会更快。
 
 </aside>
 
@@ -1100,6 +1125,7 @@ environment.
 "Closure" is yet another term coined by Peter J. Landin. I assume before he came
 along that computer scientists communicated with each other using only primitive
 grunts and pawing hand gestures.
+"闭包"(Closure) 是 Peter J. Landin 创造的又一个术语。我想，在他出现之前，计算机科学家之间只能用原始的咕哝声和比划手势进行交流。
 
 </aside>
 

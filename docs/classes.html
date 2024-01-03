@@ -144,38 +144,21 @@ assuming you don&rsquo;t need a detailed introduction to object orientation. The
 goal is to bundle data with the code that acts on it. Users do that by declaring
 a <em>class</em> that:
 既然你已经跟我一起编写了大约1000行Java代码，我假设你不需要对面向对象进行详细介绍。OOP的主要目标就是将数据与作用于数据的代码捆绑在一起。用户通过声明一个类来实现这一点：</p>
-<ol>
-<li>
-<blockquote>
-<p>Exposes a <em>constructor</em> to create and initialize new <em>instances</em> of the class
-暴露<em>构造函数</em>以创建和初始化该类的新实例</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>Provides a way to store and access <em>fields</em> on instances
-提供在实例上存储和访问<em>字段</em>的方法。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>Defines a set of <em>methods</em> shared by all instances of the class that operate on each instances’ state.
-定义一组由类的所有实例共享的<em>方法</em>，这些方法对各个实例的状态进行操作。</p>
-</blockquote>
-</li>
-</ol>
 <p><span name="circle"></span></p>
 <ol>
 <li>
 <p>Exposes a <em>constructor</em> to create and initialize new <em>instances</em> of the
-class</p>
+class
+  暴露<em>构造函数</em>以创建和初始化该类的新实例</p>
 </li>
 <li>
-<p>Provides a way to store and access <em>fields</em> on instances</p>
+<p>Provides a way to store and access <em>fields</em> on instances
+  提供在实例上存储和访问<em>字段</em>的方法。</p>
 </li>
 <li>
 <p>Defines a set of <em>methods</em> shared by all instances of the class that
-operate on each instances&rsquo; state.</p>
+operate on each instances&rsquo; state.
+  定义一组由类的所有实例共享的<em>方法</em>，这些方法对各个实例的状态进行操作。</p>
 </li>
 </ol>
 <p>That&rsquo;s about as minimal as it gets. Most object-oriented languages, all the way
@@ -1391,28 +1374,18 @@ feature<span class="em">&mdash;</span>were added to C++ mainly as a way to emit 
 “构造”一个对象实际上是一对操作：</p>
 <ol>
 <li>
-<blockquote>
-<p>The runtime <em>allocates</em> the memory required for a fresh instance. In most languages, this operation is at a fundamental level beneath what user code is able to access.
-运行时为一个新的实例<em>分配</em>所需的内存。在多数语言中，这个操作是在用户代码可以访问的层面之下的基础层完成的。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>Then, a user-provided chunk of code is called which <em>initializes</em> the unformed object.
-然后，用户提供的一大块代码被调用，以初始化未成形的对象。</p>
-</blockquote>
-</li>
-<li>
 <p>The runtime <span name="allocate"><em>allocates</em></span> the memory required for
 a fresh instance. In most languages, this operation is at a fundamental
-level beneath what user code is able to access.</p>
+level beneath what user code is able to access.
+运行时为一个新的实例<em>分配</em>所需的内存。在多数语言中，这个操作是在用户代码可以访问的层面之下的基础层完成的。</p>
 <aside name="allocate">
 <p>C++&rsquo;s &ldquo;<a href="https://en.wikipedia.org/wiki/Placement_syntax">placement new</a>&rdquo; is a rare example where the bowels of allocation
 are laid bare for the programmer to prod.</p>
 </aside></li>
 <li>
 <p>Then, a user-provided chunk of code is called which <em>initializes</em> the
-unformed object.</p>
+unformed object.
+然后，用户提供的一大块代码被调用，以初始化未成形的对象。</p>
 </li>
 </ol>
 <p>The latter is what we tend to think of when we hear &ldquo;constructor&rdquo;, but the
@@ -1648,17 +1621,7 @@ returning the value (which will always be <code>nil</code>), we again return <co
 <p>Phew! That was a whole list of tasks but our reward is that our little
 interpreter has grown an entire programming paradigm. Classes, methods, fields,
 <code>this</code>, and constructors. Our baby language is looking awfully grown-up.
-吁！这是一大堆任务，但是我们的收获是，我们的小解释器已经成长为一个完整的编程范式。类、方法、字段、<code>this</code>以及构造函数，我们的语言看起来已经非常成熟了。
-: 但是，如果你真的讨厌类，也可以跳过这两章。它们与本书的其它部分是相当孤立的。就我个人而言，我觉得多了解自己不喜欢的对象是好事。有些事情乍一看很简单，但当我近距离观看时，细节出现了，我也获得了一个更细致入微的视角。
-: Multimethods是你最不可能熟悉的方法。我很想多谈论一下它们——我曾经围绕它们设计了一个<a href="http://magpie-lang.org/">业余语言</a>，它们特别棒——但是我只能装下这么多页面了。如果你想了解更多，可以看看<a href="https://en.wikipedia.org/wiki/Common_Lisp_Object_System">CLOS</a> (Common Lisp中的对象系统), <a href="https://opendylan.org/">Dylan</a>, <a href="https://julialang.org/">Julia</a>, 或 <a href="https://docs.raku.org/language/functions#Multi-dispatch">Raku</a>。
-: 在Smalltalk中，甚至连类也是通过现有对象（通常是所需的超类）的方法来创建的。有点像是一直向下龟缩。最后，它会在一些神奇的类上触底，比如Object和Metaclass，它们是运行时凭空创造出来的。
-: 允许类之外的代码直接修改对象的字段，这违背了面向对象的原则，即类封装状态。有些语言采取了更有原则的立场。在SmallTalk中，字段实际上是使用简单的标识符访问的，这些标识符是类方法作用域内的变量。Ruby使用@后跟名字来访问对象中的字段。这种语法只有在方法中才有意义，并且总是访问当前对象的状态。不管怎样，Lox对OOP的信仰并不是那么虔诚。
-: 它的经典用途之一就是回调。通常，你想要传递一个回调函数，其主体只是调用某个对象上的一个方法。既然能够找到该方法并直接传递它，就省去了手动声明一个函数对其进行包装的麻烦工作。比较一下下面两段代码：
-: 现在将函数类型保存到一个局部变量中是没有意义的，但我们稍后会扩展这段代码，到时它就有意义了。
-: 首先寻找字段，意味着字段会遮蔽方法，这是一个微妙但重要的语义点。
-: 举几个例子：在Java中，尽管final字段必须被初始化，但仍有可能在被初始化之前被读取。异常（一个庞大而复杂的特性）被添加到C++中主要是作为一种从构造函数发出错误的方式。
-: C++中的 &ldquo;<a href="https://en.wikipedia.org/wiki/Placement_syntax">placement new</a> &ldquo;是一个罕见的例子，在这种情况下，分配的内存被暴露出来供程序员使用。
-: 也许“不喜欢”这个说法太过激了。让语言实现的约束和资源影响语言的设计是合理的。一天只有这么多时间，如果在这里或那里偷工减料可以让你在更短的时间内为用户提供更多的功能，这可能会大大提高用户的幸福感和工作效率。诀窍在于，要弄清楚哪些弯路不会导致你的用户和未来的自己不会咒骂你的短视行为</p>
+吁！这是一大堆任务，但是我们的收获是，我们的小解释器已经成长为一个完整的编程范式。类、方法、字段、<code>this</code>以及构造函数，我们的语言看起来已经非常成熟了。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>

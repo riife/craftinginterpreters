@@ -68,16 +68,14 @@ innermost scope that encloses the expression where the variable is used.**
 
 There's a lot to unpack in that:
 其中有很多东西需要解读：
-- > I say “variable usage” instead of “variable expression” to cover both variable expressions and assignments. Likewise with “expression where the variable is used”.
-我说的是“变量使用”而不是“变量表达式”，是为了涵盖变量表达式和赋值两种情况。类似于“使用变量的表达式”。
-- > “Preceding” means appearing before *in the program text*.
-“前面”意味着出现在*程序文本*之前。
 
 *   I say "variable usage" instead of "variable expression" to cover both
     variable expressions and assignments. Likewise with "expression where the
     variable is used".
+    我说的是“变量使用”而不是“变量表达式”，是为了涵盖变量表达式和赋值两种情况。类似于“使用变量的表达式”。
 
 *   "Preceding" means appearing before *in the program text*.
+    “前面”意味着出现在*程序文本*之前。
 
     ```lox
     var a = "outer";
@@ -94,8 +92,6 @@ There's a lot to unpack in that:
     functions may defer a chunk of code such that its *dynamic temporal*
     execution no longer mirrors the *static textual* ordering.
 这里，打印的`a`是外层的，因为它在使用该变量的`print`语句之前。在大多数情况下，在单行代码中，文本中靠前的变量声明在时间上也先于变量使用。但并不总是如此。正如我们将看到的，函数可以推迟代码块，以使其动态执行的时间不受静态文本顺序的约束。
-- > “Innermost” is there because of our good friend shadowing. There may be more than one variable with the given name in enclosing scopes, as in:
-“最内层”之所以存在，是因为我们的好朋友——变量遮蔽的缘故。在外围作用域中可能存在多个具有给定名称的变量。如：
 
     <aside name="hoisting">
 
@@ -129,6 +125,7 @@ There's a lot to unpack in that:
 
 *   "Innermost" is there because of our good friend shadowing. There may be more
     than one variable with the given name in enclosing scopes, as in:
+    “最内层”之所以存在，是因为我们的好朋友——变量遮蔽的缘故。在外围作用域中可能存在多个具有给定名称的变量。如：
 
     ```lox
     var a = "outer";
@@ -430,19 +427,17 @@ Our variable resolution pass works like a sort of mini-interpreter. It walks the
 tree, visiting each node, but a static analysis is different from a dynamic
 execution:
 我们的变量解析工作就像一个小型的解释器。它会遍历整棵树，访问每个节点，但是静态分析与动态执行还是不同的：
-- > **There are no side effects.** When the static analysis visits a print statement, it doesn’t actually print anything. Calls to native functions or other operations that reach out to the outside world are stubbed out and have no effect.
-**没有副作用**。当静态分析处理一个`print`语句时，它并不会打印任何东西。对本地函数或其它与外部世界联系的操作也会被终止，并且没有任何影响。
-- **There is no control flow.** Loops are visited only once. Both branches are visited in `if` statements. Logic operators are not short-circuited.
-**没有控制流**。循环只会被处理一次，`if`语句中的两个分支都会处理，逻辑操作符也不会做短路处理。
 
 *   **There are no side effects.** When the static analysis visits a print
     statement, it doesn't actually print anything. Calls to native functions or
     other operations that reach out to the outside world are stubbed out and
     have no effect.
+    **没有副作用**。当静态分析处理一个`print`语句时，它并不会打印任何东西。对本地函数或其它与外部世界联系的操作也会被终止，并且没有任何影响。
 
 *   **There is no control flow.** Loops are visited only <span
     name="fix">once</span>. Both branches are visited in `if` statements. Logic
     operators are not short-circuited.
+    **没有控制流**。循环只会被处理一次，`if`语句中的两个分支都会处理，逻辑操作符也不会做短路处理。
 
 <aside name="fix">
 
@@ -465,23 +460,19 @@ Since the resolver needs to visit every node in the syntax tree, it implements
 the visitor abstraction we already have in place. Only a few kinds of nodes are
 interesting when it comes to resolving variables:
 因为解析器需要处理语法树中的每个节点，所以它实现了我们已有的访问者抽象。在解析变量时，有几个节点是比较特殊的：
-- > A block statement introduces a new scope for the statements it contains.
-块语句为它所包含的语句引入了一个新的作用域。
-- > A function declaration introduces a new scope for its body and binds its parameters in that scope.
-函数声明为其函数体引入了一个新的作用域，并在该作用域中绑定了它的形参。
-- > A variable declaration adds a new variable to the current scope.
-变量声明将一个新变量加入到当前作用域中。
-- > Variable and assignment expressions need to have their variables resolved.
-变量定义和赋值表达式需要解析它们的变量值。
 
 *   A block statement introduces a new scope for the statements it contains.
+    块语句为它所包含的语句引入了一个新的作用域。
 
 *   A function declaration introduces a new scope for its body and binds its
     parameters in that scope.
+    函数声明为其函数体引入了一个新的作用域，并在该作用域中绑定了它的形参。
 
 *   A variable declaration adds a new variable to the current scope.
+    变量声明将一个新变量加入到当前作用域中。
 
 *   Variable and assignment expressions need to have their variables resolved.
+    变量定义和赋值表达式需要解析它们的变量值。
 
 The rest of the nodes don't do anything special, but we still need to implement
 visit methods for them that traverse into their subtrees. Even though a `+`
@@ -576,16 +567,10 @@ var a = "outer";
 What happens when the initializer for a local variable refers to a variable with
 the same name as the variable being declared? We have a few options:
 当局部变量的初始化式指向一个与当前声明变量名称相同的变量时，会发生什么？我们有几个选择：
-1. > **Run the initializer, then put the new variable in scope.** Here, the new local `a` would be initialized with “outer”, the value of the *global* one. In other words, the previous declaration would desugar to:
-1 **运行初始化式，然后将新的变量放入作用域中。** 在这个例子中，新的局部变量`a`会使用“outer”（全局变量`a`的值）初始化。换句话说，前面的声明脱糖后如下：
-2. > **Put the new variable in scope, then run the initializer.** This means you could observe a variable before it’s initialized, so we would need to figure out what value it would have then. Probably `nil`. That means the new local `a` would be re-initialized to its own implicitly initialized value, `nil`. Now the desugaring would look like:
-2 **将新的变量放入作用域中，然后运行初始化式。** 这意味着你可以在变量被初始化之前观察到它，所以当我们需要计算出它的值时，这个值其实是`nil`。这意味着新的局部变量`a`将被重新初始化为它自己的隐式初始化值`nil`。现在，脱糖后的结果如下：
-3. > **Make it an error to reference a variable in its initializer.** Have the interpreter fail either at compile time or runtime if an initializer mentions the variable being initialized.
-3 **在初始化式中引用一个变量是错误的。** 如果初始化式使用了要初始化的变量，则解释器在编译时或运行时都会失败。
 
 1.  **Run the initializer, then put the new variable in scope.** Here, the new
     local `a` would be initialized with "outer", the value of the *global* one.
-    In other words, the previous declaration would desugar to:
+    In other words, the previous declaration would desugar to:1 **运行初始化式，然后将新的变量放入作用域中。** 在这个例子中，新的局部变量`a`会使用“outer”（全局变量`a`的值）初始化。换句话说，前面的声明脱糖后如下：
 
     ```lox
     var temp = a; // Run the initializer.
@@ -598,6 +583,7 @@ the same name as the variable being declared? We have a few options:
     out what value it would have then. Probably `nil`. That means the new local
     `a` would be re-initialized to its own implicitly initialized value, `nil`.
     Now the desugaring would look like:
+    **将新的变量放入作用域中，然后运行初始化式。** 这意味着你可以在变量被初始化之前观察到它，所以当我们需要计算出它的值时，这个值其实是`nil`。这意味着新的局部变量`a`将被重新初始化为它自己的隐式初始化值`nil`。现在，脱糖后的结果如下：
 
     ```lox
     var a; // Define the variable.
@@ -607,6 +593,8 @@ the same name as the variable being declared? We have a few options:
 3.  **Make it an error to reference a variable in its initializer.** Have the
     interpreter fail either at compile time or runtime if an initializer
     mentions the variable being initialized.
+
+    **在初始化式中引用一个变量是错误的。** 如果初始化式使用了要初始化的变量，则解释器在编译时或运行时都会失败。
 
 Do either of those first two options look like something a user actually
 *wants*? Shadowing is rare and often an error, so initializing a shadowing
@@ -1118,14 +1106,6 @@ But, for now, we'll stick with that limited amount of analysis. The important
 part is that we fixed that one weird annoying edge case bug, though it might be
 surprising that it took this much work to do it.
 但是，就目前而言，我们会坚持这种有限的分析。重要的是，我们修复了一个奇怪又烦人的边界情况bug，尽管花费了这么多精力可能有些令人意外。
-: 这还远远比不上真正的语言规范那么精确。那些规范文档必须非常明确，即使是一个火星人或一个完全恶意的程序员也会被迫执行正确的语义，只要他们遵循规范说明。有一些公司希望自己的产品与其它产品不兼容，从而将用户锁定在自己的平台上，当一种语言由这类公司实现时，精确性就非常重要了。对于这本书来说，我们很庆幸可以忽略那些尔虞我诈。
-: 在JavaScript中，使用var声明的变量被隐式提升到块的开头，在代码块中对该名称的任何使用都将指向该变量，即使变量使用出现在声明之前。当你用JavaScript写如下代码时：`{ console.log(a); var a = "value"; }`。它实际相当于：`{ var a; // Hoist. console.log(a); a = "value"; }`。这意味着在某些情况下，您可以在其初始化程序运行之前读取一个变量——一个令人讨厌的错误源。后来添加了用于声明变量的备用`let`语法来解决这个问题。
-: 我知道，这完全是一个病态的、人为的程序。这太奇怪了。没有一个理性的人会写这样的代码。唉，如果你长期从事编程语言的工作，你的生活中会有比你想象的更多的时间花在处理这种古怪的代码片段上。
-: 一些语言中明确进行了这种分割。在Scheme和ML中，当你用`let`声明一个局部变量时，还描述了新变量在作用域内的后续代码。不存在隐含的 “块的其余部分”。
-: 为每个操作复制结构，这听起来可能会浪费大量的内存和时间。在实践中，持久性数据结构在不同的“副本”之间共享大部分的数据。
-: 变量解析对每个节点只触及一次，因此其性能是*O(n)*，其中n是语法树中节点的个数。更复杂的分析可能会有更大的复杂性，但是大多数都被精心设计成线性或接近线性。如果编译器随着用户程序的增长而呈指数级变慢，那将是一个很尴尬的失礼。
-: 解释器假定变量在map中存在的做法有点像是盲飞。解释器相信解析器完成了工作并正确地解析了变量。这意味着这两个类之间存在深度耦合。在解析器中，涉及作用域的每一行代码都必须与解释器中修改环境的代码完全匹配。我对这种耦合有切身体会，因为当我在为本书写代码时，我遇到了几个微妙的错误，即解析器代码和解释器代码有点不同步。跟踪这些问题是很困难的。一个行之有效的方法就是，在解释器中使用显式的断言——通过Java的assert或其它验证工具——确认解析器已经具备它所期望的值。
-: 要选择将多少个不同的静态分析纳入单个处理过程中是很困难的。许多小的、孤立的过程（每个过程都有自己的职责）实现和维护都比较简单。然而，遍历语法树本身是有实际运行时间成本的，所以将多个分析绑定到一个过程中通常会更快。
 
 <div class="challenges">
 

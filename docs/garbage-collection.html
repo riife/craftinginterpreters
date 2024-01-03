@@ -1365,18 +1365,12 @@ collector is to minimize that overhead.
 我们可以使用这两个关键指标来更好地理解成本：</p>
 <ul>
 <li>
-<blockquote>
-<p><strong>Throughput</strong> is the total fraction of time spent running user code versus doing garbage collection work. Say you run a clox program for ten seconds and it spends a second of that inside <code>collectGarbage()</code>. That means the throughput is 90%—it spent 90% of the time running the program and 10% on GC overhead.</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li>
 <p><strong>Throughput</strong> is the total fraction of time spent running user code versus
 doing garbage collection work. Say you run a clox program for ten seconds
 and it spends a second of that inside <code>collectGarbage()</code>. That means the
 throughput is 90%<span class="em">&mdash;</span>it spent 90% of the time running the program and 10%
-on GC overhead.</p>
+on GC overhead.
+<strong>吞吐量</strong>是指运行用户代码的时间与执行垃圾回收工作所花费的时间的总比例。假设你运行一个clox程序10秒钟，其中有1秒花在<code>collectGarbage()</code>中。这意味是吞吐量是90%——它花费了90%的时间运行程序，10%的时间用于GC开销。</p>
 <p>Throughput is the most fundamental measure because it tracks the total cost
 of collection overhead. All else being equal, you want to maximize
 throughput. Up until this chapter, clox had no GC at all and thus <span
@@ -1385,15 +1379,7 @@ course, it came at the slight expense of potentially running out of memory
 and crashing if the user&rsquo;s program ran long enough. You can look at the goal
 of a GC as fixing that &ldquo;glitch&rdquo; while sacrificing as little throughput as
 possible.
-<strong>吞吐量</strong>是指运行用户代码的时间与执行垃圾回收工作所花费的时间的总比例。假设你运行一个clox程序10秒钟，其中有1秒花在<code>collectGarbage()</code>中。这意味是吞吐量是90%——它花费了90%的时间运行程序，10%的时间用于GC开销。
 吞吐量是最基本的度量值，因为它跟踪的是回收开销的总成本。在其它条件相同的情况下，你会希望最大化吞吐量。在本章之前，clox完全没有GC，因此吞吐量为100%。这是很难做到的。当然，它的代价是，如果用户的程序运行时间足够长的话，可能会导致内存耗尽和程序崩溃。你可以把GC的目标看作是修复这个“小故障”，同时以牺牲尽可能少的吞吐量为代价。</p>
-</li>
-</ul>
-<ul>
-<li>
-<blockquote>
-<p><strong>Latency</strong> is the longest <em>continuous</em> chunk of time where the user’s program is completely paused while garbage collection happens. It’s a measure of how “chunky” the collector is. Latency is an entirely different metric than throughput.</p>
-</blockquote>
 </li>
 </ul>
 <aside name="hundred">
@@ -1405,7 +1391,8 @@ list, so there was some tiny overhead for setting those pointers.</p>
 <p><strong>Latency</strong> is the longest <em>continuous</em> chunk of time where the user&rsquo;s
 program is completely paused while garbage collection happens. It&rsquo;s a
 measure of how &ldquo;chunky&rdquo; the collector is. Latency is an entirely different
-metric than throughput.</p>
+metric than throughput.
+<strong>延迟</strong>是指当垃圾回收发生时，用户的程序完全暂停的最长连续时间块。这是衡量回收器“笨重”程度的指标。延迟是一个与吞吐量完全不同的指标。</p>
 <p>Consider two runs of a clox program that both take ten seconds. In the first
 run, the GC kicks in once and spends a solid second in <code>collectGarbage()</code> in
 one massive collection. In the second run, the GC gets invoked five times,
@@ -1413,7 +1400,6 @@ each for a fifth of a second. The <em>total</em> amount of time spent collecting
 still a second, so the throughput is 90% in both cases. But in the second
 run, the latency is only 1/5th of a second, five times less than in the
 first.
-<strong>延迟</strong>是指当垃圾回收发生时，用户的程序完全暂停的最长连续时间块。这是衡量回收器“笨重”程度的指标。延迟是一个与吞吐量完全不同的指标。
 考虑一下，一个程序的两次运行都花费了10秒。第一次运行时，GC启动了一次，并在<code>collectGarbage()</code>中花费了整整1秒钟进行了一次大规模的回收。在第二次运行中，GC被调用了五次，每次调用1/5秒。回收所花费的总时间仍然是1秒，所以这两种情况下的吞吐量都是90%。但是在第二次运行中，延迟只有1/5秒，比第一次少了5倍。</p>
 </li>
 </ul>
@@ -1824,27 +1810,7 @@ which fails to <em>prevent</em> a problem, and that&rsquo;s a much harder search
 <p>But, for now at least, you can rest easy. As far as I know, we&rsquo;ve found all of
 the collection bugs in clox, and now we have a working, robust, self-tuning,
 mark-sweep garbage collector.
-但是，至少现在，你可以放心了。据我所知，我们已经找到了clox中的所有回收错误，现在我们有了一个有效的、强大的、自我调整的标记-清除垃圾回收器。
-: 我用的是一般意义上的“保守”。有一种“保守的垃圾回收器”，它的意思更具体。所有的垃圾回收器都是“保守的”，如果内存<em>可以</em>被访问，它们就保持内存存活，而不是有一个魔力8号球，可以让它们更精确地知道哪些数据将被访问。<BR><strong>保守的GC</strong>是一种特殊的回收器，它认为如果任何一块内存中的值看起来可能是地址，那它就是一个指针。这与我们将要实现的<strong>精确的GC</strong>相反，精确GC知道内存中哪些数据是指针，哪些存储的是数字或字符串等其它类型的值。
-: 如果你想探索其它的GC算法，《<a href="http://gchandbook.org/">垃圾回收手册</a>》是一本经典的参考书。对于这样一本深入浅出的大部头来说，它的阅读体验是相当愉快的。也许我对乐趣有种奇怪的看法。
-: 在John McCarthy的《Lisp的历史》中，他指出：“一旦我们决定进行垃圾回收，它的实际实现就会被推迟，因为当时只做了玩具性的例子。”我们选择推迟在clox中加入GC，是追随了巨人的脚步。
-: 跟踪式垃圾回收器是指任何通过对象引用图来追踪的算法。这与引用计数相反，后者使用不同的策略来追踪可达对象。
-: 当然，我们最终也会添加一些辅助函数。
-: 更复杂的回收器可能运行在单独的线程上，或者在程序执行过程中定期交错运行——通常是在函数调用边界处或发生后向跳转时。
-: 我把这一章安排在这里，特别是因为我们现在有了闭包，它给我们提供了有趣的对象，让垃圾回收器来处理。
-: 我说“几乎”是因为有些垃圾回收器是按照对象被访问的顺序来移动对象的，所以遍历顺序决定了哪些对象最终会在内存中相邻。这会影响性能，因为CPU使用位置来决定哪些内存要预加载到缓存中。<BR>即便在遍历顺序很重要的时候，也不清楚哪种顺序是最好的。很难确定对象在未来会以何种顺序被使用，因此GC很难知道哪种顺序有助于提高性能。
-: 高级的垃圾回收算法经常为这个抽象概念加入其它颜色。我见过多种深浅不一的灰色，甚至在一些设计中见过紫色。可惜的是，我的黄绿色-紫红色-孔雀石回收器论文没有被接受发表。
-: 请注意，在此过程的每一步，都没有黑色节点指向白色节点。这个属性被称为<strong>三色不变性</strong>。变量过程中保持这一不变性，以确保没有任何可达对象被回收。
-: 为了更加健壮，我们可以在启动虚拟机时分配一个“雨天基金”内存块。如果灰色栈分配失败，我们就释放这个块并重新尝试。这可能会为我们在堆上提供足够的空间来创建灰色栈，完成GC并释放更多内存。
-: 我们可以在<code>markObject()</code>中做一个简单的优化，就是不要向灰色栈中添加字符串和本地函数，因为我们知道它们不需要处理。相对地，它们可以从白色直接变黑。
-: 你可能正在好奇为什么要有<code>isMarked</code>字段。别急，朋友。
-: 这可能是一个真正的问题。Java并没有驻留<em>所有</em>字符串，但它确实驻留了字符串<em>字面量</em>。它还提供了向字符串表添加字符串的API。多年以来，该表的容量是固定的，添加到其中的字符串永远无法被删除。如果用户不谨慎使用<code>String.intern()</code>，他们可能会耗尽内存导致崩溃。<BR>Ruby多年以来也存在类似的问题，符号（驻留的类似字符串的值）不会被垃圾回收。两者最终都启用了GC来回收这些字符串。
-: 嗯，不完全是100%。它仍然将分配的对象放入了一个链表中，所以在设置这些指针时有一些微小的开销。
-: 每个条带表示程序的执行，分为运行用户代码的时间和在GC中花费的时间。运行GC的最大单个时间片的大小就是延迟。所有用户代码片的大小相加就是吞吐量。
-: 如果每个人代表一个线程，那么一个明显的优化就是让单独的线程进行垃圾回收，提供一个<strong>并发垃圾回收器</strong>。换句话说，在其他人烘焙的时候，雇佣一些洗碗工来清洗。这就是非常复杂的GC工作方式，因为它确实允许烘焙师（工作线程）在几乎没有中断的情况下持续运行用户代码。<BR>但是，协调是必须的。你不会想让洗碗工从面包师手中抢走碗吧！这种协调增加了开销和大量的复杂性。并发回收器速度很快，但要正确实现却很有挑战性。
-: 相比之下，<strong>增量式垃圾回收器</strong>可以做一点回收工作，然后运行一些用户代码，然后再做一点回收工作，以此类推。
-: 学习垃圾回收器的一个挑战是，在孤立的实验室环境中很难发现最佳实践。除非你在大型的、混乱的真实世界的程序上运行回收器，否则你无法看到它的实际表现。这就像调校一辆拉力赛车——你需要把它带到赛道上。
-: 我们的GC无法在C栈中查找地址，但很多GC可以。保守的垃圾回收器会查看所有内存，包括本机堆栈。这类垃圾回收器中最著名的是<a href="https://en.wikipedia.org/wiki/Boehm_garbage_collector"><strong>Boehm–Demers–Weiser垃圾回收器</strong> </a>，通常就叫作“Boehm回收器”。（在CS中，成名的捷径是姓氏在字母顺序上靠前，这样就能在排序的名字列表中出现在第一位）<BR>许多精确GC也在C栈中遍历。即便是这些GC，也必须对指向仅存于CPU寄存器中的活动对象的指针加以注意。</p>
+但是，至少现在，你可以放心了。据我所知，我们已经找到了clox中的所有回收错误，现在我们有了一个有效的、强大的、自我调整的标记-清除垃圾回收器。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>

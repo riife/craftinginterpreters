@@ -381,12 +381,6 @@ programming language <span name="fair">fair</span>, so let's move on to
 something a little more ambitious and get variables going. There are three
 operations we need to support:
 仅仅能够*打印*并不能为你的语言在编程语言博览会上赢得任何奖项，所以让我们继续做一些更有野心的事，让变量发挥作用。我们需要支持三种操作：
-- > Declaring a new variable using a `var` statement.
-使用`var`语句声明一个新变量
-- > Accessing the value of a variable using an identifier expression.
-使用标识符表达式访问一个变量的值
-- > Storing a new value in an existing variable using an assignment expression.
-使用赋值表达式将一个新的值存储在现有的变量中
 
 <aside name="fair">
 
@@ -396,8 +390,11 @@ straw-lined stalls full of baby languages *moo*ing and *baa*ing at each other.
 </aside>
 
 *   Declaring a new variable using a `var` statement.
+    使用`var`语句声明一个新变量
 *   Accessing the value of a variable using an identifier expression.
+    使用标识符表达式访问一个变量的值
 *   Storing a new value in an existing variable using an assignment expression.
+    使用赋值表达式将一个新的值存储在现有的变量中
 
 We can't do either of the last two until we have some variables, so we start
 with declarations.
@@ -907,20 +904,6 @@ print breakfast;
 
 It's starting to look like real code for an actual language!
 它开始看起来像是实际语言的真正代码了！
-: 这是复杂的语言实现中常见的元策略。通常情况下，同一种语言特性会有多种实现技术，每种技术都针对不同的使用模式进行了优化。举例来说，与属性集可以自由修改的其它对象相比，Java Script虚拟机通常对那些使用起来像类实例对象有着更快的表示形式。C和C++编译器通常由多种方法能够根据case分支数量和case值的密集程度来编译`switch`语句。
-: 代码块的作用有点像表达式中的括号。块可以让你把“低级别的”声明语句放在只允许“高级别的”非声明语句的地方。
-: 这听起来微不足道，但是非玩具型语言的手写解析器非常大。当你有数千行代码时，如果一个实用函数可以将两行代码简化为一行代码，并使结果更易于阅读，那它就很容易被接受。
-: `OP_ADD`执行过后堆栈会少一个元素，所以它的效应是`-1`：
-: 不过，我们只是近了一步。等我们添加函数时，还会重新审视`OP_RETURN`。现在，它退出整个解释器的循环即可。
-: 据我统计，在本章末尾的`compiler.c`版本中，149条语句中有80条是表达式语句。
-: 基本上，编译器会对变量声明进行脱糖处理，如`var a;`变成`var a = nil;`，它为前者生成的代码和为后者生成的代码是相同的。
-: 我知道这里有一些函数现在看起来没什么意义。但是，随着我们增加更多与名称相关的语言特性，我们会从中获得更多的好处。函数和类声明都声明了新的变量，而变量表达式和赋值表达式会访问它们。
-: 请注意，直到将值添加到哈希表之后，我们才会弹出它。这确保了如果在将值添加到哈希表的过程中触发了垃圾回收，虚拟机仍然可以找到这个值。这显然是很可能的，因为哈希表在调整大小时需要动态分配。
-: 这个进程在退出时会释放所有的东西，但要求操作系统来收拾我们的烂摊子，总感觉很不体面。
-: 如果你还记得，在jlox中赋值是很容易的。
-: 对`tableSet()`的调用会将值存储在全局变量表中，即使该变量之前没有定义。这个问题在REPL会话中是用户可见的，因为即使报告了运行时错误，它仍然在运行。因此，我们也要注意从表中删除僵尸值。
-: 如果`a*b`是一个有效的赋值目标，这岂不是很疯狂？你可以想象一些类似代数的语言，试图以某种合理的方式划分所赋的值，并将其分配给`a`和`b`……这可能是一个很糟糕的主意。
-: 如果Lox有数组和下标操作符，如`array[index]`，那么中缀操作符`[`也能允许赋值，支持：`array[index] = value`。
 
 <div class="challenges">
 

@@ -121,22 +121,12 @@ questions:
 现在，我们的解释器只支持表达式。因此，为了“执行”代码，我们要计算一个表达式时并生成一个值。对于我们可以解析的每一种表达式语法——字面量，操作符等——我们都需要一个相应的代码块，该代码块知道如何计算该语法树并产生结果。这也就引出了两个问题：</p>
 <ol>
 <li>
-<blockquote>
 <p>What kinds of values do we produce?
 我们要生成什么类型的值？</p>
-</blockquote>
 </li>
 <li>
-<blockquote>
 <p>How do we organize those chunks of code?
 我们如何组织这些代码块？</p>
-</blockquote>
-</li>
-<li>
-<p>What kinds of values do we produce?</p>
-</li>
-<li>
-<p>How do we organize those chunks of code?</p>
 </li>
 </ol>
 <p>Taking them on one at a time<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>

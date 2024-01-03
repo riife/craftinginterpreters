@@ -137,24 +137,13 @@ from expressions. We start with the two simplest kinds:
 我们首先扩展Lox的语法以支持语句。 语句与表达式并没有很大的不同，我们从两种最简单的类型开始：</p>
 <ol>
 <li>
-<blockquote>
-<p>An <strong>expression statement</strong> lets you place an expression where a statement is expected. They exist to evaluate expressions that have side effects. You may not notice them, but you use them all the time in C, Java, and other languages. Any time you see a function or method call followed by a <code>;</code>, you’re looking at an expression statement.
-<strong>表达式语句</strong>可以让您将表达式放在需要语句的位置。它们的存在是为了计算有副作用的表达式。您可能没有注意到它们，但其实你在C、Java和其他语言中一直在使用表达式语句。如果你看到一个函数或方法调用后面跟着一个<code>;</code>，您看到的其实就是一个表达式语句。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>A <strong><code>print</code> statement</strong> evaluates an expression and displays the result to the user. I admit it’s weird to bake printing right into the language instead of making it a library function. Doing so is a concession to the fact that we’re building this interpreter one chapter at a time and want to be able to play with it before it’s all done. To make print a library function, we’d have to wait until we had all of the machinery for defining and calling functions before we could witness any side effects.
-<strong><code>print</code>语句</strong>会计算一个表达式，并将结果展示给用户。我承认把<code>print</code>直接放进语言中，而不是把它变成一个库函数，这很奇怪。这样做是基于本书的编排策略的让步，即我们会以章节为单位逐步构建这个解释器，并希望能够在完成解释器的所有功能之前能够使用它。如果让<code>print</code>成为一个标准库函数，我们必须等到拥有了定义和调用函数的所有机制之后，才能看到它发挥作用。</p>
-</blockquote>
-</li>
-<li>
 <p>An <strong>expression statement</strong> lets you place an expression where a statement
 is expected. They exist to evaluate expressions that have side effects. You
 may not notice them, but you use them all the time in <span
 name="expr-stmt">C</span>, Java, and other languages. Any time you see a
 function or method call followed by a <code>;</code>, you&rsquo;re looking at an expression
-statement.</p>
+statement.
+<strong>表达式语句</strong>可以让您将表达式放在需要语句的位置。它们的存在是为了计算有副作用的表达式。您可能没有注意到它们，但其实你在C、Java和其他语言中一直在使用表达式语句。如果你看到一个函数或方法调用后面跟着一个<code>;</code>，您看到的其实就是一个表达式语句。</p>
 <aside name="expr-stmt">
 <p>Pascal is an outlier. It distinguishes between <em>procedures</em> and <em>functions</em>.
 Functions return values, but procedures cannot. There is a statement form
@@ -171,6 +160,7 @@ be able to play with it before it&rsquo;s all done. To make print a library
 function, we&rsquo;d have to wait until we had all of the machinery for defining
 and calling functions <span name="print">before</span> we could witness any
 side effects.</p>
+<p><strong><code>print</code>语句</strong>会计算一个表达式，并将结果展示给用户。我承认把<code>print</code>直接放进语言中，而不是把它变成一个库函数，这很奇怪。这样做是基于本书的编排策略的让步，即我们会以章节为单位逐步构建这个解释器，并希望能够在完成解释器的所有功能之前能够使用它。如果让<code>print</code>成为一个标准库函数，我们必须等到拥有了定义和调用函数的所有机制之后，才能看到它发挥作用。</p>
 <aside name="print">
 <p>I will note with only a modicum of defensiveness that BASIC and Python
 have dedicated <code>print</code> statements and they are real languages. Granted,
@@ -494,29 +484,21 @@ of variables<span class="em">&mdash;</span><span name="globals">globals</span>. 
 现在我们已经有了语句，可以开始处理状态了。在深入探讨语法作用域的复杂性之前，我们先从最简单的变量（全局变量）开始。我们需要两个新的结构。</p>
 <ol>
 <li>
-<blockquote>
 <p>A <strong>variable declaration</strong> statement brings a new variable into the world.
 <strong>变量声明</strong>语句用于创建一个新变量。</p>
-</blockquote>
-</li>
-<li>
-<p>A <strong>variable declaration</strong> statement brings a new variable into the world.</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">beverage</span> = <span class="s">&quot;espresso&quot;</span>;
 </pre></div>
 <p>This creates a new binding that associates a name (here &ldquo;beverage&rdquo;) with a
 value (here, the string <code>"espresso"</code>).
 该语句将创建一个新的绑定，将一个名称（这里是 <code>beverage</code>）和一个值（这里是字符串 <code>"espresso"</code>）关联起来。</p>
 </li>
-<li>
-<blockquote>
-<p>Once that’s done, a <strong>variable expression</strong> accesses that binding. When the identifier “beverage” is used as an expression, it looks up the value bound to that name and returns it.
-一旦声明完成，<strong>变量表达式</strong>就可以访问该绑定。当标识符“beverage”被用作一个表达式时，程序会查找与该名称绑定的值并返回。</p>
-</blockquote>
-</li>
+</ol>
+<ol start="2">
 <li>
 <p>Once that&rsquo;s done, a <strong>variable expression</strong> accesses that binding. When the
 identifier &ldquo;beverage&rdquo; is used as an expression, it looks up the value bound
-to that name and returns it.</p>
+to that name and returns it.
+一旦声明完成，<strong>变量表达式</strong>就可以访问该绑定。当标识符“beverage”被用作一个表达式时，程序会查找与该名称绑定的值并返回。</p>
 <div class="codehilite"><pre><span class="k">print</span> <span class="i">beverage</span>; <span class="c">// &quot;espresso&quot;.</span>
 </pre></div>
 </li>
@@ -869,33 +851,13 @@ choice:
 这在语义上更有趣一些。如果找到了这个变量，只需要返回与之绑定的值。但如果没有找到呢？我们又需要做一个选择：</p>
 <ul>
 <li>
-<blockquote>
-<p>Make it a syntax error.
-抛出语法错误</p>
-</blockquote>
+<p>Make it a syntax error. 抛出语法错误</p>
 </li>
 <li>
-<blockquote>
-<p>Make it a runtime error.
-抛出运行时错误</p>
-</blockquote>
+<p>Make it a runtime error. 抛出运行时错误</p>
 </li>
 <li>
-<blockquote>
-<p>Allow it and return some default value like <code>nil</code>.
-允许该操作并返回默认值（如<code>nil</code>）</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li>
-<p>Make it a syntax error.</p>
-</li>
-<li>
-<p>Make it a runtime error.</p>
-</li>
-<li>
-<p>Allow it and return some default value like <code>nil</code>.</p>
+<p>Allow it and return some default value like <code>nil</code>. 允许该操作并返回默认值（如<code>nil</code>）</p>
 </li>
 </ul>
 <p>Lox is pretty lax, but the last option is a little <em>too</em> permissive to me.
@@ -1387,24 +1349,14 @@ disappear.
 实现块作用域的第一步可能是这样的：</p>
 <ol>
 <li>
-<blockquote>
-<p>As we visit each statement inside the block, keep track of any variables declared.
-当访问块内的每个语句时，跟踪所有声明的变量。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>After the last statement is executed, tell the environment to delete all of those variables.
-执行完最后一条语句后，告诉环境将这些变量全部删除。</p>
-</blockquote>
-</li>
-<li>
 <p>As we visit each statement inside the block, keep track of any variables
-declared.</p>
+declared.
+当访问块内的每个语句时，跟踪所有声明的变量。</p>
 </li>
 <li>
 <p>After the last statement is executed, tell the environment to delete all of
-those variables.</p>
+those variables.
+执行完最后一条语句后，告诉环境将这些变量全部删除。</p>
 </li>
 </ol>
 <p>That would work for the previous example. But remember, one motivation for

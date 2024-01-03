@@ -48,10 +48,6 @@ stuff into one chapter, but we'll chew through it all one bite at a time.
 We start by extending Lox's grammar with statements. They aren't very different
 from expressions. We start with the two simplest kinds:
 我们首先扩展Lox的语法以支持语句。 语句与表达式并没有很大的不同，我们从两种最简单的类型开始：
-1. > An **expression statement** lets you place an expression where a statement is expected. They exist to evaluate expressions that have side effects. You may not notice them, but you use them all the time in C, Java, and other languages. Any time you see a function or method call followed by a `;`, you’re looking at an expression statement.
-**表达式语句**可以让您将表达式放在需要语句的位置。它们的存在是为了计算有副作用的表达式。您可能没有注意到它们，但其实你在C、Java和其他语言中一直在使用表达式语句。如果你看到一个函数或方法调用后面跟着一个`;`，您看到的其实就是一个表达式语句。
-2. > A **`print` statement** evaluates an expression and displays the result to the user. I admit it’s weird to bake printing right into the language instead of making it a library function. Doing so is a concession to the fact that we’re building this interpreter one chapter at a time and want to be able to play with it before it’s all done. To make print a library function, we’d have to wait until we had all of the machinery for defining and calling functions before we could witness any side effects.
-**`print`语句**会计算一个表达式，并将结果展示给用户。我承认把`print`直接放进语言中，而不是把它变成一个库函数，这很奇怪。这样做是基于本书的编排策略的让步，即我们会以章节为单位逐步构建这个解释器，并希望能够在完成解释器的所有功能之前能够使用它。如果让`print`成为一个标准库函数，我们必须等到拥有了定义和调用函数的所有机制之后，才能看到它发挥作用。
 
 1.  An **expression statement** lets you place an expression where a statement
     is expected. They exist to evaluate expressions that have side effects. You
@@ -59,6 +55,7 @@ from expressions. We start with the two simplest kinds:
     name="expr-stmt">C</span>, Java, and other languages. Any time you see a
     function or method call followed by a `;`, you're looking at an expression
     statement.
+    **表达式语句**可以让您将表达式放在需要语句的位置。它们的存在是为了计算有副作用的表达式。您可能没有注意到它们，但其实你在C、Java和其他语言中一直在使用表达式语句。如果你看到一个函数或方法调用后面跟着一个`;`，您看到的其实就是一个表达式语句。
 
     <aside name="expr-stmt">
 
@@ -77,6 +74,8 @@ from expressions. We start with the two simplest kinds:
     function, we'd have to wait until we had all of the machinery for defining
     and calling functions <span name="print">before</span> we could witness any
     side effects.
+
+    **`print`语句**会计算一个表达式，并将结果展示给用户。我承认把`print`直接放进语言中，而不是把它变成一个库函数，这很奇怪。这样做是基于本书的编排策略的让步，即我们会以章节为单位逐步构建这个解释器，并希望能够在完成解释器的所有功能之前能够使用它。如果让`print`成为一个标准库函数，我们必须等到拥有了定义和调用函数的所有机制之后，才能看到它发挥作用。
 
     <aside name="print">
 
@@ -333,24 +332,22 @@ Now that we have statements, we can start working on state. Before we get into
 all of the complexity of lexical scoping, we'll start off with the easiest kind
 of variables -- <span name="globals">globals</span>. We need two new constructs.
 现在我们已经有了语句，可以开始处理状态了。在深入探讨语法作用域的复杂性之前，我们先从最简单的变量（全局变量）开始。我们需要两个新的结构。
-1. > A **variable declaration** statement brings a new variable into the world.
-**变量声明**语句用于创建一个新变量。
 
 1.  A **variable declaration** statement brings a new variable into the world.
-
+**变量声明**语句用于创建一个新变量。
     ```lox
     var beverage = "espresso";
     ```
 
     This creates a new binding that associates a name (here "beverage") with a
     value (here, the string `"espresso"`).
-该语句将创建一个新的绑定，将一个名称（这里是 `beverage`）和一个值（这里是字符串 `"espresso"`）关联起来。
-2. > Once that’s done, a **variable expression** accesses that binding. When the identifier “beverage” is used as an expression, it looks up the value bound to that name and returns it.
-一旦声明完成，**变量表达式**就可以访问该绑定。当标识符“beverage”被用作一个表达式时，程序会查找与该名称绑定的值并返回。
+    该语句将创建一个新的绑定，将一个名称（这里是 `beverage`）和一个值（这里是字符串 `"espresso"`）关联起来。
+
 
 2.  Once that's done, a **variable expression** accesses that binding. When the
     identifier "beverage" is used as an expression, it looks up the value bound
     to that name and returns it.
+    一旦声明完成，**变量表达式**就可以访问该绑定。当标识符“beverage”被用作一个表达式时，程序会查找与该名称绑定的值并返回。
 
     ```lox
     print beverage; // "espresso".
@@ -683,18 +680,12 @@ This is a little more semantically interesting. If the variable is found, it
 simply returns the value bound to it. But what if it's not? Again, we have a
 choice:
 这在语义上更有趣一些。如果找到了这个变量，只需要返回与之绑定的值。但如果没有找到呢？我们又需要做一个选择：
-- > Make it a syntax error.
-抛出语法错误
-- > Make it a runtime error.
-抛出运行时错误
-- > Allow it and return some default value like `nil`.
-允许该操作并返回默认值（如`nil`）
 
-* Make it a syntax error.
+* Make it a syntax error. 抛出语法错误
 
-* Make it a runtime error.
+* Make it a runtime error. 抛出运行时错误
 
-* Allow it and return some default value like `nil`.
+* Allow it and return some default value like `nil`. 允许该操作并返回默认值（如`nil`）
 
 Lox is pretty lax, but the last option is a little *too* permissive to me.
 Making it a syntax error -- a compile-time error -- seems like a smart choice.
@@ -1241,16 +1232,15 @@ disappear.
 
 A first cut at implementing block scope might work like this:
 实现块作用域的第一步可能是这样的：
-1. > As we visit each statement inside the block, keep track of any variables declared.
-当访问块内的每个语句时，跟踪所有声明的变量。
-2. > After the last statement is executed, tell the environment to delete all of those variables.
-执行完最后一条语句后，告诉环境将这些变量全部删除。
+
 
 1.  As we visit each statement inside the block, keep track of any variables
     declared.
+    当访问块内的每个语句时，跟踪所有声明的变量。
 
 2.  After the last statement is executed, tell the environment to delete all of
     those variables.
+    执行完最后一条语句后，告诉环境将这些变量全部删除。
 
 That would work for the previous example. But remember, one motivation for
 local scope is encapsulation -- a block of code in one corner of the program

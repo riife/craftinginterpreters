@@ -996,12 +996,7 @@ forward<span class="em">&mdash;</span>clox is now Turing complete. We&rsquo;ve a
 syntax: three statements and two expression forms. Even so, it only took three
 new simple instructions. That&rsquo;s a pretty good effort-to-reward ratio for the
 architecture of our VM.
-与jlox中实现<code>for</code>循环一样，我们不需要接触运行时。所有这些都被编译到虚拟机已经支持的原始控制流中。在这一章中，我们向前迈出了一大步——clox现在图灵完整了。我们还讨论了相当多的新语法：三种语句和两种表达式形式。即便如此，我们也只用了三个简单的新指令。对于我们的虚拟机架构来说，这是一个相当不错的努力-回报比。
-: 你有没有注意到，<code>if</code>关键字后面的<code>(</code>实际上没有什么用处？如果没有它，语言也会很明确，而且容易解析，比如：<BR><code>if condition) print("looks weird");</code><BR>结尾的<code>)</code>是有用的，因为它将条件表达式和主体分隔开。有些语言使用<code>then</code>关键字来代替。但是开头的<code>(</code>没有任何作用。它之所以存在，是因为不匹配的括号在我们人类看来很糟糕。
-: 一些指令集中有单独的“长”跳转指令，这些指令会接受更大的操作数，当你需要跳转更远的距离时可以使用。
-: 我说过我们不会使用C的<code>if</code>语句来实现Lox的控制流，但我们在这里确实使用了<code>if</code>语句来决定是否偏移指令指针。但我们并没有真正使用C语言来实现控制流。如果我们想的话，可以用纯粹的算术做到同样的事情。假设我们有一个函数<code>falsey()</code>，它接受一个Lox Value，如果是假则返回1，否则返回0。那我们可以这样实现跳转指令：<BR><BR><code>falsey()</code>函数可能会使用一些控制流来处理不同的值类型，但这是该函数的实现细节，并不影响我们的虚拟机如何处理自己的控制流。
-: 我们的操作码范围中还有足够的空间，所以我们可以为隐式弹出值的条件跳转和不弹出值的条件跳转制定单独的指令。但我想尽量在书中保持简约。在你的字节码虚拟机中，值得探索添加更多的专用指令，看看它们是如何影响性能的。
-: 真的开始怀疑我对逻辑运算符使用相同的跳转指令的决定了。</p>
+与jlox中实现<code>for</code>循环一样，我们不需要接触运行时。所有这些都被编译到虚拟机已经支持的原始控制流中。在这一章中，我们向前迈出了一大步——clox现在图灵完整了。我们还讨论了相当多的新语法：三种语句和两种表达式形式。即便如此，我们也只用了三个简单的新指令。对于我们的虚拟机架构来说，这是一个相当不错的努力-回报比。</p>
 <aside name="leap">
 <p>I couldn&rsquo;t resist the pun. I regret nothing.</p>
 </aside>

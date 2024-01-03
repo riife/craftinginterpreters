@@ -417,20 +417,17 @@ Instead, lookup should start on the superclass of *the class containing the
 
 The execution flow looks something like this:
 执行流程看起来是这样的：
-1. > We call `test()` on an instance of C.
-我们在C的一个实例上调用`test()`。
-2. > That enters the `test()` method inherited from B. That calls `super.method()`.
-这就进入了从B中继承的`test()`方法，其中又会调用`super.method()`。
-3. > The superclass of B is A, so that chains to `method()` on A, and the program prints “A method”.
-B的超类是A，所以链接到A中的`method()`，程序会打印出“A method”。
 
 1. We call `test()` on an instance of C.
+我们在C的一个实例上调用`test()`。
 
 2. That enters the `test()` method inherited from B. That calls
    `super.method()`.
+这就进入了从B中继承的`test()`方法，其中又会调用`super.method()`。
 
 3. The superclass of B is A, so that chains to `method()` on A, and the program
    prints "A method".
+   B的超类是A，所以链接到A中的`method()`，程序会打印出“A method”。
 
 </aside>
 
@@ -724,7 +721,6 @@ write a few fun Lox programs and run them in your interpreter. (You may want to
 add a few more native methods for things like reading user input.) When you're
 refreshed and ready, we'll embark on our [next adventure][].
 这标志着第二部分的结束，但不是这本书的结束。休息一下，也许可以编写几个Lox程序在你的解释器中运行一下（你可能需要添加一些本地方法来支持读取用户的输入等操作）。当你重新振作之后，我们将开始下一次冒险。
-: “Super-”和“sub-”在拉丁语中表示“上面”和“下面”。把继承树想象成一个根在顶部的家族树——在这个图上，子类就在超类的下面。更一般地说，“sub-”指的是细化或被更一般的概念所包含的事物。在动物学中，子类指的是对更大的生物类的一个精细分类。在集合论中，子集被一个更大的超集包含，该超集中包含子集的所有元素，可能还有更多元素。集合论和编程语言在类型论中相遇，就产生了“超类型”和“子类型”。在静态类型的面向对象语言中，一个子类通常也是其超类的一个子类型。
 
 [next adventure]: a-bytecode-virtual-machine.html
 

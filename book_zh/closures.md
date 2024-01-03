@@ -1460,24 +1460,21 @@ at the head and go forward from there.
 
 There are three reasons we can exit the loop:
 我们有三个原因可以退出循环：
-1. > **The local slot we stopped at \*is\* the slot we’re looking for.** We found an existing upvalue capturing the variable, so we reuse that upvalue.
-**我们停止时的局部变量槽是我们要找的槽**。我在找到了一个现有的上值捕获了这个变量，因此我们重用这个上值。
-2. > **We ran out of upvalues to search.** When `upvalue` is `NULL`, it means every open upvalue in the list points to locals above the slot we’re looking for, or (more likely) the upvalue list is empty. Either way, we didn’t find an upvalue for our slot.
-**我们找不到需要搜索的上值了**。当`upvalue`为`NULL`时，这意味着列表中每个开放上值都指向位于我们要找的槽之上的局部变量，或者（更可能是）上值列表是空的。无论怎样，我们都没有找到对应该槽的上值。
-3. > **We found an upvalue whose local slot is \*below\* the one we’re looking for.** Since the list is sorted, that means we’ve gone past the slot we are closing over, and thus there must not be an existing upvalue for it.
-**我们找到了一个上值，其局部变量槽低于我们正查找的槽位**。因为列表是有序的，这意味着我们已经超过了正在关闭的槽，因此肯定没有对应该槽的已有上值。
 
 1.  **The local slot we stopped at *is* the slot we're looking for.** We found
     an existing upvalue capturing the variable, so we reuse that upvalue.
+    **我们停止时的局部变量槽是我们要找的槽**。我在找到了一个现有的上值捕获了这个变量，因此我们重用这个上值。
 
 2.  **We ran out of upvalues to search.** When `upvalue` is `NULL`, it means
     every open upvalue in the list points to locals above the slot we're looking
     for, or (more likely) the upvalue list is empty. Either way, we didn't find
     an upvalue for our slot.
+    **我们找不到需要搜索的上值了**。当`upvalue`为`NULL`时，这意味着列表中每个开放上值都指向位于我们要找的槽之上的局部变量，或者（更可能是）上值列表是空的。无论怎样，我们都没有找到对应该槽的上值。
 
 3.  **We found an upvalue whose local slot is *below* the one we're looking
     for.** Since the list is sorted, that means we've gone past the slot we are
     closing over, and thus there must not be an existing upvalue for it.
+    **我们找到了一个上值，其局部变量槽低于我们正查找的槽位**。因为列表是有序的，这意味着我们已经超过了正在关闭的槽，因此肯定没有对应该槽的已有上值。
 
 In the first case, we're done and we've returned. Otherwise, we create a new
 upvalue for our local slot and insert it into the list at the right location.
@@ -1650,30 +1647,6 @@ have a *lot* of objects floating around in clox's heap, with a web of pointers
 stringing them together. The [next step][] is figuring out how to manage that
 memory so that we can free some of those objects when they're no longer needed.
 我们现在已经在clox中完全实现了词法作用域，这是一个重要的里程碑。而且，现在我们有了具有复杂生命周期的函数和变量，我们也要了很多漂浮在clox堆中的对象，并有一个指针网络将它们串联起来。下一步是弄清楚如何管理这些内存，以便我们可以在不再需要这些对象的时候释放它们。
-: 毕竟，C和Java使用栈来存储局部变量是有原因的。
-: 搜索“闭包转换 closure conversion”和“Lambda提升 lambda lifting”就可以开始探索了。
-: 换句话说，Lox中的函数声明是一种字面量——定义某个内置类型的常量值的一段语法。
-: Lua实现中将包含字节码的原始函数对象称为“原型”，这个一个很好的形容词，只不过这个词也被重载以指代[原型继承](https://en.wikipedia.org/wiki/Prototype-based_programming)。
-: 或许我应该定义一个宏，以便更容易地生成这些宏。也许这有点太玄了。
-: 这段代码看起来有点傻，因为我们仍然把原始的ObjFunction压入栈中，然后在创建完闭包之后弹出它，然后再将闭包压入栈。为什么要把ObjFunction放在这里呢？像往常一样，当你看到奇怪的堆栈操作发生时，它是为了让即将到来的垃圾回收器知道一些堆分配的对象。
-: 它最终可能会是一个完全未定义的变量，甚至不是全局变量。但是在Lox中，我们直到运行时才能检测到这个错误，所以从编译器的角度看，它是“期望是全局的”。
-: 就像常量和函数元数一样，上值计数也是连接编译器与运行时的一些小数据。
-: 当然，另一种基本情况是，没有外层函数。在这种情况下，该变量不能在词法上解析，并被当作全局变量处理。
-: 每次递归调用`resolveUpvalue()`都会*走出*一层函数嵌套。因此，内部的*递归调用*指向的是*外部*的嵌套声明。查找局部变量的最内层的`resolveUpvalue()`递归调用对应的将是*最外层*的函数，就是实际声明该变量的外层函数的内部。
-: 在闭包中存储上值数量是多余的，因为ObjClosure引用的ObjFunction也保存了这个数量。通常，这类奇怪的代码是为了适应GC。在闭包对应的ObjFunction已经被释放后，收集器可能也需要知道ObjClosure对应上值数组的大小。
-: 设置指令不会从栈中*弹出*值，因为，请记住，赋值在Lox中是一个表达式。所以赋值的结果（所赋的值）需要保留在栈中，供外围的表达式使用。
-: 如果Lox不允许赋值，这就是一个学术问题。
-: 我使用了多个全局变量的事实并不重要。我需要某种方式从一个函数中返回两个值。而在Lox中没有任何形式的聚合类型，我的选择很有限。
-: 这里 的“之后”，指的是词法或文本意义上的——在包含关闭变量的声明语句的代码块的`}`之后的代码。
-: 编译器不会弹出参数和在函数体中声明的局部变量。这些我们也会在运行时处理。
-: 在本书的后面部分，用户将有可能捕获这个变量。这里只是建立一些预期。
-: 如果某个闭包从外围函数中捕获了一个*上值*，那么虚拟机确实会共享上值。嵌套的情况下，工作正常。但是如果两个同级闭包捕获了同一个局部变量，它们会各自创建一个单独的ObjUpvalue。
-: 闭包经常在热循环中被*调用*。想想传递给集合的典型高阶函数，如`map()`和`filter()`。这应该是很的。但是创建闭包的函数声明只发生一次，而且通常是在循环之外。
-: 这是个单链表。除了从头指针开始遍历，我们没有其它选择。
-: 还有一种更简短的实现，通过使用一个指向指针的指针，来统一处理更新头部指针或前一个上值的`next`指针两种情况，但这种代码几乎会让所有未达到指针专业水平的人感到困惑。我选择了基本的`if`语句的方法。
-: 我并不是在自夸。这都是Lua开发团队的创新。
-: 没有什么*阻止*我们在编译器中关闭最外层的函数作用域，并生成`OP_POP`和`OP_CLOSE_UPVALUE`指令。这样做只是没有必要，因为运行时在弹出调用帧时，隐式地丢弃了函数使用的所有栈槽。
-
 
 [next step]: garbage-collection.html
 
@@ -2084,6 +2057,5 @@ closures[1].call
 旧的C风格的`for`循环更难了。增量子句看起来像是修改。这意味着每一步更新的是同一个变量。但是每个迭代共享一个循环变量几乎是*没有用*的。只有在闭包捕获它时，你才能检测到这一现象。而且，如果闭包引用的变量的值是导致循环退出的值，那么它也几乎没有帮助。
 
 实用的答案可能是像JavaScript在`for`循环中的`let`那样。让它看起来像修改，但实际上每次都创建一个新变量，因为这是用户想要的。不过，仔细想想，还是有点奇怪的。
-: 你想知道“3”是怎么出现的吗？在第二次迭代后，执行`i++`，它将`i`增加到3。这就是导致`i<=2`的值为false并结束循环的原因。如果`i`永远达不到3，循环就会一直运行下去。
 
 </div>
