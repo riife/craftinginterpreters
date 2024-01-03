@@ -895,7 +895,7 @@ and see if it handles them as it should.
 
 <div class="design-note">
 
-## Design Note: Implicit Semicolons
+## Design Note: Implicit Semicolons 隐藏的分号
 
 Programmers today are spoiled for choice in languages and have gotten picky
 about syntax. They want their language to look clean and modern. One bit of
@@ -1020,6 +1020,83 @@ rules that make sense for your language's particular grammar and idioms. And
 don't do what JavaScript did.
 
 </div>
+
+<div class="design-note">
+
+现在的程序员已经被越来越多的语言选择宠坏了，对语法也越来越挑剔。他们希望自己的代码看起来干净、现代化。几乎每一种新语言都会放弃一个小的语法点（一些古老的语言，比如BASIC从来没有过），那就是将`;`作为显式的语句结束符。
+
+相对地，它们将“有意义的”换行符看作是语句结束符。这里所说的“有意义的”是有挑战性的部分。尽管*大多数的*语句都是在同一行，但有时你需要将一个语句扩展到多行。这些混杂的换行符不应该被视作结束符。
+
+大多数明显的应该忽略换行的情况都很容易发现，但也有少数讨厌的情况：
+
+* 返回值在下一行：
+
+    ```js
+    if (condition) return
+    "value"
+    ```
+
+    “value”是要返回的值吗？还是说我们有一个空的`return`语句，后面跟着包含一个字符串字面量的表达式语句。
+
+* 下一行中有带圆括号的表达式：
+
+    ```js
+    func
+    (parenthesized)
+    ```
+
+    这是一个对`func(parenthesized)`的调用，还是两个表达式语句，一个用于`func`，一个用于圆括号表达式？
+
+* “-”号在下一行：
+
+    ```js
+    first
+    -second
+    ```
+
+    这是一个中缀表达式——`first - second`，还是两个表达式语句，一个是`first`，另一个是对`second`取负？
+
+在所有这些情况下，无论是否将换行符作为分隔符，都会产生有效的代码，但可能不是用户想要的代码。在不同的语言中，有各种不同的规则来决定哪些换行符是分隔符。下面是几个例子：
+
+* [Lua](https://www.lua.org/pil/1.1.html)完全忽略了换行符，但是仔细地控制了它的语法，因此在大多数情况下，语句之间根本不需要分隔符。这段代码是完全合法的：
+
+    ```lua
+    a = 1 b = 2
+    ```
+
+    Lua要求 `return` 语句是一个块中的最后一条语句，从而避免` return` 问题。如果在关键字`end`之前、`return`之后有一个值，这个值*必须*是用于`return`。对于其他两种情况来说，Lua允许显式的`;`并且期望用户使用它。在实践中，这种情况基本不会发生，因为在小括号或一元否定表达式语句中没有任何意义。
+
+* [Go](https://golang.org/ref/spec#Semicolons)会处理扫描器中的换行。如果在词法单元之后出现换行，并且该词法标记是已知可能结束语句的少数标记类型之一，则将换行视为分号，否则就忽略它。Go团队提供了一个规范的代码格式化程序[gofmt](https://golang.org/cmd/gofmt/)，整个软件生态系统非常热衷于使用它，这确保了常用样式的代码能够很好地遵循这个简单的规则。
+
+* Python将所有换行符都视为有效，除非在行末使用明确的反斜杠将其延续到下一行。但是，括号(`()`、`[]`或`{}`)内的任何换行都将被忽略。惯用的代码风格更倾向于后者。
+
+    这条规则对 Python 很有效，因为它是一种高度面向语句的语言。特别是，Python 的语法确保了语句永远不会出现在表达式内。C语言也是如此，但许多其他有 "lambda "或函数字面语法的语言则不然。
+
+    举一个JavaScript中的例子：
+
+    ```js
+    console.log(function() {
+    statement();
+    });
+    ```
+
+    这里，`console.log()` *表达式*包含一个函数字面量，而这个函数字面量又包含` statement();`*语句*。
+
+    如果要求*进入*一个嵌套在括号内的<span name="lambda_zh">语句</span>中，并且要求其中的换行是有意义的，那么Python将需要一套不同的隐式连接行的规则[^lambda]。
+
+<aside name="lambda_zh">
+
+现在你知道为什么 Python 的 `lambda` 只允许一个表达式体了吧。
+
+</aside>
+
+* JavaScript的“[自动分号插入](https://www.ecma-international.org/ecma-262/5.1/#sec-7.9)”规则才是真正的奇葩。其他语言认为大多数换行符都是有意义的，只有少数换行符在多行语句中应该被忽略，而JS的假设恰恰相反。它将所有的换行符都视为无意义的空白，除非遇到解析错误。如果遇到了，它就会回过头来，尝试把之前的换行变成分号，以期得到正确的语法。
+
+    如果我完全详细地介绍它是如何工作的，那么这个设计说明就会变成一篇设计檄文，更不用说JavaScript的“解决方案”从各种角度看都是个坏主意。真是一团糟。JavaScript是我所知道的唯一（风格指南和语言本身背离）的语言，它的许多风格指南要求在每条语句后都显式地使用分号，但该语言却理论上允许您省略分号。
+
+如果您要设计一种新的语言，则几乎可以肯定应该避免使用显式的语句终止符。 程序员和其他人类一样是时尚的动物，分号和ALL CAPS KEYWORDS(全大写关键字)一样已经过时了。只是要确保您选择了一套适用于您语言的特定语法和习语的规则即可。不要重蹈JavaScript的覆辙。
+</div>
+
 
 [lua]: https://www.lua.org/pil/1.1.html
 [go]: https://golang.org/ref/spec#Semicolons

@@ -45,7 +45,7 @@
         <li><a href="#line-information"><small>14.6</small> Line Information</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Test Your Language</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Test Your Language 测试你的语言</a></li>
     </ul>
     
     
@@ -78,7 +78,7 @@
             <li><a href="#line-information"><small>14.6</small> Line Information</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Test Your Language</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Test Your Language 测试你的语言</a></li>
         </ul>
         
         
@@ -1443,7 +1443,7 @@ job to define how it does that.</p>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Test Your Language</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: Test Your Language 测试你的语言</a></h2>
 <p>We&rsquo;re almost halfway through the book and one thing we haven&rsquo;t talked about is
 <em>testing</em> your language implementation. That&rsquo;s not because testing isn&rsquo;t
 important. I can&rsquo;t possibly stress enough how vital it is to have a good,
@@ -1531,6 +1531,30 @@ finish running.</p>
 pretend to be an expert on <em>how</em> to test languages. I just want you to
 internalize how important it is <em>that</em> you test yours. Seriously. Test your
 language. You&rsquo;ll thank me for it.</p>
+</div>
+<div class="design-note">
+<p>我们的书已经过半了，有一件事我们还没有谈及，那就是<em>测试</em>你的语言实现。这并不是因为测试不重要。语言实现有一个好的、全面的套件是多么重要，我怎么强调都不为过。</p>
+<p>在我写本书之前，我为Lox写了一个<a href="https://github.com/munificent/craftinginterpreters/tree/master/test">测试套件</a>（你也可以在自己的Lox实现中使用它）。这些测试在我的语言实现中发现了无数的bug。</p>
+<p>测试在所有软件中都很重要，但对于编程语言来说，测试甚至更重要，至少有以下几个原因：</p>
+<ul>
+<li><strong>用户希望他们的编程语言能够坚如磐石</strong>。我们已经习惯了成熟的编译器、解释器，以至于“是你的代码（出错了），而不是编译器”成为<a href="https://blog.codinghorror.com/the-first-rule-of-programming-its-always-your-fault/">软件文化中根深蒂固的一部分</a>。如果你的语言实现中有错误，用户需要经历全部五个痛苦的阶段才能弄清楚发生了什么，而你并不想让他们经历这一切。</li>
+<li><strong>语言的实现是一个紧密相连的软件</strong>。有些代码库既广泛又浮浅。如果你的文本编辑器中的文件加载代码被破坏了，它不会导致屏幕上的文本渲染失败（希望如此）。语言的实现则更狭窄和深入，特别是处理语言实际语义的解释器核心部分。这使得系统的各个部分之间奇怪的交互会造成微妙的错误。这就需要好的测试来清除这些问题。</li>
+<li><strong>从设计上来说，语言实现的输入是组合性的</strong>。用户可以写出无限多的程序，而你的实现需要能够正确地运行这些程序。您显然不能进行详尽地测试，但需要努力覆盖尽可能多的输入空间。</li>
+<li><strong>语言的实现通常是复杂的、不断变化的，而且充满了优化</strong>。这就导致了粗糙代码中有很多隐藏错误的黑暗角落。</li>
+</ul>
+<p>所有这些都意味着你需要做大量的测试。但是什么测试呢？我见过的项目主要集中在端到端的“语言测试”上。每个测试都是一段用该语言编写的程序，以及它预期产生的输出或错误。然后，你还需要一个测试运行器，将这些测试程序输入到你的语言实现中，并验证它是否按照预期执行。用语言本身编写测试有一些很好的优势：</p>
+<ul>
+<li>测试不与任何特定的API或语言实现的内部结构相耦合。这样你可以重新组织或重写解释器或编译器的一部分，而不需要更新大量的测试。</li>
+<li>你可以对该语言的多种实现使用相同的测试。</li>
+<li>测试通常是简洁的，易于阅读和维护，因为它们只是语言写就的简单脚本。</li>
+</ul>
+<p>不过，这并不全是好事：</p>
+<ul>
+<li>端到端测试可以帮助你确定是否存在错误，但不能确认错误在哪里。在语言实现中找出错误代码的位置可能更加困难，因为测试只能告诉你没有出现正确的输出。</li>
+<li>要编写一个有效的程序来测试实现中一些不太明显的角落，可能是一件比较麻烦的事。对于高度优化的编译器来说尤其如此，你可能需要编写复杂的代码，以确保最终能够到达正确的优化路径，以测试其中可能隐藏的错误。</li>
+<li>启动解释器、解析、编译和运行每个测试脚本的开销可能很高。对于一个大的测试套件来说，（如果你确实需要的话，请记住）这可能意味着需要花费很多时间来等待测试的完成。</li>
+</ul>
+<p>我可以继续说下去，但是我不希望这变成一场说教。此外，我并不想假装自己是语言测试专家。我只是想让你在内心深处明白，测试你的语言是多么重要。我是认真的。测试你的语言。你会为此感谢我的。</p>
 </div>
 
     <footer>

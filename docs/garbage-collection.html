@@ -48,7 +48,7 @@
         <li><a href="#设计笔记：分代回收器"><small>26.9</small> 设计笔记：分代回收器</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors 分代回收器</a></li>
     </ul>
     
     
@@ -84,7 +84,7 @@
             <li><a href="#设计笔记：分代回收器"><small>26.9</small> 设计笔记：分代回收器</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors 分代回收器</a></li>
         </ul>
         
         
@@ -1908,7 +1908,7 @@ algorithm, or the Lisp 2 mark-compact algorithm.</p>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Generational Collectors</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: Generational Collectors 分代回收器</a></h2>
 <p>A collector loses throughput if it spends a long time re-visiting objects that
 are still alive. But it can increase latency if it avoids collecting and
 accumulates a large pile of garbage to wade through. If only there were some way
@@ -1948,6 +1948,18 @@ observation that object lifetimes are <em>not</em> evenly distributed<span class
 algorithm design that takes advantage of that fact. They&rsquo;re also conceptually
 quite simple. You can think of one as just two separately tuned GCs and a pretty
 simple policy for moving objects from one to the other.</p>
+</div>
+<div class="design-note">
+<p>如果回收器花费很长时间重新访问仍然活动的对象，则会损失吞吐量。但是，如果它避免了回收并积累了一大堆需要处理的垃圾，就会增加延迟。要是能有某种办法可以告诉我们哪些对象可能是长寿的以及哪些对象不是就好了。这样GC就可以避免频繁地重新访问寿命较长的数据，而更频繁地清理那些短暂寿命短暂的对象。</p>
+<p>事实证明，确实如此。许多年前，GC研究人员收集了关于真实运行程序中对象生命周期的指标。他们跟踪了每个对象被分配时，以及它最终不再需要时的情况，然后用图表显示出对象的寿命。</p>
+<p>他们发现了一种被称为“<strong>代际假说</strong>”的东西，或者是一个不太委婉的术语“<strong>早夭</strong>”。他们的观察结果是，大多数对象的寿命都很短，但是一旦它们存活超过了一定的年龄，它们往往会存活相当长的时间。一个对象<em>已经</em>存活的时间越长，它将<em>继续</em>存活的时间就越长。这一观察结果非常有说服力，因为这为他们提供了将对象划分为频繁回收的群体和不频繁回收群体的方法。</p>
+<p>他们设计了一种叫作<strong>分代垃圾回收</strong>的技术。它的工作原理是这样的：每次分配一个新对象时，它会进入堆中一个特殊的、相对较小的区域，称为“nursery”（意为托儿所）。由于对象倾向于早夭，所以垃圾回收器会在这个区域中的对象上被 <span
+name="nursery_zh">频繁</span>调用。</p>
+<aside name="nursery_zh">
+<p>nursery通常也是要复制回收器进行管理，它在分配和释放对象方面比标记-清除回收器更快。</p>
+</aside>
+<p>GC在nursery的每次运行都被称为“一代”。任何不再需要的对象都会被释放。那些存活下来对象现在被认为老了一代，GC会为每个对象记录这一属性。如果一个对象存活了一定数量的代（通常只是一次回收），它就会被永久保留。此时，将它从nursery中复制处理，放入一个更大的、用于存放 长寿命对象的堆区域。垃圾回收器也会在这个区域内运行，但频率要低得多，因为这些对象中的大部分都很有可能还活着。</p>
+<p>分代回收器是经验数据（观察到对象生命周期不是均匀分布的）以及利用这一事实的聪明算法设计的完美结合。它们在概念上也很简单。你可以把它看作是两个单独调优的GC和把对象从一个区域移到另一个区域的一个非常简单的策略。</p>
 </div>
 
     <footer>

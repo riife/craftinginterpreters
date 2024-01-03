@@ -44,7 +44,7 @@
         <li><a href="#习题"><small>23.5</small> 习题</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful 认为GOTO有害</a></li>
     </ul>
     
     
@@ -76,7 +76,7 @@
             <li><a href="#习题"><small>23.5</small> 习题</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful 认为GOTO有害</a></li>
         </ul>
         
         
@@ -1080,7 +1080,7 @@ and behavior, but it&rsquo;s a good chance to practice your design skills.
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Considering Goto Harmful</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: Considering Goto Harmful 认为GOTO有害</a></h2>
 <p>Discovering that all of our beautiful structured control flow in Lox is actually
 compiled to raw unstructured jumps is like the moment in Scooby Doo when the
 monster rips the mask off their face. It was goto all along! Except in this
@@ -1249,6 +1249,83 @@ engineering decisions today based on fear. Few people today have any subtle
 understanding of the problems and benefits of goto. Instead, we just think it&rsquo;s
 &ldquo;considered harmful&rdquo;. Personally, I&rsquo;ve never found dogma a good starting place
 for quality creative work.</p>
+</div>
+<div class="design-note">
+<p>发现我们在Lox中的所有漂亮的结构化控制流实际上都被编译成原始的非结构化跳转，就像《Scooby Doo》中怪兽撕下脸上的面具一样。一直以来都是goto！只不过这一次，怪物藏在面具下。我们都知道goto是魔鬼。但是……为什么呢？</p>
+<p>的确，你可以用goto编写极度难以维护的代码。但我认为现在的大多数程序员都没有亲身经历过这种情况。这种风格已经很久没有出现了。如今，它只是我们在篝火旁的恐怖故事里会提到的一个恶棍。</p>
+<p>我们之所以很少亲自面对这个怪物，是因为Edsger Dijkstra用他那封著名的信件“Go To Statement Considered Harmful”杀死了它，这封信发表在《ACM通讯》(1968年3月刊)上。彼时围绕结构化编程的争论已经激烈了一段时间，双方都有支持者，但我认为Dijkstra最突出的贡献就是有效地结束了争论。今天的大多数新语言都没有非结构化的跳转语句。</p>
+<p>一封一页半的信，几乎以一己之力摧毁了一种语言特性，这一定是相当令人印象深刻的东西。如果你还没有读过，我鼓励你读一下。它是计算机科学知识的开山之作，是我们部落的祖传歌曲之一。同时，它也是阅读学术性CS<span name="style_zh">文章</span>的一个很好的、简短的练习，这是一个很有用的技能。</p>
+<aside name="style_zh">
+<p>也就是说，你是否能克服Dijkstra那令人难以忍受的虚伪谦虚、自我吹嘘的写作风格：</p>
+<blockquote>
+<p>最近，我发现了为什么goto语句是使用会产生灾难性的影响。…… 当时我并没有太重视这个发现；现在我把我的想法提交出来进行发表，是因为在最近关于这个问题的讨论中，有人敦促我这样做。</p>
+</blockquote>
+<p>嗯，这是我众多发现中的又一项。我甚至懒得把它写下来，都是吵吵嚷嚷的群众求我写。</p>
+</aside>
+<p>我把它读了好几遍，还有一些批评、回复和评论。我最后的感受充其量是喜忧参半。在很高的层次上来说，我是支持他的。他的总体论点是这样的：</p>
+<ol>
+<li>作为程序员，我们编写程序——静态文本——但我们关心的是实际运行的程序——它的动态行为。</li>
+<li>相比之下，我们更擅长对静态事物进行推理，而不是动态事物。（他没有提供任何证据来支持这一说法，但我接受这个说法）</li>
+<li>因此，我们越能使程序的动态执行反映其文本结构，就越好。</li>
+</ol>
+<p>这是一个良好的开端。让我们注意到编写的代码和机器内部运行的代码之间的分离是一个有趣的见解。然后，他试图在程序文本和执行之间定义一种“对应关系”。对于一个几乎在整个职业生涯中都倡导更严格的编程的人来说，他的定义是相当简单的。他说：</p>
+<blockquote>
+<p>现在让我们考虑一下，如何能够描述一个过程的进展。（你可以用一种非常具体的方式来思考这个问题：假设一个过程，被看做是一系列操作的时间序列，在一个任意的操作之后停止，我们必须要固定哪些数据，才能重做整个过程，并达到完全相同的点）</p>
+</blockquote>
+<p>想象一下这样的情况，你有两台计算机，在完全相同的输入上运行相同的程序，所以这是完全确定性的。在执行过程中，你可以在任意点暂停其中一个函数。你需要向另一台计算机发送什么数据才能让它完全像第一台那样暂停。</p>
+<p>如果你的程序只允许像赋值这样的简单语句，这很容易。你只需要知道你执行的最后一条语句之后的那一个点。基本上就是一个断点，即我们虚拟机中的<code>ip</code>或错误信息中的行号。添加<code>if</code>和<code>switch</code>这样的分支控制流并不会改变什么。即时标记点指向分支内部，我们仍然可以知道我们在哪里。</p>
+<p>一旦增加了函数调用，就需要更多的数据才行。你可以在函数中间位置暂停第一台计算机，但是该函数可能会从多个地方调用。要想在<em>整个程序执行</em>的同一时刻暂停第二台机器，你就需要在<em>正确</em>调用该函数的时机暂停它。</p>
+<p>因此，你不仅需要知道当前的语句，而且，对于尚未返回的函数调用，你也需要知道调用点的位置。换句话说，就是调用堆栈，尽管我认为Dijkstra写这个的时候，这个术语还不存在。有趣。</p>
+<p>他指出，循环使事情变得更难。如果你在循环体中间暂停，你就不知道运行了多少次迭代。所以他说你还需要记录迭代数。而且，由于循环可以嵌套，所以你需要一个堆栈（估计是与调用栈指针交错在一起，因为你也可能在外部调用的循环中）。</p>
+<p>这就是奇怪的地方。所以，我们现在真的有了一些进展，你希望他解释goto是如何破坏这一切的。相反，他说：</p>
+<blockquote>
+<p>无节制地使用goto语句会产生一个直接的后果，那就是很难找到一组有意义的坐标来描述进程的进展。</p>
+</blockquote>
+<p>他没有证明这很困难，也没有说明原因。他就是这么说了一下。他确实说过有一种方法是无法令人满意的：</p>
+<blockquote>
+<p>当然，有了goto语句，我们仍然可以通过一个计数器来唯一性地描述进程，计数器计算自程序启动以来所执行的操作的数量（即一种规范化的时钟）。困难的是，这样的坐标虽然是唯一的，但完全没有帮助。</p>
+</blockquote>
+<p>但是……这就是循环计数器的作用，而且他对这些计数器很满意。并不是每个循环都是简单地“对于0到10的每个整数”的递增计数。许多是带有复杂条件的<code>while</code>循环。</p>
+<p>举一个比较接近的例子，考虑一下clox中的核心字节码执行循环。Dijkstra认为这个循环很容易处理，因为我们可以简单地计算循环运行了多少次来推断它的进度。但是，对于某些用户编译的Lox程序中执行的每条指令，该循环都会运行一次。知道它执行了6201条字节码指令真的能告诉我们这些虚拟机维护者关于解释器状态的任何信息吗？</p>
+<p>事实上，这个特殊的例子指出了一个更深层次的事实。Böhm和Jacopini证明，<em>任何</em>使用goto的控制流都可以转换为只使用排序、循环和分支的控制流。我们的字节码解释器核心循环就是一个活生生的例子：它实现了clox字节码指令集的非结构化控制流，而本身没有使用任何goto。</p>
+<p>这似乎提供了一种反驳Dijkstra主张的论点：你可以为使用goto的程序定义一个对应关系，将其转换为不使用goto的程序，然后使用该程序的对应关系，根据他的说法，这是可接受的，因为它只使用了分支和循环。</p>
+<p>但是，老实说，我的论点也很弱。我认为我们两个人基本上都在做假数学，用假逻辑来做一个应该是经验性的、以人为本的论证。Dijkstra是对的，一些使用goto的代码真的很糟糕。通过使用结构化控制流，其中的大部分内容可以也应该变成更清晰的代码。</p>
+<p>从语言中消除goto，你肯定可以避免使用goto写出糟糕的代码。对我们所有的生产力来说，迫使用户使用结构化控制流，并使用这些结构写出类似goto的代码，可能是一场净胜。</p>
+<p>但我有时会怀疑我们是否把孩子和洗澡水一起倒掉了。在没有goto的情况下，我们常常求助于更复杂的结构化模式。“循环中的分支”就是一个典型的例子。另一个例子是使用保护变量退出一系列的嵌套循环：</p><span name="break_zh">
+</span>
+<div class="codehilite"><pre><span class="c">// See if the matrix contains a zero.</span>
+<span class="t">bool</span> <span class="i">found</span> = <span class="k">false</span>;
+<span class="k">for</span> (<span class="t">int</span> <span class="i">x</span> = <span class="n">0</span>; <span class="i">x</span> &lt; <span class="i">xSize</span>; <span class="i">x</span>++) {
+  <span class="k">for</span> (<span class="t">int</span> <span class="i">y</span> = <span class="n">0</span>; <span class="i">y</span> &lt; <span class="i">ySize</span>; <span class="i">y</span>++) {
+    <span class="k">for</span> (<span class="t">int</span> <span class="i">z</span> = <span class="n">0</span>; <span class="i">z</span> &lt; <span class="i">zSize</span>; <span class="i">z</span>++) {
+      <span class="k">if</span> (<span class="i">matrix</span>[<span class="i">x</span>][<span class="i">y</span>][<span class="i">z</span>] == <span class="n">0</span>) {
+        <span class="i">printf</span>(<span class="s">&quot;found&quot;</span>);
+        <span class="i">found</span> = <span class="k">true</span>;
+        <span class="k">break</span>;
+      }
+    }
+    <span class="k">if</span> (<span class="i">found</span>) <span class="k">break</span>;
+  }
+  <span class="k">if</span> (<span class="i">found</span>) <span class="k">break</span>;
+}
+</pre></div>
+<p>这真的比下面的形式好吗：</p>
+<div class="codehilite"><pre><span class="k">for</span> (<span class="t">int</span> <span class="i">x</span> = <span class="n">0</span>; <span class="i">x</span> &lt; <span class="i">xSize</span>; <span class="i">x</span>++) {
+  <span class="k">for</span> (<span class="t">int</span> <span class="i">y</span> = <span class="n">0</span>; <span class="i">y</span> &lt; <span class="i">ySize</span>; <span class="i">y</span>++) {
+    <span class="k">for</span> (<span class="t">int</span> <span class="i">z</span> = <span class="n">0</span>; <span class="i">z</span> &lt; <span class="i">zSize</span>; <span class="i">z</span>++) {
+      <span class="k">if</span> (<span class="i">matrix</span>[<span class="i">x</span>][<span class="i">y</span>][<span class="i">z</span>] == <span class="n">0</span>) {
+        <span class="i">printf</span>(<span class="s">&quot;found&quot;</span>);
+        <span class="k">goto</span> <span class="i">done</span>;
+      }
+    }
+  }
+}
+<span class="i">done</span>:
+</pre></div>
+<aside name="break_zh">
+<p>你可以在每个循环的条件子句的开头插入<code>!found &amp;&amp;</code>，而不需要使用<code>break</code>语句（它们本身就是一种有限的goto式结构）</p>
+</aside>
+<p>我想我真正不喜欢的是，我们现在基于恐惧来进行语言设计和工程决策。如今，很少有人对goto的问题和好处有任何微妙的了解。相反，我们只是认为它“被认为是有害的”。就我个人而言，我从不觉得教条是高质量创造性工作的良好开端。</p>
 </div>
 
     <footer>

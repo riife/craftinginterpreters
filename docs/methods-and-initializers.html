@@ -43,10 +43,9 @@
         <li><a href="#instance-initializers--实例初始化器"><small>28.4</small> Instance Initializers  实例初始化器</a></li>
         <li><a href="#optimized-invocations--优化调用"><small>28.5</small> Optimized Invocations  优化调用</a></li>
         <li><a href="#习题"><small>28.6</small> 习题</a></li>
-        <li><a href="#设计笔记：新奇性预算"><small>28.8</small> 设计笔记：新奇性预算</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Novelty Budget</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Novelty Budget 新奇性预算</a></li>
     </ul>
     
     
@@ -77,10 +76,9 @@
             <li><a href="#instance-initializers--实例初始化器"><small>28.4</small> Instance Initializers  实例初始化器</a></li>
             <li><a href="#optimized-invocations--优化调用"><small>28.5</small> Optimized Invocations  优化调用</a></li>
             <li><a href="#习题"><small>28.6</small> 习题</a></li>
-            <li><a href="#设计笔记：新奇性预算"><small>28.8</small> 设计笔记：新奇性预算</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Novelty Budget</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Novelty Budget 新奇性预算</a></li>
         </ul>
         
         
@@ -1680,52 +1678,44 @@ would you do?
 这是一种影响实现性能的语言选择。这是个正确的选择吗？如果Lox是你的语言，你会怎么做？</p>
 </li>
 </ol>
-<h2><a href="#设计笔记：新奇性预算" id="设计笔记：新奇性预算"><small>28&#8202;.&#8202;8</small>设计笔记：新奇性预算</a></h2>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Novelty Budget</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: Novelty Budget 新奇性预算</a></h2>
 <p>I still remember the first time I wrote a tiny BASIC program on a TRS-80 and
 made a computer do something it hadn&rsquo;t done before. It felt like a superpower.
 The first time I cobbled together just enough of a parser and interpreter to let
 me write a tiny program in <em>my own language</em> that made a computer do a thing was
 like some sort of higher-order meta-superpower. It was and remains a wonderful
-feeling.
-我还记得我第一次在TRS-8上写了一个小小的BASIC程序，让电脑做了一些它以前没有做过的事。这感觉就像是一种超能力。我第一次组装出一个解析器和解释器，能够让我使用<em>自己的语言</em>写一个小程序，让计算机做了一件事，就像某种更高阶的超能力。这种感觉过去是美妙的，现在仍然是。</p>
+feeling.</p>
 <p>I realized I could design a language that looked and behaved however I chose. It
 was like I&rsquo;d been going to a private school that required uniforms my whole life
 and then one day transferred to a public school where I could wear whatever I
 wanted. I don&rsquo;t need to use curly braces for blocks? I can use something other
 than an equals sign for assignment? I can do objects without classes? Multiple
 inheritance <em>and</em> multimethods? A dynamic language that overloads statically, by
-arity?
-我意识到，我可以设计一种外观和行为都由我选择的语言。就好像我一直在一所要求穿制服的私立学校上学，然后有一天转到了一所公立学校，在那里我想穿什么就穿什么。我不要使用大括号来表示代码块？我可以用等号以外的符号进行赋值？我可以实现没有类的对象？多重继承和多分派？根据元数进行静态重载的动态语言？</p>
+arity?</p>
 <p>Naturally, I took that freedom and ran with it. I made the weirdest, most
 arbitrary language design decisions. Apostrophes for generics. No commas between
 arguments. Overload resolution that can fail at runtime. I did things
-differently just for difference&rsquo;s sake.
-很自然地，我接受了这种自由。我做了最古怪、最随意的语言设计决策。撇号表示泛型，参数之间不使用逗号，在运行时可能会失败的重载解析。我做了一些不同的事情，只是为了与众不同。</p>
+differently just for difference&rsquo;s sake.</p>
 <p>This is a very fun experience that I highly recommend. We need more weird,
 avant-garde programming languages. I want to see more art languages. I still
-make oddball toy languages for fun sometimes.
-这是一个非常有趣的体验，我强烈推荐。我们需要更多奇怪、前卫的编程语言。我希望看到更多的艺术语言。有时候我还会做一些奇怪的玩具语言来玩。</p>
+make oddball toy languages for fun sometimes.</p>
 <p><em>However</em>, if your goal is success where &ldquo;success&rdquo; is defined as a large number
 of users, then your priorities must be different. In that case, your primary
 goal is to have your language loaded into the brains of as many people as
 possible. That&rsquo;s <em>really hard</em>. It takes a lot of human effort to move a
-language&rsquo;s syntax and semantics from a computer into trillions of neurons.
-<em>然而</em>，如果你的目标是成功，而“成功”被定义为大量的用户，那么你的优先事项必然是不同的。在这种情况下，你的首要目标是让尽可能多的人记住你的语言。这<em>真的</em>很难。要将一种语言的语法和语义从计算机转移到数万亿的神经元中，需要付出大量的努力。</p>
+language&rsquo;s syntax and semantics from a computer into trillions of neurons.</p>
 <p>Programmers are naturally conservative with their time and cautious about what
 languages are worth uploading into their wetware. They don&rsquo;t want to waste their
 time on a language that ends up not being useful to them. As a language
 designer, your goal is thus to give them as much language power as you can with
-as little required learning as possible.
-程序员对他们的时间自然是保守的，对于哪些语言值得上传到他们的湿件（即大脑）中。他们不想把时间浪费在一门最终对他们没有用处的语言上。因此，作为语言设计者，你的目标是为他们提供尽可能多的语言能力，并尽可能地减少所需的学习。</p>
+as little required learning as possible.</p>
 <p>One natural approach is <em>simplicity</em>. The fewer concepts and features your
 language has, the less total volume of stuff there is to learn. This is one of
 the reasons minimal <span name="dynamic">scripting</span> languages often find
 success even though they aren&rsquo;t as powerful as the big industrial languages<span class="em">&mdash;</span>they are easier to get started with, and once they are in someone&rsquo;s brain, the
-user wants to keep using them.
-一个自然的方法是<em>简单化</em>。你的语言拥有的概念和功能越少，你需要学习的东西就越少。这就是小型脚本语言虽然不像大型工业语言那样强大却经常获得成功的原因之一——它们更容易上手，而且它们一旦进入了人们的大脑，用户就想继续使用它们。</p>
+user wants to keep using them.</p>
 <aside name="dynamic">
 <p>In particular, this is a big advantage of dynamically typed languages. A static
 language requires you to learn <em>two</em> languages<span class="em">&mdash;</span>the runtime semantics and the
@@ -1737,8 +1727,7 @@ as obvious at the outset.</p>
 </aside>
 <p>The problem with simplicity is that simply cutting features often sacrifices
 power and expressiveness. There is an art to finding features that punch above
-their weight, but often minimal languages simply do less.
-简单化的问题在于，简单地删减功能通常会牺牲功能和表现力。找到超越其重量的功能是一门艺术，但通常小型语言做得更少，</p>
+their weight, but often minimal languages simply do less.</p>
 <p>There is another path that avoids much of that problem. The trick is to realize
 that a user doesn&rsquo;t have to load your entire language into their head, <em>just the
 part they don&rsquo;t already have in there</em>. As I mentioned in an <a href="parsing-expressions.html#design-note">earlier design
@@ -1747,25 +1736,21 @@ already know and what they need to know.</p>
 <p>Many potential users of your language already know some other programming
 language. Any features your language shares with that language are essentially
 &ldquo;free&rdquo; when it comes to learning. It&rsquo;s already in their head, they just have to
-recognize that your language does the same thing.
-你的语言的许多潜在用户已经了解了一些其它的编程语言。当涉及到学习时，你的语言与这些语言共享的任何功能基本上都是“免费”的。它已经在用户的头脑中了，他们只需要认识到你的语言也做了同样的事情。</p>
+recognize that your language does the same thing.</p>
 <p>In other words, <em>familiarity</em> is another key tool to lower the adoption cost of
 your language. Of course, if you fully maximize that attribute, the end result
 is a language that is completely identical to some existing one. That&rsquo;s not a
 recipe for success, because at that point there&rsquo;s no incentive for users to
-switch to your language at all.
-换句话说，<em>熟悉度</em>是降低语言采用成本的另一个关键工具。当然，如果你将这一属性完全最大化，最终的结果就是一门与某些现有语言完全相同的语言。这不是成功的秘诀，因为在这一点上，用户根本没有切换到你的语言的动力。</p>
+switch to your language at all.</p>
 <p>So you do need to provide some compelling differences. Some things your language
 can do that other languages can&rsquo;t, or at least can&rsquo;t do as well. I believe this
 is one of the fundamental balancing acts of language design: similarity to other
 languages lowers learning cost, while divergence raises the compelling
-advantages.
-所以你确实需要提供一些令人信服的差异。某些事情你的语言可以做到，而其它语言做不到，或者至少做得不如你的好。我相信这是语言设计的基本平衡行为之一：与其它语言的相似性降低了学习成本，而差异性提高了令人信服的优势。</p>
+advantages.</p>
 <p>I think of this balancing act in terms of a <span name="idiosyncracy"><strong>novelty
 budget</strong></span>, or as Steve Klabnik calls it, a &ldquo;<a href="https://words.steveklabnik.com/the-language-strangeness-budget">strangeness budget</a>&rdquo;. Users
 have a low threshold for the total amount of new stuff they are willing to
-accept to learn a new language. Exceed that, and they won&rsquo;t show up.
-我认为这种平衡就像是<strong>新奇性预算</strong>，或者像Steve Klabnik所说，是一种“<a href="https://words.steveklabnik.com/the-language-strangeness-budget">陌生感预算</a>”。用户对于学习新语言时愿意接受的新知识的总量有一个较低的阈值。如果超过这个值，他们就不会来学习了。</p>
+accept to learn a new language. Exceed that, and they won&rsquo;t show up.</p>
 <aside name="idiosyncracy">
 <p>A related concept in psychology is <a href="https://en.wikipedia.org/wiki/Idiosyncrasy_credit"><strong>idiosyncrasy credit</strong></a>, the
 idea that other people in society grant you a finite amount of deviations from
@@ -1780,27 +1765,47 @@ you spend some of that budget. That&rsquo;s OK<span class="em">&mdash;</span>you
 language compelling. But your goal is to spend it <em>wisely</em>. For each feature or
 difference, ask yourself how much compelling power it adds to your language and
 then evaluate critically whether it pays its way. Is the change so valuable that
-it is worth blowing some of your novelty budget?
-任何时候，你为你的语言添加了其它语言没有的新东西，或者你的语言以不同的方式做了其它语言做的事情，你都会花费一下预算。这没关系——你<em>需要</em>花费预算来使你的语言更具有吸引力。但你的目标是明智地使用这些预算。对于每一种特性或差异，问问你自己它为你的语言增加了多少引人注目的能力，然后严格评估它是否值得。这种改变是否有价值，而且值得你花费一些新奇性预算？</p>
+it is worth blowing some of your novelty budget?</p>
 <p>In practice, I find this means that you end up being pretty conservative with
 syntax and more adventurous with semantics. As fun as it is to put on a new
 change of clothes, swapping out curly braces with some other block delimiter is
 very unlikely to add much real power to the language, but it does spend some
-novelty. It&rsquo;s hard for syntax differences to carry their weight.
-在实践中，我发现这意味着你最终会在语法上相当保守，而在语义上更加大胆。虽然换一套新衣服很有趣，但把花括号换成其它代码块分隔符并不可能给语言增加多少真正的能力，但它确实会花费一些新奇性。语法上的差异很难承载它们的重量。</p>
+novelty. It&rsquo;s hard for syntax differences to carry their weight.</p>
 <p>On the other hand, new semantics can significantly increase the power of the
 language. Multimethods, mixins, traits, reflection, dependent types, runtime
 metaprogramming, etc. can radically level up what a user can do with the
-language.
-另一方面，新的语义可以显著增加语言的能力。多分派、mixins、traits、反射、依赖类型、运行时元编程等可以从根本上提升用户使用语言的能力。</p>
+language.</p>
 <p>Alas, being conservative like this is not as fun as just changing everything.
 But it&rsquo;s up to you to decide whether you want to chase mainstream success or not
 in the first place. We don&rsquo;t all need to be radio-friendly pop bands. If you
 want your language to be like free jazz or drone metal and are happy with the
-proportionally smaller (but likely more devoted) audience size, go for it.
-唉，这样的保守并不像直接改变一切那样有趣。但是否追求主流的成功，首先取决于你。我们不需要都成为电台欢迎的流行乐队。如果你想让你的语言像自由爵士或嗡鸣金属那样，并且对比较较小（但可能更忠实）的观众数量感到满意，那就去做吧。
-: 特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。<BR>最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。
-: 心理学中的一个相关概念是<a href="https://en.wikipedia.org/wiki/Idiosyncrasy_credit">性格信用</a>，即社会上的其他人会给予你有限的与社会规范的偏离。你通过融入并做群体内的事情来获得信用，然后你可以把这些信用花费在那些可能会引人侧目的古怪活动上。换句话说，证明你是“好人之一”，让你有资格展示自己怪异的一面，但只能到此为止。</p>
+proportionally smaller (but likely more devoted) audience size, go for it.</p>
+</div>
+<div class="design-note">
+<p>我还记得我第一次在TRS-8上写了一个小小的BASIC程序，让电脑做了一些它以前没有做过的事。这感觉就像是一种超能力。我第一次组装出一个解析器和解释器，能够让我使用<em>自己的语言</em>写一个小程序，让计算机做了一件事，就像某种更高阶的超能力。这种感觉过去是美妙的，现在仍然是。</p>
+<p>我意识到，我可以设计一种外观和行为都由我选择的语言。就好像我一直在一所要求穿制服的私立学校上学，然后有一天转到了一所公立学校，在那里我想穿什么就穿什么。我不要使用大括号来表示代码块？我可以用等号以外的符号进行赋值？我可以实现没有类的对象？多重继承和多分派？根据元数进行静态重载的动态语言？</p>
+<p>很自然地，我接受了这种自由。我做了最古怪、最随意的语言设计决策。撇号表示泛型，参数之间不使用逗号，在运行时可能会失败的重载解析。我做了一些不同的事情，只是为了与众不同。</p>
+<p>这是一个非常有趣的体验，我强烈推荐。我们需要更多奇怪、前卫的编程语言。我希望看到更多的艺术语言。有时候我还会做一些奇怪的玩具语言来玩。</p>
+<p><em>然而</em>，如果你的目标是成功，而“成功”被定义为大量的用户，那么你的优先事项必然是不同的。在这种情况下，你的首要目标是让尽可能多的人记住你的语言。这<em>真的</em>很难。要将一种语言的语法和语义从计算机转移到数万亿的神经元中，需要付出大量的努力。</p>
+<p>程序员对他们的时间自然是保守的，对于哪些语言值得上传到他们的湿件（即大脑）中。他们不想把时间浪费在一门最终对他们没有用处的语言上。因此，作为语言设计者，你的目标是为他们提供尽可能多的语言能力，并尽可能地减少所需的学习。</p>
+<p>一个自然的方法是<em>简单化</em>。你的语言拥有的概念和功能越少，你需要学习的东西就越少。这就是小型<span name="dynamic_zh">脚本</span>语言虽然不像大型工业语言那样强大却经常获得成功的原因之一——它们更容易上手，而且它们一旦进入了人们的大脑，用户就想继续使用它们。</p>
+<aside name="dynamic_zh">
+<p>特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。<BR>最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。
+: </p>
+</aside>
+<p>简单化的问题在于，简单地删减功能通常会牺牲功能和表现力。找到超越其重量的功能是一门艺术，但通常小型语言做得更少，</p>
+<p>还有另一种方法可以避免这个问题。诀窍是要意识到，用户不必将你的整个语言都装进他们的脑子里，只需要把他们<em>还没有的部分</em>装进去就行了。正如我在之前的<a href="parsing-expressions.html#design-note">设计笔记</a>中提到的，学习是转移他们已知内容与需要知道的内容之间的差量。</p>
+<p>你的语言的许多潜在用户已经了解了一些其它的编程语言。当涉及到学习时，你的语言与这些语言共享的任何功能基本上都是“免费”的。它已经在用户的头脑中了，他们只需要认识到你的语言也做了同样的事情。</p>
+<p>换句话说，<em>熟悉度</em>是降低语言采用成本的另一个关键工具。当然，如果你将这一属性完全最大化，最终的结果就是一门与某些现有语言完全相同的语言。这不是成功的秘诀，因为在这一点上，用户根本没有切换到你的语言的动力。</p>
+<p>所以你确实需要提供一些令人信服的差异。某些事情你的语言可以做到，而其它语言做不到，或者至少做得不如你的好。我相信这是语言设计的基本平衡行为之一：与其它语言的相似性降低了学习成本，而差异性提高了令人信服的优势。</p>
+<p>我认为这种平衡就像是<span name="idiosyncracy_zh"><strong>新奇性预算</strong></span>，或者像Steve Klabnik所说，是一种“<a href="https://words.steveklabnik.com/the-language-strangeness-budget">陌生感预算</a>”。用户对于学习新语言时愿意接受的新知识的总量有一个较低的阈值。如果超过这个值，他们就不会来学习了。</p>
+<aside name="idiosyncracy_zh">
+<p>心理学中的一个相关概念是<a href="https://en.wikipedia.org/wiki/Idiosyncrasy_credit">性格信用</a>，即社会上的其他人会给予你有限的与社会规范的偏离。你通过融入并做群体内的事情来获得信用，然后你可以把这些信用花费在那些可能会引人侧目的古怪活动上。换句话说，证明你是“好人之一”，让你有资格展示自己怪异的一面，但只能到此为止。</p>
+</aside>
+<p>任何时候，你为你的语言添加了其它语言没有的新东西，或者你的语言以不同的方式做了其它语言做的事情，你都会花费一下预算。这没关系——你<em>需要</em>花费预算来使你的语言更具有吸引力。但你的目标是明智地使用这些预算。对于每一种特性或差异，问问你自己它为你的语言增加了多少引人注目的能力，然后严格评估它是否值得。这种改变是否有价值，而且值得你花费一些新奇性预算？</p>
+<p>在实践中，我发现这意味着你最终会在语法上相当保守，而在语义上更加大胆。虽然换一套新衣服很有趣，但把花括号换成其它代码块分隔符并不可能给语言增加多少真正的能力，但它确实会花费一些新奇性。语法上的差异很难承载它们的重量。</p>
+<p>另一方面，新的语义可以显著增加语言的能力。多分派、mixins、traits、反射、依赖类型、运行时元编程等可以从根本上提升用户使用语言的能力。</p>
+<p>唉，这样的保守并不像直接改变一切那样有趣。但是否追求主流的成功，首先取决于你。我们不需要都成为电台欢迎的流行乐队。如果你想让你的语言像自由爵士或嗡鸣金属那样，并且对比较较小（但可能更忠实）的观众数量感到满意，那就去做吧。</p>
 </div>
 
     <footer>

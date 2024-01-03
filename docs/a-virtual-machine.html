@@ -42,7 +42,7 @@
         <li><a href="#an-arithmetic-calculator--数学计算器"><small>15.3</small> An Arithmetic Calculator  数学计算器</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Register-Based Bytecode</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Register-Based Bytecode 基于寄存器的字节码</a></li>
     </ul>
     
     
@@ -72,7 +72,7 @@
             <li><a href="#an-arithmetic-calculator--数学计算器"><small>15.3</small> An Arithmetic Calculator  数学计算器</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Register-Based Bytecode</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Register-Based Bytecode 基于寄存器的字节码</a></li>
         </ul>
         
         
@@ -1212,7 +1212,7 @@ performance difference.</p>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Register-Based Bytecode</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: Register-Based Bytecode 基于寄存器的字节码</a></h2>
 <p>For the remainder of this book, we&rsquo;ll meticulously implement an interpreter
 around a stack-based bytecode instruction set. There&rsquo;s another family of
 bytecode architectures out there<span class="em">&mdash;</span><em>register-based</em>. Despite the name, these
@@ -1278,6 +1278,37 @@ easy to execute. Stack-based bytecode is marvelously simple.</p>
 <p>It&rsquo;s also <em>much</em> better known in the literature and the community. Even though
 you may eventually move to something more advanced, it&rsquo;s a good common ground to
 share with the rest of your language hacker peers.</p>
+</div>
+<div class="design-note">
+<p>在本书的其余部分，我们将围绕基于堆栈的字节码指令集精心实现一个解释器。此外还有另一种字节码架构——基于寄存器。尽管名称如此，但这些字节码指令并不像 <span name="x64_zh">x64</span> 这样的真实芯片中的寄存器那样难以操作。对于真正的硬件寄存器，整个程序通常只用少数几个，所以你<a href="https://en.wikipedia.org/wiki/Register_allocation">要花很多精力来有效地使用它们，并把数据存入或取出</a>。（基于寄存器的字节码更接近于SPARC芯片支持的寄存器窗口）</p>
+<aside name="x64_zh">
+<p>基于寄存器的字节码更接近 SPARC 芯片支持的<a href="https://en.wikipedia.org/wiki/Register_window"><em>寄存器窗口</em></a>。</p>
+</aside>
+<p>在一个基于寄存器的虚拟机中，仍然有一个栈。临时值还是被压入栈中，当不再需要时再被弹出。主要的区别是，指令可以从栈的任意位置读取它们的输入值，并可以将它们的输出值存储到任一指定的槽中。</p>
+<p>以Lox脚本为例：</p>
+<div class="codehilite"><pre><span class="i">var</span> <span class="i">a</span> = <span class="n">1</span>;
+<span class="i">var</span> <span class="i">b</span> = <span class="n">2</span>;
+<span class="i">var</span> <span class="i">c</span> = <span class="i">a</span> + <span class="i">b</span>;
+</pre></div>
+<p>在我们基于堆栈的虚拟机中，最后一条指令的编译结果类似于：</p>
+<div class="codehilite"><pre><span class="i">load</span> &lt;<span class="i">a</span>&gt;  <span class="c">// 读取局部变量a，并将其压入栈</span>
+<span class="i">load</span> &lt;<span class="i">b</span>&gt;  <span class="c">// 读取局部变量b，并将其压入栈</span>
+<span class="i">add</span>       <span class="c">// 弹出两个值，相加，将结果压入栈</span>
+<span class="i">store</span> &lt;<span class="i">c</span>&gt; <span class="c">// 弹出值，并存入局部变量c</span>
+</pre></div>
+<p>（如果你还没有完全理解加载load和存储store指令，也不用担心。我们会在实现变量时详细地讨论它们）我们有四条独立的指令，这意味着会有四次字节码解释循环，四条指令需要解码和调度。这至少包含7个字节的代码——四个字节是操作码，另外三个是操作数，用于标识要加载和存储哪些局部变量。三次入栈，三次出栈，工作量很大！</p>
+<p>在基于寄存器的指令集中，指令可以直接对局部变量进行读取和存储。上面最后一条语句的字节码如下所示：</p>
+<div class="codehilite"><pre><span class="i">add</span> &lt;<span class="i">a</span>&gt; &lt;<span class="i">b</span>&gt; &lt;<span class="i">c</span>&gt; <span class="c">// 从a和b中读取值，相加，并存储到c中</span>
+</pre></div>
+<p>add指令比之前更大——有三个指令操作数，定义了从堆栈的哪个位置读取输入，并将结果写入哪个位置。但由于局部变量在堆栈中，它可以直接从<code>a</code>和<code>b</code>中读取数据，如何将结果存入<code>c</code>中。</p>
+<p>只有一条指令需要解码和调度，整个程序只需要四个字节。由于有了额外的操作数，解码变得更加复杂，但相比之下它仍然是更优秀的。没有压入和弹出或其它堆栈操作。</p>
+<p>Lua的实现曾经是基于堆栈的。到了<span name="lua_zh">Lua
+5.0</span>，实现切换到了寄存器指令集，并注意到速度有所提高。当然，提高的幅度很大程度上取决于语言语义的细节、特定指令集和编译器复杂性，但这应该引起你的注意。</p>
+<aside name="lua_zh">
+<p>Lua 开发团队<span class="em">&mdash;</span>Roberto Ierusalimschy、Waldemar Celes 和 Luiz Henrique de Figueiredo<span class="em">&mdash;</span>就此撰写了一篇 <em>精彩</em> 的论文，这也是我一直以来最喜欢的计算机科学论文之一: <a href="https://www.lua.org/doc/jucs05.pdf">《Lua 5.0 的实现》</a>（PDF）。</p>
+</aside>
+<p>这就引出了一个显而易见的问题：我为什么要在本书的剩余部分做一个基于堆栈的字节码。寄存器虚拟机是很好的，但要为它们编写编译器却相当困难。考虑到这可能是你写的第一个编译器，我想坚持使用一个易于生成和易于执行的指令集。基于堆栈的字节码是非常简单的。</p>
+<p>它的文献和社区中也更广为人知。即使你最终可能会转向更高级的东西，这也是一个你可以与其他语言开发者分享的很好的共同点。</p>
 </div>
 
     <footer>

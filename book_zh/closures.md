@@ -1723,13 +1723,12 @@ memory so that we can free some of those objects when they're no longer needed.
 
 <div class="design-note">
 
-## Design Note: Closing Over the Loop Variable
+## Design Note: Closing Over the Loop Variable 关闭循环变量
 
 Closures capture variables. When two closures capture the same variable, they
 share a reference to the same underlying storage location. This fact is visible
 when new values are assigned to the variable. Obviously, if two closures capture
 *different* variables, there is no sharing.
-闭包捕获变量。当两个闭包捕获相同的变量时，它们共享对相同的底层存储位置的引用。当将新值赋给该变量时，这一事实是可见的。显然，如果两个闭包捕获*不同*的变量，就不存在共享。
 
 ```lox
 var globalOne;
@@ -1760,7 +1759,6 @@ globalTwo();
 
 This prints "one" then "two". In this example, it's pretty clear that the two
 `a` variables are different. But it's not always so obvious. Consider:
-这里会打印“one”然后是“two”。在这个例子中，很明显两个`a`变量是不同的。但一点这并不总是那么明显。考虑一下：
 
 ```lox
 var globalOne;
@@ -1788,16 +1786,13 @@ The code is convoluted because Lox has no collection types. The important part
 is that the `main()` function does two iterations of a `for` loop. Each time
 through the loop, it creates a closure that captures the loop variable. It
 stores the first closure in `globalOne` and the second in `globalTwo`.
-这段代码很复杂，因为Lox没有集合类型。重要的部分是，`main()`函数进行了`for`循环的两次迭代。每次循环执行时，它都会创建一个捕获循环变量的闭包。它将第一个闭包存储在`globalOne`中，并将第二个闭包存储在`globalTwo`中。
 
 There are definitely two different closures. Do they close over two different
 variables? Is there only one `a` for the entire duration of the loop, or does
 each iteration get its own distinct `a` variable?
-这无疑是两个不同的闭包。它们是在两个不同的变量上闭合的吗？在整个循环过程中只有一个`a`，还是每个迭代都有自己单独的`a`变量？
 
 The script here is strange and contrived, but this does show up in real code
 in languages that aren't as minimal as clox. Here's a JavaScript example:
-这里的脚本很奇怪，而且是人为设计的，但它确实出现在实际的代码中，而且这些代码使用的语言并不是像clox这样的小语言。下面是一个JavaScript的示例：
 
 ```js
 var closures = [];
@@ -1813,7 +1808,6 @@ Does this print "1" then "2", or does it print <span name="three">"3"</span>
 twice? You may be surprised to hear that it prints "3" twice. In this JavaScript
 program, there is only a single `i` variable whose lifetime includes all
 iterations of the loop, including the final exit.
-这里会打印“1”再打印“2”，还是打印两次“3”？你可能会惊讶地发现，它打印了两次“3”。在这个JavaScript程序中，只有一个`i`变量，它的生命周期包括循环的所有迭代，包括最后的退出。
 
 <aside name="three">
 
@@ -1827,7 +1821,6 @@ run forever.
 If you're familiar with JavaScript, you probably know that variables declared
 using `var` are implicitly *hoisted* to the surrounding function or top-level
 scope. It's as if you really wrote this:
-如果你熟悉JavaScript，你可能知道，使用`var`声明的变量会隐式地被提取到外围函数或顶层作用域中。这就好像你是这样写的：
 
 ```js
 var closures = [];
@@ -1842,7 +1835,6 @@ closures[1]();
 
 At that point, it's clearer that there is only a single `i`. Now consider if
 you change the program to use the newer `let` keyword:
-此时，很明显只有一个`i`。现在考虑一下，如果你将程序改为使用更新的`let`关键字：
 
 ```js
 var closures = [];
@@ -1858,10 +1850,8 @@ Does this new program behave the same? Nope. In this case, it prints "1" then
 "2". Each closure gets its own `i`. That's sort of strange when you think about
 it. The increment clause is `i++`. That looks very much like it is assigning to
 and mutating an existing variable, not creating a new one.
-这个新程序的行为是一样的吗？不是。在本例中，它会打印“1”然后打印“2”。每个闭包都有自己的`i`。仔细想想会觉得有点奇怪，增量子句是`i++`，这看起来很像是对现有变量进行赋值和修改，而不是创建一个新变量。
 
 Let's try some other languages. Here's Python:
-让我们试试其它语言。下面是Python：
 
 ```python
 closures = []
@@ -1877,11 +1867,9 @@ are automatically scoped to the surrounding function. Kind of like hoisting in
 JS, now that I think about it. So both closures capture the same variable.
 Unlike C, though, we don't exit the loop by incrementing `i` *past* the last
 value, so this prints "2" twice.
-Python并没有真正的块作用域。变量是隐式声明的，并自动限定在外围函数的作用域中。现在我想起来，这有点像JS中的“悬挂”。所以两个闭包都捕获了同一个变量。但与C不同的是，我们不会通过增加`i`超过最后一个值来退出循环，所以这里会打印两次“2”。
 
 What about Ruby? Ruby has two typical ways to iterate numerically. Here's the
 classic imperative style:
-那Ruby呢？Ruby有两种典型的数值迭代方式。下面是典型的命令式风格：
 
 ```ruby
 closures = []
@@ -1895,7 +1883,6 @@ closures[1].call
 
 This, like Python, prints "2" twice. But the more idiomatic Ruby style is using
 a higher-order `each()` method on range objects:
-这有点像是Python，会打印两次“2”。但是更惯用的Ruby风格是在范围对象上使用高阶的`each()`方法：
 
 ```ruby
 closures = []
@@ -1911,12 +1898,10 @@ If you're not familiar with Ruby, the `do |i| ... end` part is basically a
 closure that gets created and passed to the `each()` method. The `|i|` is the
 parameter signature for the closure. The `each()` method invokes that closure
 twice, passing in 1 for `i` the first time and 2 the second time.
-如果你不熟悉Ruby，`do |i| ... end`部分基本上就是一个闭包，它被创建并传递给`each()`方法。`|i|`是闭包的参数签名。`each()`方法两次调用该闭包，第一次传入1，第二次传入2。
 
 In this case, the "loop variable" is really a function parameter. And, since
 each iteration of the loop is a separate invocation of the function, those are
 definitely separate variables for each call. So this prints "1" then "2".
-在这种情况下，“循环变量”实际上是一个函数参数。而且，由于循环的每次迭代都是对函数的单独调用，所以每次调用都是单独的变量。因此，这里先打印“1”然后打印“2”。
 
 If a language has a higher-level iterator-based looping structure like `foreach`
 in C#, Java's "enhanced for", `for-of` in JavaScript, `for-in` in Dart, etc.,
@@ -1924,7 +1909,6 @@ then I think it's natural to the reader to have each iteration create a new
 variable. The code *looks* like a new variable because the loop header looks
 like a variable declaration. And there's no increment expression that looks like
 it's mutating that variable to advance to the next step.
-如果一门语言具有基于迭代器的高级循环结果，比如C#中的`foreach`，Java中的“增强型for循环”，JavaScript中的`for-of`，Dart中的`for-in`等等，那我认为读者很自然地会让每次迭代都创建一个新变量。代码*看起来*像一个新变量，是因为循环头看起来像是一个变量声明。看起来没有任何增量表达式通过改变变量以推进到下一步。
 
 If you dig around StackOverflow and other places, you find evidence that this is
 what users expect, because they are very surprised when they *don't* get it. In
@@ -1932,7 +1916,6 @@ particular, C# originally did *not* create a new loop variable for each
 iteration of a `foreach` loop. This was such a frequent source of user confusion
 that they took the very rare step of shipping a breaking change to the language.
 In C# 5, each iteration creates a fresh variable.
-如果你在StackOverflow和其它地方挖掘一下，你会发现这正是用户所期望的，因为当他们*没有*看到这个结果时，他们会非常惊讶。特别是，C#最初并没有为`foreach`循环的每次迭代创建一个新的循环变量。这一点经常引起用户的困惑，所以他们采用了非常罕见的措施，对语言进行了突破性的修改。在C# 5中，每个迭代都会创建一个新的变量。
 
 Old C-style `for` loops are harder. The increment clause really does look like
 mutation. That implies there is a single variable that's getting updated each
@@ -1940,15 +1923,169 @@ step. But it's almost never *useful* for each iteration to share a loop
 variable. The only time you can even detect this is when closures capture it.
 And it's rarely helpful to have a closure that references a variable whose value
 is whatever value caused you to exit the loop.
-旧的C风格的`for`循环更难了。增量子句看起来像是修改。这意味着每一步更新的是同一个变量。但是每个迭代共享一个循环变量几乎是*没有用*的。只有在闭包捕获它时，你才能检测到这一现象。而且，如果闭包引用的变量的值是导致循环退出的值，那么它也几乎没有帮助。
 
 The pragmatically useful answer is probably to do what JavaScript does with
 `let` in `for` loops. Make it look like mutation but actually create a new
 variable each time, because that's what users want. It is kind of weird when you
 think about it, though.
+
+</div>
+
+<div class="design-note">
+
+
+闭包捕获变量。当两个闭包捕获相同的变量时，它们共享对相同的底层存储位置的引用。当将新值赋给该变量时，这一事实是可见的。显然，如果两个闭包捕获*不同*的变量，就不存在共享。
+
+```lox
+var globalOne;
+var globalTwo;
+
+fun main() {
+  {
+    var a = "one";
+    fun one() {
+      print a;
+    }
+    globalOne = one;
+  }
+
+  {
+    var a = "two";
+    fun two() {
+      print a;
+    }
+    globalTwo = two;
+  }
+}
+
+main();
+globalOne();
+globalTwo();
+```
+
+这里会打印“one”然后是“two”。在这个例子中，很明显两个`a`变量是不同的。但一点这并不总是那么明显。考虑一下：
+
+```lox
+var globalOne;
+var globalTwo;
+
+fun main() {
+  for (var a = 1; a <= 2; a = a + 1) {
+    fun closure() {
+      print a;
+    }
+    if (globalOne == nil) {
+      globalOne = closure;
+    } else {
+      globalTwo = closure;
+    }
+  }
+}
+
+main();
+globalOne();
+globalTwo();
+```
+
+这段代码很复杂，因为Lox没有集合类型。重要的部分是，`main()`函数进行了`for`循环的两次迭代。每次循环执行时，它都会创建一个捕获循环变量的闭包。它将第一个闭包存储在`globalOne`中，并将第二个闭包存储在`globalTwo`中。
+
+这无疑是两个不同的闭包。它们是在两个不同的变量上闭合的吗？在整个循环过程中只有一个`a`，还是每个迭代都有自己单独的`a`变量？
+
+这里的脚本很奇怪，而且是人为设计的，但它确实出现在实际的代码中，而且这些代码使用的语言并不是像clox这样的小语言。下面是一个JavaScript的示例：
+
+```js
+var closures = [];
+for (var i = 1; i <= 2; i++) {
+  closures.push(function () { console.log(i); });
+}
+
+closures[0]();
+closures[1]();
+```
+
+这里会打印“1”再打印“2”，还是打印两次<span name="three_zh">“3”</span>？你可能会惊讶地发现，它打印了两次“3”。在这个JavaScript程序中，只有一个`i`变量，它的生命周期包括循环的所有迭代，包括最后的退出。
+
+<aside name="three_zh">
+
+你想知道“3”是怎么出现的吗？在第二次迭代后，执行`i++`，它将`i`增加到3。这就是导致`i<=2`的值为false并结束循环的原因。如果`i`永远达不到3，循环就会一直运行下去。
+
+</aside>
+
+如果你熟悉JavaScript，你可能知道，使用`var`声明的变量会隐式地被提取到外围函数或顶层作用域中。这就好像你是这样写的：
+
+```js
+var closures = [];
+var i;
+for (i = 1; i <= 2; i++) {
+  closures.push(function () { console.log(i); });
+}
+
+closures[0]();
+closures[1]();
+```
+
+此时，很明显只有一个`i`。现在考虑一下，如果你将程序改为使用更新的`let`关键字：
+
+```js
+var closures = [];
+for (let i = 1; i <= 2; i++) {
+  closures.push(function () { console.log(i); });
+}
+
+closures[0]();
+closures[1]();
+```
+
+这个新程序的行为是一样的吗？不是。在本例中，它会打印“1”然后打印“2”。每个闭包都有自己的`i`。仔细想想会觉得有点奇怪，增量子句是`i++`，这看起来很像是对现有变量进行赋值和修改，而不是创建一个新变量。
+
+让我们试试其它语言。下面是Python：
+
+```python
+closures = []
+for i in range(1, 3):
+  closures.append(lambda: print(i))
+
+closures[0]()
+closures[1]()
+```
+
+Python并没有真正的块作用域。变量是隐式声明的，并自动限定在外围函数的作用域中。现在我想起来，这有点像JS中的“悬挂”。所以两个闭包都捕获了同一个变量。但与C不同的是，我们不会通过增加`i`超过最后一个值来退出循环，所以这里会打印两次“2”。
+
+那Ruby呢？Ruby有两种典型的数值迭代方式。下面是典型的命令式风格：
+
+```ruby
+closures = []
+for i in 1..2 do
+  closures << lambda { puts i }
+end
+
+closures[0].call
+closures[1].call
+```
+
+这有点像是Python，会打印两次“2”。但是更惯用的Ruby风格是在范围对象上使用高阶的`each()`方法：
+
+```ruby
+closures = []
+(1..2).each do |i|
+  closures << lambda { puts i }
+end
+
+closures[0].call
+closures[1].call
+```
+
+如果你不熟悉Ruby，`do |i| ... end`部分基本上就是一个闭包，它被创建并传递给`each()`方法。`|i|`是闭包的参数签名。`each()`方法两次调用该闭包，第一次传入1，第二次传入2。
+
+在这种情况下，“循环变量”实际上是一个函数参数。而且，由于循环的每次迭代都是对函数的单独调用，所以每次调用都是单独的变量。因此，这里先打印“1”然后打印“2”。
+
+如果一门语言具有基于迭代器的高级循环结果，比如C#中的`foreach`，Java中的“增强型for循环”，JavaScript中的`for-of`，Dart中的`for-in`等等，那我认为读者很自然地会让每次迭代都创建一个新变量。代码*看起来*像一个新变量，是因为循环头看起来像是一个变量声明。看起来没有任何增量表达式通过改变变量以推进到下一步。
+
+如果你在StackOverflow和其它地方挖掘一下，你会发现这正是用户所期望的，因为当他们*没有*看到这个结果时，他们会非常惊讶。特别是，C#最初并没有为`foreach`循环的每次迭代创建一个新的循环变量。这一点经常引起用户的困惑，所以他们采用了非常罕见的措施，对语言进行了突破性的修改。在C# 5中，每个迭代都会创建一个新的变量。
+
+旧的C风格的`for`循环更难了。增量子句看起来像是修改。这意味着每一步更新的是同一个变量。但是每个迭代共享一个循环变量几乎是*没有用*的。只有在闭包捕获它时，你才能检测到这一现象。而且，如果闭包引用的变量的值是导致循环退出的值，那么它也几乎没有帮助。
+
 实用的答案可能是像JavaScript在`for`循环中的`let`那样。让它看起来像修改，但实际上每次都创建一个新变量，因为这是用户想要的。不过，仔细想想，还是有点奇怪的。
 : 你想知道“3”是怎么出现的吗？在第二次迭代后，执行`i++`，它将`i`增加到3。这就是导致`i<=2`的值为false并结束循环的原因。如果`i`永远达不到3，循环就会一直运行下去。
 
 </div>
-
-

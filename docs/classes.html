@@ -46,7 +46,7 @@
         <li><a href="#constructors-and-initializers--构造函数和初始化"><small>12.7</small> Constructors and Initializers  构造函数和初始化</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power 原型与功率</a></li>
     </ul>
     
     
@@ -80,7 +80,7 @@
             <li><a href="#constructors-and-initializers--构造函数和初始化"><small>12.7</small> Constructors and Initializers  构造函数和初始化</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power 原型与功率</a></li>
         </ul>
         
         
@@ -1726,7 +1726,7 @@ Python和JavaScript允许你从对象自身的方法之外的地方自由访问�
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Prototypes and Power</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: Prototypes and Power 原型与功率</a></h2>
 <p>In this chapter, we introduced two new runtime entities, LoxClass and
 LoxInstance. The former is where behavior for objects lives, and the latter is
 for state. What if you could define methods right on a single object, inside
@@ -1800,6 +1800,31 @@ the breadth or ease of using the language.</p>
 baking classes into the language increases the ease of doing that, hopefully by
 a large enough margin to pay for the added complexity. But if that isn&rsquo;t how
 users are using your language, then by all means leave classes out.</p>
+</div>
+<div class="design-note">
+<p>在本章中，我们引入了两个新的运行时实体，LoxClass和LoxInstance。前者是对象的行为所在，后者则是状态所在。如果你可以在LoxInstance的单个对象中定义方法，会怎么样？这种情况下，我们根本就不需要LoxClass。LoxInstance将是一个用于定义对象行为和状态的完整包。</p>
+<p>我们仍然需要一些方法，在没有类的情况下，可以跨多个实例重用对象行为。我们可以让一个LoxInstance直接<a href="https://en.wikipedia.org/wiki/Prototype-based_programming#Delegation">委托</a>给另一个LoxInstance来重用它的字段和方法，有点像继承。</p>
+<p>用户可以将他们的程序建模为一组对象，其中一些对象相互委托以反映共性。用作委托的对象代表“典型”或“原型”对象，会被其它对象完善。结果就是会有一个更简单的运行时，只有一个内部结构LoxInstance。</p>
+<p>这就是这种范式的名称“<a href="https://en.wikipedia.org/wiki/Prototype-based_programming">原型</a>”的由来。它是由David Ungar和Randall Smith在一种叫做<a href="http://www.selflanguage.org/">Self</a>的语言中发明的。他们从Smalltalk开始，按照上面的练习，看他们能把它缩减到什么程度，从而想到了这个方法。</p>
+<p>长期以来，原型一直是学术上的探索，它是一个引人入胜的东西，也产生了有趣的研究，但是并没有在更大的编程世界中产生影响。直到Brendan Eich把原型塞进JavaScript，然后迅速风靡世界。关于JavaScript中的原型，人们已经写了很多（许多）<span
+name="words_zh">文字</span>。这是否能够表明原型是出色的还是令人困惑的，或者兼而有之？这是一个开放的问题。</p>
+<aside name="words_zh">
+<p>其中<a href="http://gameprogrammingpatterns.com/prototype.html">不乏</a>你们的作品。</p>
+</aside>
+<p>我不会去讨论原型对于一门语言来说是不是一个好主意。基于原型和基于类的语言我都做过，我对两者的看法很复杂。我想讨论的是<em>简单性</em>在一门语言中的作用。</p>
+<p>原型比类更简单——语言实现者要编写的代码更少，语言用户要学习和理解的概念更少。这是否意味着它让语言变得更好呢？我们这些语言书呆子有一种迷恋极简主义的倾向。就我个人而言，我认为简单性只是一部分。我们真正想给用户的是功率，我将其定义为：</p>
+<div class="codehilite"><pre>power = breadth × ease ÷ complexity
+功率 = 广度 × 易用性 ÷ 复杂性
+</pre></div>
+<p>这些都不是精确的数字度量。我这里用数学作比喻，而不是实际的量化。</p>
+<ul>
+<li><strong>广度</strong>是语言可以表达的不同事物的范围。C语言具有很大的广度——从操作系统到用户应用程序再到游戏，它被广泛使用。像AppleScript和Matlab这样的特定领域语言的广度相对较小。</li>
+<li>易用性是指用户付出多少努力就可以用语言做想做的事。“可用性Usability”是另一个概念，它包含的内容比我想要表达的更多。“高级”语言往往比“低级”语言更容易使用。大多数语言都有一个核心，对它们来说，有些东西比其它的更容易表达。</li>
+<li>复杂性是指语言的规模（包括其运行时、核心库、工具、生态等）有多大。人们谈论一种语言的规范有多少页，或者它有多少个关键词。这是指用户在使用系统之前，必须在先学习多少东西，才能产生效益。它是简单性的反义词。</li>
+</ul>
+<p>降低复杂性确实可以提高功率，分母越小，得到的值就越大，所以我们直觉认为“简单的是好的”是对的。然而，在降低复杂性时，我们必须注意不要在这个过程中牺牲广度或易用性，否则总功率可能会下降。如果去掉字符串，Java将变成一种严格意义上的简单语言，但它可能无法很好地处理文本操作任务，也不会那么容易完成事情。</p>
+<p>因此，关键就在于找到可以省略的意外复杂性，也就是哪些没有通过增加语言广度或语言易用性来体现其重要性的语言特性与交互。</p>
+<p>如果用户想用对象的类别来表达他们的程序，那么在语言中加入类就能提高这类操作的便利性，希望能有足够大的提升幅度来弥补所增加的复杂性。但如果这不是用户使用您的语言的方式，那么无论如何都不要使用类。</p>
 </div>
 
     <footer>

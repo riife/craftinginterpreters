@@ -44,7 +44,7 @@
         <li><a href="#习题"><small>25.5</small> 习题</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Closing Over the Loop Variable</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Closing Over the Loop Variable 关闭循环变量</a></li>
     </ul>
     
     
@@ -76,7 +76,7 @@
             <li><a href="#习题"><small>25.5</small> 习题</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Closing Over the Loop Variable</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Closing Over the Loop Variable 关闭循环变量</a></li>
         </ul>
         
         
@@ -2117,12 +2117,11 @@ returned from that constructor.</p>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Closing Over the Loop Variable</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: Closing Over the Loop Variable 关闭循环变量</a></h2>
 <p>Closures capture variables. When two closures capture the same variable, they
 share a reference to the same underlying storage location. This fact is visible
 when new values are assigned to the variable. Obviously, if two closures capture
-<em>different</em> variables, there is no sharing.
-闭包捕获变量。当两个闭包捕获相同的变量时，它们共享对相同的底层存储位置的引用。当将新值赋给该变量时，这一事实是可见的。显然，如果两个闭包捕获<em>不同</em>的变量，就不存在共享。</p>
+<em>different</em> variables, there is no sharing.</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">globalOne</span>;
 <span class="k">var</span> <span class="i">globalTwo</span>;
 
@@ -2149,8 +2148,7 @@ when new values are assigned to the variable. Obviously, if two closures capture
 <span class="i">globalTwo</span>();
 </pre></div>
 <p>This prints &ldquo;one&rdquo; then &ldquo;two&rdquo;. In this example, it&rsquo;s pretty clear that the two
-<code>a</code> variables are different. But it&rsquo;s not always so obvious. Consider:
-这里会打印“one”然后是“two”。在这个例子中，很明显两个<code>a</code>变量是不同的。但一点这并不总是那么明显。考虑一下：</p>
+<code>a</code> variables are different. But it&rsquo;s not always so obvious. Consider:</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">globalOne</span>;
 <span class="k">var</span> <span class="i">globalTwo</span>;
 
@@ -2174,15 +2172,12 @@ when new values are assigned to the variable. Obviously, if two closures capture
 <p>The code is convoluted because Lox has no collection types. The important part
 is that the <code>main()</code> function does two iterations of a <code>for</code> loop. Each time
 through the loop, it creates a closure that captures the loop variable. It
-stores the first closure in <code>globalOne</code> and the second in <code>globalTwo</code>.
-这段代码很复杂，因为Lox没有集合类型。重要的部分是，<code>main()</code>函数进行了<code>for</code>循环的两次迭代。每次循环执行时，它都会创建一个捕获循环变量的闭包。它将第一个闭包存储在<code>globalOne</code>中，并将第二个闭包存储在<code>globalTwo</code>中。</p>
+stores the first closure in <code>globalOne</code> and the second in <code>globalTwo</code>.</p>
 <p>There are definitely two different closures. Do they close over two different
 variables? Is there only one <code>a</code> for the entire duration of the loop, or does
-each iteration get its own distinct <code>a</code> variable?
-这无疑是两个不同的闭包。它们是在两个不同的变量上闭合的吗？在整个循环过程中只有一个<code>a</code>，还是每个迭代都有自己单独的<code>a</code>变量？</p>
+each iteration get its own distinct <code>a</code> variable?</p>
 <p>The script here is strange and contrived, but this does show up in real code
-in languages that aren&rsquo;t as minimal as clox. Here&rsquo;s a JavaScript example:
-这里的脚本很奇怪，而且是人为设计的，但它确实出现在实际的代码中，而且这些代码使用的语言并不是像clox这样的小语言。下面是一个JavaScript的示例：</p>
+in languages that aren&rsquo;t as minimal as clox. Here&rsquo;s a JavaScript example:</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">closures</span> = [];
 <span class="k">for</span> (<span class="k">var</span> <span class="i">i</span> = <span class="n">1</span>; <span class="i">i</span> &lt;= <span class="n">2</span>; <span class="i">i</span>++) {
   <span class="i">closures</span>.<span class="i">push</span>(<span class="k">function</span> () { <span class="i">console</span>.<span class="i">log</span>(<span class="i">i</span>); });
@@ -2194,8 +2189,7 @@ in languages that aren&rsquo;t as minimal as clox. Here&rsquo;s a JavaScript exa
 <p>Does this print &ldquo;1&rdquo; then &ldquo;2&rdquo;, or does it print <span name="three">&ldquo;3&rdquo;</span>
 twice? You may be surprised to hear that it prints &ldquo;3&rdquo; twice. In this JavaScript
 program, there is only a single <code>i</code> variable whose lifetime includes all
-iterations of the loop, including the final exit.
-这里会打印“1”再打印“2”，还是打印两次“3”？你可能会惊讶地发现，它打印了两次“3”。在这个JavaScript程序中，只有一个<code>i</code>变量，它的生命周期包括循环的所有迭代，包括最后的退出。</p>
+iterations of the loop, including the final exit.</p>
 <aside name="three">
 <p>You&rsquo;re wondering how <em>three</em> enters the picture? After the second iteration,
 <code>i++</code> is executed, which increments <code>i</code> to three. That&rsquo;s what causes <code>i &lt;= 2</code> to
@@ -2204,8 +2198,7 @@ run forever.</p>
 </aside>
 <p>If you&rsquo;re familiar with JavaScript, you probably know that variables declared
 using <code>var</code> are implicitly <em>hoisted</em> to the surrounding function or top-level
-scope. It&rsquo;s as if you really wrote this:
-如果你熟悉JavaScript，你可能知道，使用<code>var</code>声明的变量会隐式地被提取到外围函数或顶层作用域中。这就好像你是这样写的：</p>
+scope. It&rsquo;s as if you really wrote this:</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">closures</span> = [];
 <span class="k">var</span> <span class="i">i</span>;
 <span class="k">for</span> (<span class="i">i</span> = <span class="n">1</span>; <span class="i">i</span> &lt;= <span class="n">2</span>; <span class="i">i</span>++) {
@@ -2216,8 +2209,7 @@ scope. It&rsquo;s as if you really wrote this:
 <span class="i">closures</span>[<span class="n">1</span>]();
 </pre></div>
 <p>At that point, it&rsquo;s clearer that there is only a single <code>i</code>. Now consider if
-you change the program to use the newer <code>let</code> keyword:
-此时，很明显只有一个<code>i</code>。现在考虑一下，如果你将程序改为使用更新的<code>let</code>关键字：</p>
+you change the program to use the newer <code>let</code> keyword:</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">closures</span> = [];
 <span class="k">for</span> (<span class="k">let</span> <span class="i">i</span> = <span class="n">1</span>; <span class="i">i</span> &lt;= <span class="n">2</span>; <span class="i">i</span>++) {
   <span class="i">closures</span>.<span class="i">push</span>(<span class="k">function</span> () { <span class="i">console</span>.<span class="i">log</span>(<span class="i">i</span>); });
@@ -2229,10 +2221,8 @@ you change the program to use the newer <code>let</code> keyword:
 <p>Does this new program behave the same? Nope. In this case, it prints &ldquo;1&rdquo; then
 &ldquo;2&rdquo;. Each closure gets its own <code>i</code>. That&rsquo;s sort of strange when you think about
 it. The increment clause is <code>i++</code>. That looks very much like it is assigning to
-and mutating an existing variable, not creating a new one.
-这个新程序的行为是一样的吗？不是。在本例中，它会打印“1”然后打印“2”。每个闭包都有自己的<code>i</code>。仔细想想会觉得有点奇怪，增量子句是<code>i++</code>，这看起来很像是对现有变量进行赋值和修改，而不是创建一个新变量。</p>
-<p>Let&rsquo;s try some other languages. Here&rsquo;s Python:
-让我们试试其它语言。下面是Python：</p>
+and mutating an existing variable, not creating a new one.</p>
+<p>Let&rsquo;s try some other languages. Here&rsquo;s Python:</p>
 <div class="codehilite"><pre><span class="i">closures</span> = []
 <span class="k">for</span> <span class="i">i</span> <span class="k">in</span> <span class="k">range</span>(<span class="n">1</span>, <span class="n">3</span>):
   <span class="i">closures</span>.<span class="i">append</span>(<span class="k">lambda</span>: <span class="k">print</span>(<span class="i">i</span>))
@@ -2244,11 +2234,9 @@ and mutating an existing variable, not creating a new one.
 are automatically scoped to the surrounding function. Kind of like hoisting in
 JS, now that I think about it. So both closures capture the same variable.
 Unlike C, though, we don&rsquo;t exit the loop by incrementing <code>i</code> <em>past</em> the last
-value, so this prints &ldquo;2&rdquo; twice.
-Python并没有真正的块作用域。变量是隐式声明的，并自动限定在外围函数的作用域中。现在我想起来，这有点像JS中的“悬挂”。所以两个闭包都捕获了同一个变量。但与C不同的是，我们不会通过增加<code>i</code>超过最后一个值来退出循环，所以这里会打印两次“2”。</p>
+value, so this prints &ldquo;2&rdquo; twice.</p>
 <p>What about Ruby? Ruby has two typical ways to iterate numerically. Here&rsquo;s the
-classic imperative style:
-那Ruby呢？Ruby有两种典型的数值迭代方式。下面是典型的命令式风格：</p>
+classic imperative style:</p>
 <div class="codehilite"><pre><span class="i">closures</span> = []
 <span class="k">for</span> <span class="i">i</span> <span class="k">in</span> <span class="n">1</span>..<span class="n">2</span> <span class="k">do</span>
   <span class="i">closures</span> &lt;&lt; <span class="k">lambda</span> { <span class="i">puts</span> <span class="i">i</span> }
@@ -2258,8 +2246,7 @@ classic imperative style:
 <span class="i">closures</span>[<span class="n">1</span>].<span class="i">call</span>
 </pre></div>
 <p>This, like Python, prints &ldquo;2&rdquo; twice. But the more idiomatic Ruby style is using
-a higher-order <code>each()</code> method on range objects:
-这有点像是Python，会打印两次“2”。但是更惯用的Ruby风格是在范围对象上使用高阶的<code>each()</code>方法：</p>
+a higher-order <code>each()</code> method on range objects:</p>
 <div class="codehilite"><pre><span class="i">closures</span> = []
 (<span class="n">1</span>..<span class="n">2</span>).<span class="i">each</span> <span class="k">do</span> |<span class="i">i</span>|
   <span class="i">closures</span> &lt;&lt; <span class="k">lambda</span> { <span class="i">puts</span> <span class="i">i</span> }
@@ -2271,38 +2258,149 @@ a higher-order <code>each()</code> method on range objects:
 <p>If you&rsquo;re not familiar with Ruby, the <code>do |i| ... end</code> part is basically a
 closure that gets created and passed to the <code>each()</code> method. The <code>|i|</code> is the
 parameter signature for the closure. The <code>each()</code> method invokes that closure
-twice, passing in 1 for <code>i</code> the first time and 2 the second time.
-如果你不熟悉Ruby，<code>do |i| ... end</code>部分基本上就是一个闭包，它被创建并传递给<code>each()</code>方法。<code>|i|</code>是闭包的参数签名。<code>each()</code>方法两次调用该闭包，第一次传入1，第二次传入2。</p>
+twice, passing in 1 for <code>i</code> the first time and 2 the second time.</p>
 <p>In this case, the &ldquo;loop variable&rdquo; is really a function parameter. And, since
 each iteration of the loop is a separate invocation of the function, those are
-definitely separate variables for each call. So this prints &ldquo;1&rdquo; then &ldquo;2&rdquo;.
-在这种情况下，“循环变量”实际上是一个函数参数。而且，由于循环的每次迭代都是对函数的单独调用，所以每次调用都是单独的变量。因此，这里先打印“1”然后打印“2”。</p>
+definitely separate variables for each call. So this prints &ldquo;1&rdquo; then &ldquo;2&rdquo;.</p>
 <p>If a language has a higher-level iterator-based looping structure like <code>foreach</code>
 in C#, Java&rsquo;s &ldquo;enhanced for&rdquo;, <code>for-of</code> in JavaScript, <code>for-in</code> in Dart, etc.,
 then I think it&rsquo;s natural to the reader to have each iteration create a new
 variable. The code <em>looks</em> like a new variable because the loop header looks
 like a variable declaration. And there&rsquo;s no increment expression that looks like
-it&rsquo;s mutating that variable to advance to the next step.
-如果一门语言具有基于迭代器的高级循环结果，比如C#中的<code>foreach</code>，Java中的“增强型for循环”，JavaScript中的<code>for-of</code>，Dart中的<code>for-in</code>等等，那我认为读者很自然地会让每次迭代都创建一个新变量。代码<em>看起来</em>像一个新变量，是因为循环头看起来像是一个变量声明。看起来没有任何增量表达式通过改变变量以推进到下一步。</p>
+it&rsquo;s mutating that variable to advance to the next step.</p>
 <p>If you dig around StackOverflow and other places, you find evidence that this is
 what users expect, because they are very surprised when they <em>don&rsquo;t</em> get it. In
 particular, C# originally did <em>not</em> create a new loop variable for each
 iteration of a <code>foreach</code> loop. This was such a frequent source of user confusion
 that they took the very rare step of shipping a breaking change to the language.
-In C# 5, each iteration creates a fresh variable.
-如果你在StackOverflow和其它地方挖掘一下，你会发现这正是用户所期望的，因为当他们<em>没有</em>看到这个结果时，他们会非常惊讶。特别是，C#最初并没有为<code>foreach</code>循环的每次迭代创建一个新的循环变量。这一点经常引起用户的困惑，所以他们采用了非常罕见的措施，对语言进行了突破性的修改。在C# 5中，每个迭代都会创建一个新的变量。</p>
+In C# 5, each iteration creates a fresh variable.</p>
 <p>Old C-style <code>for</code> loops are harder. The increment clause really does look like
 mutation. That implies there is a single variable that&rsquo;s getting updated each
 step. But it&rsquo;s almost never <em>useful</em> for each iteration to share a loop
 variable. The only time you can even detect this is when closures capture it.
 And it&rsquo;s rarely helpful to have a closure that references a variable whose value
-is whatever value caused you to exit the loop.
-旧的C风格的<code>for</code>循环更难了。增量子句看起来像是修改。这意味着每一步更新的是同一个变量。但是每个迭代共享一个循环变量几乎是<em>没有用</em>的。只有在闭包捕获它时，你才能检测到这一现象。而且，如果闭包引用的变量的值是导致循环退出的值，那么它也几乎没有帮助。</p>
+is whatever value caused you to exit the loop.</p>
 <p>The pragmatically useful answer is probably to do what JavaScript does with
 <code>let</code> in <code>for</code> loops. Make it look like mutation but actually create a new
 variable each time, because that&rsquo;s what users want. It is kind of weird when you
-think about it, though.
-实用的答案可能是像JavaScript在<code>for</code>循环中的<code>let</code>那样。让它看起来像修改，但实际上每次都创建一个新变量，因为这是用户想要的。不过，仔细想想，还是有点奇怪的。
+think about it, though.</p>
+</div>
+<div class="design-note">
+<p>闭包捕获变量。当两个闭包捕获相同的变量时，它们共享对相同的底层存储位置的引用。当将新值赋给该变量时，这一事实是可见的。显然，如果两个闭包捕获<em>不同</em>的变量，就不存在共享。</p>
+<div class="codehilite"><pre><span class="k">var</span> <span class="i">globalOne</span>;
+<span class="k">var</span> <span class="i">globalTwo</span>;
+
+<span class="k">fun</span> <span class="i">main</span>() {
+  {
+    <span class="k">var</span> <span class="i">a</span> = <span class="s">&quot;one&quot;</span>;
+    <span class="k">fun</span> <span class="i">one</span>() {
+      <span class="k">print</span> <span class="i">a</span>;
+    }
+    <span class="i">globalOne</span> = <span class="i">one</span>;
+  }
+
+  {
+    <span class="k">var</span> <span class="i">a</span> = <span class="s">&quot;two&quot;</span>;
+    <span class="k">fun</span> <span class="i">two</span>() {
+      <span class="k">print</span> <span class="i">a</span>;
+    }
+    <span class="i">globalTwo</span> = <span class="i">two</span>;
+  }
+}
+
+<span class="i">main</span>();
+<span class="i">globalOne</span>();
+<span class="i">globalTwo</span>();
+</pre></div>
+<p>这里会打印“one”然后是“two”。在这个例子中，很明显两个<code>a</code>变量是不同的。但一点这并不总是那么明显。考虑一下：</p>
+<div class="codehilite"><pre><span class="k">var</span> <span class="i">globalOne</span>;
+<span class="k">var</span> <span class="i">globalTwo</span>;
+
+<span class="k">fun</span> <span class="i">main</span>() {
+  <span class="k">for</span> (<span class="k">var</span> <span class="i">a</span> = <span class="n">1</span>; <span class="i">a</span> &lt;= <span class="n">2</span>; <span class="i">a</span> = <span class="i">a</span> + <span class="n">1</span>) {
+    <span class="k">fun</span> <span class="i">closure</span>() {
+      <span class="k">print</span> <span class="i">a</span>;
+    }
+    <span class="k">if</span> (<span class="i">globalOne</span> == <span class="k">nil</span>) {
+      <span class="i">globalOne</span> = <span class="i">closure</span>;
+    } <span class="k">else</span> {
+      <span class="i">globalTwo</span> = <span class="i">closure</span>;
+    }
+  }
+}
+
+<span class="i">main</span>();
+<span class="i">globalOne</span>();
+<span class="i">globalTwo</span>();
+</pre></div>
+<p>这段代码很复杂，因为Lox没有集合类型。重要的部分是，<code>main()</code>函数进行了<code>for</code>循环的两次迭代。每次循环执行时，它都会创建一个捕获循环变量的闭包。它将第一个闭包存储在<code>globalOne</code>中，并将第二个闭包存储在<code>globalTwo</code>中。</p>
+<p>这无疑是两个不同的闭包。它们是在两个不同的变量上闭合的吗？在整个循环过程中只有一个<code>a</code>，还是每个迭代都有自己单独的<code>a</code>变量？</p>
+<p>这里的脚本很奇怪，而且是人为设计的，但它确实出现在实际的代码中，而且这些代码使用的语言并不是像clox这样的小语言。下面是一个JavaScript的示例：</p>
+<div class="codehilite"><pre><span class="k">var</span> <span class="i">closures</span> = [];
+<span class="k">for</span> (<span class="k">var</span> <span class="i">i</span> = <span class="n">1</span>; <span class="i">i</span> &lt;= <span class="n">2</span>; <span class="i">i</span>++) {
+  <span class="i">closures</span>.<span class="i">push</span>(<span class="k">function</span> () { <span class="i">console</span>.<span class="i">log</span>(<span class="i">i</span>); });
+}
+
+<span class="i">closures</span>[<span class="n">0</span>]();
+<span class="i">closures</span>[<span class="n">1</span>]();
+</pre></div>
+<p>这里会打印“1”再打印“2”，还是打印两次<span name="three_zh">“3”</span>？你可能会惊讶地发现，它打印了两次“3”。在这个JavaScript程序中，只有一个<code>i</code>变量，它的生命周期包括循环的所有迭代，包括最后的退出。</p>
+<aside name="three_zh">
+<p>你想知道“3”是怎么出现的吗？在第二次迭代后，执行<code>i++</code>，它将<code>i</code>增加到3。这就是导致<code>i&lt;=2</code>的值为false并结束循环的原因。如果<code>i</code>永远达不到3，循环就会一直运行下去。</p>
+</aside>
+<p>如果你熟悉JavaScript，你可能知道，使用<code>var</code>声明的变量会隐式地被提取到外围函数或顶层作用域中。这就好像你是这样写的：</p>
+<div class="codehilite"><pre><span class="k">var</span> <span class="i">closures</span> = [];
+<span class="k">var</span> <span class="i">i</span>;
+<span class="k">for</span> (<span class="i">i</span> = <span class="n">1</span>; <span class="i">i</span> &lt;= <span class="n">2</span>; <span class="i">i</span>++) {
+  <span class="i">closures</span>.<span class="i">push</span>(<span class="k">function</span> () { <span class="i">console</span>.<span class="i">log</span>(<span class="i">i</span>); });
+}
+
+<span class="i">closures</span>[<span class="n">0</span>]();
+<span class="i">closures</span>[<span class="n">1</span>]();
+</pre></div>
+<p>此时，很明显只有一个<code>i</code>。现在考虑一下，如果你将程序改为使用更新的<code>let</code>关键字：</p>
+<div class="codehilite"><pre><span class="k">var</span> <span class="i">closures</span> = [];
+<span class="k">for</span> (<span class="k">let</span> <span class="i">i</span> = <span class="n">1</span>; <span class="i">i</span> &lt;= <span class="n">2</span>; <span class="i">i</span>++) {
+  <span class="i">closures</span>.<span class="i">push</span>(<span class="k">function</span> () { <span class="i">console</span>.<span class="i">log</span>(<span class="i">i</span>); });
+}
+
+<span class="i">closures</span>[<span class="n">0</span>]();
+<span class="i">closures</span>[<span class="n">1</span>]();
+</pre></div>
+<p>这个新程序的行为是一样的吗？不是。在本例中，它会打印“1”然后打印“2”。每个闭包都有自己的<code>i</code>。仔细想想会觉得有点奇怪，增量子句是<code>i++</code>，这看起来很像是对现有变量进行赋值和修改，而不是创建一个新变量。</p>
+<p>让我们试试其它语言。下面是Python：</p>
+<div class="codehilite"><pre><span class="i">closures</span> = []
+<span class="k">for</span> <span class="i">i</span> <span class="k">in</span> <span class="k">range</span>(<span class="n">1</span>, <span class="n">3</span>):
+  <span class="i">closures</span>.<span class="i">append</span>(<span class="k">lambda</span>: <span class="k">print</span>(<span class="i">i</span>))
+
+<span class="i">closures</span>[<span class="n">0</span>]()
+<span class="i">closures</span>[<span class="n">1</span>]()
+</pre></div>
+<p>Python并没有真正的块作用域。变量是隐式声明的，并自动限定在外围函数的作用域中。现在我想起来，这有点像JS中的“悬挂”。所以两个闭包都捕获了同一个变量。但与C不同的是，我们不会通过增加<code>i</code>超过最后一个值来退出循环，所以这里会打印两次“2”。</p>
+<p>那Ruby呢？Ruby有两种典型的数值迭代方式。下面是典型的命令式风格：</p>
+<div class="codehilite"><pre><span class="i">closures</span> = []
+<span class="k">for</span> <span class="i">i</span> <span class="k">in</span> <span class="n">1</span>..<span class="n">2</span> <span class="k">do</span>
+  <span class="i">closures</span> &lt;&lt; <span class="k">lambda</span> { <span class="i">puts</span> <span class="i">i</span> }
+<span class="k">end</span>
+
+<span class="i">closures</span>[<span class="n">0</span>].<span class="i">call</span>
+<span class="i">closures</span>[<span class="n">1</span>].<span class="i">call</span>
+</pre></div>
+<p>这有点像是Python，会打印两次“2”。但是更惯用的Ruby风格是在范围对象上使用高阶的<code>each()</code>方法：</p>
+<div class="codehilite"><pre><span class="i">closures</span> = []
+(<span class="n">1</span>..<span class="n">2</span>).<span class="i">each</span> <span class="k">do</span> |<span class="i">i</span>|
+  <span class="i">closures</span> &lt;&lt; <span class="k">lambda</span> { <span class="i">puts</span> <span class="i">i</span> }
+<span class="k">end</span>
+
+<span class="i">closures</span>[<span class="n">0</span>].<span class="i">call</span>
+<span class="i">closures</span>[<span class="n">1</span>].<span class="i">call</span>
+</pre></div>
+<p>如果你不熟悉Ruby，<code>do |i| ... end</code>部分基本上就是一个闭包，它被创建并传递给<code>each()</code>方法。<code>|i|</code>是闭包的参数签名。<code>each()</code>方法两次调用该闭包，第一次传入1，第二次传入2。</p>
+<p>在这种情况下，“循环变量”实际上是一个函数参数。而且，由于循环的每次迭代都是对函数的单独调用，所以每次调用都是单独的变量。因此，这里先打印“1”然后打印“2”。</p>
+<p>如果一门语言具有基于迭代器的高级循环结果，比如C#中的<code>foreach</code>，Java中的“增强型for循环”，JavaScript中的<code>for-of</code>，Dart中的<code>for-in</code>等等，那我认为读者很自然地会让每次迭代都创建一个新变量。代码<em>看起来</em>像一个新变量，是因为循环头看起来像是一个变量声明。看起来没有任何增量表达式通过改变变量以推进到下一步。</p>
+<p>如果你在StackOverflow和其它地方挖掘一下，你会发现这正是用户所期望的，因为当他们<em>没有</em>看到这个结果时，他们会非常惊讶。特别是，C#最初并没有为<code>foreach</code>循环的每次迭代创建一个新的循环变量。这一点经常引起用户的困惑，所以他们采用了非常罕见的措施，对语言进行了突破性的修改。在C# 5中，每个迭代都会创建一个新的变量。</p>
+<p>旧的C风格的<code>for</code>循环更难了。增量子句看起来像是修改。这意味着每一步更新的是同一个变量。但是每个迭代共享一个循环变量几乎是<em>没有用</em>的。只有在闭包捕获它时，你才能检测到这一现象。而且，如果闭包引用的变量的值是导致循环退出的值，那么它也几乎没有帮助。</p>
+<p>实用的答案可能是像JavaScript在<code>for</code>循环中的<code>let</code>那样。让它看起来像修改，但实际上每次都创建一个新变量，因为这是用户想要的。不过，仔细想想，还是有点奇怪的。
 : 你想知道“3”是怎么出现的吗？在第二次迭代后，执行<code>i++</code>，它将<code>i</code>增加到3。这就是导致<code>i&lt;=2</code>的值为false并结束循环的原因。如果<code>i</code>永远达不到3，循环就会一直运行下去。</p>
 </div>
 

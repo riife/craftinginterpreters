@@ -44,7 +44,7 @@
         <li><a href="#scope"><small>8.5</small> Scope</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration 隐式变量声明</a></li>
     </ul>
     
     
@@ -76,7 +76,7 @@
             <li><a href="#scope"><small>8.5</small> Scope</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration 隐式变量声明</a></li>
         </ul>
         
         
@@ -1753,7 +1753,7 @@ you think users will expect this to do?
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Implicit Variable Declaration</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: Implicit Variable Declaration 隐式变量声明</a></h2>
 <p>Lox has distinct syntax for declaring a new variable and assigning to an
 existing one. Some languages collapse those to only assignment syntax. Assigning
 to a non-existent variable automatically brings it into being. This is called
@@ -1854,6 +1854,33 @@ variables in outer scopes. That makes it more likely that users will run into
 the tricky cases where it&rsquo;s not clear whether they intend their assignment to
 create a new variable or reuse a surrounding one.</p>
 <p>So I prefer explicitly declaring variables, which is why Lox requires it.</p>
+</div>
+<div class="design-note">
+<p>Lox使用不同的语法来声明新变量和为已有变量赋值。有些语言将其简化为只有赋值语法。对一个不存在的变量进行赋值时会自动生成该变量。这被称为<strong>隐式变量声明</strong>，存在于Python、Ruby和CoffeeScript以及其他语言中。JavaScript有一个显式的语法来声明变量，但是也可以在赋值时创建新变量。Visual Basic有一个<a href="https://msdn.microsoft.com/en-us/library/xe53dz5w(v=vs.100).aspx">选项可以启用或禁用隐式变量</a>。</p>
+<p>当同样的语法既可以对变量赋值，也可以创建变量时，语言实现就必须决定在不清楚用户的预期行为时该怎么办。特别是，每种语言必须选择隐式变量声明与变量遮蔽的交互方式，以及隐式变量应该属于哪个作用域。</p>
+<ul>
+<li>在Python中，赋值总是会在当前函数的作用域内创建一个变量，即使在函数外部声明了同名变量。</li>
+<li>Ruby通过对局部变量和全局变量使用不同的命名规则，避免了一些歧义。 但是，Ruby中的块（更像闭包，而不是C中的“块”）具有自己的作用域，因此仍然存在问题。在Ruby中，如果已经存在一个同名的变量，则赋值会赋给当前块之外的现有变量。否则，就会在当前块的作用域中创建一个新变量。</li>
+<li>CoffeeScript在许多方面都效仿Ruby，这一点也类似。它明确禁止变量遮蔽，要求赋值时总是优先赋给外部作用域中现有的变量（一直到最外层的全局作用域）。如果变量不存在的话，它会在当前函数作用域中创建新变量。</li>
+<li>在JavaScript中，赋值会修改任意外部作用域中的一个现有变量（如果能找到该变量的话）。如果变量不存在，它就隐式地在全局作用域内创建一个新的变量。</li>
+</ul>
+<p>隐式声明的主要优点是简单。语法较少，无需学习“声明”概念。用户可以直接开始赋值，然后语言就能解决其它问题。</p>
+<p>像C这样较早的静态类型语言受益于显式声明，是因为它们给用户提供了一个地方，让他们告诉编译器每个变量的类型以及为它分配多少存储空间。在动态类型、垃圾收集的语言中，这其实是没有必要的，所以你可以通过隐式声明来实现。这感觉更 &ldquo;脚本化&ldquo;，更像是 &ldquo;你懂我的意思吧&ldquo;。</p>
+<p>但这是就个好主意吗？隐式声明还存在一些问题。</p>
+<ul>
+<li>用户可能打算为现有变量赋值，但是出现拼写错误。解释器不知道这一点，所以它悄悄地创建了一些新变量，而用户想要赋值的变量仍然是原来的值。这在JavaScript中尤其令人讨厌，因为一个拼写错误会创建一个全局变量，这反过来又可能会干扰其它代码。</li>
+<li>JS、Ruby和CoffeeScript通过判断是否存在同名变量——包括外部作用域——来确定赋值是创建新变量还是赋值给现有变量。这意味着在外围作用域中添加一个新变量可能会改变现有代码的含义，原先的局部变量可能会默默地变成对新的外部变量的赋值。</li>
+<li>在Python中，你可能想要赋值给当前函数之外的某个变量，而不是在当前函数中创建一个新变量，但是你做不到。</li>
+</ul>
+<p>随着时间的推移，我所知道的具有隐式变量声明的语言最后都增加了更多的功能和复杂性来处理这些问题。</p>
+<ul>
+<li>现在，普遍认为JavaScript中全局变量的隐式声明是一个错误。“Strict mode ”禁用了它，并将其成为一个编译错误。</li>
+<li>Python添加了一个<code>global</code>语句，让用户可以在函数内部显式地赋值给一个全局变量。后来，随着函数式编程和嵌套函数越来越流行，他们添加了一个类似的<code>nonlocal</code>语句来赋值给外围函数中的变量。</li>
+<li>Ruby扩展了它的块语法，允许在块中显式地声明某些变量，即使外部作用域中存在同名的变量。</li>
+</ul>
+<p>考虑到这些，我认为简单性的论点已经失去了意义。有一种观点认为隐式声明是正确的默认选项，但我个人认为这种说法不太有说服力。</p>
+<p>我的观点是，隐式声明在过去的几年里是有意义的，当时大多数脚本语言都是非常命令式的，代码是相当简单直观的。随着程序员对深度嵌套、函数式编程和闭包越来越熟悉，访问外部作用域中的变量变得越来越普遍。这使得用户更有可能遇到棘手的情况，即不清楚他们的赋值是要创建一个新变量还是重用外围的已有变量。</p>
+<p>所以我更喜欢显式声明变量，这就是Lox要这样做的原因。</p>
 </div>
 
     <footer>
