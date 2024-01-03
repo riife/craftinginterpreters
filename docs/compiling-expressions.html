@@ -37,16 +37,16 @@
         <h3><a href="#top">编译表达式<small>17</small></a></h3>
     
     <ul>
-        <li><a href="#single-pass-compilation--单遍编译"><small>17.1</small> Single-Pass Compilation  单遍编译</a></li>
-        <li><a href="#parsing-tokens--解析标识"><small>17.2</small> Parsing Tokens  解析标识</a></li>
-        <li><a href="#emitting-bytecode--发出字节码"><small>17.3</small> Emitting Bytecode  发出字节码</a></li>
-        <li><a href="#parsing-prefix-expressions--解析前缀表达式"><small>17.4</small> Parsing Prefix Expressions  解析前缀表达式</a></li>
-        <li><a href="#parsing-infix-expressions--解析中缀表达式"><small>17.5</small> Parsing Infix Expressions  解析中缀表达式</a></li>
-        <li><a href="#a-pratt-parser--pratt解析器"><small>17.6</small> A Pratt Parser  Pratt解析器</a></li>
-        <li><a href="#dumping-chunks--转储字节码块"><small>17.7</small> Dumping Chunks  转储字节码块</a></li>
+        <li><a href="#单遍编译"><small>17.1</small> 单遍编译</a></li>
+        <li><a href="#解析标识"><small>17.2</small> 解析标识</a></li>
+        <li><a href="#发出字节码"><small>17.3</small> 发出字节码</a></li>
+        <li><a href="#解析前缀表达式"><small>17.4</small> 解析前缀表达式</a></li>
+        <li><a href="#解析中缀表达式"><small>17.5</small> 解析中缀表达式</a></li>
+        <li><a href="#pratt解析器"><small>17.6</small> Pratt解析器</a></li>
+        <li><a href="#转储字节码块"><small>17.7</small> 转储字节码块</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>It&#x27;s Just Parsing 只是解析</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>只是解析</a></li>
     </ul>
     
     
@@ -71,16 +71,16 @@
         <h3><a href="#top">编译表达式<small>17</small></a></h3>
         
         <ul>
-            <li><a href="#single-pass-compilation--单遍编译"><small>17.1</small> Single-Pass Compilation  单遍编译</a></li>
-            <li><a href="#parsing-tokens--解析标识"><small>17.2</small> Parsing Tokens  解析标识</a></li>
-            <li><a href="#emitting-bytecode--发出字节码"><small>17.3</small> Emitting Bytecode  发出字节码</a></li>
-            <li><a href="#parsing-prefix-expressions--解析前缀表达式"><small>17.4</small> Parsing Prefix Expressions  解析前缀表达式</a></li>
-            <li><a href="#parsing-infix-expressions--解析中缀表达式"><small>17.5</small> Parsing Infix Expressions  解析中缀表达式</a></li>
-            <li><a href="#a-pratt-parser--pratt解析器"><small>17.6</small> A Pratt Parser  Pratt解析器</a></li>
-            <li><a href="#dumping-chunks--转储字节码块"><small>17.7</small> Dumping Chunks  转储字节码块</a></li>
+            <li><a href="#单遍编译"><small>17.1</small> 单遍编译</a></li>
+            <li><a href="#解析标识"><small>17.2</small> 解析标识</a></li>
+            <li><a href="#发出字节码"><small>17.3</small> 发出字节码</a></li>
+            <li><a href="#解析前缀表达式"><small>17.4</small> 解析前缀表达式</a></li>
+            <li><a href="#解析中缀表达式"><small>17.5</small> 解析中缀表达式</a></li>
+            <li><a href="#pratt解析器"><small>17.6</small> Pratt解析器</a></li>
+            <li><a href="#转储字节码块"><small>17.7</small> 转储字节码块</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>It&#x27;s Just Parsing 只是解析</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>只是解析</a></li>
         </ul>
         
         
@@ -243,7 +243,7 @@ outside and cover all of the surrounding bits before we get to the juicy center.
 This will require a little more patience and mental scratch space than most
 chapters, but it&rsquo;s the best I could do.
 我不想在每次扩展表时都要重新查看40多行代码。因此，我们要从外部进入解析器的核心，并在进入有趣的中心之前覆盖其外围的所有部分。与大多数章节相比，这将需要更多的耐心和思考空间，但这是我能做到的最好的了。</p>
-<h2><a href="#single-pass-compilation--单遍编译" id="single-pass-compilation--单遍编译"><small>17&#8202;.&#8202;1</small>Single-Pass Compilation  单遍编译</a></h2>
+<h2><a href="#单遍编译" id="单遍编译"><small>17&#8202;.&#8202;1</small>单遍编译</a></h2>
 <p>A compiler has roughly two jobs. It parses the user&rsquo;s source code to understand
 what it means. Then it takes that knowledge and outputs low-level instructions
 that produce the same semantics. Many languages split those two roles into two
@@ -284,7 +284,7 @@ chapters.)
 together with the code in the middle that uses Pratt&rsquo;s technique to parse Lox&rsquo;s
 particular grammar and output the right bytecode.
 我们首先分别构建解析和代码生成两个部分。然后，我们会用中间代码将它们缝合在一起，该代码使用Pratt的技术来解析Lox 的语法并输出正确的字节码。</p>
-<h2><a href="#parsing-tokens--解析标识" id="parsing-tokens--解析标识"><small>17&#8202;.&#8202;2</small>Parsing Tokens  解析标识</a></h2>
+<h2><a href="#解析标识" id="解析标识"><small>17&#8202;.&#8202;2</small>解析标识</a></h2>
 <p>First up, the front half of the compiler. This function&rsquo;s name should sound
 familiar.
 首先是编译器的前半部分。这个函数的名字听起来应该很熟悉。</p>
@@ -338,7 +338,7 @@ static void advance() {
 type so we don&rsquo;t need to pass the state around from function to function in the
 compiler.
 就像我们在其它模块中所做的那样，我们维护一个这种结构体类型的单一全局变量，所以我们不需要在编译器中将状态从一个函数传递到另一个函数。</p>
-<h3><a href="#handling-syntax-errors--处理语法错误" id="handling-syntax-errors--处理语法错误"><small>17&#8202;.&#8202;2&#8202;.&#8202;1</small>Handling syntax errors  处理语法错误</a></h3>
+<h3><a href="#处理语法错误" id="处理语法错误"><small>17&#8202;.&#8202;2&#8202;.&#8202;1</small>处理语法错误</a></h3>
 <p>If the scanner hands us an error token, we need to actually tell the user. That
 happens using this:
 如果扫描器交给我们一个错误标识，我们必须明确地告诉用户。这就需要使用下面的语句：</p>
@@ -510,7 +510,7 @@ function is the foundation of most syntax errors in the compiler.
 它类似于<code>advance()</code>，都是读取下一个标识。但它也会验证标识是否具有预期的类型。如果不是，则报告错误。这个函数是编译器中大多数语法错误的基础。</p>
 <p>OK, that&rsquo;s enough on the front end for now.
 好了，关于前端的介绍就到此为止。</p>
-<h2><a href="#emitting-bytecode--发出字节码" id="emitting-bytecode--发出字节码"><small>17&#8202;.&#8202;3</small>Emitting Bytecode  发出字节码</a></h2>
+<h2><a href="#发出字节码" id="发出字节码"><small>17&#8202;.&#8202;3</small>发出字节码</a></h2>
 <p>After we parse and understand a piece of the user&rsquo;s program, the next step is to
 translate that to a series of bytecode instructions. It starts with the easiest
 possible step: appending a single byte to the chunk.
@@ -609,7 +609,7 @@ add after <em>emitByte</em>()</div>
 <p>Over time, we&rsquo;ll have enough cases where we need to write an opcode followed by
 a one-byte operand that it&rsquo;s worth defining this convenience function.
 随着时间的推移，我们将遇到很多的情况中需要写一个操作码，后面跟一个单字节的操作数，因此值得定义这个便利的函数。</p>
-<h2><a href="#parsing-prefix-expressions--解析前缀表达式" id="parsing-prefix-expressions--解析前缀表达式"><small>17&#8202;.&#8202;4</small>Parsing Prefix Expressions  解析前缀表达式</a></h2>
+<h2><a href="#解析前缀表达式" id="解析前缀表达式"><small>17&#8202;.&#8202;4</small>解析前缀表达式</a></h2>
 <p>We&rsquo;ve assembled our parsing and code generation utility functions. The missing
 piece is the code in the middle that connects those together.
 我们已经组装了解析和生成代码的工具函数。缺失的部分就是将它们连接在一起的的中间代码。</p><img src="image/compiling-expressions/mystery.png" alt="Parsing functions on the left, bytecode emitting functions on the right. What goes in the middle?" />
@@ -640,7 +640,7 @@ even have Booleans. For this chapter, we&rsquo;re only going to worry about four
 we&rsquo;ll also assemble the requirements for the table-driven parser that calls
 them.
 当我们通过函数编译每种类型的表达式时，我们也会对调用这些表达式的表格驱动的解析器的要求进行汇总。</p>
-<h3><a href="#parsers-for-tokens--标识解析器" id="parsers-for-tokens--标识解析器"><small>17&#8202;.&#8202;4&#8202;.&#8202;1</small>Parsers for tokens  标识解析器</a></h3>
+<h3><a href="#标识解析器" id="标识解析器"><small>17&#8202;.&#8202;4&#8202;.&#8202;1</small>标识解析器</a></h3>
 <p>For now, let&rsquo;s focus on the Lox expressions that are each only a single token.
 In this chapter, that&rsquo;s just number literals, but there will be more later. Here&rsquo;s
 how we can compile them:
@@ -713,7 +713,7 @@ clox, but you&rsquo;ll want your VMs to scale to larger programs.</p>
 consumes a <code>TOKEN_NUMBER</code> token, looks up <code>number()</code> in the function pointer
 array, and then calls it, we can now compile number literals to bytecode.
 这基本就是所有的事情了。只要有了这些合适的代码，能够消耗一个<code>TOKEN_NUMBER</code>标识，在函数指针数组中查找<code>number()</code>方法，然后调用它，我们现在就可以将数值字面量编译为字节码。</p>
-<h3><a href="#parentheses-for-grouping--括号分组" id="parentheses-for-grouping--括号分组"><small>17&#8202;.&#8202;4&#8202;.&#8202;2</small>Parentheses for grouping  括号分组</a></h3>
+<h3><a href="#括号分组" id="括号分组"><small>17&#8202;.&#8202;4&#8202;.&#8202;2</small>括号分组</a></h3>
 <p>Our as-yet-imaginary array of parsing function pointers would be great if every
 expression was only a single token long. Alas, most are longer. However, many
 expressions <em>start</em> with a particular token. We call these <em>prefix</em> expressions.
@@ -748,7 +748,7 @@ no runtime semantics on its own and therefore doesn&rsquo;t emit any bytecode. T
 inner call to <code>expression()</code> takes care of generating bytecode for the
 expression inside the parentheses.
 就后端而言，分组表达式实际上没有任何意义。它的唯一功能是语法上的——它允许你在需要高优先级的地方插入一个低优先级的表达式。因此，它本身没有运行时语法，也就不会发出任何字节码。对<code>expression()</code>的内部调用负责为括号内的表达式生成字节码。</p>
-<h3><a href="#unary-negation--一元取负" id="unary-negation--一元取负"><small>17&#8202;.&#8202;4&#8202;.&#8202;3</small>Unary negation  一元取负</a></h3>
+<h3><a href="#一元取负" id="一元取负"><small>17&#8202;.&#8202;4&#8202;.&#8202;3</small>一元取负</a></h3>
 <p>Unary minus is also a prefix expression, so it works with our model too.
 一元减号也是一个前缀表达式，因此也适用于我们的模型。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
@@ -917,7 +917,7 @@ binary operators. Speaking of which<span class="ellipse">&thinsp;.&thinsp;.&thin
 <p>Not that nesting unary expressions is particularly useful in Lox. But other
 languages let you do it, so we do too.</p>
 </aside>
-<h2><a href="#parsing-infix-expressions--解析中缀表达式" id="parsing-infix-expressions--解析中缀表达式"><small>17&#8202;.&#8202;5</small>Parsing Infix Expressions  解析中缀表达式</a></h2>
+<h2><a href="#解析中缀表达式" id="解析中缀表达式"><small>17&#8202;.&#8202;5</small>解析中缀表达式</a></h2>
 <p>Binary operators are different from the previous expressions because they are
 <em>infix</em>. With the other expressions, we know what we are parsing from the very
 first token. With infix expressions, we don&rsquo;t know we&rsquo;re in the middle of a
@@ -1035,7 +1035,7 @@ the current operator.</p>
 <p>This way, we can use a single <code>binary()</code> function for all binary operators even
 though they have different precedences.
 这样，我们就可以对所有的二元运算符使用同一个<code>binary()</code>函数，即使它们的优先级各不相同。</p>
-<h2><a href="#a-pratt-parser--pratt解析器" id="a-pratt-parser--pratt解析器"><small>17&#8202;.&#8202;6</small>A Pratt Parser  Pratt解析器</a></h2>
+<h2><a href="#pratt解析器" id="pratt解析器"><small>17&#8202;.&#8202;6</small>Pratt解析器</a></h2>
 <p>We now have all of the pieces and parts of the compiler laid out. We have a
 function for each grammar production: <code>number()</code>, <code>grouping()</code>, <code>unary()</code>, and
 <code>binary()</code>. We still need to implement <code>parsePrecedence()</code>, and <code>getRule()</code>. We
@@ -1217,7 +1217,7 @@ add after <em>endCompiler</em>()</div>
 the little annotations that tell you where to put these code snippets. Don&rsquo;t
 worry, though, if you get it wrong, the C compiler will be happy to tell you.
 如果你正在跟随本文实现自己的clox，请密切注意那些告诉你代码片段应该加在哪里的小注释。不过不用担心，如果你弄错了，C编译器会很乐意告诉你。</p>
-<h3><a href="#parsing-with-precedence--带优先级解析" id="parsing-with-precedence--带优先级解析"><small>17&#8202;.&#8202;6&#8202;.&#8202;1</small>Parsing with precedence  带优先级解析</a></h3>
+<h3><a href="#带优先级的解析" id="带优先级的解析"><small>17&#8202;.&#8202;6&#8202;.&#8202;1</small>带优先级的解析</a></h3>
 <p>Now we&rsquo;re getting to the fun stuff. The maestro that orchestrates all of the
 parsing functions we&rsquo;ve defined is <code>parsePrecedence()</code>. Let&rsquo;s start with parsing
 prefix expressions.
@@ -1305,7 +1305,7 @@ otherwise, what we wrote covers all of our expression compiling needs for the
 rest of the book. We&rsquo;ll plug additional parsing functions into the table when we
 add new kinds of expressions, but <code>parsePrecedence()</code> is complete.
 稍后，我们在处理赋值的时候需要调整本章中的代码。但是，除此之外，我们所写的内容涵盖了本书中其余部分所有表达式编译的需求。在添加新的表达式类型时，我们会在表格中插入额外的解析函数，但是 <code>parsePrecedence()</code> 是完整的。</p>
-<h2><a href="#dumping-chunks--转储字节码块" id="dumping-chunks--转储字节码块"><small>17&#8202;.&#8202;7</small>Dumping Chunks  转储字节码块</a></h2>
+<h2><a href="#转储字节码块" id="转储字节码块"><small>17&#8202;.&#8202;7</small>转储字节码块</a></h2>
 <p>While we&rsquo;re here in the core of our compiler, we should put in some
 instrumentation. To help debug the generated bytecode, we&rsquo;ll add support for
 dumping the chunk once the compiler finishes. We had some temporary logging
@@ -1391,38 +1391,28 @@ called, which calls which, and the arguments passed to them.
 写一下关于这些函数如何被调用的追踪信息。显示它们被调用的顺序，哪个调用哪个，以及传递给它们的参数。</p>
 </li>
 <li>
-<blockquote>
-<p>The ParseRule row for <code>TOKEN_MINUS</code> has both prefix and infix function pointers. That’s because <code>-</code> is both a prefix operator (unary negation) and an infix one (subtraction).</p>
-</blockquote>
-</li>
-<li>
 <p>The ParseRule row for <code>TOKEN_MINUS</code> has both prefix and infix function
 pointers. That&rsquo;s because <code>-</code> is both a prefix operator (unary negation) and
-an infix one (subtraction).</p>
+an infix one (subtraction).
+<code>TOKEN_MINUS</code>的ParseRule行同时具有前缀和中缀函数指针。这是因为<code>-</code>既是前缀操作符（一元取负），也是一个中缀操作符（减法）。</p>
 <p>In the full Lox language, what other tokens can be used in both prefix and
-infix positions? What about in C or in another language of your choice?
-<code>TOKEN_MINUS</code>的ParseRule行同时具有前缀和中缀函数指针。这是因为<code>-</code>既是前缀操作符（一元取负），也是一个中缀操作符（减法）。
-在完整的Lox语言中，还有哪些标识可以同时用于前缀和中缀位置？在C语言或你选择的其它语言中呢？</p>
-</li>
-<li>
-<blockquote>
-<p>You might be wondering about complex “mixfix” expressions that have more than two operands separated by tokens. C’s conditional or “ternary” operator, <code>?:</code>, is a widely known one.</p>
-</blockquote>
+infix positions? What about in C or in another language of your choice?</p>
+<p>在完整的Lox语言中，还有哪些标识可以同时用于前缀和中缀位置？在C语言或你选择的其它语言中呢？</p>
 </li>
 <li>
 <p>You might be wondering about complex &ldquo;mixfix&rdquo; expressions that have more
 than two operands separated by tokens. C&rsquo;s conditional or &ldquo;ternary&rdquo;
-operator, <code>?:</code>, is a widely known one.</p>
+operator, <code>?:</code>, is a widely known one.
+你可能会好奇负责的“多元”表达式，他有两个以上的操作数，操作数之间由标识分开。C语言中的条件运算符或“三元”运算符<code>?:</code>就是一个广为人知的多元操作符。</p>
 <p>Add support for that operator to the compiler. You don&rsquo;t have to generate
 any bytecode, just show how you would hook it up to the parser and handle
 the operands.
-你可能会好奇负责的“多元”表达式，他有两个以上的操作数，操作数之间由标识分开。C语言中的条件运算符或“三元”运算符<code>?:</code>就是一个广为人知的多元操作符。
 向编译器中添加对该运算符的支持。你不需要生成任何字节码，只需要展示如何将其连接到解析器中并处理操作数。</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: It&rsquo;s Just Parsing 只是解析</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 只是解析</a></h2>
 <p>I&rsquo;m going to make a claim here that will be unpopular with some compiler and
 language people. It&rsquo;s OK if you don&rsquo;t agree. Personally, I learn more from
 strongly stated opinions that I disagree with than I do from several pages of

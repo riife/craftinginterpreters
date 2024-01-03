@@ -37,12 +37,12 @@
         <h3><a href="#top">函数<small>10</small></a></h3>
     
     <ul>
-        <li><a href="#function-calls--函数调用"><small>10.1</small> Function Calls  函数调用</a></li>
-        <li><a href="#native-functions--原生函数（本地函数）"><small>10.2</small> Native Functions  原生函数（本地函数）</a></li>
-        <li><a href="#function-declarations--函数声明"><small>10.3</small> Function Declarations  函数声明</a></li>
-        <li><a href="#function-objects--函数对象"><small>10.4</small> Function Objects  函数对象</a></li>
-        <li><a href="#return-statements--return语句"><small>10.5</small> Return Statements  Return语句</a></li>
-        <li><a href="#local-functions-and-closures--局部函数和闭包"><small>10.6</small> Local Functions and Closures  局部函数和闭包</a></li>
+        <li><a href="#函数调用"><small>10.1</small> 函数调用</a></li>
+        <li><a href="#原生函数（本地函数）"><small>10.2</small> 原生函数（本地函数）</a></li>
+        <li><a href="#函数声明"><small>10.3</small> 函数声明</a></li>
+        <li><a href="#函数对象"><small>10.4</small> 函数对象</a></li>
+        <li><a href="#return语句"><small>10.5</small> Return语句</a></li>
+        <li><a href="#局部函数和闭包"><small>10.6</small> 局部函数和闭包</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -69,12 +69,12 @@
         <h3><a href="#top">函数<small>10</small></a></h3>
         
         <ul>
-            <li><a href="#function-calls--函数调用"><small>10.1</small> Function Calls  函数调用</a></li>
-            <li><a href="#native-functions--原生函数（本地函数）"><small>10.2</small> Native Functions  原生函数（本地函数）</a></li>
-            <li><a href="#function-declarations--函数声明"><small>10.3</small> Function Declarations  函数声明</a></li>
-            <li><a href="#function-objects--函数对象"><small>10.4</small> Function Objects  函数对象</a></li>
-            <li><a href="#return-statements--return语句"><small>10.5</small> Return Statements  Return语句</a></li>
-            <li><a href="#local-functions-and-closures--局部函数和闭包"><small>10.6</small> Local Functions and Closures  局部函数和闭包</a></li>
+            <li><a href="#函数调用"><small>10.1</small> 函数调用</a></li>
+            <li><a href="#原生函数（本地函数）"><small>10.2</small> 原生函数（本地函数）</a></li>
+            <li><a href="#函数声明"><small>10.3</small> 函数声明</a></li>
+            <li><a href="#函数对象"><small>10.4</small> 函数对象</a></li>
+            <li><a href="#return语句"><small>10.5</small> Return语句</a></li>
+            <li><a href="#局部函数和闭包"><small>10.6</small> 局部函数和闭包</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -111,7 +111,7 @@ calls.
 这一章标志着很多艰苦工作的一个高潮。在前面的章节中，各自添加了一些有用的功能，但是每一章也都提供了一个拼图的碎片。我们整理这些碎片——表达式、语句、变量、控制流和词法作用域，再加上其它功能，并把他们组合起来，以支持真正的用户定义函数和函数调用。</p>
 <aside name="lambda"><img src="image/functions/lambda.png" alt="A lambda puzzle." />
 </aside>
-<h2><a href="#function-calls--函数调用" id="function-calls--函数调用"><small>10&#8202;.&#8202;1</small>Function Calls  函数调用</a></h2>
+<h2><a href="#函数调用" id="函数调用"><small>10&#8202;.&#8202;1</small>函数调用</a></h2>
 <p>You&rsquo;re certainly familiar with C-style function call syntax, but the grammar is
 more subtle than you may realize. Calls are typically to named functions like:
 你肯定熟悉C语言风格的函数调用语法，但其语法可能比你意识到的更微妙。调用通常是指向命名的函数，例如：</p>
@@ -265,7 +265,7 @@ after each expression. When we don&rsquo;t find a comma, then the argument list 
 be done and we consume the expected closing parenthesis. Finally, we wrap the
 callee and those arguments up into a call AST node.
 如果不是，我们就解析一个表达式，然后寻找逗号（表明后面还有一个参数）。只要我们在表达式后面发现逗号，就会继续解析表达式。当我们找不到逗号时，说明参数列表已经结束，我们继续消费预期的右括号。最终，我们将被调用者和这些参数封装成一个函数调用的AST节点。</p>
-<h3><a href="#maximum-argument-counts--最大参数数量" id="maximum-argument-counts--最大参数数量"><small>10&#8202;.&#8202;1&#8202;.&#8202;1</small>Maximum argument counts  最大参数数量</a></h3>
+<h3><a href="#最大参数数量" id="最大参数数量"><small>10&#8202;.&#8202;1&#8202;.&#8202;1</small>最大参数数量</a></h3>
 <p>Right now, the loop where we parse arguments has no bound. If you want to call a
 function and pass a million arguments to it, the parser would have no problem
 with it. Do we want to limit that?
@@ -301,7 +301,7 @@ is in the grammar anymore. But here, the parser is still in a perfectly valid
 state<span class="em">&mdash;</span>it just found too many arguments. So it reports the error and keeps on
 keepin&rsquo; on.
 请注意，如果发现参数过多，这里的代码会<em>报告</em>一个错误，但是不会<em>抛出</em>该错误。抛出错误是进入恐慌模式的方法，如果解析器处于混乱状态，不知道自己在语法中处于什么位置，那这就是我们想要的。但是在这里，解析器仍然处于完全有效的状态，只是发现了太多的参数。所以它会报告这个错误，并继续执行解析。</p>
-<h3><a href="#interpreting-function-calls--解释函数调用" id="interpreting-function-calls--解释函数调用"><small>10&#8202;.&#8202;1&#8202;.&#8202;2</small>Interpreting function calls  解释函数调用</a></h3>
+<h3><a href="#解释函数调用" id="解释函数调用"><small>10&#8202;.&#8202;1&#8202;.&#8202;2</small>解释函数调用</a></h3>
 <p>We don&rsquo;t have any functions we can call, so it seems weird to start implementing
 calls first, but we&rsquo;ll worry about that when we get there. First, our
 interpreter needs a new import.
@@ -375,7 +375,7 @@ create new file</div>
 also give it the list of evaluated argument values. The implementer&rsquo;s job is
 then to return the value that the call expression produces.
 我们会传入解释器，以防实现<code>call()</code>方法的类会需要它。我们也会提供已求值的参数值列表。接口实现者的任务就是返回调用表达式产生的值。</p>
-<h3><a href="#call-type-errors--调用类型错误" id="call-type-errors--调用类型错误"><small>10&#8202;.&#8202;1&#8202;.&#8202;3</small>Call type errors  调用类型错误</a></h3>
+<h3><a href="#调用类型错误" id="调用类型错误"><small>10&#8202;.&#8202;1&#8202;.&#8202;3</small>调用类型错误</a></h3>
 <p>Before we get to implementing LoxCallable, we need to make the visit method a
 little more robust. It currently ignores a couple of failure modes that we can&rsquo;t
 pretend won&rsquo;t occur. First, what happens if the callee isn&rsquo;t actually something
@@ -466,7 +466,7 @@ But, since we&rsquo;ll have multiple classes implementing LoxCallable, that woul
 up with redundant validation spread across a few classes. Hoisting it up into
 the visit method lets us do it in one place.
 我们可以在<code>call()</code>方法的具体实现中做元数检查。但是，由于我们会有多个实现LoxCallable的类，这将导致冗余的验证分散在多个类中。把它提升到访问方法中，这样我们可以在一个地方完成该功能。</p>
-<h2><a href="#native-functions--原生函数（本地函数）" id="native-functions--原生函数（本地函数）"><small>10&#8202;.&#8202;2</small>Native Functions  原生函数（本地函数）</a></h2>
+<h2><a href="#原生函数（本地函数）" id="原生函数（本地函数）"><small>10&#8202;.&#8202;2</small>原生函数（本地函数）</a></h2>
 <p>We can theoretically call functions, but we have no functions to call yet.
 Before we get to user-defined functions, now is a good time to introduce a vital
 but often overlooked facet of language implementations<span class="em">&mdash;</span><span
@@ -517,7 +517,7 @@ to every single capability the underlying platform supports. We won&rsquo;t defi
 FFI for jlox, but we will add one native function to give you an idea of what it
 looks like.
 许多语言还允许用户提供自己的本地函数。这样的机制称为<strong>外来函数接口(FFI)</strong>、<strong>本机扩展</strong>、<strong>本机接口</strong>或类似的东西。这些机制很好，因为它们使语言实现者无需提供对底层平台所支持的每一项功能的访问。我们不会为 jlox 定义一个 FFI，但我们会添加一个本地函数，让你知道它是什么样子。</p>
-<h3><a href="#telling-time" id="telling-time"><small>10&#8202;.&#8202;2&#8202;.&#8202;1</small>Telling time</a></h3>
+<h3><a href="#报时" id="报时"><small>10&#8202;.&#8202;2&#8202;.&#8202;1</small>报时</a></h3>
 <p>When we get to <a href="a-bytecode-virtual-machine.html">Part III</a> and start working on a much more efficient
 implementation of Lox, we&rsquo;re going to care deeply about performance. Performance
 work requires measurement, and that in turn means <strong>benchmarks</strong>. These are
@@ -609,7 +609,7 @@ that implements LoxCallable. But for the book, this one is really all we need.
 <p>Let&rsquo;s get ourselves out of the function-defining business and let our users
 take over<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 让我们从函数定义的事务中解脱出来，由用户来接管吧。</p>
-<h2><a href="#function-declarations--函数声明" id="function-declarations--函数声明"><small>10&#8202;.&#8202;3</small>Function Declarations  函数声明</a></h2>
+<h2><a href="#函数声明" id="函数声明"><small>10&#8202;.&#8202;3</small>函数声明</a></h2>
 <p>We finally get to add a new production to the <code>declaration</code> rule we introduced
 back when we added variables. Function declarations, like variables, bind a new
 <span name="name">name</span>. That means they are allowed only in places where
@@ -750,7 +750,7 @@ in <em>function</em>()</div>
 matched. Consuming it here lets us report a more precise error message if the
 <code>{</code> isn&rsquo;t found since we know it&rsquo;s in the context of a function declaration.
 请注意，在调用<code>block()</code>方法之前，我们已经消费了函数体开头的<code>{</code>。这是因为<code>block()</code>方法假定大括号标记已经匹配了。在这里消费该标记可以让我们在找不到<code>{</code>的情况下报告一个更精确的错误信息，因为我们知道当前是在一个函数声明的上下文中。</p>
-<h2><a href="#function-objects--函数对象" id="function-objects--函数对象"><small>10&#8202;.&#8202;4</small>Function Objects  函数对象</a></h2>
+<h2><a href="#函数对象" id="函数对象"><small>10&#8202;.&#8202;4</small>函数对象</a></h2>
 <p>We&rsquo;ve got some syntax parsed so usually we&rsquo;re ready to interpret, but first we
 need to think about how to represent a Lox function in Java. We need to keep
 track of the parameters so that we can bind them to argument values when the
@@ -900,7 +900,7 @@ add after <em>LoxFunction</em>()</div>
 
 <span class="k">print</span> <span class="i">add</span>; <span class="c">// &quot;&lt;fn add&gt;&quot;.</span>
 </pre></div>
-<h3><a href="#interpreting-function-declarations--解释函数声明" id="interpreting-function-declarations--解释函数声明"><small>10&#8202;.&#8202;4&#8202;.&#8202;1</small>Interpreting function declarations  解释函数声明</a></h3>
+<h3><a href="#解释函数声明" id="解释函数声明"><small>10&#8202;.&#8202;4&#8202;.&#8202;1</small>解释函数声明</a></h3>
 <p>We&rsquo;ll come back and refine LoxFunction soon, but that&rsquo;s enough to get started.
 Now we can visit a function declaration.
 我们很快就会回头来完善LoxFunction，但是现在已足够开始进行解释了。现在，我们可以访问函数声明节点了。</p>
@@ -937,7 +937,7 @@ try:
 <p>I don&rsquo;t know about you, but that looks like an honest-to-God programming
 language to me.
 我不知道你怎么想的，但对我来说，这看起来像是一种虔诚的编程语言。</p>
-<h2><a href="#return-statements--return语句" id="return-statements--return语句"><small>10&#8202;.&#8202;5</small>Return Statements  Return语句</a></h2>
+<h2><a href="#return语句" id="return语句"><small>10&#8202;.&#8202;5</small>Return语句</a></h2>
 <p>We can get data into functions by passing parameters, but we&rsquo;ve got no way to
 get results back <span name="hotel"><em>out</em></span>. If Lox were an
 expression-oriented language like Ruby or Scheme, the body would be an
@@ -1032,7 +1032,7 @@ it&rsquo;s hard to tell if a return value is <em>present</em>. Instead, we check
 <em>absent</em>. Since a semicolon can&rsquo;t begin an expression, if the next token is
 that, we know there must not be a value.
 在捕获先前消耗的<code>return</code>关键字之后，我们会寻找一个值表达式。因为很多不同的标记都可以引出一个表达式，所以很难判断是否存在返回值。相反，我们检查它是否不存在。因为分号不能作为表达式的开始，如果下一个标记是分号，我们就知道一定没有返回值。</p>
-<h3><a href="#returning-from-calls--从函数调用中返回" id="returning-from-calls--从函数调用中返回"><small>10&#8202;.&#8202;5&#8202;.&#8202;1</small>Returning from calls  从函数调用中返回</a></h3>
+<h3><a href="#从函数调用中返回" id="从函数调用中返回"><small>10&#8202;.&#8202;5&#8202;.&#8202;1</small>从函数调用中返回</a></h3>
 <p>Interpreting a <code>return</code> statement is tricky. You can return from anywhere within
 the body of a function, even deeply nested inside other statements. When the
 return is executed, the interpreter needs to jump all the way out of whatever
@@ -1162,7 +1162,7 @@ a good job of stress testing how fast our interpreter implements function calls.
 <p>As you can see, the answer is &ldquo;not very fast&rdquo;. That&rsquo;s OK. Our C interpreter will
 be faster.</p>
 </aside>
-<h2><a href="#local-functions-and-closures--局部函数和闭包" id="local-functions-and-closures--局部函数和闭包"><small>10&#8202;.&#8202;6</small>Local Functions and Closures  局部函数和闭包</a></h2>
+<h2><a href="#局部函数和闭包" id="局部函数和闭包"><small>10&#8202;.&#8202;6</small>局部函数和闭包</a></h2>
 <p>Our functions are pretty full featured, but there is one hole to patch. In fact,
 it&rsquo;s a big enough gap that we&rsquo;ll spend most of the <a href="resolving-and-binding.html">next chapter</a> sealing it
 up, but we can get started here.

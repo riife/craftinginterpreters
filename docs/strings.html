@@ -37,15 +37,14 @@
         <h3><a href="#top">字符串<small>19</small></a></h3>
     
     <ul>
-        <li><a href="#values-and-objects--值与对象"><small>19.1</small> Values and Objects  值与对象</a></li>
-        <li><a href="#struct-inheritance--结构体继承"><small>19.2</small> Struct Inheritance  结构体继承</a></li>
-        <li><a href="#strings"><small>19.3</small> Strings</a></li>
-        <li><a href="#operations-on-strings--字符串操作"><small>19.4</small> Operations on Strings  字符串操作</a></li>
-        <li><a href="#freeing-objects--释放对象"><small>19.5</small> Freeing Objects  释放对象</a></li>
-        <li><a href="#习题"><small>19.6</small> 习题</a></li>
+        <li><a href="#值与对象"><small>19.1</small> 值与对象</a></li>
+        <li><a href="#结构体继承"><small>19.2</small> 结构体继承</a></li>
+        <li><a href="#字符串"><small>19.3</small> 字符串</a></li>
+        <li><a href="#字符串操作"><small>19.4</small> 字符串操作</a></li>
+        <li><a href="#释放对象"><small>19.5</small> 释放对象</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>String Encoding 字符串编码</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>字符串编码</a></li>
     </ul>
     
     
@@ -70,15 +69,14 @@
         <h3><a href="#top">字符串<small>19</small></a></h3>
         
         <ul>
-            <li><a href="#values-and-objects--值与对象"><small>19.1</small> Values and Objects  值与对象</a></li>
-            <li><a href="#struct-inheritance--结构体继承"><small>19.2</small> Struct Inheritance  结构体继承</a></li>
-            <li><a href="#strings"><small>19.3</small> Strings</a></li>
-            <li><a href="#operations-on-strings--字符串操作"><small>19.4</small> Operations on Strings  字符串操作</a></li>
-            <li><a href="#freeing-objects--释放对象"><small>19.5</small> Freeing Objects  释放对象</a></li>
-            <li><a href="#习题"><small>19.6</small> 习题</a></li>
+            <li><a href="#值与对象"><small>19.1</small> 值与对象</a></li>
+            <li><a href="#结构体继承"><small>19.2</small> 结构体继承</a></li>
+            <li><a href="#字符串"><small>19.3</small> 字符串</a></li>
+            <li><a href="#字符串操作"><small>19.4</small> 字符串操作</a></li>
+            <li><a href="#释放对象"><small>19.5</small> 释放对象</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>String Encoding 字符串编码</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>字符串编码</a></li>
         </ul>
         
         
@@ -125,7 +123,7 @@ exactly what dynamic allocation on the heap is designed for. We can allocate as
 many bytes as we need. We get back a pointer that we&rsquo;ll use to keep track of the
 value as it flows through the VM.
 我们需要一种方法来支持那些大小变化（有时变化很大）的值。这正是堆上动态分配的设计目的。我们可以根据需要分配任意多的字节。我们会得到一个指针，当值在虚拟机中流动时，我们会用该指针来跟踪它。</p>
-<h2><a href="#values-and-objects--值与对象" id="values-and-objects--值与对象"><small>19&#8202;.&#8202;1</small>Values and Objects  值与对象</a></h2>
+<h2><a href="#值与对象" id="值与对象"><small>19&#8202;.&#8202;1</small>值与对象</a></h2>
 <p>Using the heap for larger, variable-sized values and the stack for smaller,
 atomic ones leads to a two-level representation. Every Lox value that you can
 store in a variable or return from an expression will be a Value. For small,
@@ -200,7 +198,7 @@ typedef struct {
 
 <p>This takes a bare Obj pointer and wraps it in a full Value.
 该方法会接受一个Obj指针，并将其包装成一个完整的Value。</p>
-<h2><a href="#struct-inheritance--结构体继承" id="struct-inheritance--结构体继承"><small>19&#8202;.&#8202;2</small>Struct Inheritance  结构体继承</a></h2>
+<h2><a href="#结构体继承" id="结构体继承"><small>19&#8202;.&#8202;2</small>结构体继承</a></h2>
 <p>Every heap-allocated value is an Obj, but <span name="objs">Objs</span> are
 not all the same. For strings, we need the array of characters. When we get to
 instances, they will need their data fields. A function object will need its
@@ -421,7 +419,7 @@ ObjString on the heap. The first one returns the <code>ObjString*</code> pointer
 second one steps through that to return the character array itself, since that&rsquo;s
 often what we&rsquo;ll end up needing.
 这两个宏会接受一个Value，其中应当包含一个指向堆上的有效ObjString指针。第一个函数返回 <code>ObjString*</code> 指针。第二个函数更进一步返回了字符数组本身，因为这往往是我们最终需要的。</p>
-<h2><a href="#strings" id="strings"><small>19&#8202;.&#8202;3</small>Strings</a></h2>
+<h2><a href="#字符串" id="字符串"><small>19&#8202;.&#8202;3</small>字符串</a></h2>
 <p>OK, our VM can now represent string values. It&rsquo;s time to add strings to the
 language itself. As usual, we begin in the front end. The lexer already
 tokenizes string literals, so it&rsquo;s the parser&rsquo;s turn.
@@ -605,7 +603,7 @@ literals.
 is a string instrument, the middle child between a violin and a cello. Yes, I
 did spend two hours drawing a viola just to mention that.</p>
 </aside>
-<h2><a href="#operations-on-strings--字符串操作" id="operations-on-strings--字符串操作"><small>19&#8202;.&#8202;4</small>Operations on Strings  字符串操作</a></h2>
+<h2><a href="#字符串操作" id="字符串操作"><small>19&#8202;.&#8202;4</small>字符串操作</a></h2>
 <p>Our fancy strings are there, but they don&rsquo;t do much of anything yet. A good
 first step is to make the existing print code not barf on the new value type.
 我们的花哨的字符串已经就位了，但是它们还没有发挥什么作用。一个好的第一步是使现有的打印代码不要排斥新的值类型。</p>
@@ -703,7 +701,7 @@ need a couple of includes. Here:
 </pre></div>
 <div class="source-file-narrow"><em>value.c</em></div>
 
-<h3><a href="#concatenation--连接" id="concatenation--连接"><small>19&#8202;.&#8202;4&#8202;.&#8202;1</small>Concatenation  连接</a></h3>
+<h3><a href="#连接" id="连接"><small>19&#8202;.&#8202;4&#8202;.&#8202;1</small>连接</a></h3>
 <p>Full-grown languages provide lots of operations for working with strings<span class="em">&mdash;</span>access to individual characters, the string&rsquo;s length, changing case, splitting,
 joining, searching, etc. When you implement your language, you&rsquo;ll likely want
 all that. But for this book, we keep things <em>very</em> minimal.
@@ -827,7 +825,7 @@ ownership of the string you give it.
 </pre></div>
 <div class="source-file-narrow"><em>vm.c</em></div>
 
-<h2><a href="#freeing-objects--释放对象" id="freeing-objects--释放对象"><small>19&#8202;.&#8202;5</small>Freeing Objects  释放对象</a></h2>
+<h2><a href="#释放对象" id="释放对象"><small>19&#8202;.&#8202;5</small>释放对象</a></h2>
 <p>Behold this innocuous-seeming expression:
 看看这个看似无害的表达式：</p>
 <div class="codehilite"><pre><span class="s">&quot;st&quot;</span> + <span class="s">&quot;ri&quot;</span> + <span class="s">&quot;ng&quot;</span>
@@ -1082,20 +1080,6 @@ We won’t address that until we’ve added <a href="http://www.craftinginterpre
 : 下面是每条指令执行后的堆栈：
 : 我见过很多人在实现看语言的大部分内容之后，才试图开始实现GC。对于在开发语言时通常会运行的那种玩具程序，实际上不会在程序结束之前耗尽内存，所以在需要GC之前，你可以开发出很多的特性。<BR>但是，这低估了以后添加垃圾收集器的难度。收集器必须确保它能够找到每一点仍在使用的内存，这样它就不会收集活跃数据。一个语言的实现可以在数百个地方存储对某个对象的引用。如果你不能找到所有这些地方，你就会遇到噩梦般的漏洞。<BR>我曾见过一些语言实现因为后来的GC太困难而夭折。如果你的语言需要GC，请尽快实现它。它是涉及整个代码库的横切关注点。
 : 使用<code>reallocate()</code>来释放内存似乎毫无意义。为什么不直接调用<code>free()</code>呢？稍后，这将帮助虚拟机跟踪仍在使用的内存数量。如果所有的分配和释放都通过<code>reallocate()</code>进行，那么就很容易对已分配的内存字节数进行记录。</p>
-<h2><a href="#习题" id="习题"><small>19&#8202;.&#8202;6</small>习题</a></h2>
-<ol>
-<li>
-<blockquote>
-<p>Each string requires two separate dynamic allocations—one for the ObjString and a second for the character array. Accessing the characters from a value requires two pointer indirections, which can be bad for performance. A more efficient solution relies on a technique called <strong><a href="https://en.wikipedia.org/wiki/Flexible_array_member">flexible array members</a></strong>. Use that to store the ObjString and its character array in a single contiguous allocation.
-每个字符串都需要两次单独的动态分配——一个是ObjString，另一个是字符数组。从一个值中访问字符需要两个指针间接访问，这对性能是不利的。一个更有效的解决方案是依靠一种名为<a href="https://en.wikipedia.org/wiki/Flexible_array_member"><strong>灵活数组成员</strong></a>的技术。用该方法将ObjString和它的字符数据存储在一个连续分配的内存中。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>When we create the ObjString for each string literal, we copy the characters onto the heap. That way, when the string is later freed, we know it is safe to free the characters too.</p>
-</blockquote>
-</li>
-</ol>
 <p>We won&rsquo;t address that until we&rsquo;ve added <a href="garbage-collection.html">a real garbage collector</a>, but this
 is a big step. We now have the infrastructure to support a variety of different
 kinds of dynamically allocated objects. And we&rsquo;ve used that to add strings to
@@ -1111,35 +1095,31 @@ ObjString and a second for the character array. Accessing the characters
 from a value requires two pointer indirections, which can be bad for
 performance. A more efficient solution relies on a technique called
 <strong><a href="https://en.wikipedia.org/wiki/Flexible_array_member">flexible array members</a></strong>. Use that to store the ObjString and its
-character array in a single contiguous allocation.</p>
+character array in a single contiguous allocation.
+每个字符串都需要两次单独的动态分配——一个是ObjString，另一个是字符数组。从一个值中访问字符需要两个指针间接访问，这对性能是不利的。一个更有效的解决方案是依靠一种名为<a href="https://en.wikipedia.org/wiki/Flexible_array_member"><strong>灵活数组成员</strong></a>的技术。用该方法将ObjString和它的字符数据存储在一个连续分配的内存中。</p>
 </li>
 <li>
 <p>When we create the ObjString for each string literal, we copy the characters
 onto the heap. That way, when the string is later freed, we know it is safe
-to free the characters too.</p>
+to free the characters too.
+当我们为每个字符串字面量创建ObjString时，会将字符复制到堆中。这样，当字符串后来被释放时，我们知道释放这些字符也是安全的。</p>
 <p>This is a simpler approach but wastes some memory, which might be a problem
 on very constrained devices. Instead, we could keep track of which
 ObjStrings own their character array and which are &ldquo;constant strings&rdquo; that
 just point back to the original source string or some other non-freeable
 location. Add support for this.
-当我们为每个字符串字面量创建ObjString时，会将字符复制到堆中。这样，当字符串后来被释放时，我们知道释放这些字符也是安全的。
 这是一个简单但是会浪费一下内存的方法，这在非常受限的设备上可能是一个问题。相反，我们可以追踪哪些ObjString拥有自己的字符数组，哪些是“常量字符串”，只是指向原始的源字符串或其它不可释放的位置。添加对此的支持。</p>
-</li>
-<li>
-<blockquote>
-<p>If Lox was your language, what would you have it do when a user tries to use <code>+</code> with one string operand and the other some other type? Justify your choice. What do other languages do?
-如果Lox是你的语言，当用户试图用一个字符串操作数使用<code>+</code>，而另一个操作数是其它类型时，你会让它做什么？证明你的选择是正确的，其它的语言是怎么做的？</p>
-</blockquote>
 </li>
 <li>
 <p>If Lox was your language, what would you have it do when a user tries to use
 <code>+</code> with one string operand and the other some other type? Justify your
-choice. What do other languages do?</p>
+choice. What do other languages do?
+如果Lox是你的语言，当用户试图用一个字符串操作数使用<code>+</code>，而另一个操作数是其它类型时，你会让它做什么？证明你的选择是正确的，其它的语言是怎么做的？</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: String Encoding 字符串编码</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 字符串编码</a></h2>
 <p>In this book, I try not to shy away from the gnarly problems you&rsquo;ll run into in
 a real language implementation. We might not always use the most <em>sophisticated</em>
 solution<span class="em">&mdash;</span>it&rsquo;s an intro book after all<span class="em">&mdash;</span>but I don&rsquo;t think it&rsquo;s honest to

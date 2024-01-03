@@ -37,13 +37,13 @@
         <h3><a href="#top">求值表达式<small>7</small></a></h3>
     
     <ul>
-        <li><a href="#representing-values--值描述"><small>7.1</small> Representing Values  值描述</a></li>
-        <li><a href="#evaluating-expressions--表达式求值"><small>7.2</small> Evaluating Expressions  表达式求值</a></li>
-        <li><a href="#runtime-errors--运行时错误"><small>7.3</small> Runtime Errors  运行时错误</a></li>
-        <li><a href="#hooking-up-the-interpreter--连接解释器"><small>7.4</small> Hooking Up the Interpreter  连接解释器</a></li>
+        <li><a href="#值描述"><small>7.1</small> 值描述</a></li>
+        <li><a href="#表达式求值"><small>7.2</small> 表达式求值</a></li>
+        <li><a href="#运行时错误"><small>7.3</small> 运行时错误</a></li>
+        <li><a href="#连接解释器"><small>7.4</small> 连接解释器</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Static and Dynamic Typing 静态类型和动态类型</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>静态类型和动态类型</a></li>
     </ul>
     
     
@@ -68,13 +68,13 @@
         <h3><a href="#top">求值表达式<small>7</small></a></h3>
         
         <ul>
-            <li><a href="#representing-values--值描述"><small>7.1</small> Representing Values  值描述</a></li>
-            <li><a href="#evaluating-expressions--表达式求值"><small>7.2</small> Evaluating Expressions  表达式求值</a></li>
-            <li><a href="#runtime-errors--运行时错误"><small>7.3</small> Runtime Errors  运行时错误</a></li>
-            <li><a href="#hooking-up-the-interpreter--连接解释器"><small>7.4</small> Hooking Up the Interpreter  连接解释器</a></li>
+            <li><a href="#值描述"><small>7.1</small> 值描述</a></li>
+            <li><a href="#表达式求值"><small>7.2</small> 表达式求值</a></li>
+            <li><a href="#运行时错误"><small>7.3</small> 运行时错误</a></li>
+            <li><a href="#连接解释器"><small>7.4</small> 连接解释器</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Static and Dynamic Typing 静态类型和动态类型</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>静态类型和动态类型</a></li>
         </ul>
         
         
@@ -141,7 +141,7 @@ questions:
 </ol>
 <p>Taking them on one at a time<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 让我们来逐个击破。</p>
-<h2><a href="#representing-values--值描述" id="representing-values--值描述"><small>7&#8202;.&#8202;1</small>Representing Values  值描述</a></h2>
+<h2><a href="#值描述" id="值描述"><small>7&#8202;.&#8202;1</small>值描述</a></h2>
 <p>In Lox, <span name="value">values</span> are created by literals, computed by
 expressions, and stored in variables. The user sees these as <em>Lox</em> objects, but
 they are implemented in the underlying language our interpreter is written in.
@@ -220,7 +220,7 @@ that too. A handy object representation and a really nice garbage collector are
 the main reasons we&rsquo;re writing our first interpreter in Java.
 我们需要对值做的另一件事是管理它们的内存，Java也能做到这一点。方便的对象表示和非常好的垃圾收集器是我们用Java编写第一个解释器的主要原因。</p>
 </aside>
-<h2><a href="#evaluating-expressions--表达式求值" id="evaluating-expressions--表达式求值"><small>7&#8202;.&#8202;2</small>Evaluating Expressions  表达式求值</a></h2>
+<h2><a href="#表达式求值" id="表达式求值"><small>7&#8202;.&#8202;2</small>表达式求值</a></h2>
 <p>Next, we need blobs of code to implement the evaluation logic for each kind of
 expression we can parse. We could stuff that code into the syntax tree classes
 in something like an <code>interpret()</code> method. In effect, we could tell each syntax
@@ -249,7 +249,7 @@ code. To satisfy the Visitor interface, we need to define visit methods for each
 of the four expression tree classes our parser produces. We&rsquo;ll start with the
 simplest<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 这个类声明它是一个访问者。访问方法的返回类型将是Object，即我们在Java代码中用来引用Lox值的根类。为了实现Visitor接口，我们需要为解析器生成的四个表达式树类中分别定义访问方法。我们从最简单的开始…</p>
-<h3><a href="#evaluating-literals--字面量求值" id="evaluating-literals--字面量求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;1</small>Evaluating literals  字面量求值</a></h3>
+<h3><a href="#字面量求值" id="字面量求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;1</small>字面量求值</a></h3>
 <p>The leaves of an expression tree<span class="em">&mdash;</span>the atomic bits of syntax that all other
 expressions are composed of<span class="em">&mdash;</span>are <span name="leaf">literals</span>. Literals
 are almost values already, but the distinction is important. A literal is a <em>bit
@@ -280,7 +280,7 @@ in class <em>Interpreter</em></div>
 the token. The parser took that value and stuck it in the literal tree node,
 so to evaluate a literal, we simply pull it back out.
 我们早在扫描过程中就即时生成了运行时的值，并把它放进了语法标记中。解析器获取该值并将其插入字面量语法树节点中，所以要对字面量求值，我们只需把它存的值取出来。</p>
-<h3><a href="#evaluating-parentheses--括号求值" id="evaluating-parentheses--括号求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;2</small>Evaluating parentheses  括号求值</a></h3>
+<h3><a href="#括号求值" id="括号求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;2</small>括号求值</a></h3>
 <p>The next simplest node to evaluate is grouping<span class="em">&mdash;</span>the node you get as a result
 of using explicit parentheses in an expression.
 下一个要求值的节点是分组——在表达式中显式使用括号时产生的语法树节点。</p>
@@ -315,7 +315,7 @@ in class <em>Interpreter</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in class <em>Interpreter</em></div>
 
-<h3><a href="#evaluating-unary-expressions--一元表达式求值" id="evaluating-unary-expressions--一元表达式求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;3</small>Evaluating unary expressions  一元表达式求值</a></h3>
+<h3><a href="#一元表达式求值" id="一元表达式求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;3</small>一元表达式求值</a></h3>
 <p>Like grouping, unary expressions have a single subexpression that we must
 evaluate first. The difference is that the unary expression itself does a little
 work afterwards.
@@ -371,7 +371,7 @@ in <em>visitUnaryExpr</em>()</div>
 make a little side trip to one of the great questions of Western philosophy:
 <em>What is truth?</em>
 实现很简单，但是这里的“真实”指的是什么呢？我们需要简单地讨论一下西方哲学中的一个伟大问题：什么是真理？</p>
-<h3><a href="#truthiness-and-falsiness--真与假" id="truthiness-and-falsiness--真与假"><small>7&#8202;.&#8202;2&#8202;.&#8202;4</small>Truthiness and falsiness  真与假</a></h3>
+<h3><a href="#真与假" id="真与假"><small>7&#8202;.&#8202;2&#8202;.&#8202;4</small>真与假</a></h3>
 <p>OK, maybe we&rsquo;re not going to really get into the universal question, but at
 least inside the world of Lox, we need to decide what happens when you use
 something other than <code>true</code> or <code>false</code> in a logic operation like <code>!</code> or any
@@ -411,7 +411,7 @@ add after <em>visitUnaryExpr</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, add after <em>visitUnaryExpr</em>()</div>
 
-<h3><a href="#evaluating-binary-operators--二元操作符求值" id="evaluating-binary-operators--二元操作符求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;5</small>Evaluating binary operators  二元操作符求值</a></h3>
+<h3><a href="#二元操作符求值" id="二元操作符求值"><small>7&#8202;.&#8202;2&#8202;.&#8202;5</small>二元操作符求值</a></h3>
 <p>On to the last expression tree class, binary operators. There&rsquo;s a handful of
 them, and we&rsquo;ll start with the arithmetic ones.
 来到最后的表达式树类——二元操作符，其中包含很多运算符，我们先从数学运算开始。</p>
@@ -569,7 +569,7 @@ expression. But what about an <em>invalid</em> one? In particular, what happens 
 subexpression evaluates to an object of the wrong type for the operation being
 performed?
 就这样了! 这就是我们要正确解释一个有效的Lox表达式所需要的全部代码。但是<em>无效的</em>表达式呢？尤其是，当一个子表达式的计算结果类型与待执行的操作不符时会发生什么？</p>
-<h2><a href="#runtime-errors--运行时错误" id="runtime-errors--运行时错误"><small>7&#8202;.&#8202;3</small>Runtime Errors  运行时错误</a></h2>
+<h2><a href="#运行时错误" id="运行时错误"><small>7&#8202;.&#8202;3</small>运行时错误</a></h2>
 <p>I was cavalier about jamming casts in whenever a subexpression produces an
 Object and the operator requires it to be a number or a string. Those casts can
 fail. Even though the user&rsquo;s code is erroneous, if we want to make a <span
@@ -627,7 +627,7 @@ kill the <em>interpreter</em>. If a user is running the REPL and has a typo in a
 of code, they should still be able to keep the session going and enter more code
 after that.
 尽管这种处理方式很诱人，我们或许应该做一些不那么灾难性的事情。虽然运行时错误需要停止对表达式的计算，但它不应该杀死解释器。如果用户正在运行REPL，并且在一行代码中出现了错误，他们应该仍然能够保持会话，并在之后继续输入更多的代码。</p>
-<h3><a href="#detecting-runtime-errors--检测运行时错误" id="detecting-runtime-errors--检测运行时错误"><small>7&#8202;.&#8202;3&#8202;.&#8202;1</small>Detecting runtime errors  检测运行时错误</a></h3>
+<h3><a href="#检测运行时错误" id="检测运行时错误"><small>7&#8202;.&#8202;3&#8202;.&#8202;1</small>检测运行时错误</a></h3>
 <p>Our tree-walk interpreter evaluates nested expressions using recursive method
 calls, and we need to unwind out of all of those. Throwing an exception in Java
 is a fine way to accomplish that. However, instead of using Java&rsquo;s own cast
@@ -803,7 +803,7 @@ replace 1 line</div>
 errors are getting thrown. The next step is to write the code that catches them.
 For that, we need to wire up the Interpreter class into the main Lox class that
 drives it.</p>
-<h2><a href="#hooking-up-the-interpreter--连接解释器" id="hooking-up-the-interpreter--连接解释器"><small>7&#8202;.&#8202;4</small>Hooking Up the Interpreter  连接解释器</a></h2>
+<h2><a href="#连接解释器" id="连接解释器"><small>7&#8202;.&#8202;4</small>连接解释器</a></h2>
 <p>The visit methods are sort of the guts of the Interpreter class, where the real
 work happens. We need to wrap a skin around them to interface with the rest of
 the program. The Interpreter&rsquo;s public API is simply one method.
@@ -868,7 +868,7 @@ the implementations aren&rsquo;t consistent, their program will break when they 
 on different interpreters.
 用户会有意或无意地依赖于这些细节，如果实现不一致，他们的程序在不同的解释器上运行时将会中断。</p>
 </aside>
-<h3><a href="#reporting-runtime-errors--报告运行时错误" id="reporting-runtime-errors--报告运行时错误"><small>7&#8202;.&#8202;4&#8202;.&#8202;1</small>Reporting runtime errors  报告运行时错误</a></h3>
+<h3><a href="#报告运行时错误" id="报告运行时错误"><small>7&#8202;.&#8202;4&#8202;.&#8202;1</small>报告运行时错误</a></h3>
 <p>If a runtime error is thrown while evaluating the expression, <code>interpret()</code>
 catches it. This lets us report the error to the user and then gracefully
 continue. All of our existing error reporting code lives in the Lox class, so we
@@ -924,7 +924,7 @@ After they are reported, we simply loop around and let them input new code and
 keep going.
 如果用户正在运行REPL，则我们不必跟踪运行时错误。在错误被报告之后，我们只需要循环，让用户输入新的代码，然后继续执行。</p>
 </aside>
-<h3><a href="#running-the-interpreter--运行解释器" id="running-the-interpreter--运行解释器"><small>7&#8202;.&#8202;4&#8202;.&#8202;2</small>Running the interpreter  运行解释器</a></h3>
+<h3><a href="#运行解释器" id="运行解释器"><small>7&#8202;.&#8202;4&#8202;.&#8202;2</small>运行解释器</a></h3>
 <p>Now that we have an interpreter, the Lox class can start using it.
 现在我们有了解释器，Lox类可以开始使用它了。</p>
 <div class="codehilite"><pre class="insert-before">public class Lox {
@@ -996,7 +996,7 @@ runtime error for this case.</p>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Static and Dynamic Typing 静态类型和动态类型</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 静态类型和动态类型</a></h2>
 <p>Some languages, like Java, are statically typed which means type errors are
 detected and reported at compile time before any code is run. Others, like Lox,
 are dynamically typed and defer checking for type errors until runtime right

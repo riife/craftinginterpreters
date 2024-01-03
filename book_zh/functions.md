@@ -20,7 +20,7 @@ calls.
 
 </aside>
 
-## Function Calls  函数调用
+## 函数调用
 
 You're certainly familiar with C-style function call syntax, but the grammar is
 more subtle than you may realize. Calls are typically to named functions like:
@@ -168,7 +168,7 @@ be done and we consume the expected closing parenthesis. Finally, we wrap the
 callee and those arguments up into a call AST node.
 如果不是，我们就解析一个表达式，然后寻找逗号（表明后面还有一个参数）。只要我们在表达式后面发现逗号，就会继续解析表达式。当我们找不到逗号时，说明参数列表已经结束，我们继续消费预期的右括号。最终，我们将被调用者和这些参数封装成一个函数调用的AST节点。
 
-### Maximum argument counts  最大参数数量
+### 最大参数数量
 
 Right now, the loop where we parse arguments has no bound. If you want to call a
 function and pass a million arguments to it, the parser would have no problem
@@ -206,7 +206,7 @@ state -- it just found too many arguments. So it reports the error and keeps on
 keepin' on.
 请注意，如果发现参数过多，这里的代码会*报告*一个错误，但是不会*抛出*该错误。抛出错误是进入恐慌模式的方法，如果解析器处于混乱状态，不知道自己在语法中处于什么位置，那这就是我们想要的。但是在这里，解析器仍然处于完全有效的状态，只是发现了太多的参数。所以它会报告这个错误，并继续执行解析。
 
-### Interpreting function calls  解释函数调用
+### 解释函数调用
 
 We don't have any functions we can call, so it seems weird to start implementing
 calls first, but we'll worry about that when we get there. First, our
@@ -264,7 +264,7 @@ also give it the list of evaluated argument values. The implementer's job is
 then to return the value that the call expression produces.
 我们会传入解释器，以防实现`call()`方法的类会需要它。我们也会提供已求值的参数值列表。接口实现者的任务就是返回调用表达式产生的值。
 
-### Call type errors  调用类型错误
+### 调用类型错误
 
 Before we get to implementing LoxCallable, we need to make the visit method a
 little more robust. It currently ignores a couple of failure modes that we can't
@@ -342,7 +342,7 @@ up with redundant validation spread across a few classes. Hoisting it up into
 the visit method lets us do it in one place.
 我们可以在`call()`方法的具体实现中做元数检查。但是，由于我们会有多个实现LoxCallable的类，这将导致冗余的验证分散在多个类中。把它提升到访问方法中，这样我们可以在一个地方完成该功能。
 
-## Native Functions  原生函数（本地函数）
+## 原生函数（本地函数）
 
 We can theoretically call functions, but we have no functions to call yet.
 Before we get to user-defined functions, now is a good time to introduce a vital
@@ -409,7 +409,7 @@ FFI for jlox, but we will add one native function to give you an idea of what it
 looks like.
 许多语言还允许用户提供自己的本地函数。这样的机制称为**外来函数接口(FFI)**、**本机扩展**、**本机接口**或类似的东西。这些机制很好，因为它们使语言实现者无需提供对底层平台所支持的每一项功能的访问。我们不会为 jlox 定义一个 FFI，但我们会添加一个本地函数，让你知道它是什么样子。
 
-### Telling time
+### 报时
 
 When we get to [Part III][] and start working on a much more efficient
 implementation of Lox, we're going to care deeply about performance. Performance
@@ -482,7 +482,7 @@ Let's get ourselves out of the function-defining business and let our users
 take over...
 让我们从函数定义的事务中解脱出来，由用户来接管吧。
 
-## Function Declarations  函数声明
+## 函数声明
 
 We finally get to add a new production to the `declaration` rule we introduced
 back when we added variables. Function declarations, like variables, bind a new
@@ -611,7 +611,7 @@ matched. Consuming it here lets us report a more precise error message if the
 `{` isn't found since we know it's in the context of a function declaration.
 请注意，在调用`block()`方法之前，我们已经消费了函数体开头的`{`。这是因为`block()`方法假定大括号标记已经匹配了。在这里消费该标记可以让我们在找不到`{`的情况下报告一个更精确的错误信息，因为我们知道当前是在一个函数声明的上下文中。
 
-## Function Objects  函数对象
+## 函数对象
 
 We've got some syntax parsed so usually we're ready to interpret, but first we
 need to think about how to represent a Lox function in Java. We need to keep
@@ -755,7 +755,7 @@ fun add(a, b) {
 print add; // "<fn add>".
 ```
 
-### Interpreting function declarations  解释函数声明
+### 解释函数声明
 
 We'll come back and refine LoxFunction soon, but that's enough to get started.
 Now we can visit a function declaration.
@@ -791,7 +791,7 @@ I don't know about you, but that looks like an honest-to-God programming
 language to me.
 我不知道你怎么想的，但对我来说，这看起来像是一种虔诚的编程语言。
 
-## Return Statements  Return语句
+## Return语句
 
 We can get data into functions by passing parameters, but we've got no way to
 get results back <span name="hotel">*out*</span>. If Lox were an
@@ -884,7 +884,7 @@ it's hard to tell if a return value is *present*. Instead, we check if it's
 that, we know there must not be a value.
 在捕获先前消耗的`return`关键字之后，我们会寻找一个值表达式。因为很多不同的标记都可以引出一个表达式，所以很难判断是否存在返回值。相反，我们检查它是否不存在。因为分号不能作为表达式的开始，如果下一个标记是分号，我们就知道一定没有返回值。
 
-### Returning from calls  从函数调用中返回
+### 从函数调用中返回
 
 Interpreting a `return` statement is tricky. You can return from anywhere within
 the body of a function, even deeply nested inside other statements. When the
@@ -1004,7 +1004,7 @@ be faster.
 
 </aside>
 
-## Local Functions and Closures  局部函数和闭包
+## 局部函数和闭包
 
 Our functions are pretty full featured, but there is one hole to patch. In fact,
 it's a big enough gap that we'll spend most of the [next chapter][] sealing it

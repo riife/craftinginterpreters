@@ -37,10 +37,10 @@
         <h3><a href="#top">继承<small>13</small></a></h3>
     
     <ul>
-        <li><a href="#superclasses-and-subclasses--超类和子类"><small>13.1</small> Superclasses and Subclasses  超类和子类</a></li>
-        <li><a href="#inheriting-methods--继承方法"><small>13.2</small> Inheriting Methods  继承方法</a></li>
-        <li><a href="#calling-superclass-methods--调用超类方法"><small>13.3</small> Calling Superclass Methods  调用超类方法</a></li>
-        <li><a href="#conclusion--总结"><small>13.4</small> Conclusion  总结</a></li>
+        <li><a href="#超类和子类"><small>13.1</small> 超类和子类</a></li>
+        <li><a href="#继承方法"><small>13.2</small> 继承方法</a></li>
+        <li><a href="#调用超类方法"><small>13.3</small> 调用超类方法</a></li>
+        <li><a href="#总结"><small>13.4</small> 总结</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -67,10 +67,10 @@
         <h3><a href="#top">继承<small>13</small></a></h3>
         
         <ul>
-            <li><a href="#superclasses-and-subclasses--超类和子类"><small>13.1</small> Superclasses and Subclasses  超类和子类</a></li>
-            <li><a href="#inheriting-methods--继承方法"><small>13.2</small> Inheriting Methods  继承方法</a></li>
-            <li><a href="#calling-superclass-methods--调用超类方法"><small>13.3</small> Calling Superclass Methods  调用超类方法</a></li>
-            <li><a href="#conclusion--总结"><small>13.4</small> Conclusion  总结</a></li>
+            <li><a href="#超类和子类"><small>13.1</small> 超类和子类</a></li>
+            <li><a href="#继承方法"><small>13.2</small> 继承方法</a></li>
+            <li><a href="#调用超类方法"><small>13.3</small> 调用超类方法</a></li>
+            <li><a href="#总结"><small>13.4</small> 总结</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -116,7 +116,7 @@ parts.
 <p>You could say all those other languages <em>inherited</em> it from Simula. Hey-ooo!
 I&rsquo;ll, uh, see myself out.</p>
 </aside>
-<h2><a href="#superclasses-and-subclasses--超类和子类" id="superclasses-and-subclasses--超类和子类"><small>13&#8202;.&#8202;1</small>Superclasses and Subclasses  超类和子类</a></h2>
+<h2><a href="#超类和子类" id="超类和子类"><small>13&#8202;.&#8202;1</small>超类和子类</a></h2>
 <p>Given that the concept is &ldquo;inheritance&rdquo;, you would hope they would pick a
 consistent metaphor and call them &ldquo;parent&rdquo; and &ldquo;child&rdquo; classes, but that would
 be too easy. Way back when, C. A. R. Hoare coined the term &ldquo;<span
@@ -342,7 +342,7 @@ in class <em>LoxClass</em></div>
 <p>With that, we can define classes that are subclasses of other classes. Now, what
 does having a superclass actually <em>do?</em>
 有了这个，我们就可以定义一个类作为其它类的子类。现在，拥有一个超类究竟有什么用呢？</p>
-<h2><a href="#inheriting-methods--继承方法" id="inheriting-methods--继承方法"><small>13&#8202;.&#8202;2</small>Inheriting Methods  继承方法</a></h2>
+<h2><a href="#继承方法" id="继承方法"><small>13&#8202;.&#8202;2</small>继承方法</a></h2>
 <p>Inheriting from another class means that everything that&rsquo;s <span
 name="liskov">true</span> of the superclass should be true, more or less, of the
 subclass. In statically typed languages, that carries a lot of implications. The
@@ -394,7 +394,7 @@ superclass chain and look there. Give it a try:
 <p>There we go, half of our inheritance features are complete with only three lines
 of Java code.
 好了，一半的继承特性只用了三行Java代码就完成了。</p>
-<h2><a href="#calling-superclass-methods--调用超类方法" id="calling-superclass-methods--调用超类方法"><small>13&#8202;.&#8202;3</small>Calling Superclass Methods  调用超类方法</a></h2>
+<h2><a href="#调用超类方法" id="调用超类方法"><small>13&#8202;.&#8202;3</small>调用超类方法</a></h2>
 <p>In <code>findMethod()</code> we look for a method on the current class <em>before</em> walking up
 the superclass chain. If a method with the same name exists in both the subclass
 and the superclass, the subclass one takes precedence or <strong>overrides</strong> the
@@ -435,7 +435,7 @@ Pipe full of custard and coat with chocolate.
 identifier, looks for a method with that name. Unlike calls on <code>this</code>, the search
 starts at the superclass.
 我们有了一个新的表达式形式。<code>super</code>关键字，后跟一个点和一个标识符，以使用该名称查找方法。与<code>this</code>调用不同，该搜索是从超类开始的。</p>
-<h3><a href="#syntax" id="syntax"><small>13&#8202;.&#8202;3&#8202;.&#8202;1</small>Syntax</a></h3>
+<h3><a href="#语法" id="语法"><small>13&#8202;.&#8202;3&#8202;.&#8202;1</small>语法</a></h3>
 <p>With <code>this</code>, the keyword works sort of like a magic variable, and the expression
 is that one lone token. But with <code>super</code>, the subsequent <code>.</code> and property name
 are inseparable parts of the <code>super</code> expression. You can&rsquo;t have a bare <code>super</code>
@@ -498,7 +498,7 @@ in <em>primary</em>()</div>
 <p>A leading <code>super</code> keyword tells us we&rsquo;ve hit a <code>super</code> expression. After that we
 consume the expected <code>.</code> and method name.
 开头的<code>super</code>关键字告诉我们遇到了一个<code>super</code>表达式，之后我们消费预期中的<code>.</code>和方法名称。</p>
-<h3><a href="#semantics" id="semantics"><small>13&#8202;.&#8202;3&#8202;.&#8202;2</small>Semantics</a></h3>
+<h3><a href="#语义" id="语义"><small>13&#8202;.&#8202;3&#8202;.&#8202;2</small>语义</a></h3>
 <p>Earlier, I said a <code>super</code> expression starts the method lookup from &ldquo;the
 superclass&rdquo;, but <em>which</em> superclass? The naïve answer is the superclass of
 <code>this</code>, the object the surrounding method was called on. That coincidentally
@@ -796,7 +796,7 @@ in <em>visitSuperExpr</em>()</div>
 Assuming you and I did everything right, it should fry it first, then stuff it
 with cream.
 这就对了！试着运行一下前面那个BostonCream的例子。如果你我都做对了，它的结果应该是：</p>
-<h3><a href="#invalid-uses-of-super--super的无效使用" id="invalid-uses-of-super--super的无效使用"><small>13&#8202;.&#8202;3&#8202;.&#8202;3</small>Invalid uses of super  super的无效使用</a></h3>
+<h3><a href="#super的无效使用" id="super的无效使用"><small>13&#8202;.&#8202;3&#8202;.&#8202;3</small>super的无效使用</a></h3>
 <p>As with previous language features, our implementation does the right thing when
 the user writes correct code, but we haven&rsquo;t bulletproofed the intepreter
 against bad code. In particular, consider:
@@ -874,7 +874,7 @@ in <em>visitSuperExpr</em>()</div>
 
 <p>If not<span class="em">&mdash;</span>oopsie!<span class="em">&mdash;</span>the user made a mistake.
 如果不是，那就是用户出错了。</p>
-<h2><a href="#conclusion--总结" id="conclusion--总结"><small>13&#8202;.&#8202;4</small>Conclusion  总结</a></h2>
+<h2><a href="#总结" id="总结"><small>13&#8202;.&#8202;4</small>总结</a></h2>
 <p>We made it! That final bit of error handling is the last chunk of code needed to
 complete our Java implementation of Lox. This is a real <span
 name="superhero">accomplishment</span> and one you should be proud of. In the
@@ -939,23 +939,18 @@ refreshed and ready, we&rsquo;ll embark on our <a href="a-bytecode-virtual-machi
 superclass and that&rsquo;s the only way to reuse methods across classes. Other
 languages have explored a variety of ways to more freely reuse and share
 capabilities across classes: mixins, traits, multiple inheritance, virtual
-inheritance, extension methods, etc.</p>
+inheritance, extension methods, etc.
+Lox只支持<em>单继承</em>——一个类可以有一个超类，这是唯一跨类复用方法的方式。其它语言中已经探索出了各种方法来更自由地跨类重用和共享功能：mixins, traits, multiple inheritance, virtual inheritance, extension methods, 等等。</p>
 <p>If you were to add some feature along these lines to Lox, which would you
 pick and why? If you&rsquo;re feeling courageous (and you should be at this
 point), go ahead and add it.
-Lox只支持<em>单继承</em>——一个类可以有一个超类，这是唯一跨类复用方法的方式。其它语言中已经探索出了各种方法来更自由地跨类重用和共享功能：mixins, traits, multiple inheritance, virtual inheritance, extension methods, 等等。
 如果你要在Lox中添加一些类似的功能，你会选择哪种，为什么？如果你有勇气的话（这时候你应该有勇气了），那就去添加它。</p>
-</li>
-<li>
-<blockquote>
-<p>In Lox, as in most other object-oriented languages, when looking up a method, we start at the bottom of the class hierarchy and work our way up—a subclass’s method is preferred over a superclass’s. In order to get to the superclass method from within an overriding method, you use <code>super</code>.
-在Lox中，与其它大多数面向对象语言一样，当查找一个方法时，我们从类的底层开始向上查找——子类的方法优先于超类的方法。为了在覆盖方法中访问超类方法，你可以使用<code>super</code>。</p>
-</blockquote>
 </li>
 <li>
 <p>In Lox, as in most other object-oriented languages, when looking up a
 method, we start at the bottom of the class hierarchy and work our way up<span class="em">&mdash;</span>a subclass&rsquo;s method is preferred over a superclass&rsquo;s. In order to get to the
-superclass method from within an overriding method, you use <code>super</code>.</p>
+superclass method from within an overriding method, you use <code>super</code>.
+在Lox中，与其它大多数面向对象语言一样，当查找一个方法时，我们从类的底层开始向上查找——子类的方法优先于超类的方法。为了在覆盖方法中访问超类方法，你可以使用<code>super</code>。</p>
 <p>The language <a href="https://beta.cs.au.dk/">BETA</a> takes the <a href="http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/">opposite approach</a>. When you call a
 method, it starts at the <em>top</em> of the class hierarchy and works <em>down</em>. A
 superclass method wins over a subclass method. In order to get to the
@@ -971,30 +966,18 @@ behavior.
 <p>Take out Lox&rsquo;s current overriding and <code>super</code> behavior and replace it with
 BETA&rsquo;s semantics. In short:
 去掉Lox目前的覆盖和<code>super</code>行为，用BEAT的语义来替换。简而言之：</p>
-</li>
-</ol>
-<ul>
-<li>
-<blockquote>
-<p>When calling a method on a class, prefer the method <em>highest</em> on the class’s inheritance chain.
-当调用类上的方法时，优先选择类继承链中最高的方法。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>Inside the body of a method, a call to <code>inner</code> looks for a method with the same name in the nearest subclass along the inheritance chain between the class containing the <code>inner</code> and the class of <code>this</code>. If there is no matching method, the <code>inner</code> call does nothing.
-在方法体内部，<code>inner</code>调用会在继承链中包含<code>inner</code>的类和包含<code>this</code>的类之间，查找具有相同名称的最近的子类中的方法。如果没有匹配的方法，<code>inner</code>调用不做任何事情。</p>
-</blockquote>
 <ul>
 <li>
 <p>When calling a method on a class, prefer the method <em>highest</em> on the
-class&rsquo;s inheritance chain.</p>
+class&rsquo;s inheritance chain.
+当调用类上的方法时，优先选择类继承链中最高的方法。</p>
 </li>
 <li>
 <p>Inside the body of a method, a call to <code>inner</code> looks for a method with
 the same name in the nearest subclass along the inheritance chain
 between the class containing the <code>inner</code> and the class of <code>this</code>. If
-there is no matching method, the <code>inner</code> call does nothing.</p>
+there is no matching method, the <code>inner</code> call does nothing.
+在方法体内部，<code>inner</code>调用会在继承链中包含<code>inner</code>的类和包含<code>this</code>的类之间，查找具有相同名称的最近的子类中的方法。如果没有匹配的方法，<code>inner</code>调用不做任何事情。</p>
 </li>
 </ul>
 <p>For example:
@@ -1017,14 +1000,6 @@ there is no matching method, the <code>inner</code> call does nothing.</p>
 </pre></div>
 <p>This should print:
 这应该输出：</p>
-</li>
-</ul>
-<ol start="3">
-<li>
-<blockquote>
-<p>In the chapter where I introduced Lox, <a href="http://craftinginterpreters.com/the-lox-language.html#challenges">I challenged you</a> to come up with a couple of features you think the language is missing. Now that you know how to build an interpreter, implement one of those features.
-在介绍Lox的那一章，我让你想出几个你认为该语言缺少的功能。现在你知道了如何构建一个解释器，请实现其中的一个功能。</p>
-</blockquote>
 <div class="codehilite"><pre>Fry until golden brown.
 Pipe full of custard and coat with chocolate.
 Place in a nice box.
@@ -1033,7 +1008,8 @@ Place in a nice box.
 <li>
 <p>In the chapter where I introduced Lox, <a href="the-lox-language.html#challenges">I challenged you</a> to
 come up with a couple of features you think the language is missing. Now
-that you know how to build an interpreter, implement one of those features.</p>
+that you know how to build an interpreter, implement one of those features.
+在介绍Lox的那一章，我让你想出几个你认为该语言缺少的功能。现在你知道了如何构建一个解释器，请实现其中的一个功能。</p>
 </li>
 </ol>
 </div>

@@ -70,7 +70,7 @@ begins on the left with the bare text of the user's source code:
 
 <img src="image/a-map-of-the-territory/string.png" alt="var average = (min + max) / 2;" />
 
-### Scanning  扫描
+### 扫描
 
 The first step is **scanning**, also known as **lexing**, or (if you're trying
 to impress someone) **lexical analysis**. They all mean pretty much the same
@@ -102,7 +102,7 @@ tokens.
 
 <img src="image/a-map-of-the-territory/tokens.png" alt="[var] [average] [=] [(] [min] [+] [max] [)] [/] [2] [;]" />
 
-### Parsing  语法分析
+### 语法分析
 
 The next step is **parsing**. This is where our syntax gets a **grammar** -- the
 ability to compose larger expressions and statements out of smaller parts. Did
@@ -134,7 +134,7 @@ grammars incorrectly, so the parser's job also includes letting us know when we
 do by reporting **syntax errors**.
 事实证明，人类语言对于只能处理严密语法的解析器来说太混乱了，但面对编程语言这种简单的人造语法时，解析器表现得十分合适。唉，可惜我们这些有缺陷的人类在使用这些简单的语法时，仍然会不停地出错，因此解析器的工作还包括通过报告**语法错误**让我们知道出错了。
 
-### Static analysis  静态分析
+### 静态分析
 
 The first two stages are pretty similar across all implementations. Now, the
 individual characteristics of each language start coming into play. At this
@@ -186,6 +186,12 @@ away:
   new data structure that more directly expresses the semantics of the code.
   That's the next section.
 
+深吸一口气。 我们已经到达了山顶，并对用户的程序有了全面的了解。从分析中可见的所有语义信息都需要存储在某个地方。我们可以把它存储在几个地方：
+
+* 通常，它会被直接存储在语法树本身的**属性**中——属性是节点中的额外字段，这些字段在解析时不会初始化，但在稍后会进行填充。
+* 有时，我们可能会将数据存储在外部的查找表中。 通常，该表的关键字是标识符，即变量和声明的名称。 在这种情况下，我们称其为**符号表**，并且其中与每个键关联的值告诉我们该标识符所指的是什么。
+* 最强大的记录工具是将树转化为一个全新的数据结构，更直接地表达代码的语义。这是下一节的内容。
+
 Everything up to this point is considered the **front end** of the
 implementation. You might guess everything after this is the **back end**, but
 no. Back in the days of yore when "front end" and "back end" were coined,
@@ -195,7 +201,7 @@ company lumped those new phases into the charming but spatially paradoxical name
 **middle end**.
 到目前为止，所有内容都被视为实现的**前端**。 你可能会猜至此以后是**后端**，其实并不是。 在过去的年代，当“前端”和“后端”被创造出来时，编译器要简单得多。 后来，研究人员在两个半部之间引入了新阶段。 威廉·沃尔夫（William Wulf）和他的同伴没有放弃旧术语，而是新添加了一个迷人但有点自相矛盾的名称“**中端**”。
 
-### Intermediate representations  中介码
+### 中间代码 Intermediate representation
 
 You can think of the compiler as a pipeline where each stage's job is to
 organize the data representing the user's code in a way that makes the next
@@ -250,7 +256,7 @@ There's another big reason we might want to transform the code into a form that
 makes the semantics more apparent...
 还有一个重要的原因是，我们可能希望将代码转化为某种形式，使语义更加明确......。
 
-### Optimization  优化
+### 优化
 
 Once we understand what the user's program means, we are free to swap it out
 with a different program that has the *same semantics* but implements them more
@@ -295,7 +301,7 @@ replacement of aggregates", "dead code elimination", and "loop unrolling".
 
 </aside>
 
-### Code generation  代码生成
+### 代码生成
 
 We have applied all of the optimizations we can think of to the user's program.
 The last step is converting it to a form the machine can actually run. In other
@@ -354,7 +360,7 @@ computer architecture and its accumulated historical cruft. You can think of it
 like a dense, binary encoding of the language's low-level operations.
 这些合成指令的设计是为了更紧密地映射到语言的语义上，而不必与任何一个计算机体系结构的特性和它积累的历史错误绑定在一起。你可以把它想象成语言底层操作的密集二进制编码。
 
-### Virtual machine  虚拟机
+### 虚拟机
 
 If your compiler produces bytecode, your work isn't over once that's done. Since
 there is no chip that speaks that bytecode, it's your job to translate. Again,
@@ -406,7 +412,7 @@ or **process virtual machines** if you want to be unambiguous.
 
 </aside>
 
-### Runtime
+### 运行时
 
 We have finally hammered the user's program into a form that we can execute. The
 last step is running it. If we compiled it to machine code, we simply tell the
@@ -433,14 +439,14 @@ JavaScript work.
 
 [go]: https://golang.org/
 
-## Shortcuts and Alternate Routes  捷径和备选路线
+## 捷径和备选路线
 
 That's the long path covering every possible phase you might implement. Many
 languages do walk the entire route, but there are a few shortcuts and alternate
 paths.
 这是一条漫长的道路，涵盖了你要实现的每个可能的阶段。许多语言的确走完了整条路线，但也有一些捷径和备选路径。
 
-### Single-pass compilers  单遍编译器
+### 单遍编译器
 
 Some simple compilers interleave parsing, analysis, and code generation so that
 they produce output code directly in the parser, without ever allocating any
@@ -473,7 +479,7 @@ declaration that tells the compiler what it needs to know to generate code for a
 call to the later function.
 Pascal和C语言就是围绕这个限制而设计的。在当时，内存非常珍贵，一个编译器可能连整个源文件都无法存放在内存中，更不用说整个程序了。这也是为什么Pascal的语法要求类型声明要先出现在一个块中。这也是为什么在C语言中，你不能在定义函数的代码上面调用函数，除非你有一个明确的前向声明，告诉编译器它需要知道什么，以便生成调用后面函数的代码。
 
-### Tree-walk interpreters  树遍历解释器
+### 树遍历解释器
 
 Some programming languages begin executing code right after parsing it to an AST
 (with maybe a bit of static analysis applied). To run the program, the
@@ -499,7 +505,7 @@ bytecode virtual machine.
 
 </aside>
 
-### Transpilers  转译器
+### 转译器
 
 <span name="gary">Writing</span> a complete back end for a language can be a lot
 of work. If you have some existing generic IR to target, you could bolt your
@@ -589,12 +595,13 @@ Either way, you then run that resulting code through the output language's
 existing compilation pipeline, and you're good to go.
 不管是哪种方式，你再通过目标语言已有的编译流水线运行生成的代码就可以了。
 
-### Just-in-time compilation  即时编译
+### 即时编译
 
 This last one is less a shortcut and more a dangerous alpine scramble best
 reserved for experts. The fastest way to execute code is by compiling it to
 machine code, but you might not know what architecture your end user's machine
 supports. What to do?
+最后一个与其说是捷径，不如说是危险的高山争霸赛，最好留给专家。执行代码最快的方法是将代码编译成机器代码，但你可能不知道你的最终用户的机器支持什么架构。该怎么做呢？
 
 You can do the same thing that the HotSpot Java Virtual Machine (JVM),
 Microsoft's Common Language Runtime (CLR), and most JavaScript interpreters do.
@@ -618,7 +625,7 @@ This is, of course, exactly where the HotSpot JVM gets its name.
 
 </aside>
 
-## Compilers and Interpreters  编译器和解释器
+## 编译器与解释器
 
 Now that I've stuffed your head with a dictionary's worth of programming
 language jargon, we can finally address a question that's plagued coders since
@@ -665,6 +672,12 @@ So, back to languages:
 * Conversely, when we say an implementation "is an **interpreter**", we mean it
   takes in source code and executes it immediately. It runs programs "from
   source".
+
+好，回到语言上：
+
+* **编译**是一种实现技术，其中涉及到将源语言翻译成其他语言--通常是较低级的形式。当你生成字节码或机器代码时，你就是在编译。当你移植到另一种高级语言时，你也在编译。
+* 当我们说语言实现“是**编译器**”时，是指它会将源代码转换为其他形式，但不会执行。 用户必须获取结果输出并自己运行。
+* 相反，当我们说一个实现“是一个**解释器**”时，是指它接受源代码并立即执行它。 它“从源代码”运行程序。
 
 Like apples and oranges, some implementations are clearly compilers and *not*
 interpreters. GCC and Clang take your C code and compile it to machine code. An
@@ -714,7 +727,7 @@ since it internally compiles to bytecode. So while this book is nominally about
 interpreters, we'll cover some compilation too.
 中间那个重叠的区域也是我们第二个解释器所在的位置，因为它会在内部编译成字节码。所以，虽然本书名义上是关于解释器的，但我们也会涉及一些编译的内容。
 
-## Our Journey  我们的旅程
+## 我们的旅程
 
 That's a lot to take in all at once. Don't worry. This isn't the chapter where
 you're expected to *understand* all of these pieces and parts. I just want you

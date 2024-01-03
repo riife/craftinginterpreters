@@ -37,12 +37,12 @@
         <h3><a href="#top">虚拟机<small>15</small></a></h3>
     
     <ul>
-        <li><a href="#an-instruction-execution-machine--指令执行机器"><small>15.1</small> An Instruction Execution Machine  指令执行机器</a></li>
-        <li><a href="#a-value-stack-manipulator--一个值栈操作器"><small>15.2</small> A Value Stack Manipulator  一个值栈操作器</a></li>
-        <li><a href="#an-arithmetic-calculator--数学计算器"><small>15.3</small> An Arithmetic Calculator  数学计算器</a></li>
+        <li><a href="#指令执行机器"><small>15.1</small> 指令执行机器</a></li>
+        <li><a href="#一个值栈操作器"><small>15.2</small> 一个值栈操作器</a></li>
+        <li><a href="#数学计算器"><small>15.3</small> 数学计算器</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Register-Based Bytecode 基于寄存器的字节码</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>基于寄存器的字节码</a></li>
     </ul>
     
     
@@ -67,12 +67,12 @@
         <h3><a href="#top">虚拟机<small>15</small></a></h3>
         
         <ul>
-            <li><a href="#an-instruction-execution-machine--指令执行机器"><small>15.1</small> An Instruction Execution Machine  指令执行机器</a></li>
-            <li><a href="#a-value-stack-manipulator--一个值栈操作器"><small>15.2</small> A Value Stack Manipulator  一个值栈操作器</a></li>
-            <li><a href="#an-arithmetic-calculator--数学计算器"><small>15.3</small> An Arithmetic Calculator  数学计算器</a></li>
+            <li><a href="#指令执行机器"><small>15.1</small> 指令执行机器</a></li>
+            <li><a href="#一个值栈操作器"><small>15.2</small> 一个值栈操作器</a></li>
+            <li><a href="#数学计算器"><small>15.3</small> 数学计算器</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Register-Based Bytecode 基于寄存器的字节码</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>基于寄存器的字节码</a></li>
         </ul>
         
         
@@ -111,7 +111,7 @@ life into the bytecode. Watching the instructions prance around gives us a
 clearer picture of how a compiler might translate the user&rsquo;s source code into a
 series of them.
 因此，在构建新解释器的前端之前，我们先从后端开始——执行指令的虚拟机。它为字节码注入了生命。通过观察这些指令的运行，我们可以更清楚地了解编译器如何将用户的源代码转换成一系列的指令。</p>
-<h2><a href="#an-instruction-execution-machine--指令执行机器" id="an-instruction-execution-machine--指令执行机器"><small>15&#8202;.&#8202;1</small>An Instruction Execution Machine  指令执行机器</a></h2>
+<h2><a href="#指令执行机器" id="指令执行机器"><small>15&#8202;.&#8202;1</small>指令执行机器</a></h2>
 <p>The virtual machine is one part of our interpreter&rsquo;s internal architecture. You
 hand it a chunk of code<span class="em">&mdash;</span>literally a Chunk<span class="em">&mdash;</span>and it runs it. The code and
 data structures for the VM reside in a new module.
@@ -216,7 +216,7 @@ int main(int argc, const char* argv[]) {
 chunk from the <a href="chunks-of-bytecode.html#disassembling-chunks">last chapter</a>. The VM is ready and waiting, so let&rsquo;s teach it
 to do something.
 现在如果你运行clox，它会先启动虚拟机，再创建上一章中的手写代码块。虚拟机已经就绪了，我们来教它一些事情吧。</p>
-<h3><a href="#executing-instructions--执行指令" id="executing-instructions--执行指令"><small>15&#8202;.&#8202;1&#8202;.&#8202;1</small>Executing instructions  执行指令</a></h3>
+<h3><a href="#执行指令" id="执行指令"><small>15&#8202;.&#8202;1&#8202;.&#8202;1</small>执行指令</a></h3>
 <p>The VM springs into action when we command it to interpret a chunk of bytecode.
 当我们命令VM解释一个字节码块时，它就会开始启动了。</p>
 <div class="codehilite"><pre class="insert-before">  disassembleChunk(&amp;chunk, &quot;test chunk&quot;);
@@ -440,7 +440,7 @@ in <em>run</em>()</div>
 <p>Undefining these macros explicitly might seem needlessly fastidious, but C tends
 to punish sloppy users, and the C preprocessor doubly so.</p>
 </aside>
-<h3><a href="#execution-tracing--执行跟踪" id="execution-tracing--执行跟踪"><small>15&#8202;.&#8202;1&#8202;.&#8202;2</small>Execution tracing  执行跟踪</a></h3>
+<h3><a href="#执行跟踪" id="执行跟踪"><small>15&#8202;.&#8202;1&#8202;.&#8202;2</small>执行跟踪</a></h3>
 <p>If you run clox now, it executes the chunk we hand-authored in the last chapter
 and spits out <code>1.2</code> to your terminal. We can see that it&rsquo;s working, but that&rsquo;s
 only because our implementation of <code>OP_CONSTANT</code> has temporary code to log the
@@ -502,7 +502,7 @@ Its simplicity is a virtue<span class="em">&mdash;</span>the less work it does, 
 Contrast this with all of the complexity and overhead we had in jlox with the
 Visitor pattern for walking the AST.
 我知道这段代码到目前为止还不是很令人印象深刻——它实际上只是一个封装在<code>for</code>循环中的switch语句，但信不信由你，这就是我们虚拟机的两个主要组成部分之一。有了它，我们就可以命令式地执行指令。它的简单是一种优点——它做的工作越少，就能做得越快。作为对照，可以回想一下我们在jlox中使用Visitor模式遍历AST的复杂度和开销。</p>
-<h2><a href="#a-value-stack-manipulator--一个值栈操作器" id="a-value-stack-manipulator--一个值栈操作器"><small>15&#8202;.&#8202;2</small>A Value Stack Manipulator  一个值栈操作器</a></h2>
+<h2><a href="#一个值栈操作器" id="一个值栈操作器"><small>15&#8202;.&#8202;2</small>一个值栈操作器</a></h2>
 <p>In addition to imperative side effects, Lox has expressions that produce,
 modify, and consume values. Thus, our compiled bytecode needs a way to shuttle
 values around between the different instructions that need them. For example:
@@ -626,7 +626,7 @@ our VM will use a stack to manage them. When an instruction &ldquo;produces&rdqu
 it pushes it onto the stack. When it needs to consume one or more values, it
 gets them by popping them off the stack.
 由于我们需要跟踪的临时值天然具有类似栈的行为，我们的虚拟机将使用栈来管理它们。当一条指令“生成”一个值时，它会把这个值压入栈中。当它需要消费一个或多个值时，通过从栈中弹出数据来获得这些值。</p>
-<h3><a href="#the-vms-stack" id="the-vms-stack"><small>15&#8202;.&#8202;2&#8202;.&#8202;1</small>The VM&rsquo;s Stack</a></h3>
+<h3><a href="#虚拟机的栈" id="虚拟机的栈"><small>15&#8202;.&#8202;2&#8202;.&#8202;1</small>虚拟机的栈</a></h3>
 <p>Maybe this doesn&rsquo;t seem like a revelation, but I <em>love</em> stack-based VMs. When
 you first see a magic trick, it feels like something actually magical. But then
 you learn how it works<span class="em">&mdash;</span>usually some mechanical gimmick or misdirection<span class="em">&mdash;</span>and
@@ -803,7 +803,7 @@ the array. Then we look up the value at that index and return it. We don&rsquo;t
 to explicitly &ldquo;remove&rdquo; it from the array<span class="em">&mdash;</span>moving <code>stackTop</code> down is enough to
 mark that slot as no longer in use.
 首先，我们将栈指针回退到数组中最近使用的槽。然后，我们查找该索引处的值并将其返回。我们不需要显式地将其从数组中“移除”——将<code>stackTop</code>下移就足以将该槽标记为不再使用了。</p>
-<h3><a href="#stack-tracing--栈跟踪" id="stack-tracing--栈跟踪"><small>15&#8202;.&#8202;2&#8202;.&#8202;2</small>Stack tracing  栈跟踪</a></h3>
+<h3><a href="#栈跟踪" id="栈跟踪"><small>15&#8202;.&#8202;2&#8202;.&#8202;2</small>栈跟踪</a></h3>
 <p>We have a working stack, but it&rsquo;s hard to <em>see</em> that it&rsquo;s working. When we start
 implementing more complex instructions and compiling and running larger pieces
 of code, we&rsquo;ll end up with a lot of values crammed into that array. It would
@@ -861,7 +861,7 @@ When we add support for real functions to clox, we&rsquo;ll change this code. Bu
 now, it gives us a way to get the VM executing simple instruction sequences and
 displaying the result.
 接下来，我们让<code>OP_RETURN</code>在退出之前弹出栈顶值并打印。等到我们在clox中添加对真正的函数的支持时，我们将会修改这段代码。但是，目前来看，我们可以使用这种方法让VM执行简单的指令序列并显示结果。</p>
-<h2><a href="#an-arithmetic-calculator--数学计算器" id="an-arithmetic-calculator--数学计算器"><small>15&#8202;.&#8202;3</small>An Arithmetic Calculator  数学计算器</a></h2>
+<h2><a href="#数学计算器" id="数学计算器"><small>15&#8202;.&#8202;3</small>数学计算器</a></h2>
 <p>The heart and soul of our VM are in place now. The bytecode loop dispatches and
 executes instructions. The stack grows and shrinks as values flow through it.
 The two halves work, but it&rsquo;s hard to get a feel for how cleverly they interact
@@ -930,7 +930,7 @@ return instruction prints that out:
 </pre></div>
 <p>Magical!
 神奇！</p>
-<h3><a href="#binary-operators--二元操作符" id="binary-operators--二元操作符"><small>15&#8202;.&#8202;3&#8202;.&#8202;1</small>Binary operators  二元操作符</a></h3>
+<h3><a href="#二元操作符" id="二元操作符"><small>15&#8202;.&#8202;3&#8202;.&#8202;1</small>二元操作符</a></h3>
 <p>OK, unary operators aren&rsquo;t <em>that</em> impressive. We still only ever have a single
 value on the stack. To really see some depth, we need binary operators. Lox has
 four binary <span name="ops">arithmetic</span> operators: addition, subtraction,
@@ -1161,15 +1161,10 @@ the <code>-5</code> is negating the number 5.)
 （请记得，Lox语法中没有负数字面量，所以<code>-5</code>是对数字5取负）</p>
 </li>
 <li>
-<blockquote>
-<p>If we really wanted a minimal instruction set, we could eliminate either <code>OP_NEGATE</code> or <code>OP_SUBTRACT</code>. Show the bytecode instruction sequence you would generate for:
-如果我们真的想要一个最小指令集，我们可以取消<code>OP_NEGATE</code>或<code>OP_SUBTRACT</code>。请写出你为下面的表达式生成的字节码指令序列：</p>
-</blockquote>
-</li>
-<li>
 <p>If we really wanted a minimal instruction set, we could eliminate either
 <code>OP_NEGATE</code> or <code>OP_SUBTRACT</code>. Show the bytecode instruction sequence you
-would generate for:</p>
+would generate for:
+如果我们真的想要一个最小指令集，我们可以取消<code>OP_NEGATE</code>或<code>OP_SUBTRACT</code>。请写出你为下面的表达式生成的字节码指令序列：</p>
 <div class="codehilite"><pre><span class="n">4</span> - <span class="n">3</span> * -<span class="n">2</span>
 </pre></div>
 <p>First, without using <code>OP_NEGATE</code>. Then, without using <code>OP_SUBTRACT</code>.</p>
@@ -1180,23 +1175,13 @@ including?
 综上所述，你认为同时拥有这两条指令有意义吗？为什么呢？还有没有其它指令可以考虑加入？</p>
 </li>
 <li>
-<blockquote>
-<p>Our VM’s stack has a fixed size, and we don’t check if pushing a value overflows it. This means the wrong series of instructions could cause our interpreter to crash or go into undefined behavior. Avoid that by dynamically growing the stack as needed.</p>
-</blockquote>
-</li>
-<li>
 <p>Our VM&rsquo;s stack has a fixed size, and we don&rsquo;t check if pushing a value
 overflows it. This means the wrong series of instructions could cause our
 interpreter to crash or go into undefined behavior. Avoid that by
-dynamically growing the stack as needed.</p>
+dynamically growing the stack as needed.
+我们虚拟机的堆栈有一个固定大小，而且我们不会检查压入一个值是否会溢出。这意味着错误的指令序列可能会导致我们的解释器崩溃或进入未定义的行为。通过根据需求动态增长堆栈来避免这种情况。</p>
 <p>What are the costs and benefits of doing so?
-我们虚拟机的堆栈有一个固定大小，而且我们不会检查压入一个值是否会溢出。这意味着错误的指令序列可能会导致我们的解释器崩溃或进入未定义的行为。通过根据需求动态增长堆栈来避免这种情况。
 这样做的代价和好处是什么？</p>
-</li>
-<li>
-<blockquote>
-<p>To interpret <code>OP_NEGATE</code>, we pop the operand, negate the value, and then push the result. That’s a simple implementation, but it increments and decrements <code>stackTop</code> unnecessarily, since the stack ends up the same height in the end. It might be faster to simply negate the value in place on the stack and leave <code>stackTop</code> alone. Try that and see if you can measure a performance difference.</p>
-</blockquote>
 </li>
 <li>
 <p>To interpret <code>OP_NEGATE</code>, we pop the operand, negate the value, and then
@@ -1204,15 +1189,15 @@ push the result. That&rsquo;s a simple implementation, but it increments and
 decrements <code>stackTop</code> unnecessarily, since the stack ends up the same height
 in the end. It might be faster to simply negate the value in place on the
 stack and leave <code>stackTop</code> alone. Try that and see if you can measure a
-performance difference.</p>
+performance difference.
+为了解释<code>OP_NEGATE</code>，我们弹出操作数，对值取负，然后将结果压入栈。这是一个简单的实现，但它对<code>stackTop</code>进行了不必要的增减操作，因为栈最终的高度是相同的。简单地对栈中的值取负而不处理<code>stackTop</code>可能会更快。试一下，看看你是否能测出性能差异。</p>
 <p>Are there other instructions where you can do a similar optimization?
-为了解释<code>OP_NEGATE</code>，我们弹出操作数，对值取负，然后将结果压入栈。这是一个简单的实现，但它对<code>stackTop</code>进行了不必要的增减操作，因为栈最终的高度是相同的。简单地对栈中的值取负而不处理<code>stackTop</code>可能会更快。试一下，看看你是否能测出性能差异。
 是否有其它指令可以做类似的优化？</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Register-Based Bytecode 基于寄存器的字节码</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 基于寄存器的字节码</a></h2>
 <p>For the remainder of this book, we&rsquo;ll meticulously implement an interpreter
 around a stack-based bytecode instruction set. There&rsquo;s another family of
 bytecode architectures out there<span class="em">&mdash;</span><em>register-based</em>. Despite the name, these

@@ -37,14 +37,14 @@
         <h3><a href="#top">控制流<small>9</small></a></h3>
     
     <ul>
-        <li><a href="#turing-machines-briefly--图灵机（简介）"><small>9.1</small> Turing Machines (Briefly)  图灵机（简介）</a></li>
-        <li><a href="#conditional-execution--条件执行"><small>9.2</small> Conditional Execution  条件执行</a></li>
-        <li><a href="#logical-operators--逻辑操作符"><small>9.3</small> Logical Operators  逻辑操作符</a></li>
-        <li><a href="#while-loops--while循环"><small>9.4</small> While Loops  While循环</a></li>
-        <li><a href="#for-loops--for循环"><small>9.5</small> For Loops  For循环</a></li>
+        <li><a href="#图灵机（简介）"><small>9.1</small> 图灵机（简介）</a></li>
+        <li><a href="#条件执行"><small>9.2</small> 条件执行</a></li>
+        <li><a href="#逻辑操作符"><small>9.3</small> 逻辑操作符</a></li>
+        <li><a href="#while循环"><small>9.4</small> While循环</a></li>
+        <li><a href="#for循环"><small>9.5</small> For循环</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Spoonfuls of Syntactic Sugar 一些语法糖</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>一些语法糖</a></li>
     </ul>
     
     
@@ -69,14 +69,14 @@
         <h3><a href="#top">控制流<small>9</small></a></h3>
         
         <ul>
-            <li><a href="#turing-machines-briefly--图灵机（简介）"><small>9.1</small> Turing Machines (Briefly)  图灵机（简介）</a></li>
-            <li><a href="#conditional-execution--条件执行"><small>9.2</small> Conditional Execution  条件执行</a></li>
-            <li><a href="#logical-operators--逻辑操作符"><small>9.3</small> Logical Operators  逻辑操作符</a></li>
-            <li><a href="#while-loops--while循环"><small>9.4</small> While Loops  While循环</a></li>
-            <li><a href="#for-loops--for循环"><small>9.5</small> For Loops  For循环</a></li>
+            <li><a href="#图灵机（简介）"><small>9.1</small> 图灵机（简介）</a></li>
+            <li><a href="#条件执行"><small>9.2</small> 条件执行</a></li>
+            <li><a href="#逻辑操作符"><small>9.3</small> 逻辑操作符</a></li>
+            <li><a href="#while循环"><small>9.4</small> While循环</a></li>
+            <li><a href="#for循环"><small>9.5</small> For循环</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Spoonfuls of Syntactic Sugar 一些语法糖</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>一些语法糖</a></li>
         </ul>
         
         
@@ -110,7 +110,7 @@ you have to make the source code twice as lengthy. We&rsquo;re about to fix that
 this chapter, our interpreter takes a big step towards the programming
 language major leagues: <em>Turing-completeness</em>.
 现在，我们的解释器只不过是一个计算器而已。一个Lox程序在结束之前只能做固定的工作量。要想让它的运行时间延长一倍，你就必须让源代码的长度增加一倍。我们即将解决这个问题。在本章中，我们的解释器向编程语言大联盟迈出了一大步：图灵完备性。</p>
-<h2><a href="#turing-machines-briefly--图灵机（简介）" id="turing-machines-briefly--图灵机（简介）"><small>9&#8202;.&#8202;1</small>Turing Machines (Briefly)  图灵机（简介）</a></h2>
+<h2><a href="#图灵机（简介）" id="图灵机（简介）"><small>9&#8202;.&#8202;1</small>图灵机（简介）</a></h2>
 <p>In the early part of last century, mathematicians stumbled into a series of
 confusing <span name="paradox">paradoxes</span> that led them to doubt the
 stability of the foundation they had built their work upon. To address that
@@ -181,7 +181,7 @@ name="memory">second</span>.
 arbitrary size, so you can <em>store</em> unbounded memory. But we don&rsquo;t have any way
 to access parts of a string.</p>
 </aside>
-<h2><a href="#conditional-execution--条件执行" id="conditional-execution--条件执行"><small>9&#8202;.&#8202;2</small>Conditional Execution  条件执行</a></h2>
+<h2><a href="#条件执行" id="条件执行"><small>9&#8202;.&#8202;2</small>条件执行</a></h2>
 <p>Enough history, let&rsquo;s jazz up our language. We can divide control flow roughly
 into two kinds:
 说完了历史，现在让我们把语言优化一下。我们大致可以把控制流分为两类：</p>
@@ -386,7 +386,7 @@ statement. Most other syntax trees always evaluate their subtrees. Here, we may
 not evaluate the then or else statement. If either of those has a side effect,
 the choice not to evaluate it becomes user visible.
 如果你把这段代码与解释器中我们已实现的处理其它语法的代码进行比较，会发现控制流中特殊的地方就在于Java的<code>if</code>语句。其它大多数语法树总是会对子树求值，但是这里，我们可能会不执行<code>then</code>语句或<code>else</code>语句。如果其中任何一个语句有副作用，那么选择不执行某条语句就是用户可见的。</p>
-<h2><a href="#logical-operators--逻辑操作符" id="logical-operators--逻辑操作符"><small>9&#8202;.&#8202;3</small>Logical Operators  逻辑操作符</a></h2>
+<h2><a href="#逻辑操作符" id="逻辑操作符"><small>9&#8202;.&#8202;3</small>逻辑操作符</a></h2>
 <p>Since we don&rsquo;t have the conditional operator, you might think we&rsquo;re done with
 branching, but no. Even without the ternary operator, there are two other
 operators that are technically control flow constructs<span class="em">&mdash;</span>the logical operators
@@ -541,7 +541,7 @@ second operand, <code>"yes"</code>.
 loops. You see what I did there? <em>Jump. Ahead.</em> Get it? See, it&rsquo;s like a
 reference to<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>oh, forget it.
 这样就完成了Lox中的所有分支原语，我们准备实现循环吧。</p>
-<h2><a href="#while-loops--while循环" id="while-loops--while循环"><small>9&#8202;.&#8202;4</small>While Loops  While循环</a></h2>
+<h2><a href="#while循环" id="while循环"><small>9&#8202;.&#8202;4</small>While循环</a></h2>
 <p>Lox features two looping control flow statements, <code>while</code> and <code>for</code>. The <code>while</code>
 loop is the simpler one, so we&rsquo;ll start there. Its grammar is the same as in C.
 Lox有两种类型的循环控制流语句，分别是<code>while</code>和<code>for</code>。<code>while</code>循环更简单一点，我们先从它开始.</p>
@@ -622,7 +622,7 @@ feature. This method isn&rsquo;t complex, but it makes Lox much more powerful. W
 finally write a program whose running time isn&rsquo;t strictly bound by the length of
 the source code.
 和<code>if</code>的访问方法一样，这里的访问方法使用了相应的Java特性。这个方法并不复杂，但它使Lox变得更加强大。我们终于可以编写一个运行时间不受源代码长度严格限制的程序了。</p>
-<h2><a href="#for-loops--for循环" id="for-loops--for循环"><small>9&#8202;.&#8202;5</small>For Loops  For循环</a></h2>
+<h2><a href="#for循环" id="for循环"><small>9&#8202;.&#8202;5</small>For循环</a></h2>
 <p>We&rsquo;re down to the last control flow construct, <span name="for">Ye Olde</span>
 C-style <code>for</code> loop. I probably don&rsquo;t need to remind you, but it looks like this:
 我们已经到了最后一个控制流结构，即老式的C语言风格<code>for</code>循环。我可能不需要提醒你，但还是要说它看起来是这样的：</p>
@@ -965,7 +965,7 @@ exited.</p>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Spoonfuls of Syntactic Sugar 一些语法糖</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 一些语法糖</a></h2>
 <p>When you design your own language, you choose how much syntactic sugar to pour
 into the grammar. Do you make an unsweetened health food where each semantic
 operation maps to a single syntactic unit, or some decadent dessert where every

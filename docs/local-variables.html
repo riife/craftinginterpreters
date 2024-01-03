@@ -37,11 +37,10 @@
         <h3><a href="#top">局部变量<small>22</small></a></h3>
     
     <ul>
-        <li><a href="#representing-local-variables--表示局部变量"><small>22.1</small> Representing Local Variables  表示局部变量</a></li>
-        <li><a href="#block-statements--块语句"><small>22.2</small> Block Statements  块语句</a></li>
-        <li><a href="#declaring-local-variables--声明局部变量"><small>22.3</small> Declaring Local Variables  声明局部变量</a></li>
-        <li><a href="#using-locals--使用局部变量"><small>22.4</small> Using Locals  使用局部变量</a></li>
-        <li><a href="#习题"><small>22.5</small> 习题</a></li>
+        <li><a href="#表示局部变量"><small>22.1</small> 表示局部变量</a></li>
+        <li><a href="#块语句"><small>22.2</small> 块语句</a></li>
+        <li><a href="#声明局部变量"><small>22.3</small> 声明局部变量</a></li>
+        <li><a href="#使用局部变量"><small>22.4</small> 使用局部变量</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -68,11 +67,10 @@
         <h3><a href="#top">局部变量<small>22</small></a></h3>
         
         <ul>
-            <li><a href="#representing-local-variables--表示局部变量"><small>22.1</small> Representing Local Variables  表示局部变量</a></li>
-            <li><a href="#block-statements--块语句"><small>22.2</small> Block Statements  块语句</a></li>
-            <li><a href="#declaring-local-variables--声明局部变量"><small>22.3</small> Declaring Local Variables  声明局部变量</a></li>
-            <li><a href="#using-locals--使用局部变量"><small>22.4</small> Using Locals  使用局部变量</a></li>
-            <li><a href="#习题"><small>22.5</small> 习题</a></li>
+            <li><a href="#表示局部变量"><small>22.1</small> 表示局部变量</a></li>
+            <li><a href="#块语句"><small>22.2</small> 块语句</a></li>
+            <li><a href="#声明局部变量"><small>22.3</small> 声明局部变量</a></li>
+            <li><a href="#使用局部变量"><small>22.4</small> 使用局部变量</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -131,7 +129,7 @@ program<span class="em">&mdash;</span>locals are <em>not</em> late bound. Any pr
 compiler is work we <em>don&rsquo;t</em> have to do at runtime, so our implementation of
 local variables will lean heavily on the compiler.
 幸运的是，词法作用域可以帮助我们。顾名思义，词法作用域意味着我们可以通过查看程序文本来解析局部变量——局部变量<em>不是</em>后期绑定的。我们在编译器中所做的任何处理工作都不必在运行时完成，因此局部变量的实现将在很大程度上依赖于编译器。</p>
-<h2><a href="#representing-local-variables--表示局部变量" id="representing-local-variables--表示局部变量"><small>22&#8202;.&#8202;1</small>Representing Local Variables  表示局部变量</a></h2>
+<h2><a href="#表示局部变量" id="表示局部变量"><small>22&#8202;.&#8202;1</small>表示局部变量</a></h2>
 <p>The nice thing about hacking on a programming language in modern times is
 there&rsquo;s a long lineage of other languages to learn from. So how do C and Java
 manage their local variables? Why, on the stack, of course! They typically use
@@ -321,7 +319,7 @@ in <em>compile</em>()</div>
 no way to create and destroy scopes, or add and resolve variables. We&rsquo;ll add
 those as we need them. First, let&rsquo;s start building some language features.
 我们的编译器有了它需要的数据，但还没有对这些数据的操作。没有办法创建或销毁作用域，添加和解析变量。我们会在需要的时候添加这些功能。首先，让我们开始构建一些语言特性。</p>
-<h2><a href="#block-statements--块语句" id="block-statements--块语句"><small>22&#8202;.&#8202;2</small>Block Statements  块语句</a></h2>
+<h2><a href="#块语句" id="块语句"><small>22&#8202;.&#8202;2</small>块语句</a></h2>
 <p>Before we can have any local variables, we need some local scopes. These come
 from two things: function bodies and <span name="block">blocks</span>. Functions
 are a big chunk of work that we&rsquo;ll tackle in <a href="calls-and-functions.html">a later chapter</a>, so
@@ -407,7 +405,7 @@ add after <em>beginScope</em>()</div>
 <p>That&rsquo;s it for blocks and scopes<span class="em">&mdash;</span>more or less<span class="em">&mdash;</span>so we&rsquo;re ready to stuff some
 variables into them.
 这就是块和作用域的全部内容——或多或少吧——现在我们准备在其中添加一些变量。</p>
-<h2><a href="#declaring-local-variables--声明局部变量" id="declaring-local-variables--声明局部变量"><small>22&#8202;.&#8202;3</small>Declaring Local Variables  声明局部变量</a></h2>
+<h2><a href="#声明局部变量" id="声明局部变量"><small>22&#8202;.&#8202;3</small>声明局部变量</a></h2>
 <p>Usually we start with parsing here, but our compiler already supports parsing
 and compiling variable declarations. We&rsquo;ve got <code>var</code> statements, identifier
 expressions and assignment in there now. It&rsquo;s just that the compiler assumes
@@ -666,7 +664,7 @@ and should be freed. So, for each variable that we discard, we also emit an
 you could add to your Lox implementation is a specialized <code>OP_POPN</code> instruction
 that takes an operand for the number of slots to pop and pops them all at once.</p>
 </aside>
-<h2><a href="#using-locals--使用局部变量" id="using-locals--使用局部变量"><small>22&#8202;.&#8202;4</small>Using Locals  使用局部变量</a></h2>
+<h2><a href="#使用局部变量" id="使用局部变量"><small>22&#8202;.&#8202;4</small>使用局部变量</a></h2>
 <p>We can now compile and execute local variable declarations. At runtime, their
 values are sitting where they should be on the stack. Let&rsquo;s start using them.
 We&rsquo;ll do both variable access and assignment at the same time since they touch
@@ -764,7 +762,7 @@ is the same as its stack slot. How convenient!
 name, it must not be a local. In that case, we return <code>-1</code> to signal that it
 wasn&rsquo;t found and should be assumed to be a global variable instead.
 如果我们在整个数组中都没有找到具有指定名称的变量，那它肯定不是局部变量。在这种情况下，我们返回<code>-1</code>，表示没有找到，应该假定它是一个全局变量。</p>
-<h3><a href="#interpreting-local-variables--解释局部变量" id="interpreting-local-variables--解释局部变量"><small>22&#8202;.&#8202;4&#8202;.&#8202;1</small>Interpreting local variables  解释局部变量</a></h3>
+<h3><a href="#解释局部变量" id="解释局部变量"><small>22&#8202;.&#8202;4&#8202;.&#8202;1</small>解释局部变量</a></h3>
 <p>Our compiler is emitting two new instructions, so let&rsquo;s get them working. First
 is loading a local variable:
 我们的编译器发出了两条新指令，我们来让它们发挥作用。首先是加载一个局部变量：</p>
@@ -869,7 +867,7 @@ add after <em>simpleInstruction</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>debug.c</em>, add after <em>simpleInstruction</em>()</div>
 
-<h3><a href="#another-scope-edge-case--另一种作用域边界情况" id="another-scope-edge-case--另一种作用域边界情况"><small>22&#8202;.&#8202;4&#8202;.&#8202;2</small>Another scope edge case  另一种作用域边界情况</a></h3>
+<h3><a href="#另一种作用域边界情况" id="另一种作用域边界情况"><small>22&#8202;.&#8202;4&#8202;.&#8202;2</small>另一种作用域边界情况</a></h3>
 <p>We already sunk some time into handling a couple of weird edge cases around
 scopes. We made sure shadowing works correctly. We report an error if two
 variables in the same local scope have the same name. For reasons that aren&rsquo;t
@@ -986,14 +984,6 @@ lookup or resolution needs to happen.
 : 如果我们想为虚拟机实现一个调试器，在编译器中擦除局部变量名称是一个真正的问题。当用户逐步执行代码时，他们希望看到局部变量的值按名称排列。为了支持这一点，我们需要输出一些额外的信息，以跟踪每个栈槽中的局部变量的名称。
 : 没有，即便Scheme也不是。
 : 你可以把静态类型看作是这种趋势的一个极端例子。静态类型语言将所有的类型分析和类型错误处理都在编译过程中进行了整理。这样，运行时就不必浪费时间来检查值是否具有适合其操作的类型。事实上，在一些静态类型语言（如C）中，你甚至不<em>知道</em>运行时的类型。编译器完全擦除值类型的任何表示，只留下空白的比特位。</p>
-<h2><a href="#习题" id="习题"><small>22&#8202;.&#8202;5</small>习题</a></h2>
-<ol>
-<li>
-<blockquote>
-<p>Our simple local array makes it easy to calculate the stack slot of each local variable. But it means that when the compiler resolves a reference to a variable, we have to do a linear scan through the array.</p>
-</blockquote>
-</li>
-</ol>
 <aside name="static">
 <p>You can look at static types as an extreme example of this trend. A statically
 typed language takes all of the type analysis and type error handling and sorts
@@ -1009,29 +999,19 @@ the bare bits.</p>
 <li>
 <p>Our simple local array makes it easy to calculate the stack slot of each
 local variable. But it means that when the compiler resolves a reference to
-a variable, we have to do a linear scan through the array.</p>
+a variable, we have to do a linear scan through the array.
+我们这个简单的局部变量数组使得计算每个局部变量的栈槽很容易。但这意味着，当编译器解析一个变量的引用时，我们必须对数组进行线性扫描。</p>
 <p>Come up with something more efficient. Do you think the additional
 complexity is worth it?
-我们这个简单的局部变量数组使得计算每个局部变量的栈槽很容易。但这意味着，当编译器解析一个变量的引用时，我们必须对数组进行线性扫描。
 想出一些更有效的方法。你认为这种额外的复杂性是否值得？</p>
 </li>
 <li>
-<blockquote>
 <p>How do other languages handle code like this:
 其它语言中如何处理这样的代码：</p>
-</blockquote>
-</li>
-<li>
-<p>How do other languages handle code like this:</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">a</span> = <span class="i">a</span>;
 </pre></div>
 <p>What would you do if it was your language? Why?
 如果这是你的语言，你会怎么做？为什么？</p>
-</li>
-<li>
-<blockquote>
-<p>Many languages make a distinction between variables that can be reassigned and those that can’t. In Java, the <code>final</code> modifier prevents you from assigning to a variable. In JavaScript, a variable declared with <code>let</code> can be assigned, but one declared using <code>const</code> can’t. Swift treats <code>let</code> as single-assignment and uses <code>var</code> for assignable variables. Scala and Kotlin use <code>val</code> and <code>var</code>.</p>
-</blockquote>
 </li>
 <li>
 <p>Many languages make a distinction between variables that can be reassigned
@@ -1039,21 +1019,16 @@ and those that can&rsquo;t. In Java, the <code>final</code> modifier prevents yo
 assigning to a variable. In JavaScript, a variable declared with <code>let</code> can
 be assigned, but one declared using <code>const</code> can&rsquo;t. Swift treats <code>let</code> as
 single-assignment and uses <code>var</code> for assignable variables. Scala and Kotlin
-use <code>val</code> and <code>var</code>.</p>
+use <code>val</code> and <code>var</code>.
+许多语言中，对可以重新赋值的变量与不能重新赋值的变量进行了区分。在Java中，<code>final</code>修饰符可以阻止你对变量进行赋值。在JavaScript中，用<code>let</code>声明的变量可以被赋值，但用<code>const</code>声明的变量不能被赋值。<code>Swift</code>将<code>let</code>视为单次赋值，并对可赋值变量使用<code>var</code>。<code>Scala</code>和<code>Kotlin</code>则使用<code>val</code>和<code>var</code>。</p>
 <p>Pick a keyword for a single-assignment variable form to add to Lox. Justify
 your choice, then implement it. An attempt to assign to a variable declared
 using your new keyword should cause a compile error.
-许多语言中，对可以重新赋值的变量与不能重新赋值的变量进行了区分。在Java中，<code>final</code>修饰符可以阻止你对变量进行赋值。在JavaScript中，用<code>let</code>声明的变量可以被赋值，但用<code>const</code>声明的变量不能被赋值。<code>Swift</code>将<code>let</code>视为单次赋值，并对可赋值变量使用<code>var</code>。<code>Scala</code>和<code>Kotlin</code>则使用<code>val</code>和<code>var</code>。
 选一个关键字作为单次赋值变量的形式添加到Lox中。解释一下你的选择，然后实现它。试图赋值给一个用新关键字声明的变量应该会引起编译错误。</p>
 </li>
 <li>
-<blockquote>
 <p>Extend clox to allow more than 256 local variables to be in scope at a time.
 扩展Lox，允许作用域中同时有超过256个局部变量。</p>
-</blockquote>
-</li>
-<li>
-<p>Extend clox to allow more than 256 local variables to be in scope at a time.</p>
 </li>
 </ol>
 </div>

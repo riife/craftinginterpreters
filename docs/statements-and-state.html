@@ -37,14 +37,14 @@
         <h3><a href="#top">语句和状态<small>8</small></a></h3>
     
     <ul>
-        <li><a href="#statements--语句"><small>8.1</small> Statements  语句</a></li>
-        <li><a href="#global-variables--全局变量"><small>8.2</small> Global Variables  全局变量</a></li>
-        <li><a href="#environments--环境"><small>8.3</small> Environments  环境</a></li>
-        <li><a href="#assignment--赋值"><small>8.4</small> Assignment  赋值</a></li>
-        <li><a href="#scope"><small>8.5</small> Scope</a></li>
+        <li><a href="#语句"><small>8.1</small> 语句</a></li>
+        <li><a href="#全局变量"><small>8.2</small> 全局变量</a></li>
+        <li><a href="#环境"><small>8.3</small> 环境</a></li>
+        <li><a href="#赋值"><small>8.4</small> 赋值</a></li>
+        <li><a href="#作用域"><small>8.5</small> 作用域</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration 隐式变量声明</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>隐式变量声明</a></li>
     </ul>
     
     
@@ -69,14 +69,14 @@
         <h3><a href="#top">语句和状态<small>8</small></a></h3>
         
         <ul>
-            <li><a href="#statements--语句"><small>8.1</small> Statements  语句</a></li>
-            <li><a href="#global-variables--全局变量"><small>8.2</small> Global Variables  全局变量</a></li>
-            <li><a href="#environments--环境"><small>8.3</small> Environments  环境</a></li>
-            <li><a href="#assignment--赋值"><small>8.4</small> Assignment  赋值</a></li>
-            <li><a href="#scope"><small>8.5</small> Scope</a></li>
+            <li><a href="#语句"><small>8.1</small> 语句</a></li>
+            <li><a href="#全局变量"><small>8.2</small> 全局变量</a></li>
+            <li><a href="#环境"><small>8.3</small> 环境</a></li>
+            <li><a href="#赋值"><small>8.4</small> 赋值</a></li>
+            <li><a href="#作用域"><small>8.5</small> 作用域</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Implicit Variable Declaration 隐式变量声明</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>隐式变量声明</a></li>
         </ul>
         
         
@@ -131,7 +131,7 @@ output (<code>print</code>) and create state (<code>var</code>). We&rsquo;ll add
 assign to variables. Finally, we&rsquo;ll add blocks and local scope. That&rsquo;s a lot to
 stuff into one chapter, but we&rsquo;ll chew through it all one bite at a time.
 在这一章中，我们会实现所有这些。我们会定义可以产生输出和创建状态的语句，然后会添加表达式来访问和赋值给这些变量，最后，我们会引入代码块和局部作用域。这一章要讲的内容太多了，但是我们会一点一点地把它们嚼碎。</p>
-<h2><a href="#statements--语句" id="statements--语句"><small>8&#8202;.&#8202;1</small>Statements  语句</a></h2>
+<h2><a href="#语句" id="语句"><small>8&#8202;.&#8202;1</small>语句</a></h2>
 <p>We start by extending Lox&rsquo;s grammar with statements. They aren&rsquo;t very different
 from expressions. We start with the two simplest kinds:
 我们首先扩展Lox的语法以支持语句。 语句与表达式并没有很大的不同，我们从两种最简单的类型开始：</p>
@@ -201,7 +201,7 @@ erroneous unconsumed tokens at the end of a script.
 described. We&rsquo;ll fill in more later in this chapter and in the following ones.
 The next step is turning this grammar into something we can store in memory<span class="em">&mdash;</span>syntax trees.
 目前，<code>statement</code>只有两种情况，分别对应于我们描述的两类语句。我们将在本章后面和接下来的章节中补充更多内容。接下来就是将这个语法转化为我们可以存储在内存中的东西——语法树。。</p>
-<h3><a href="#statement-syntax-trees--statement语法树" id="statement-syntax-trees--statement语法树"><small>8&#8202;.&#8202;1&#8202;.&#8202;1</small>Statement syntax trees  Statement语法树</a></h3>
+<h3><a href="#语法树" id="语法树"><small>8&#8202;.&#8202;1&#8202;.&#8202;1</small>语法树</a></h3>
 <p>There is no place in the grammar where both an expression and a statement are
 allowed. The operands of, say, <code>+</code> are always expressions, never statements. The
 body of a <code>while</code> loop is always a statement.
@@ -248,7 +248,7 @@ in <em>main</em>()</div>
 syntax tree classes we need for expression and <code>print</code> statements. Don&rsquo;t forget
 to add the file to your IDE project or makefile or whatever.
 运行AST生成器脚本，查看生成的<code>Stmt.java</code>文件，其中包含表达式和<code>print</code>语句所需的语法树类。不要忘记将该文件添加到IDE项目或makefile或其他文件中。</p>
-<h3><a href="#parsing-statements--解析语句" id="parsing-statements--解析语句"><small>8&#8202;.&#8202;1&#8202;.&#8202;2</small>Parsing statements  解析语句</a></h3>
+<h3><a href="#解析语句" id="解析语句"><small>8&#8202;.&#8202;1&#8202;.&#8202;2</small>解析语句</a></h3>
 <p>The parser&rsquo;s <code>parse()</code> method that parses and returns a single expression was a
 temporary hack to get the last chapter up and running. Now that our grammar has
 the correct starting rule, <code>program</code>, we can turn <code>parse()</code> into the real deal.
@@ -339,7 +339,7 @@ add after <em>printStatement</em>()</div>
 <p>Similar to the previous method, we parse an expression followed by a semicolon.
 We wrap that Expr in a Stmt of the right type and return it.
 与前面的方法类似，我们解析一个后面带分号的表达式。我们将Expr封装在一个正确类型的Stmt中，并返回它。</p>
-<h3><a href="#executing-statements--执行语句" id="executing-statements--执行语句"><small>8&#8202;.&#8202;1&#8202;.&#8202;3</small>Executing statements  执行语句</a></h3>
+<h3><a href="#执行语句" id="执行语句"><small>8&#8202;.&#8202;1&#8202;.&#8202;3</small>执行语句</a></h3>
 <p>We&rsquo;re running through the previous couple of chapters in microcosm, working our
 way through the front end. Our parser can now produce statement syntax trees, so
 the next and final step is to interpret them. As in expressions, we use the
@@ -487,7 +487,7 @@ text file to run as a script. Something like:
 to enter a full statement instead of a simple expression. Don&rsquo;t forget your
 semicolons.
 它看起来就像一个真实的程序！ 请注意，REPL现在也要求你输入完整的语句，而不是简单的表达式。 所以不要忘记后面的分号。</p>
-<h2><a href="#global-variables--全局变量" id="global-variables--全局变量"><small>8&#8202;.&#8202;2</small>Global Variables  全局变量</a></h2>
+<h2><a href="#全局变量" id="全局变量"><small>8&#8202;.&#8202;2</small>全局变量</a></h2>
 <p>Now that we have statements, we can start working on state. Before we get into
 all of the complexity of lexical scoping, we&rsquo;ll start off with the easiest kind
 of variables<span class="em">&mdash;</span><span name="globals">globals</span>. We need two new constructs.
@@ -535,7 +535,7 @@ didn&rsquo;t have to wrap my head around scoping rules before I could make a com
 do fun stuff.
 但是，如果你正在拼凑一种简单的编程语言，甚至是在学习第一种语言时，全局变量的简单性会有所帮助。我学习的第一门语言是BASIC，虽然我最后不再使用了，但是在我能够熟练使用计算机完成有趣的工作之前，如果能够不需要考虑作用域规则，这一点很好。</p>
 </aside>
-<h3><a href="#variable-syntax--变量语法" id="variable-syntax--变量语法"><small>8&#8202;.&#8202;2&#8202;.&#8202;1</small>Variable syntax  变量语法</a></h3>
+<h3><a href="#变量语法" id="变量语法"><small>8&#8202;.&#8202;2&#8202;.&#8202;1</small>变量语法</a></h3>
 <p>As before, we&rsquo;ll work through the implementation from front to back, starting
 with the syntax. Variable declarations are statements, but they are different
 from other statements, and we&rsquo;re going to split the statement grammar in two to
@@ -649,7 +649,7 @@ script so that you get updated &ldquo;Expr.java&rdquo; and &ldquo;Stmt.java&rdqu
 <p>The generated code for the new node is in <a href="appendix-ii.html#variable-expression">Appendix II</a>.
 新节点的生成代码见<a href="appendix-ii.html#variable-expression">附录 II</a>。</p>
 </aside>
-<h3><a href="#parsing-variables--解析变量" id="parsing-variables--解析变量"><small>8&#8202;.&#8202;2&#8202;.&#8202;2</small>Parsing variables  解析变量</a></h3>
+<h3><a href="#解析变量" id="解析变量"><small>8&#8202;.&#8202;2&#8202;.&#8202;2</small>解析变量</a></h3>
 <p>Before we parse variable statements, we need to shift around some code to make
 room for the new <code>declaration</code> rule in the grammar. The top level of a program
 is now a list of declarations, so the entrypoint method to the parser changes.
@@ -755,7 +755,7 @@ in <em>primary</em>()</div>
 left is to feed it into the interpreter. Before we get to that, we need to talk
 about where variables live in memory.
 这为我们提供了声明和使用变量的可用前端，剩下的就是将其接入解释器中。在此之前，我们需要讨论变量在内存中的位置。</p>
-<h2><a href="#environments--环境" id="environments--环境"><small>8&#8202;.&#8202;3</small>Environments  环境</a></h2>
+<h2><a href="#环境" id="环境"><small>8&#8202;.&#8202;3</small>环境</a></h2>
 <p>The bindings that associate variables to values need to be stored somewhere.
 Ever since the Lisp folks invented parentheses, this data structure has been
 called an <span name="env"><strong>environment</strong></span>.
@@ -962,7 +962,7 @@ for even and odd numbers work, but you&rsquo;d get a runtime error in:
 by throwing an exception. The exception contains the variable&rsquo;s token so we can
 tell the user where in their code they messed up.
 与表达式计算代码中的类型错误一样，我们通过抛出一个异常来报告运行时错误。异常中包含变量的标记，以便我们告诉用户代码的什么位置出现了错误。</p>
-<h3><a href="#interpreting-global-variables--解释全局变量" id="interpreting-global-variables--解释全局变量"><small>8&#8202;.&#8202;3&#8202;.&#8202;1</small>Interpreting global variables  解释全局变量</a></h3>
+<h3><a href="#解释全局变量" id="解释全局变量"><small>8&#8202;.&#8202;3&#8202;.&#8202;1</small>解释全局变量</a></h3>
 <p>The Interpreter class gets an instance of the new Environment class.
 Interpreter类会获取Environment类的一个实例。</p>
 <div class="codehilite"><pre class="insert-before">class Interpreter implements Expr.Visitor&lt;Object&gt;,
@@ -1036,7 +1036,7 @@ working. Try this out:
 <p>We can&rsquo;t reuse <em>code</em> yet, but we can start to build up programs that reuse
 <em>data</em>.
 我们还不能复用代码，但是我们可以构建能够复用数据的程序。</p>
-<h2><a href="#assignment--赋值" id="assignment--赋值"><small>8&#8202;.&#8202;4</small>Assignment  赋值</a></h2>
+<h2><a href="#赋值" id="赋值"><small>8&#8202;.&#8202;4</small>赋值</a></h2>
 <p>It&rsquo;s possible to create a language that has variables but does not let you
 reassign<span class="em">&mdash;</span>or <strong>mutate</strong><span class="em">&mdash;</span>them. Haskell is one example. SML supports only
 mutable references and arrays<span class="em">&mdash;</span>variables cannot be reassigned. Rust steers you
@@ -1061,7 +1061,7 @@ for their work: &ldquo;pure&rdquo;, &ldquo;side effect&rdquo;, &ldquo;lazy&rdquo
 the territory. Adding support for assignment doesn&rsquo;t require much work. Global
 variables already support redefinition, so most of the machinery is there now.
 Mainly, we&rsquo;re missing an explicit assignment notation.</p>
-<h3><a href="#assignment-syntax--赋值语法" id="assignment-syntax--赋值语法"><small>8&#8202;.&#8202;4&#8202;.&#8202;1</small>Assignment syntax  赋值语法</a></h3>
+<h3><a href="#赋值语法" id="赋值语法"><small>8&#8202;.&#8202;4&#8202;.&#8202;1</small>赋值语法</a></h3>
 <p>That little <code>=</code> syntax is more complex than it might seem. Like most C-derived
 languages, assignment is an <span name="assign">expression</span> and not a
 statement. As in C, it is the lowest precedence expression form. That means the
@@ -1237,7 +1237,7 @@ fields later. The end result of this trick is an assignment expression tree node
 that knows what it is assigning to and has an expression subtree for the value
 being assigned. All with only a single token of lookahead and no backtracking.
 现在，唯一有效的赋值目标就是一个简单的变量表达式，但是我们后面会添加属性字段。这个技巧的最终结果是一个赋值表达式树节点，该节点知道要向什么赋值，并且有一个表达式子树用于计算要使用的值。所有这些都只用了一个前瞻标记，并且没有回溯。</p>
-<h3><a href="#assignment-semantics" id="assignment-semantics"><small>8&#8202;.&#8202;4&#8202;.&#8202;2</small>Assignment semantics</a></h3>
+<h3><a href="#赋值语句" id="赋值语句"><small>8&#8202;.&#8202;4&#8202;.&#8202;2</small>赋值语句</a></h3>
 <p>We have a new syntax tree node, so our interpreter gets a new visit method.
 我们有了一个新的语法树节点，所以我们的解释器也需要一个新的访问方法。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
@@ -1296,7 +1296,7 @@ it&rsquo;s time for <em>scope</em>.
 names longer than two characters.
 也许比这更好一点。与一些老式 BASIC 不同，Lox 可以处理长度超过两个字符的变量名。</p>
 </aside>
-<h2><a href="#scope" id="scope"><small>8&#8202;.&#8202;5</small>Scope</a></h2>
+<h2><a href="#作用域" id="作用域"><small>8&#8202;.&#8202;5</small>作用域</a></h2>
 <p>A <strong>scope</strong> defines a region where a name maps to a certain entity. Multiple
 scopes enable the same name to refer to different things in different contexts.
 In my house, &ldquo;Bob&rdquo; usually refers to me. But maybe in your town you know a
@@ -1382,7 +1382,7 @@ blocks. (That&rsquo;s why we call it <strong>block scope</strong>.)
 execution passes the closing <code>}</code>. Any variables declared inside the block
 disappear.
 块的开始引入了一个新的局部作用域，当执行通过结束的<code>}</code>时，这个作用域就结束了。块内声明的任何变量都会消失。</p>
-<h3><a href="#nesting-and-shadowing--嵌套和遮蔽" id="nesting-and-shadowing--嵌套和遮蔽"><small>8&#8202;.&#8202;5&#8202;.&#8202;1</small>Nesting and shadowing  嵌套和遮蔽</a></h3>
+<h3><a href="#嵌套和遮蔽" id="嵌套和遮蔽"><small>8&#8202;.&#8202;5&#8202;.&#8202;1</small>嵌套和遮蔽</a></h3>
 <p>A first cut at implementing block scope might work like this:
 实现块作用域的第一步可能是这样的：</p>
 <ol>
@@ -1550,7 +1550,7 @@ in <em>assign</em>()</div>
 <p>Again, if the variable isn&rsquo;t in this environment, it checks the outer one,
 recursively.
 同样，如果变量不在此环境中，它会递归地检查外围环境。</p>
-<h3><a href="#block-syntax-and-semantics--块语法和语义" id="block-syntax-and-semantics--块语法和语义"><small>8&#8202;.&#8202;5&#8202;.&#8202;2</small>Block syntax and semantics  块语法和语义</a></h3>
+<h3><a href="#块语法和语义" id="块语法和语义"><small>8&#8202;.&#8202;5&#8202;.&#8202;2</small>块语法和语义</a></h3>
 <p>Now that Environments nest, we&rsquo;re ready to add blocks to the language. Behold
 the grammar:
 现在环境已经嵌套了，我们就准备向语言中添加块了。请看以下语法：</p>
@@ -1718,14 +1718,14 @@ printing its result value. That&rsquo;s a drag. Add support to the REPL to let
 users type in both statements and expressions. If they enter a statement,
 execute it. If they enter an expression, evaluate it and display the result
 value.
-1、REPL不再支持输入一个表达式并自动打印其结果值。这是个累赘。在 REPL 中增加支持，让用户既可以输入语句又可以输入表达式。如果他们输入一个语句，就执行它。如果他们输入一个表达式，则对表达式求值并显示结果值。</p>
+REPL不再支持输入一个表达式并自动打印其结果值。这是个累赘。在 REPL 中增加支持，让用户既可以输入语句又可以输入表达式。如果他们输入一个语句，就执行它。如果他们输入一个表达式，则对表达式求值并显示结果值。</p>
 </li>
 <li>
 <p>Maybe you want Lox to be a little more explicit about variable
 initialization. Instead of implicitly initializing variables to <code>nil</code>, make
 it a runtime error to access a variable that has not been initialized or
 assigned to, as in:
-2、也许你希望Lox对变量的初始化更明确一些。与其隐式地将变量初始化为nil，不如将访问一个未被初始化或赋值的变量作为一个运行时错误，如：</p>
+也许你希望Lox对变量的初始化更明确一些。与其隐式地将变量初始化为nil，不如将访问一个未被初始化或赋值的变量作为一个运行时错误，如：</p>
 <div class="codehilite"><pre><span class="c">// No initializers.</span>
 <span class="k">var</span> <span class="i">a</span>;
 <span class="k">var</span> <span class="i">b</span>;
@@ -1738,7 +1738,7 @@ assigned to, as in:
 </li>
 <li>
 <p>What does the following program do?
-3、下面的代码会怎么执行？</p>
+下面的代码会怎么执行？</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">a</span> = <span class="n">1</span>;
 {
   <span class="k">var</span> <span class="i">a</span> = <span class="i">a</span> + <span class="n">2</span>;
@@ -1753,7 +1753,7 @@ you think users will expect this to do?
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Implicit Variable Declaration 隐式变量声明</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 隐式变量声明</a></h2>
 <p>Lox has distinct syntax for declaring a new variable and assigning to an
 existing one. Some languages collapse those to only assignment syntax. Assigning
 to a non-existent variable automatically brings it into being. This is called

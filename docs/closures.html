@@ -37,14 +37,13 @@
         <h3><a href="#top">闭包<small>25</small></a></h3>
     
     <ul>
-        <li><a href="#closure-objects--闭包对象"><small>25.1</small> Closure Objects  闭包对象</a></li>
-        <li><a href="#upvalues--上值"><small>25.2</small> Upvalues  上值</a></li>
-        <li><a href="#upvalue-objects--upvalue对象"><small>25.3</small> Upvalue Objects  Upvalue对象</a></li>
+        <li><a href="#闭包对象"><small>25.1</small> 闭包对象</a></li>
+        <li><a href="#上值"><small>25.2</small> 上值</a></li>
+        <li><a href="#upvalue对象"><small>25.3</small> Upvalue对象</a></li>
         <li><a href="#closed-upvalues--关闭的上值"><small>25.4</small> Closed Upvalues  关闭的上值</a></li>
-        <li><a href="#习题"><small>25.5</small> 习题</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Closing Over the Loop Variable 关闭循环变量</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>关闭循环变量</a></li>
     </ul>
     
     
@@ -69,14 +68,13 @@
         <h3><a href="#top">闭包<small>25</small></a></h3>
         
         <ul>
-            <li><a href="#closure-objects--闭包对象"><small>25.1</small> Closure Objects  闭包对象</a></li>
-            <li><a href="#upvalues--上值"><small>25.2</small> Upvalues  上值</a></li>
-            <li><a href="#upvalue-objects--upvalue对象"><small>25.3</small> Upvalue Objects  Upvalue对象</a></li>
+            <li><a href="#闭包对象"><small>25.1</small> 闭包对象</a></li>
+            <li><a href="#上值"><small>25.2</small> 上值</a></li>
+            <li><a href="#upvalue对象"><small>25.3</small> Upvalue对象</a></li>
             <li><a href="#closed-upvalues--关闭的上值"><small>25.4</small> Closed Upvalues  关闭的上值</a></li>
-            <li><a href="#习题"><small>25.5</small> 习题</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Closing Over the Loop Variable 关闭循环变量</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>关闭循环变量</a></li>
         </ul>
         
         
@@ -178,7 +176,7 @@ use. It is somewhat intricate, though. It might take a while before all the
 pieces click together in your mind. We&rsquo;ll build them one step at a time, and
 I&rsquo;ll try to introduce the concepts in stages.
 我在这里解释的技术来自于Lua虚拟机的设计。它速度快，内存占用少，并且只用相对较少的代码就实现了。更令人印象深刻的是，它很自然地适用于clox和Lua都在使用的单遍编译器。不过，它有些复杂，可能需要一段时间才能把所有的碎片在你的脑海中拼凑起来。我们将一步一步地构建它们，我将尝试分阶段介绍这些概念。</p>
-<h2><a href="#closure-objects--闭包对象" id="closure-objects--闭包对象"><small>25&#8202;.&#8202;1</small>Closure Objects  闭包对象</a></h2>
+<h2><a href="#闭包对象" id="闭包对象"><small>25&#8202;.&#8202;1</small>闭包对象</a></h2>
 <p>Our VM represents functions at runtime using ObjFunction. These objects are
 created by the front end during compilation. At runtime, all the VM does is load
 the function object from a constant table and bind it to a name. There is no
@@ -340,7 +338,7 @@ difference between ObjFunction and ObjClosure is purely a hidden implementation
 detail. With that out of the way, we have a working but empty representation for
 closures.
 它们的显示和ObjFunction一样。从用户的角度来看，ObjFunction和ObjClosure之间的区别纯粹是一个隐藏的实现细节。有了这些，我们就有了一个可用但空白的闭包表示形式。</p>
-<h3><a href="#compiling-to-closure-objects--编译为闭包对象" id="compiling-to-closure-objects--编译为闭包对象"><small>25&#8202;.&#8202;1&#8202;.&#8202;1</small>Compiling to closure objects  编译为闭包对象</a></h3>
+<h3><a href="#编译为闭包对象" id="编译为闭包对象"><small>25&#8202;.&#8202;1&#8202;.&#8202;1</small>编译为闭包对象</a></h3>
 <p>We have closure objects, but our VM never creates them. The next step is getting
 the compiler to emit instructions to tell the runtime when to create a new
 ObjClosure to wrap a given ObjFunction. This happens right at the end of a
@@ -395,7 +393,7 @@ of the chapter, you&rsquo;ll discover that <code>OP_CLOSURE</code> is quite an u
 instruction. It&rsquo;s straightforward right now<span class="em">&mdash;</span>just a single byte operand<span class="em">&mdash;</span>but
 we&rsquo;ll be adding to it. This code here anticipates that future.
 这里做的事情比我们通常在反汇编程序中看到的要多。在本章结束时，你会发现<code>OP_CLOSURE</code>是一个相当不寻常的指令。它现在很简单——只有一个单字节的操作数——但我们会增加它的内容。这里的代码预示了未来。</p>
-<h3><a href="#interpreting-function-declarations--解释函数声明" id="interpreting-function-declarations--解释函数声明"><small>25&#8202;.&#8202;1&#8202;.&#8202;2</small>Interpreting function declarations  解释函数声明</a></h3>
+<h3><a href="#解释函数声明" id="解释函数声明"><small>25&#8202;.&#8202;1&#8202;.&#8202;2</small>解释函数声明</a></h3>
 <p>Most of the work we need to do is in the runtime. We have to handle the new
 instruction, naturally. But we also need to touch every piece of code in the VM
 that works with ObjFunction and change it to use ObjClosure instead<span class="em">&mdash;</span>function
@@ -569,7 +567,7 @@ wraps the ObjFunction in a new ObjClosure. The rest of the VM now handles those
 ObjClosures floating around. That&rsquo;s the boring stuff out of the way. Now we&rsquo;re
 ready to make these closures actually <em>do</em> something.
 我们又得到了一个可以工作的解释器。<em>用户</em>看不出有什么不同，但是编译器现在生成的代码会告诉虚拟机，为每一个函数声明创建一个闭包。每当VM执行一个函数声明时，它都会将ObjFunction包装在一个新的ObjClosure中。VM的其余部分会处理那些四处漂浮的ObjClosures。无聊的事情就到此为止吧。现在，我们准备让这些闭包实际<em>做</em>一些事情。</p>
-<h2><a href="#upvalues--上值" id="upvalues--上值"><small>25&#8202;.&#8202;2</small>Upvalues  上值</a></h2>
+<h2><a href="#上值" id="上值"><small>25&#8202;.&#8202;2</small>上值</a></h2>
 <p>Our existing instructions for reading and writing local variables are limited to
 a single function&rsquo;s stack window. Locals from a surrounding function are outside
 of the inner function&rsquo;s window. We&rsquo;re going to need some new instructions.
@@ -1118,7 +1116,7 @@ outputs an <code>OP_CLOSURE</code> instruction followed by a series of operand b
 for each upvalue it needs to capture at runtime. It&rsquo;s time to hop over to that
 side of the VM and get things running.
 有了这些，我们的编译器就达到了我们想要的效果。对于每个函数声明，它都会输出一条<code>OP_CLOSURE</code>指令，后跟一系列操作数字节对，对应需要在运行时捕获的每个上值。现在是时候跳到虚拟机那边，让整个程序运转起来。</p>
-<h2><a href="#upvalue-objects--upvalue对象" id="upvalue-objects--upvalue对象"><small>25&#8202;.&#8202;3</small>Upvalue Objects  Upvalue对象</a></h2>
+<h2><a href="#upvalue对象" id="upvalue对象"><small>25&#8202;.&#8202;3</small>Upvalue对象</a></h2>
 <p>Each <code>OP_CLOSURE</code> instruction is now followed by the series of bytes that
 specify the upvalues the ObjClosure should own. Before we process those
 operands, we need a runtime representation for upvalues.
@@ -1446,7 +1444,7 @@ closures don&rsquo;t have stack semantics. That means we&rsquo;ve got to hoist t
 stack when the function where they were declared returns. This final section of
 the chapter does that.
 但是如果你现在运行它……天知道它会做什么？在运行时，他会从不包含关闭变量的栈槽中读取数据。正如我多次提到的，问题的关键在于闭包中的变量不具有栈语义。这意味着当声明它们的函数返回时，我们必须将它们从栈中取出。本章的最后一节就是实现这一点的。</p>
-<h3><a href="#values-and-variables--值与变量" id="values-and-variables--值与变量"><small>25&#8202;.&#8202;4&#8202;.&#8202;1</small>Values and variables  值与变量</a></h3>
+<h3><a href="#值与变量" id="值与变量"><small>25&#8202;.&#8202;4&#8202;.&#8202;1</small>值与变量</a></h3>
 <p>Before we get to writing code, I want to dig into an important semantic point.
 Does a closure close over a <em>value</em> or a <em>variable?</em> This isn&rsquo;t purely an <span
 name="academic">academic</span> question. I&rsquo;m not just splitting hairs.
@@ -2054,14 +2052,6 @@ memory so that we can free some of those objects when they&rsquo;re no longer ne
 : 还有一种更简短的实现，通过使用一个指向指针的指针，来统一处理更新头部指针或前一个上值的<code>next</code>指针两种情况，但这种代码几乎会让所有未达到指针专业水平的人感到困惑。我选择了基本的<code>if</code>语句的方法。
 : 我并不是在自夸。这都是Lua开发团队的创新。
 : 没有什么<em>阻止</em>我们在编译器中关闭最外层的函数作用域，并生成<code>OP_POP</code>和<code>OP_CLOSE_UPVALUE</code>指令。这样做只是没有必要，因为运行时在弹出调用帧时，隐式地丢弃了函数使用的所有栈槽。</p>
-<h2><a href="#习题" id="习题"><small>25&#8202;.&#8202;5</small>习题</a></h2>
-<ol>
-<li>
-<blockquote>
-<p>Wrapping every ObjFunction in an ObjClosure introduces a level of indirection that has a performance cost. That cost isn’t necessary for functions that do not close over any variables, but it does let the runtime treat all calls uniformly.</p>
-</blockquote>
-</li>
-</ol>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -2069,31 +2059,23 @@ memory so that we can free some of those objects when they&rsquo;re no longer ne
 <p>Wrapping every ObjFunction in an ObjClosure introduces a level of
 indirection that has a performance cost. That cost isn&rsquo;t necessary for
 functions that do not close over any variables, but it does let the runtime
-treat all calls uniformly.</p>
+treat all calls uniformly.
+将每个ObjFunction 包装在ObjClosure中，会引人一个有性能代价的中间层。这个代价对于那些没有关闭任何变量的函数来说是不必要的，但它确实让运行时能够统一处理所有的调用。  </p>
 <p>Change clox to only wrap functions in ObjClosures that need upvalues. How
 does the code complexity and performance compare to always wrapping
 functions? Take care to benchmark programs that do and do not use closures.
 How should you weight the importance of each benchmark? If one gets slower
 and one faster, how do you decide what trade-off to make to choose an
 implementation strategy?
-将每个ObjFunction 包装在ObjClosure中，会引人一个有性能代价的中间层。这个代价对于那些没有关闭任何变量的函数来说是不必要的，但它确实让运行时能够统一处理所有的调用。
 将clox改为只用ObjClosure包装需要上值的函数。与包装所有函数相比，代码的复杂性与性能如何？请注意对使用闭包和不使用闭包的程序进行基准测试。你应该如何衡量每个基准的重要性？如果一个变慢了，另一个变快了，你决定通过什么权衡来选择实现策略？</p>
 </li>
-<li>
-<blockquote>
-<p>Read the design note below. I’ll wait. Now, how do you think Lox <em>should</em> behave? Change the implementation to create a new variable for each loop iteration.
-请阅读下面的<a href="#设计笔记：关闭循环变量">设计笔记</a>。我在这里等着。现在，你觉得Lox应该怎么做？改变实现方式，为每个循环迭代创建一个新的变量。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>A <a href="http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent">famous koan</a> teaches us that “objects are a poor man’s closure” (and vice versa). Our VM doesn’t support objects yet, but now that we have closures we can approximate them. Using closures, write a Lox program that models two-dimensional vector “objects”. It should:</p>
-</blockquote>
-</li>
+</ol>
+<ol start="2">
 <li>
 <p>Read the design note below. I&rsquo;ll wait. Now, how do you think Lox <em>should</em>
 behave? Change the implementation to create a new variable for each loop
-iteration.</p>
+iteration.
+请阅读下面的<a href="#设计笔记：关闭循环变量">设计笔记</a>。我在这里等着。现在，你觉得Lox应该怎么做？改变实现方式，为每个循环迭代创建一个新的变量。</p>
 </li>
 <li>
 <p>A <a href="http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent">famous koan</a> teaches us that &ldquo;objects are a poor man&rsquo;s closure&rdquo;
@@ -2117,7 +2099,7 @@ returned from that constructor.</p>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Closing Over the Loop Variable 关闭循环变量</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 关闭循环变量</a></h2>
 <p>Closures capture variables. When two closures capture the same variable, they
 share a reference to the same underlying storage location. This fact is visible
 when new values are assigned to the variable. Obviously, if two closures capture

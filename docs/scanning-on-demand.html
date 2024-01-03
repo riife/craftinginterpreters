@@ -37,10 +37,10 @@
         <h3><a href="#top">按需扫描<small>16</small></a></h3>
     
     <ul>
-        <li><a href="#spinning-up-the-interpreter"><small>16.1</small> Spinning Up the Interpreter</a></li>
-        <li><a href="#a-token-at-a-time--一次一个标识"><small>16.2</small> A Token at a Time  一次一个标识</a></li>
-        <li><a href="#a-lexical-grammar-for-lox--lox语法"><small>16.3</small> A Lexical Grammar for Lox  Lox语法</a></li>
-        <li><a href="#identifiers-and-keywords--标识符和关键字"><small>16.4</small> Identifiers and Keywords  标识符和关键字</a></li>
+        <li><a href="#启动编译器-spinning-up-the-interpreter"><small>16.1</small> 启动编译器 Spinning Up the Interpreter</a></li>
+        <li><a href="#一次一个标识"><small>16.2</small> 一次一个标识</a></li>
+        <li><a href="#lox语法"><small>16.3</small> Lox语法</a></li>
+        <li><a href="#标识符和关键字"><small>16.4</small> 标识符和关键字</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -67,10 +67,10 @@
         <h3><a href="#top">按需扫描<small>16</small></a></h3>
         
         <ul>
-            <li><a href="#spinning-up-the-interpreter"><small>16.1</small> Spinning Up the Interpreter</a></li>
-            <li><a href="#a-token-at-a-time--一次一个标识"><small>16.2</small> A Token at a Time  一次一个标识</a></li>
-            <li><a href="#a-lexical-grammar-for-lox--lox语法"><small>16.3</small> A Lexical Grammar for Lox  Lox语法</a></li>
-            <li><a href="#identifiers-and-keywords--标识符和关键字"><small>16.4</small> Identifiers and Keywords  标识符和关键字</a></li>
+            <li><a href="#启动编译器-spinning-up-the-interpreter"><small>16.1</small> 启动编译器 Spinning Up the Interpreter</a></li>
+            <li><a href="#一次一个标识"><small>16.2</small> 一次一个标识</a></li>
+            <li><a href="#lox语法"><small>16.3</small> Lox语法</a></li>
+            <li><a href="#标识符和关键字"><small>16.4</small> 标识符和关键字</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -109,7 +109,7 @@ implementations of the same language, there&rsquo;s bound to be some redundancy.
 sneak in a few interesting differences compared to jlox&rsquo;s scanner. Read on to
 see what they are.
 我承认，这并不是书中最精彩的一章。对于同一种语言的两个实现，肯定会有一些冗余。与jlox的扫描器相比，我确实添加了一些有趣的差异点。往下读，看看它们是什么。</p>
-<h2><a href="#spinning-up-the-interpreter" id="spinning-up-the-interpreter"><small>16&#8202;.&#8202;1</small>Spinning Up the Interpreter</a></h2>
+<h2><a href="#启动编译器-spinning-up-the-interpreter" id="启动编译器-spinning-up-the-interpreter"><small>16&#8202;.&#8202;1</small>启动编译器 Spinning Up the Interpreter</a></h2>
 <p>Now that we&rsquo;re building the front end, we can get clox running like a real
 interpreter. No more hand-authored chunks of bytecode. It&rsquo;s time for a REPL and
 script loading. Tear out most of the code in <code>main()</code> and replace it with:
@@ -317,7 +317,7 @@ go too far off in the weeds, shall we?
 <p>Even good old <code>printf()</code> can fail. Yup. How many times have you handled <em>that</em>
 error?</p>
 </aside>
-<h3><a href="#opening-the-compilation-pipeline--开启编译管道" id="opening-the-compilation-pipeline--开启编译管道"><small>16&#8202;.&#8202;1&#8202;.&#8202;1</small>Opening the compilation pipeline  开启编译管道</a></h3>
+<h3><a href="#开启编译管线" id="开启编译管线"><small>16&#8202;.&#8202;1&#8202;.&#8202;1</small>开启编译管线</a></h3>
 <p>We&rsquo;ve got ourselves a string of Lox source code, so now we&rsquo;re ready to set up a
 pipeline to scan, compile, and execute it. It&rsquo;s driven by <code>interpret()</code>. Right
 now, that function runs our old hardcoded test chunk. Let&rsquo;s change it to
@@ -389,7 +389,7 @@ create new file</div>
 
 <p>This will also grow in later chapters, naturally.
 当然，这在后面的章节中也会继续扩展。</p>
-<h3><a href="#the-scanner-scans--扫描器扫描" id="the-scanner-scans--扫描器扫描"><small>16&#8202;.&#8202;1&#8202;.&#8202;2</small>The scanner scans  扫描器扫描</a></h3>
+<h3><a href="#扫描器扫描" id="扫描器扫描"><small>16&#8202;.&#8202;1&#8202;.&#8202;2</small>扫描器扫描</a></h3>
 <p>There are still a few more feet of scaffolding to stand up before we can start
 writing useful code. First, a new header:
 在我们开始编写实际有用的代码之前，还有一些脚手架需要先搭建起来。首先，是一个新的头文件：</p>
@@ -458,7 +458,7 @@ add after variable <em>scanner</em></div>
 <p>We start at the very first character on the very first line, like a runner
 crouched at the starting line.
 我们从第一行的第一个字符开始，就像一个运动员蹲在起跑线上。</p>
-<h2><a href="#a-token-at-a-time--一次一个标识" id="a-token-at-a-time--一次一个标识"><small>16&#8202;.&#8202;2</small>A Token at a Time  一次一个标识</a></h2>
+<h2><a href="#一次一个标识" id="一次一个标识"><small>16&#8202;.&#8202;2</small>一次一个标识</a></h2>
 <p>In jlox, when the starting gun went off, the scanner raced ahead and eagerly
 scanned the whole program, returning a list of tokens. This would be a challenge
 in clox. We&rsquo;d need some sort of growable array or list to store the tokens in.
@@ -621,7 +621,7 @@ the source string, which is created far away over in the &ldquo;main&rdquo; modu
 long enough lifetime. That&rsquo;s why <code>runFile()</code> doesn&rsquo;t free the string until
 <code>interpret()</code> finishes executing the code and returns.</p>
 </aside>
-<h3><a href="#scanning-tokens--扫描标识" id="scanning-tokens--扫描标识"><small>16&#8202;.&#8202;2&#8202;.&#8202;1</small>Scanning tokens  扫描标识</a></h3>
+<h3><a href="#扫描标识符" id="扫描标识符"><small>16&#8202;.&#8202;2&#8202;.&#8202;1</small>扫描标识符</a></h3>
 <p>We&rsquo;re ready to scan some tokens. We&rsquo;ll work our way up to the complete
 implementation, starting with this:
 我们已经准备好扫描一些标识了。我们将从下面的代码开始，逐步达成完整的实现：</p>
@@ -713,7 +713,7 @@ lexical grammar. Since the grammar has no productions, every character is an
 error. That&rsquo;s not exactly a fun language to program in, so let&rsquo;s fill in the
 rules.
 我们现在所拥有的是一个基本可用的扫描器，用于扫描空语法语言。因为语法没有产生式，所以每个字符都是一个错误。这并不是一种有趣的编程语言，所以让我们把规则填进去。</p>
-<h2><a href="#a-lexical-grammar-for-lox--lox语法" id="a-lexical-grammar-for-lox--lox语法"><small>16&#8202;.&#8202;3</small>A Lexical Grammar for Lox  Lox语法</a></h2>
+<h2><a href="#lox语法" id="lox语法"><small>16&#8202;.&#8202;3</small>Lox语法</a></h2>
 <p>The simplest tokens are only a single character. We recognize those like so:
 最简单的词法标识只有一个字符。我们这样来识别它们：</p>
 <div class="codehilite"><pre class="insert-before">  if (isAtEnd()) return makeToken(TOKEN_EOF);
@@ -807,7 +807,7 @@ Otherwise, we return <code>false</code> to indicate it wasn&rsquo;t matched.
 the longer ones, let&rsquo;s take a little side trip to handle characters that aren&rsquo;t
 part of a token at all.
 现在我们的扫描器支持所有类似标点符号的标识。在我们处理更长的字符之前，我们先来处理一下那些根本不属于标识的字符。</p>
-<h3><a href="#whitespace" id="whitespace"><small>16&#8202;.&#8202;3&#8202;.&#8202;1</small>Whitespace</a></h3>
+<h3><a href="#空白符" id="空白符"><small>16&#8202;.&#8202;3&#8202;.&#8202;1</small>空白符</a></h3>
 <p>Our scanner needs to handle spaces, tabs, and newlines, but those characters
 don&rsquo;t become part of any token&rsquo;s lexeme. We could check for those inside the
 main character switch in <code>scanToken()</code> but it gets a little tricky to ensure
@@ -877,7 +877,7 @@ in <em>skipWhitespace</em>()</div>
 
 <p>When we consume one of those, we also bump the current line number.
 当我们消费换行符时，也会增加当前行数。</p>
-<h3><a href="#comments" id="comments"><small>16&#8202;.&#8202;3&#8202;.&#8202;2</small>Comments</a></h3>
+<h3><a href="#注释" id="注释"><small>16&#8202;.&#8202;3&#8202;.&#8202;2</small>注释</a></h3>
 <p>Comments aren&rsquo;t technically &ldquo;whitespace&rdquo;, if you want to get all precise with
 your terminology, but as far as Lox is concerned, they may as well be, so we
 skip those too.
@@ -922,7 +922,7 @@ characters until the next newline or the end of the source code.
 newline will be the current character on the next turn of the outer loop in
 <code>skipWhitespace()</code> and we&rsquo;ll recognize it and increment <code>scanner.line</code>.
 我们使用<code>peek()</code>来检查换行符，但是不消费它。这样一来，换行符将成为<code>skipWhitespace()</code>外部下一轮循环中的当前字符，我们就能识别它并增加<code>scanner.line</code>。</p>
-<h3><a href="#literal-tokens--字面量标识" id="literal-tokens--字面量标识"><small>16&#8202;.&#8202;3&#8202;.&#8202;3</small>Literal tokens  字面量标识</a></h3>
+<h3><a href="#字面量标识" id="字面量标识"><small>16&#8202;.&#8202;3&#8202;.&#8202;3</small>字面量标识</a></h3>
 <p>Number and string tokens are special because they have a runtime value
 associated with them. We&rsquo;ll start with strings because they are easy to
 recognize<span class="em">&mdash;</span>they always begin with a double quote.
@@ -1028,7 +1028,7 @@ add after <em>skipWhitespace</em>()</div>
 <p>It&rsquo;s virtually identical to jlox&rsquo;s version except, again, we don&rsquo;t convert the
 lexeme to a double yet.
 它与jlox版本几乎是相同的，只是我们还没有将词素转换为浮点数。</p>
-<h2><a href="#identifiers-and-keywords--标识符和关键字" id="identifiers-and-keywords--标识符和关键字"><small>16&#8202;.&#8202;4</small>Identifiers and Keywords  标识符和关键字</a></h2>
+<h2><a href="#标识符和关键字" id="标识符和关键字"><small>16&#8202;.&#8202;4</small>标识符和关键字</a></h2>
 <p>The last batch of tokens are identifiers, both user-defined and reserved. This
 section should be fun<span class="em">&mdash;</span>the way we recognize keywords in clox is quite
 different from how we did it in jlox, and touches on some important data
@@ -1120,7 +1120,7 @@ doesn&rsquo;t match a child node, then the identifier must not be a keyword and 
 stop. If we reach a double-lined box, and we&rsquo;re at the last character of the
 lexeme, then we found a keyword.
 我们从根节点开始。如果有一个子节点的字母与词素中的第一个字符相匹配，我们就移动到该节点上。然后对词素中的下一个字母重复此操作，以此类推。如果在任意节点上，词素的下一个字符没有匹配到子节点，那么该标识符一定不是一个关键字，我们就停止。如果我们到达了一个双线框，并且我们在词素的最后一个字符处，那么我们就找到了一个关键字。</p>
-<h3><a href="#tries-and-state-machines--字典树和状态机" id="tries-and-state-machines--字典树和状态机"><small>16&#8202;.&#8202;4&#8202;.&#8202;1</small>Tries and state machines  字典树和状态机</a></h3>
+<h3><a href="#字典树和状态机" id="字典树和状态机"><small>16&#8202;.&#8202;4&#8202;.&#8202;1</small>字典树和状态机</a></h3>
 <p>This tree diagram is an example of a thing called a <span
 name="trie"><a href="https://en.wikipedia.org/wiki/Trie"><strong>trie</strong></a></span>. A trie stores a set of strings. Most other
 data structures for storing strings contain the raw character arrays and then
@@ -1355,14 +1355,9 @@ interpolation to see how they handle it.
 可以考虑看看其它支持插值的语言实现，看它们是如何处理的。</p>
 </li>
 <li>
-<blockquote>
-<p>Several languages use angle brackets for generics and also have a <code>&gt;&gt;</code> right shift operator. This led to a classic problem in early versions of C++:
-有些语言使用尖括号来表示泛型，也有右移操作符<code>&gt;&gt;</code>。这就导致了C++早期版本中的一个经典问题：</p>
-</blockquote>
-</li>
-<li>
 <p>Several languages use angle brackets for generics and also have a <code>&gt;&gt;</code> right
-shift operator. This led to a classic problem in early versions of C++:</p>
+shift operator. This led to a classic problem in early versions of C++:
+有些语言使用尖括号来表示泛型，也有右移操作符<code>&gt;&gt;</code>。这就导致了C++早期版本中的一个经典问题：</p>
 <div class="codehilite"><pre><span class="t">vector</span>&lt;<span class="t">vector</span>&lt;<span class="t">string</span>&gt;&gt; <span class="i">nestedVectors</span>;
 </pre></div>
 <p>This would produce a compile error because the <code>&gt;&gt;</code> was lexed to a single
@@ -1374,15 +1369,10 @@ never had the problem. How do those languages specify and implement this?
 后续的C++版本更加智能，可以处理上述代码。Java和C#从未出现过这个问题。这些语言是如何规定和实现这一点的呢？</p>
 </li>
 <li>
-<blockquote>
-<p>Many languages, especially later in their evolution, define “contextual keywords”. These are identifiers that act like reserved words in some contexts but can be normal user-defined identifiers in others.
-许多语言，尤其是在其发展的后期，都定义了“上下文式关键字”。这些标识符在某些情况下类似于保留字，但在其它上下文中可以是普通的用户定义的标识符。</p>
-</blockquote>
-</li>
-<li>
 <p>Many languages, especially later in their evolution, define &ldquo;contextual
 keywords&rdquo;. These are identifiers that act like reserved words in some
-contexts but can be normal user-defined identifiers in others.</p>
+contexts but can be normal user-defined identifiers in others.
+许多语言，尤其是在其发展的后期，都定义了“上下文式关键字”。这些标识符在某些情况下类似于保留字，但在其它上下文中可以是普通的用户定义的标识符。</p>
 <p>For example, <code>await</code> is a keyword inside an <code>async</code> method in C#, but
 in other methods, you can use <code>await</code> as your own identifier.
 例如，在C#中，<code>await</code>在<code>async</code>方法中是一个关键字，但在其它方法中，你可以使用<code>await</code>作为自己的标识符。</p>

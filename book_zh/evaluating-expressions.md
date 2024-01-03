@@ -45,7 +45,7 @@ questions:
 Taking them on one at a time...
 让我们来逐个击破。
 
-## Representing Values  值描述
+## 值描述
 
 In Lox, <span name="value">values</span> are created by literals, computed by
 expressions, and stored in variables. The user sees these as *Lox* objects, but
@@ -138,7 +138,7 @@ the main reasons we're writing our first interpreter in Java.
 
 </aside>
 
-## Evaluating Expressions  表达式求值
+## 表达式求值
 
 Next, we need blobs of code to implement the evaluation logic for each kind of
 expression we can parse. We could stuff that code into the syntax tree classes
@@ -169,7 +169,7 @@ of the four expression tree classes our parser produces. We'll start with the
 simplest...
 这个类声明它是一个访问者。访问方法的返回类型将是Object，即我们在Java代码中用来引用Lox值的根类。为了实现Visitor接口，我们需要为解析器生成的四个表达式树类中分别定义访问方法。我们从最简单的开始…
 
-### Evaluating literals  字面量求值
+### 字面量求值
 
 The leaves of an expression tree -- the atomic bits of syntax that all other
 expressions are composed of -- are <span name="leaf">literals</span>. Literals
@@ -202,7 +202,7 @@ the token. The parser took that value and stuck it in the literal tree node,
 so to evaluate a literal, we simply pull it back out.
 我们早在扫描过程中就即时生成了运行时的值，并把它放进了语法标记中。解析器获取该值并将其插入字面量语法树节点中，所以要对字面量求值，我们只需把它存的值取出来。
 
-### Evaluating parentheses  括号求值
+### 括号求值
 
 The next simplest node to evaluate is grouping -- the node you get as a result
 of using explicit parentheses in an expression.
@@ -231,7 +231,7 @@ correctly handle the left-hand sides of assignment expressions.
 
 ^code evaluate
 
-### Evaluating unary expressions  一元表达式求值
+### 一元表达式求值
 
 Like grouping, unary expressions have a single subexpression that we must
 evaluate first. The difference is that the unary expression itself does a little
@@ -276,7 +276,7 @@ make a little side trip to one of the great questions of Western philosophy:
 *What is truth?*
 实现很简单，但是这里的“真实”指的是什么呢？我们需要简单地讨论一下西方哲学中的一个伟大问题：什么是真理？
 
-### Truthiness and falsiness  真与假
+### 真与假
 
 OK, maybe we're not going to really get into the universal question, but at
 least inside the world of Lox, we need to decide what happens when you use
@@ -318,7 +318,7 @@ Lox遵循Ruby的简单规则：`false`和`nil`是假的，其他都是真的。�
 
 ^code is-truthy
 
-### Evaluating binary operators  二元操作符求值
+### 二元操作符求值
 
 On to the last expression tree class, binary operators. There's a handful of
 them, and we'll start with the arithmetic ones.
@@ -445,7 +445,7 @@ subexpression evaluates to an object of the wrong type for the operation being
 performed?
 就这样了! 这就是我们要正确解释一个有效的Lox表达式所需要的全部代码。但是*无效的*表达式呢？尤其是，当一个子表达式的计算结果类型与待执行的操作不符时会发生什么？
 
-## Runtime Errors  运行时错误
+## 运行时错误
 
 I was cavalier about jamming casts in whenever a subexpression produces an
 Object and the operator requires it to be a number or a string. Those casts can
@@ -523,7 +523,7 @@ of code, they should still be able to keep the session going and enter more code
 after that.
 尽管这种处理方式很诱人，我们或许应该做一些不那么灾难性的事情。虽然运行时错误需要停止对表达式的计算，但它不应该杀死解释器。如果用户正在运行REPL，并且在一行代码中出现了错误，他们应该仍然能够保持会话，并在之后继续输入更多的代码。
 
-### Detecting runtime errors  检测运行时错误
+### 检测运行时错误
 
 Our tree-walk interpreter evaluates nested expressions using recursive method
 calls, and we need to unwind out of all of those. Throwing an exception in Java
@@ -638,7 +638,7 @@ errors are getting thrown. The next step is to write the code that catches them.
 For that, we need to wire up the Interpreter class into the main Lox class that
 drives it.
 
-## Hooking Up the Interpreter  连接解释器
+## 连接解释器
 
 The visit methods are sort of the guts of the Interpreter class, where the real
 work happens. We need to wrap a skin around them to interface with the rest of
@@ -686,7 +686,7 @@ on different interpreters.
 
 </aside>
 
-### Reporting runtime errors  报告运行时错误
+### 报告运行时错误
 
 If a runtime error is thrown while evaluating the expression, `interpret()`
 catches it. This lets us report the error to the user and then gracefully
@@ -727,7 +727,7 @@ keep going.
 
 </aside>
 
-### Running the interpreter  运行解释器
+### 运行解释器
 
 Now that we have an interpreter, the Lox class can start using it.
 现在我们有了解释器，Lox类可以开始使用它了。
@@ -795,7 +795,7 @@ interpreter doesn't do very much, but it's alive!
 
 <div class="design-note">
 
-## Design Note: Static and Dynamic Typing 静态类型和动态类型
+## Design Note: 静态类型和动态类型
 
 Some languages, like Java, are statically typed which means type errors are
 detected and reported at compile time before any code is run. Others, like Lox,

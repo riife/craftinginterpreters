@@ -73,7 +73,7 @@ machine. As always, I encourage you to broaden your education and take it in
 later, but this book omits the trophy case.
 稍微的自我祝贺是当之无愧的，但事实是，你不需要知道其中的大部分知识，就可以为现代机器制作出高质量的解析器。一如既往，我鼓励你先扩大学习范围，以后再慢慢接受它，但这本书省略了奖杯箱。
 
-## Ambiguity and the Parsing Game  歧义与解析游戏
+## 歧义与解析的游戏
 
 In the last chapter, I said you can "play" a context-free grammar like a game in
 order to *generate* strings. Parsers play that game in reverse. Given a string
@@ -435,7 +435,7 @@ This grammar is more complex than the one we had before, but in return we have
 eliminated the previous one's ambiguity. It's just what we need to make a
 parser.
 
-## Recursive Descent Parsing  递归下降分析
+## 递归下降分析
 
 There is a whole pack of parsing techniques whose names are mostly combinations
 of "L" and "R" -- [LL(k)][], [LR(1)][lr], [LALR][] -- along with more exotic
@@ -519,7 +519,7 @@ itself -- directly or indirectly -- that translates to a recursive function
 call.
 下降被“递归”修饰是因为，如果一个规则引用自身（直接或间接）就会变为递归的函数调用。
 
-### The parser class  Parser类
+### Parser类
 
 Each grammar rule becomes a method inside this new class:
 每个语法规则都成为新类中的一个方法:
@@ -732,7 +732,7 @@ The interesting branch is the one for handling parentheses. After we match an
 opening `(` and parse the expression inside it, we *must* find a `)` token. If
 we don't, that's an error.
 
-## Syntax Errors  语法错误
+## 语法错误
 
 A parser really has two jobs:
 解析器实际上有两项工作：
@@ -840,7 +840,7 @@ Today, when parsers complete before you've even finished typing, it's less of an
 issue. Simple, fast error recovery is fine.
 如今，解析器在您甚至还没有完成输入之前就完成解析了，这不再是一个问题。 简单，快速的错误恢复就可以了。
 
-### Panic mode error recovery  恐慌模式错误恢复
+### 恐慌模式错误恢复
 
 <aside name="panic">
 
@@ -881,7 +881,7 @@ don't have those yet, so we won't actually synchronize in this chapter, but
 we'll get the machinery in place for later.
 语法中传统的要同步的地方是语句之间。我们还没有这些，所以我们不会在这一章中真正地同步，但我们会在以后把这些机制准备好。
 
-### Entering panic mode  进入恐慌模式
+### 进入恐慌模式
 
 Back before we went on this side trip around error recovery, we were writing the
 code to parse a parenthesized expression. After parsing the expression, the
@@ -965,7 +965,7 @@ synchronize. Discarding tokens is pretty easy, but how do we synchronize the
 parser's own state?
 但是，在我们的例子中，语法错误非常严重，以至于我们要进入恐慌模式并进行同步。丢弃标记非常简单，但是我们如何同步解析器自己的状态呢？
 
-### Synchronizing a recursive descent parser  同步递归下降解析器
+### 同步递归下降解析器
 
 With recursive descent, the parser's state -- which rules it is in the middle of
 recognizing -- is not stored explicitly in fields. Instead, we use Java's
@@ -1018,7 +1018,7 @@ Since we can parse only a single expression anyway, that's no big loss.
 
 [statements]: statements-and-state.html
 
-## Wiring up the Parser  调整解析器
+## 调整解析器
 
 We are mostly done parsing expressions now. There is one other place where we
 need to add a little error handling. As the parser descends through the parsing
@@ -1104,13 +1104,13 @@ precedence and associativity correctly? Not bad for less than 200 lines of code.
 2.  Likewise, add support for the C-style conditional or "ternary" operator
     `?:`. What precedence level is allowed between the `?` and `:`? Is the whole
     operator left-associative or right-associative?
-2、同样，添加对C风格的条件操作符或 "三元 "操作符`?:`的支持。在`?`和`:`之间采用什么优先级顺序？整个操作符是左关联还是右关联？
+    同样，添加对C风格的条件操作符或 "三元 "操作符`?:`的支持。在`?`和`:`之间采用什么优先级顺序？整个操作符是左关联还是右关联？
 
 3.  Add error productions to handle each binary operator appearing without a
     left-hand operand. In other words, detect a binary operator appearing at the
     beginning of an expression. Report that as an error, but also parse and
     discard a right-hand operand with the appropriate precedence.
-3、添加错误生成式处理没有左操作数的二元操作符。换句话说，检测出现在表达式开头的二元操作符。将其作为错误报告给用户，同时也要解析并丢弃具有相应优先级的右操作数。
+    添加错误生成式处理没有左操作数的二元操作符。换句话说，检测出现在表达式开头的二元操作符。将其作为错误报告给用户，同时也要解析并丢弃具有相应优先级的右操作数。
 
 [comma operator]: https://en.wikipedia.org/wiki/Comma_operator
 
@@ -1118,7 +1118,7 @@ precedence and associativity correctly? Not bad for less than 200 lines of code.
 
 <div class="design-note">
 
-## Design Note: Logic Versus History 逻辑和历史
+## Design Note: 逻辑和历史
 
 Let's say we decide to add bitwise `&` and `|` operators to Lox. Where should we
 put them in the precedence hierarchy? C -- and most languages that follow in C's

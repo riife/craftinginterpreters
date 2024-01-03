@@ -1089,7 +1089,7 @@ exactly that.
 
 <div class="design-note">
 
-## Design Note: Test Your Language 测试你的语言
+## Design Note: 测试你的语言
 
 We're almost halfway through the book and one thing we haven't talked about is
 *testing* your language implementation. That's not because testing isn't

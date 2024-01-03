@@ -72,7 +72,7 @@ locals. But that's for the next chapter. Right now, let's just worry about
 globals.
 局部变量的工作方式不同。因为局部变量的声明总是发生在使用之前，虚拟机可以在编译时解析它们，即使是在简单的单遍编译器中。这让我们可以为局部变量使用更聪明的表示形式。但这是下一章的内容。现在，我们只考虑全局变量。
 
-## Statements  语句
+## 语句
 
 Variables come into being using variable declarations, which means now is also
 the time to add support for statements to our compiler. If you recall, Lox
@@ -165,7 +165,7 @@ as well write out the forward declarations now.
 
 ^code forward-declarations (1 before, 1 after)
 
-### Print statements  Print语句
+### Print语句
 
 We have two statement types to support in this chapter. Let's start with `print`
 statements, which begin, naturally enough, with a `print` token. We detect that
@@ -290,7 +290,7 @@ Exciting! OK, maybe not thrilling, but we can build scripts that contain as many
 statements as we want now, which feels like progress.
 令人兴奋！好吧，也许没有那么激动人心，但是我们现在可以构建包含任意多语句的脚本，这感觉是一种进步。
 
-### Expression statements  表达式语句
+### 表达式语句
 
 Wait until you see the next statement. If we *don't* see a `print` keyword, then
 we must be looking at an expression statement.
@@ -347,7 +347,7 @@ have at the end of this chapter are expression statements.
 
 [functions]: calls-and-functions.html
 
-### Error synchronization  错误同步
+### 错误同步
 
 While we're getting this initial work done in the compiler, we can tie off a
 loose end we left [several chapters back][errors]. Like jlox, clox uses panic
@@ -374,7 +374,7 @@ that begins a statement, usually one of the control flow or declaration
 keywords.
 我们会不分青红皂白地跳过标识，直到我们到达一个看起来像是语句边界的位置。我们识别边界的方式包括，查找可以结束一条语句的前驱标识，如分号；或者我们可以查找能够开始一条语句的后续标识，通常是控制流或声明语句的关键字之一。
 
-## Variable Declarations  变量声明
+## 变量声明
 
 Merely being able to *print* doesn't win your language any prizes at the
 programming language <span name="fair">fair</span>, so let's move on to
@@ -567,7 +567,7 @@ And with that, we can define global variables. Not that users can *tell* that
 they've done so, because they can't actually *use* them. So let's fix that next.
 有了这个，我们就可以定义全局变量了。但用户并不能说他们可以定义全局变量，因为他们实际上还不能使用这些变量。所以，接下来我们解决这个问题。
 
-## Reading Variables  读取变量
+## 读取变量
 
 As in every programming language ever, we access a variable's value using its
 name. We hook up identifier tokens to the expression parser here:
@@ -625,7 +625,7 @@ print breakfast;
 There's only one operation left.
 只剩一个操作了。
 
-## Assignment  赋值
+## 赋值
 
 Throughout this book, I've tried to keep you on a fairly safe and easy path. I
 don't avoid hard *problems*, but I try to not make the *solutions* more complex
@@ -921,8 +921,6 @@ It's starting to look like real code for an actual language!
 : 对`tableSet()`的调用会将值存储在全局变量表中，即使该变量之前没有定义。这个问题在REPL会话中是用户可见的，因为即使报告了运行时错误，它仍然在运行。因此，我们也要注意从表中删除僵尸值。
 : 如果`a*b`是一个有效的赋值目标，这岂不是很疯狂？你可以想象一些类似代数的语言，试图以某种合理的方式划分所赋的值，并将其分配给`a`和`b`……这可能是一个很糟糕的主意。
 : 如果Lox有数组和下标操作符，如`array[index]`，那么中缀操作符`[`也能允许赋值，支持：`array[index] = value`。
-## 习题
-1. > The compiler adds a global variable’s name to the constant table as a string every time an identifier is encountered. It creates a new constant each time, even if that variable name is already in a previous slot in the constant table. That’s wasteful in cases where the same variable is referenced multiple times by the same function. That, in turn, increases the odds of filling up the constant table and running out of slots since we allow only 256 constants in a single chunk.
 
 <div class="challenges">
 
@@ -935,29 +933,27 @@ It's starting to look like real code for an actual language!
     referenced multiple times by the same function. That, in turn, increases the
     odds of filling up the constant table and running out of slots since we
     allow only 256 constants in a single chunk.
+    每次遇到标识符时，编译器都会将全局变量的名称作为字符串添加到常量表中。它每次都会创建一个新的常量，即使这个变量的名字已经在常量表中的前一个槽中存在。在同一个函数多次引用同一个变量的情况下，这是一种浪费。这反过来又增加了填满常量表的可能性，因为我们在一个字节码块中只允许有256个常量。
 
     Optimize this. How does your optimization affect the performance of the
     compiler compared to the runtime? Is this the right trade-off?
-每次遇到标识符时，编译器都会将全局变量的名称作为字符串添加到常量表中。它每次都会创建一个新的常量，即使这个变量的名字已经在常量表中的前一个槽中存在。在同一个函数多次引用同一个变量的情况下，这是一种浪费。这反过来又增加了填满常量表的可能性，因为我们在一个字节码块中只允许有256个常量。
-对此进行优化。与运行时相比，你的优化对编译器的性能有何影响？这是正确的取舍吗？
-2. > Looking up a global variable by name in a hash table each time it is used is pretty slow, even with a good hash table. Can you come up with a more efficient way to store and access global variables without changing the semantics?
-每次使用全局变量时，根据名称在哈希表中查找变量是很慢的，即使有一个很好的哈希表。你能否想出一种更有效的方法来存储和访问全局变量而不改变语义？
-3. > When running in the REPL, a user might write a function that references an unknown global variable. Then, in the next line, they declare the variable. Lox should handle this gracefully by not reporting an “unknown variable” compile error when the function is first defined.
+    对此进行优化。与运行时相比，你的优化对编译器的性能有何影响？这是正确的取舍吗？
 
 2.  Looking up a global variable by name in a hash table each time it is used
     is pretty slow, even with a good hash table. Can you come up with a more
     efficient way to store and access global variables without changing the
     semantics?
+    每次使用全局变量时，根据名称在哈希表中查找变量是很慢的，即使有一个很好的哈希表。你能否想出一种更有效的方法来存储和访问全局变量而不改变语义？
 
 3.  When running in the REPL, a user might write a function that references an
     unknown global variable. Then, in the next line, they declare the variable.
     Lox should handle this gracefully by not reporting an "unknown variable"
     compile error when the function is first defined.
+    当在REPL中运行时，用户可能会编写一个引用未知全局变量的函数。然后，在下一行中，他们声明了这个变量。Lox应该优雅地处理这个问题，在第一次定义函数时不报告“未知变量”的编译错误。
 
     But when a user runs a Lox *script*, the compiler has access to the full
     text of the entire program before any code is run. Consider this program:
-当在REPL中运行时，用户可能会编写一个引用未知全局变量的函数。然后，在下一行中，他们声明了这个变量。Lox应该优雅地处理这个问题，在第一次定义函数时不报告“未知变量”的编译错误。
-但是，当用户运行Lox脚本时，编译器可以在任何代码运行之前访问整个程序的全部文本。考虑一下这个程序：
+    但是，当用户运行Lox脚本时，编译器可以在任何代码运行之前访问整个程序的全部文本。考虑一下这个程序：
 
     ```lox
     fun useVar() {

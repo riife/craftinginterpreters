@@ -78,7 +78,7 @@ have that one conditional jump instruction, that's enough to implement Lox's
 and get started with that.
 不管这么说，我并不是故意要搞得这么哲学化。重要的是，如果我们有一个条件跳转指令，就足以实现Lox的`if`语句了，只要它没有`else`子句。让我们开始吧。
 
-## If Statements  If语句
+## If语句
 
 This many chapters in, you know the drill. Any new feature starts in the front
 end and works its way through the pipeline. An `if` statement is, well, a
@@ -244,7 +244,7 @@ working `if` statement in Lox now, with only one little instruction required to
 support it at runtime in the VM.
 请注意，跳转指令并没有将条件值弹出栈。因此，我们在这里还没有全部完成，因为还在堆栈上留下了一个额外的值。我们很快就会把它清理掉。暂时先忽略这个问题，我们现在在Lox中已经有了可用的`if`语句，只需要一条小指令在虚拟机运行时支持它。
 
-### Else clauses
+### Else 子句
 
 An `if` statement without support for `else` clauses is like Morticia Addams
 without Gomez. So, after we compile the then branch, we look for an `else`
@@ -353,7 +353,7 @@ My enduring love of Depeche Mode notwithstanding.
 
 </aside>
 
-## Logical Operators  逻辑运算符
+## 逻辑运算符
 
 You probably remember this from jlox, but the logical operators `and` and `or`
 aren't just another pair of binary operators like `+` and `-`. Because they
@@ -403,7 +403,7 @@ they affect performance.
 
 </aside>
 
-### Logical or operator  逻辑or运算符
+### 逻辑or运算符
 
 The `or` operator is a little more complex. First we add it to the parse table.
 `or`运算符有点复杂。首先，我们将它添加到解析表中。
@@ -443,7 +443,7 @@ languages often have some kind of multi-way branching statement like `switch`
 and maybe a conditional expression like `?:`, but Lox keeps it simple.
 好了，这就是Lox中的三个分支结构。我的意思是，这些控制流特性只能在代码上*向前*跳转。其它语言中通常有某种多路分支语句，如`switch`，也许还有条件表达式`?:`，但Lox保持简单。
 
-## While Statements  While语句
+## While语句
 
 That takes us to the *looping* statements, which jump *backward* so that code
 can be executed more than once. Lox only has two loop constructs, `while` and
@@ -537,7 +537,7 @@ backward after we have executed the body. The flow looks like this:
 
 <img src="image/jumping-back-and-forth/while.png" alt="Flowchart of the compiled bytecode of a while statement." />
 
-## For Statements  For语句
+## For语句
 
 The other looping statement in Lox is the venerable `for` loop, inherited from
 C. It's got a lot more going on with it compared to a `while` loop. It has three
@@ -594,7 +594,7 @@ a runtime error.
 
 </aside>
 
-### Initializer clause  初始化子句
+### 初始化子句
 
 Now we'll add the first clause, the initializer. It executes only once, before
 the body, so compiling is straightforward.
@@ -621,7 +621,7 @@ Then we close it at the end.
 
 ^code for-end-scope (1 before, 1 after)
 
-### Condition clause  条件子句
+### 条件子句
 
 Next, is the condition expression that can be used to exit the loop.
 接下来，是可以用来退出循环的条件表达式。
@@ -648,7 +648,7 @@ We do this only when there is a condition clause. If there isn't, there's no
 jump to patch and no condition value on the stack to pop.
 我们只在有条件子句的时候才会这样做。如果没有条件子句，就没有需要修补的跳转指令，堆栈中也没有条件值需要弹出。
 
-### Increment clause  增量子句
+### 增量子句
 
 I've saved the best for last, the increment clause. It's pretty convoluted. It
 appears textually before the body, but executes *after* it. If we parsed to an
@@ -712,9 +712,6 @@ architecture of our VM.
 : 我说过我们不会使用C的`if`语句来实现Lox的控制流，但我们在这里确实使用了`if`语句来决定是否偏移指令指针。但我们并没有真正使用C语言来实现控制流。如果我们想的话，可以用纯粹的算术做到同样的事情。假设我们有一个函数`falsey()`，它接受一个Lox Value，如果是假则返回1，否则返回0。那我们可以这样实现跳转指令：<BR><BR>`falsey()`函数可能会使用一些控制流来处理不同的值类型，但这是该函数的实现细节，并不影响我们的虚拟机如何处理自己的控制流。
 : 我们的操作码范围中还有足够的空间，所以我们可以为隐式弹出值的条件跳转和不弹出值的条件跳转制定单独的指令。但我想尽量在书中保持简约。在你的字节码虚拟机中，值得探索添加更多的专用指令，看看它们是如何影响性能的。
 : 真的开始怀疑我对逻辑运算符使用相同的跳转指令的决定了。
-## 习题
-1. > In addition to `if` statements, most C-family languages have a multi-way `switch` statement. Add one to clox. The grammar is:
-除了`if`语句，大多数C家族语言都要一个多路`switch`语句。在clox中添加一个。语法如下：
 
 <aside name="leap">
 
@@ -728,6 +725,7 @@ I couldn't resist the pun. I regret nothing.
 
 1.  In addition to `if` statements, most C-family languages have a multi-way
     `switch` statement. Add one to clox. The grammar is:
+    除了`if`语句，大多数C家族语言都要一个多路`switch`语句。在clox中添加一个。语法如下：
 
     ```ebnf
     switchStmt     → "switch" "(" expression ")"
@@ -742,17 +740,16 @@ I couldn't resist the pun. I regret nothing.
     statements under the case and then exit the `switch` statement. Otherwise,
     try the next case. If no case matches and there is a `default` clause,
     execute its statements.
-为了执行`switch`语句，首先要计算括号内的switch值表达式。然后遍历分支。对于每个分支，计算其值表达式。如果case值等于switch值，就执行case下的语句，然后退出`switch`语句。否则，就尝试下一个case分支。如果没有匹配的分支，并且有`default`子句，就执行其中的语句。
-为了让事情更简单，我们省略了fall through和`break`语句。每个case子句在其语句完成后会自动跳转到switch语句的结尾。
-2. > In jlox, we had a challenge to add support for `break` statements. This time, let’s do `continue`:
-在jlox中，我们有一个习题是添加对`break`语句的支持。这一次，我们来做`continue`：
+    为了执行`switch`语句，首先要计算括号内的switch值表达式。然后遍历分支。对于每个分支，计算其值表达式。如果case值等于switch值，就执行case下的语句，然后退出`switch`语句。否则，就尝试下一个case分支。如果没有匹配的分支，并且有`default`子句，就执行其中的语句。
 
     To keep things simpler, we're omitting fallthrough and `break` statements.
     Each case automatically jumps to the end of the switch statement after its
     statements are done.
+    为了让事情更简单，我们省略了fall through和`break`语句。每个case子句在其语句完成后会自动跳转到switch语句的结尾。
 
 1.  In jlox, we had a challenge to add support for `break` statements. This
     time, let's do `continue`:
+    在jlox中，我们有一个习题是添加对`break`语句的支持。这一次，我们来做`continue`：
 
     ```ebnf
     continueStmt   → "continue" ";" ;
@@ -762,31 +759,30 @@ I couldn't resist the pun. I regret nothing.
     loop, skipping the rest of the loop body. Inside a `for` loop, a `continue`
     jumps to the increment clause, if there is one. It's a compile-time error to
     have a `continue` statement not enclosed in a loop.
-`continue`语句直接跳转到最内层的封闭循环的顶部，跳过循环体的其余部分。在`for`循环中，如果有增量子句，`continue`会跳到增量子句。如果`continue`子句没有被包含在循环中，则是一个编译时错误。
-一定要考虑作用域问题。当执行`continue`语句时，在循环体内或嵌套在循环体中的代码块内声明的局部变量应该如何处理？
-3. > Control flow constructs have been mostly unchanged since Algol 68. Language evolution since then has focused on making code more declarative and high level, so imperative control flow hasn’t gotten much attention.
+    `continue`语句直接跳转到最内层的封闭循环的顶部，跳过循环体的其余部分。在`for`循环中，如果有增量子句，`continue`会跳到增量子句。如果`continue`子句没有被包含在循环中，则是一个编译时错误。
 
     Make sure to think about scope. What should happen to local variables
     declared inside the body of the loop or in blocks nested inside the loop
     when a `continue` is executed?
+    一定要考虑作用域问题。当执行`continue`语句时，在循环体内或嵌套在循环体中的代码块内声明的局部变量应该如何处理？
 
 1.  Control flow constructs have been mostly unchanged since Algol 68. Language
     evolution since then has focused on making code more declarative and high
     level, so imperative control flow hasn't gotten much attention.
+    自Algol 68以来，控制流结构基本没有变化。从那时起，语言的发展就专注于使代码更具有声明性和高层次，因此命令式控制流并没有得到太多的关注。
 
     For fun, try to invent a useful novel control flow feature for Lox. It can
     be a refinement of an existing form or something entirely new. In practice,
     it's hard to come up with something useful enough at this low expressiveness
     level to outweigh the cost of forcing a user to learn an unfamiliar notation
     and behavior, but it's a good chance to practice your design skills.
-自Algol 68以来，控制流结构基本没有变化。从那时起，语言的发展就专注于使代码更具有声明性和高层次，因此命令式控制流并没有得到太多的关注。
-为了好玩，可以试着为Lox发明一个有用的新的控制流功能。它可以是现有形式的改进，也可以是全新的东西。实践中，在这种较低的表达层次上，很难想出足够有用的东西来抵消迫使用户学习不熟悉的符号和行为的代价，但这是一个练习设计技能的好机会。
+    为了好玩，可以试着为Lox发明一个有用的新的控制流功能。它可以是现有形式的改进，也可以是全新的东西。实践中，在这种较低的表达层次上，很难想出足够有用的东西来抵消迫使用户学习不熟悉的符号和行为的代价，但这是一个练习设计技能的好机会。
 
 </div>
 
 <div class="design-note">
 
-## Design Note: Considering Goto Harmful 认为GOTO有害
+## Design Note: 认为GOTO有害
 
 Discovering that all of our beautiful structured control flow in Lox is actually
 compiled to raw unstructured jumps is like the moment in Scooby Doo when the

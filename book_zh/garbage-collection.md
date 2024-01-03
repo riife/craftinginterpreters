@@ -45,7 +45,7 @@ knew.
 
 </aside>
 
-## Reachability  可达性
+## 可达性
 
 This raises a surprisingly difficult question: how does a VM tell what memory is
 *not* needed? Memory is only needed if it is read in the future, but short of
@@ -203,7 +203,7 @@ to read. Or perhaps I have a strange idea of fun.
 
 </aside>
 
-## Mark-Sweep Garbage Collection  标记-清除垃圾回收
+## 标记-清除 垃圾回收
 
 The first managed language was Lisp, the second "high-level" language to be
 invented, right after Fortran. John McCarthy considered using manual memory
@@ -261,7 +261,7 @@ bytes, we'll trace everything and mark all the reachable objects, free what
 didn't get marked, and then resume the user's program.
 这就是我们要实现的。每当我们决定是时候回收一些字节的时候，我们就会跟踪一切，并标记所有可达的对象，释放没有被标记的对象，然后恢复用户的程序。
 
-### Collecting garbage  回收垃圾
+### 垃圾回收
 
 This entire chapter is about implementing this one <span
 name="one">function</span>:
@@ -321,7 +321,7 @@ when a backward jump occurs.
 
 </aside>
 
-### Debug logging  调试日志
+### 调试日志
 
 While we're on the subject of diagnostics, let's put some more in. A real
 challenge I've found with garbage collectors is that they are opaque. We've been
@@ -371,7 +371,7 @@ With these two flags, we should be able to see that we're making progress as we
 work through the rest of the chapter.
 有了这两个标志，我们应该能够看到我们在本章其余部分的学习中取得了进展。
 
-## Marking the Roots  标记根
+## 标记 Root
 
 Objects are scattered across the heap like stars in the inky night sky. A
 reference from one object to another forms a connection, and these
@@ -457,7 +457,7 @@ value. We also mark the key strings for each entry since the GC manages those
 strings too.
 非常简单。我们遍历条目数组。对于每个条目，我们标记其值。我们还会标记每个条目的键字符串，因为GC也要管理这些字符串。
 
-### Less obvious roots  不明显的根
+### 不明显的 Root
 
 Those cover the roots that we typically think of -- the values that are
 obviously reachable because they're stored in variables the user's program can
@@ -523,7 +523,7 @@ and compiler -- can get to *without* going through some other object has its
 mark bit set.
 这些就是所有的根。运行这段程序后，虚拟机（运行时和编译器）无需通过其它对象就可以达到的每个对象，其标记位都被设置了。
 
-## Tracing Object References  跟踪对象引用
+## 跟踪对象引用
 
 The next step in the marking process is tracing through the graph of references
 between objects to find the indirectly reachable values. We don't have instances
@@ -561,7 +561,7 @@ future, so it's hard for the GC to know which order will help performance.
 
 </aside>
 
-### The tricolor abstraction  三色抽象
+### 三色抽象
 
 As the collector wanders through the graph of objects, we need to make sure it
 doesn't lose track of where it is or get stuck going in circles. This is
@@ -642,7 +642,7 @@ maintains this invariant to ensure that no reachable object is ever collected.
 
 </aside>
 
-### A worklist for gray objects  灰色对象的工作列表
+### 灰色对象的工作列表
 
 In our implementation we have already marked the roots. They're all gray. The
 next step is to start picking them and traversing their references. But we don't
@@ -702,7 +702,7 @@ gray stack, finish the GC, and free up more memory.
 
 ^code exit-gray-stack (2 before, 1 after)
 
-### Processing gray objects  处理灰色对象
+### 处理灰色对象
 
 OK, now when we're done marking the roots, we have both set a bunch of fields
 and filled our work list with objects to chew through. It's time for the next
@@ -814,7 +814,7 @@ added and that a black object is not inadvertently turned back to gray. In other
 words, it keeps the wavefront moving forward through only the white objects.
 如果对象已经被标记，我们就不会再标记它，因此也不会把它添加到灰色栈中。这就保证了已经是灰色的对象不会被重复添加，而且黑色对象不会无意中变回灰色。换句话说，它使得波前只通过白色对象向前移动。
 
-## Sweeping Unused Objects  清除未使用的对象
+## 清除未使用的对象
 
 When the loop in `traceReferences()` exits, we have processed all the objects we
 could get our hands on. The gray stack is empty, and every object in the heap is
@@ -858,7 +858,7 @@ starts, we need every object to be white. So whenever we reach a black object,
 we go ahead and clear the bit now in anticipation of the next run.
 在`sweep()`完成后，仅剩下的对象是带有标记位的活跃黑色对象。这是正确的，但在*下一个*回收周期开始时，我们需要每个对象都是白色的。因此，每当我们碰到黑色对象时，我们就继续并清除标记位，为下一轮作业做好准备。
 
-### Weak references and the string pool  弱引用与字符串池
+### 弱引用与字符串池
 
 We are almost done collecting. There is one remaining corner of the VM that has
 some unusual requirements around memory. Recall that when we added strings to
@@ -935,7 +935,7 @@ being swept away. We delete it from the hash table first and thus ensure we
 won't see any dangling pointers.
 我们遍历表中的每一项。字符串驻留表只使用了每一项的键——它基本上是一个HashSet而不是HashMap。如果键字符串对象的标记位没有被设置，那么它就是一个白色对象，很快就会被清除。我们首先从哈希表中删除它，从而确保不会看到任何悬空指针。
 
-## When to Collect  何时回收
+## 何时回收
 
 We have a fully functioning mark-sweep garbage collector now. When the stress
 testing flag is enabled, it gets called all the time, and with the logging
@@ -960,7 +960,7 @@ when physical memory gets full. You never really "run out" of memory, you just
 get slower and slower.
 现代计算机拥有数以G计的物理内存，而操作系统在其基础上提供了更多的虚拟内存抽象，这些物理内存是由一系列其它程序共享的，所有程序都在争夺自己的那块内存。操作系统会允许你的程序尽可能多地申请内存，然后当物理内存满时会利用磁盘进行页面换入换出。你永远不会真的“耗尽”内存，只是变得越来越慢。
 
-### Latency and throughput  延迟和吞吐量
+### 延迟和吞吐量
 
 It no longer makes sense to wait until you "have to", to run the GC, so we need
 a more subtle timing strategy. To reason about this more precisely, it's time to
@@ -1120,7 +1120,7 @@ collector runs is one of our main knobs for tuning the trade-off between latency
 and throughput.
 事实上，我们想要的是介于两者之间的东西，而回收器的运行频率是我们调整延迟和吞吐量之间权衡的主要因素之一。
 
-### Self-adjusting heap  自适应堆
+### 自适应堆
 
 We want our GC to run frequently enough to minimize latency but infrequently
 enough to maintain decent throughput. But how do we find the balance between
@@ -1222,7 +1222,7 @@ And then print the results at the end.
 This way we can see how much the garbage collector accomplished while it ran.
 这样，我们就可以看到垃圾回收器在运行时完成了多少任务。
 
-## Garbage Collection Bugs  垃圾回收Bug
+## 垃圾回收Bug
 
 In theory, we are all done now. We have a GC. It kicks in periodically, collects
 what it can, and leaves the rest. If this were a typical textbook, we would wipe
@@ -1294,7 +1294,7 @@ few. Give it a try and *see if you can fix any yourself*.
 但我只修复了其中的大部分。我留下了几个，因为我想给你一些提示，告诉你在野外遇到这些虫子是什么感觉。如果你启用压力测试标志并运行一些玩具Lox程序，你可能会偶然发现一些。试一试，看看你是否能自己解决问题。
 
 
-### Adding to the constant table  添加到常量表中
+### 添加到常量表中
 
 You are very likely to hit the first bug. The constant table each chunk owns is
 a dynamic array. When the compiler adds a new constant to the current function's
@@ -1328,7 +1328,7 @@ to call into the VM from the "chunk" module.
 
 ^code chunk-include-vm (1 before, 2 after)
 
-### Interning strings  驻留字符串
+### 驻留字符串
 
 Here's another similar one. All strings are interned in clox, so whenever we
 create a new string, we also add it to the intern table. You can see where this
@@ -1350,7 +1350,7 @@ take responsibility for ensuring the string is still reachable before the next
 heap allocation occurs.
 这确保了在调整表大小时字符串是安全的。一旦它存活下来，`allocateString()`会把它返回给某个调用者，随后调用者负责确保，在下一次堆分配之前字符串仍然是可达的。
 
-### Concatenating strings  连接字符串
+### 连接字符串
 
 One last example: Over in the interpreter, the `OP_ADD` instruction can be used
 to concatenate two strings. As it does with numbers, it pops the two operands
@@ -1404,28 +1404,6 @@ mark-sweep garbage collector.
 : 相比之下，**增量式垃圾回收器**可以做一点回收工作，然后运行一些用户代码，然后再做一点回收工作，以此类推。
 : 学习垃圾回收器的一个挑战是，在孤立的实验室环境中很难发现最佳实践。除非你在大型的、混乱的真实世界的程序上运行回收器，否则你无法看到它的实际表现。这就像调校一辆拉力赛车——你需要把它带到赛道上。
 : 我们的GC无法在C栈中查找地址，但很多GC可以。保守的垃圾回收器会查看所有内存，包括本机堆栈。这类垃圾回收器中最著名的是[**Boehm–Demers–Weiser垃圾回收器** ](https://en.wikipedia.org/wiki/Boehm_garbage_collector)，通常就叫作“Boehm回收器”。（在CS中，成名的捷径是姓氏在字母顺序上靠前，这样就能在排序的名字列表中出现在第一位）<BR>许多精确GC也在C栈中遍历。即便是这些GC，也必须对指向仅存于CPU寄存器中的活动对象的指针加以注意。
-## 习题
-1. > The Obj header struct at the top of each object now has three fields: `type`, `isMarked`, and `next`. How much memory do those take up (on your machine)? Can you come up with something more compact? Is there a runtime cost to doing so?
-每个对象顶部的Obj头结构体现在有三个字段：`type`，`isMarked`和`next`。它们（在你的机器上）占用了多少内存？你能想出更紧凑的办法吗？这样做是否有运行时成本？
-2. > When the sweep phase traverses a live object, it clears the `isMarked` field to prepare it for the next collection cycle. Can you come up with a more efficient approach?
-当清除阶段遍历某个活动对象时，它会清除`isMarked`字段，以便为下一个回收周期做好准备。你能想出一个更有效的方法吗？
-3. > Mark-sweep is only one of a variety of garbage collection algorithms out there. Explore those by replacing or augmenting the current collector with another one. Good candidates to consider are reference counting, Cheney’s algorithm, or the Lisp 2 mark-compact algorithm.
-标记-清除只是众多垃圾回收算法中的一种。通过用另一种回收器来替换或增强当前的回收器来探索这些算法。可以考虑引用计数、Cheney算法或Lisp 2标记-压缩算法。
-## 设计笔记：分代回收器
-A collector loses throughput if it spends a long time re-visiting objects that are still alive. But it can increase latency if it avoids collecting and accumulates a large pile of garbage to wade through. If only there were some way to tell which objects were likely to be long-lived and which weren’t. Then the GC could avoid revisiting the long-lived ones as often and clean up the ephemeral ones more frequently.
-It turns out there kind of is. Many years ago, GC researchers gathered metrics on the lifetime of objects in real-world running programs. They tracked every object when it was allocated, and eventually when it was no longer needed, and then graphed out how long objects tended to live.
-They discovered something they called the **generational hypothesis**, or the much less tactful term **infant mortality**. Their observation was that most objects are very short-lived but once they survive beyond a certain age, they tend to stick around quite a long time. The longer an object *has* lived, the longer it likely will *continue* to live. This observation is powerful because it gave them a handle on how to partition objects into groups that benefit from frequent collections and those that don’t.
-They designed a technique called **generational garbage collection**. It works like this: Every time a new object is allocated, it goes into a special, relatively small region of the heap called the “nursery”. Since objects tend to die young, the garbage collector is invoked frequently over the objects just in this region.
-Nurseries are also usually managed using a copying collector which is faster at allocating and freeing objects than a mark-sweep collector.
-Each time the GC runs over the nursery is called a “generation”. Any objects that are no longer needed get freed. Those that survive are now considered one generation older, and the GC tracks this for each object. If an object survives a certain number of generations—often just a single collection—it gets *tenured*. At this point, it is copied out of the nursery into a much larger heap region for long-lived objects. The garbage collector runs over that region too, but much less frequently since odds are good that most of those objects will still be alive.
-Generational collectors are a beautiful marriage of empirical data—the observation that object lifetimes are *not* evenly distributed—and clever algorithm design that takes advantage of that fact. They’re also conceptually quite simple. You can think of one as just two separately tuned GCs and a pretty simple policy for moving objects from one to the other.
-如果回收器花费很长时间重新访问仍然活动的对象，则会损失吞吐量。但是，如果它避免了回收并积累了一大堆需要处理的垃圾，就会增加延迟。要是能有某种办法可以告诉我们哪些对象可能是长寿的以及哪些对象不是就好了。这样GC就可以避免频繁地重新访问寿命较长的数据，而更频繁地清理那些短暂寿命短暂的对象。
-事实证明，确实如此。许多年前，GC研究人员收集了关于真实运行程序中对象生命周期的指标。他们跟踪了每个对象被分配时，以及它最终不再需要时的情况，然后用图表显示出对象的寿命。
-他们发现了一种被称为“**代际假说**”的东西，或者是一个不太委婉的术语“**早夭**”。他们的观察结果是，大多数对象的寿命都很短，但是一旦它们存活超过了一定的年龄，它们往往会存活相当长的时间。一个对象*已经*存活的时间越长，它将*继续*存活的时间就越长。这一观察结果非常有说服力，因为这为他们提供了将对象划分为频繁回收的群体和不频繁回收群体的方法。
-他们设计了一种叫作**分代垃圾回收**的技术。它的工作原理是这样的：每次分配一个新对象时，它会进入堆中一个特殊的、相对较小的区域，称为“nursery”（意为托儿所）。由于对象倾向于早夭，所以垃圾回收器会在这个区域中的对象上被频繁调用。
-【nursery通常也是要复制回收器进行管理，它在分配和释放对象方面比标记-清除回收器更快。】
-GC在nursery的每次运行都被称为“一代”。任何不再需要的对象都会被释放。那些存活下来对象现在被认为老了一代，GC会为每个对象记录这一属性。如果一个对象存活了一定数量的代（通常只是一次回收），它就会被永久保留。此时，将它从nursery中复制处理，放入一个更大的、用于存放 长寿命对象的堆区域。垃圾回收器也会在这个区域内运行，但频率要低得多，因为这些对象中的大部分都很有可能还活着。
-分代回收器是经验数据（观察到对象生命周期不是均匀分布的）以及利用这一事实的聪明算法设计的完美结合。它们在概念上也很简单。你可以把它看作是两个单独调优的GC和把对象从一个区域移到另一个区域的一个非常简单的策略。
 
 <div class="challenges">
 
@@ -1435,21 +1413,23 @@ GC在nursery的每次运行都被称为“一代”。任何不再需要的对�
     `type`, `isMarked`, and `next`. How much memory do those take up (on your
     machine)? Can you come up with something more compact? Is there a runtime
     cost to doing so?
+    每个对象顶部的Obj头结构体现在有三个字段：`type`，`isMarked`和`next`。它们（在你的机器上）占用了多少内存？你能想出更紧凑的办法吗？这样做是否有运行时成本？
 
 1.  When the sweep phase traverses a live object, it clears the `isMarked`
     field to prepare it for the next collection cycle. Can you come up with a
     more efficient approach?
+    当清除阶段遍历某个活动对象时，它会清除`isMarked`字段，以便为下一个回收周期做好准备。你能想出一个更有效的方法吗？
 
 1.  Mark-sweep is only one of a variety of garbage collection algorithms out
     there. Explore those by replacing or augmenting the current collector with
     another one. Good candidates to consider are reference counting, Cheney's
     algorithm, or the Lisp 2 mark-compact algorithm.
-
+    标记-清除只是众多垃圾回收算法中的一种。通过用另一种回收器来替换或增强当前的回收器来探索这些算法。可以考虑引用计数、Cheney算法或Lisp 2标记-压缩算法。
 </div>
 
 <div class="design-note">
 
-## Design Note: Generational Collectors 分代回收器
+## Design Note: 分代回收器(Generational Collectors)
 
 A collector loses throughput if it spends a long time re-visiting objects that
 are still alive. But it can increase latency if it avoids collecting and

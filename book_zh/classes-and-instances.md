@@ -37,7 +37,7 @@ chapters, we will hang behavior and code reuse off of those objects.
 [closures]: closures.html
 [garbage collector]: garbage-collection.html
 
-## Class Objects  Class对象
+## Class对象
 
 In a class-based object-oriented language, everything begins with classes. They
 define what sorts of objects exist in the program and are the factories used to
@@ -127,7 +127,7 @@ VM可以对类执行的最后一个操作是打印它。
 A class simply says its own name.
 类只是简单地说出它的名称。
 
-## Class Declarations  类声明
+## 类声明
 
 Runtime representation in hand, we are ready to add support for classes to the
 language. Next, we move into the parser.
@@ -234,7 +234,7 @@ Unfortunately, printing is about *all* you can do with classes, so next is
 making them more useful.
 不幸的是，打印是你对类所能做的全部事情，所以接下来是让它们更有用。
 
-## Instances of Classes  类的实例
+## 类的实例
 
 Classes serve two main purposes in a language:
 类在一门语言中主要有两个作用：
@@ -418,7 +418,7 @@ Note the parentheses after `Brioche` on the second line now. This prints
 "Brioche instance".
 注意第二行`Brioche`后面的括号。这里会打印“Brioche instance”。
 
-## Get and Set Expressions  Get和SET表达式
+## Get和SET表达式
 
 Our object representation for instances can already store state, so all that
 remains is exposing that functionality to the user. Fields are accessed and
@@ -525,7 +525,7 @@ And add support for disassembling them:
 
 ^code disassemble-property-ops (1 before, 1 after)
 
-### Interpreting getter and setter expressions  解释getter和setter表达式
+### 解释getter和setter表达式
 
 Sliding over to the runtime, we'll start with get expressions since those are a
 little simpler.
@@ -661,8 +661,6 @@ In the next chapter, we will breathe life into those inert blobs.
 : 你不能设置非字段属性，所以我认为这个指令本该是`OP_SET_FIELD`，但是我认为它与get指令一致看起来更漂亮。
 : Lox*可以*支持向其它类型的值中添加字段。这是我们的语言，我们可以做我们想做的。但这可能是个坏主意。它大大增加了实现的复杂性，从而损害了性能——例如，字符串驻留变得更加困难。<BR>此外，它还引起了关于数值的相等和同一性的复杂语义问题。如果我给数字`3`附加一个字段，那么`1+2`的结果也有这个字段吗？如果是的话，实现上如何跟踪它？如果不是，这两个结果中的“3”仍然被认为是相等的吗？
 : 栈的操作是这样的：
-## 习题
-1. > Trying to access a non-existent field on an object immediately aborts the entire VM. The user has no way to recover from this runtime error, nor is there any way to see if a field exists *before* trying to access it. It’s up to the user to ensure on their own that only valid fields are read.
 
 <div class="challenges">
 
@@ -672,37 +670,34 @@ In the next chapter, we will breathe life into those inert blobs.
     entire VM. The user has no way to recover from this runtime error, nor is
     there any way to see if a field exists *before* trying to access it. It's up
     to the user to ensure on their own that only valid fields are read.
+    试图访问一个对象上不存在的字段会立即中止整个虚拟机。用户没有办法从这个运行时错误中恢复过来，也没有办法在试图访问一个字段之前看它是否存在。需要由用户自己来确保只读取有效字段。
 
     How do other dynamically typed languages handle missing fields? What do you
     think Lox should do? Implement your solution.
-试图访问一个对象上不存在的字段会立即中止整个虚拟机。用户没有办法从这个运行时错误中恢复过来，也没有办法在试图访问一个字段之前看它是否存在。需要由用户自己来确保只读取有效字段。
-其它动态类型语言是如何处理缺少字段的？你认为Lox应该怎么做？实现你的解决方案。
-2. > Fields are accessed at runtime by their *string* name. But that name must always appear directly in the source code as an *identifier token*. A user program cannot imperatively build a string value and then use that as the name of a field. Do you think they should be able to? Devise a language feature that enables that and implement it.
-字段在运行时是通过它们的*字符串*名称来访问的。但是该名称必须总是作为标识符直接出现在源代码中。用户程序不能命令式地构建字符串值，然后将其用作字段名。你认为应该这样做吗？那就设计一种语言特性来实现它。
-3. > Conversely, Lox offers no way to *remove* a field from an instance. You can set a field’s value to `nil`, but the entry in the hash table is still there. How do other languages handle this? Choose and implement a strategy for Lox.
-反过来说，Lox没有提供从实例中*删除*字段的方法。你可以将一个字段的值设置为`nil`，但哈希表中的条目仍然存在。其它语言如何处理这个问题？为Lox选择一个策略并实现。
-4. > Because fields are accessed by name at runtime, working with instance state is slow. It’s technically a constant-time operation—thanks, hash tables—but the constant factors are relatively large. This is a major component of why dynamic languages are slower than statically typed ones.
+    其它动态类型语言是如何处理缺少字段的？你认为Lox应该怎么做？实现你的解决方案。
 
 2.  Fields are accessed at runtime by their *string* name. But that name must
     always appear directly in the source code as an *identifier token*. A user
     program cannot imperatively build a string value and then use that as the
     name of a field. Do you think they should be able to? Devise a language
     feature that enables that and implement it.
+    字段在运行时是通过它们的*字符串*名称来访问的。但是该名称必须总是作为标识符直接出现在源代码中。用户程序不能命令式地构建字符串值，然后将其用作字段名。你认为应该这样做吗？那就设计一种语言特性来实现它。
 
 3.  Conversely, Lox offers no way to *remove* a field from an instance. You can
     set a field's value to `nil`, but the entry in the hash table is still
     there. How do other languages handle this? Choose and implement a strategy
     for Lox.
+    反过来说，Lox没有提供从实例中*删除*字段的方法。你可以将一个字段的值设置为`nil`，但哈希表中的条目仍然存在。其它语言如何处理这个问题？为Lox选择一个策略并实现。
 
 4.  Because fields are accessed by name at runtime, working with instance state
     is slow. It's technically a constant-time operation -- thanks, hash tables
     -- but the constant factors are relatively large. This is a major component
     of why dynamic languages are slower than statically typed ones.
+    因为字段在运行时是按照名称访问的，所以对实例状态的操作是很慢的。从技术上讲，这是一个常量时间的操作（感谢哈希表），但是常量因子比较大。这就是动态语言比静态语言慢的一个主要原因。
 
     How do sophisticated implementations of dynamically typed languages cope
     with and optimize this?
-因为字段在运行时是按照名称访问的，所以对实例状态的操作是很慢的。从技术上讲，这是一个常量时间的操作（感谢哈希表），但是常量因子比较大。这就是动态语言比静态语言慢的一个主要原因。
-动态类型语言的复杂实现是如何应对和优化这一问题的？
+    动态类型语言的复杂实现是如何应对和优化这一问题的？
 
 </div>
 

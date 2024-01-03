@@ -32,7 +32,7 @@ closer, details emerge and I gain a more nuanced perspective.
 
 </aside>
 
-## OOP and Classes
+## OOP 与 Classes
 
 There are three broad paths to object-oriented programming: classes,
 [prototypes][], and <span name="multimethods">[multimethods][]</span>. Classes
@@ -100,7 +100,7 @@ It's like the circle of life, *sans* Sir Elton John.
 
 [inheritance]: inheritance.html
 
-## Class Declarations
+## 类声明
 
 Like we do, we're gonna start with syntax. A `class` statement introduces a new
 name, so it lives in the `declaration` grammar rule.
@@ -250,7 +250,7 @@ class DevonshireCream {
 print DevonshireCream; // Prints "DevonshireCream".
 ```
 
-## Creating Instances  创建实例
+## 创建实例
 
 We have classes, but they don't do anything yet. Lox doesn't have "static"
 methods that you can call right on the class itself, so without actual
@@ -328,7 +328,7 @@ print bagel; // Prints "Bagel instance".
 This program doesn't do much, but it's starting to do *something*.
 这段程序没有做太多事，但是已经开始做*一些事情*了。
 
-## Properties on Instances  实例属性
+## 实例属性
 
 We have instances, so we should make them useful. We're at a fork in the road.
 We could add behavior first -- methods -- or we could start with state --
@@ -376,7 +376,7 @@ calls and dotted property accesses. "Property access" is a mouthful, so from
 here on out, we'll call these "get expressions".
 在基本表达式之后，我们允许跟一系列括号调用和点属性访问的任何混合。属性访问有点拗口，所以自此以后，我们称其为“get表达式”。
 
-### Get expressions  Get表达式
+### Get表达式
 
 The <span name="get-ast">syntax tree node</span> is:
 语法树节点是：
@@ -486,7 +486,7 @@ actually stuff any state into an instance, there are no fields to access. Before
 we can test out reading, we must support writing.
 理论上，我们现在可以读取对象的属性。但是由于没有办法将任何状态真正填充到实例中，所以也没有字段可以访问。在我们测试读取之前，我们需要先支持写入。
 
-### Set expressions  Set表达式
+### Set表达式
 
 Setters use the same syntax as getters, except they appear on the left side of
 an assignment.
@@ -596,7 +596,7 @@ live. Since Lox allows freely creating new fields on instances, there's no need
 to see if the key is already present.
 这里没什么复杂的。我们把这些值之间塞入字段所在的Java map中。由于Lox允许在实例上自由创建新字段，所以不需要检查键是否已经存在。
 
-## Methods on Classes  类中的方法
+## 类中的方法
 
 You can create instances of classes and stuff data into them, but the class
 itself doesn't really *do* anything. Instances are just maps and all instances
@@ -1141,7 +1141,7 @@ That should help users use `this` correctly, and it saves us from having to
 handle misuse at runtime in the interpreter.
 这应该能帮助用户正确地使用`this`，并且它使我们不必在解释器运行时中处理这个误用问题。
 
-## Constructors and Initializers  构造函数和初始化
+## 构造函数和初始化
 
 We can do almost everything with classes now, and as we near the end of the
 chapter we find ourselves strangely focused on a beginning. Methods and fields
@@ -1227,7 +1227,7 @@ class, are all you need to be able to set up the new instance however you
 desire.
 基本上就是这样了。因为我们在调用`init()`方法之前已经将其绑定，所以它可以在方法体内访问`this`。这样，连同传递给类的参数，你就可以按照自己的意愿设置新实例了。
 
-### Invoking init() directly  直接执行init()
+### 直接执行init()
 
 As usual, exploring this new semantic territory rustles up a few weird
 creatures. Consider:
@@ -1296,7 +1296,7 @@ we pass along the original method's value.
 
 ^code lox-function-bind-with-initializer (1 before, 1 after)
 
-### Returning from init()  从init()返回
+### 从init()返回
 
 We aren't out of the woods yet. We've been assuming that a user-written
 initializer doesn't explicitly return a value because most constructors don't.
@@ -1389,16 +1389,14 @@ interpreter has grown an entire programming paradigm. Classes, methods, fields,
     You can solve this however you like, but the "[metaclasses][]" used by
     Smalltalk and Ruby are a particularly elegant approach. *Hint: Make LoxClass
     extend LoxInstance and go from there.*
-你可以用你喜欢的方式解决这问题，但是Smalltalk和Ruby使用的“[metaclasses](https://en.wikipedia.org/wiki/Metaclass)” 是一种特别优雅的方法。*提示：让LoxClass继承LoxInstance，然后开始实现。*
-2. > Most modern languages support “getters” and “setters”—members on a class that look like field reads and writes but that actually execute user-defined code. Extend Lox to support getter methods. These are declared without a parameter list. The body of the getter is executed when a property with that name is accessed.
-大多数现代语言都支持“getters”和“setters”——类中的成员，看起来像是字段的读写，但实际上执行的用户自定义的代码。扩展Lox以支持getter方法。这些方法在声明时没有参数列表。当访问具有该名称的属性时，会执行getter的主体。
-3. > Python and JavaScript allow you to freely access an object’s fields from outside of its own methods. Ruby and Smalltalk encapsulate instance state. Only methods on the class can access the raw fields, and it is up to the class to decide which state is exposed. Most statically typed languages offer modifiers like `private` and `public` to control which parts of a class are externally accessible on a per-member basis.
+    你可以用你喜欢的方式解决这问题，但是Smalltalk和Ruby使用的“[metaclasses](https://en.wikipedia.org/wiki/Metaclass)” 是一种特别优雅的方法。*提示：让LoxClass继承LoxInstance，然后开始实现。*
 
 2.  Most modern languages support "getters" and "setters" -- members on a class
     that look like field reads and writes but that actually execute user-defined
     code. Extend Lox to support getter methods. These are declared without a
     parameter list. The body of the getter is executed when a property with that
     name is accessed.
+    大多数现代语言都支持“getters”和“setters”——类中的成员，看起来像是字段的读写，但实际上执行的用户自定义的代码。扩展Lox以支持getter方法。这些方法在声明时没有参数列表。当访问具有该名称的属性时，会执行getter的主体。
 
     ```lox
     class Circle {
@@ -1421,11 +1419,11 @@ interpreter has grown an entire programming paradigm. Classes, methods, fields,
     class to decide which state is exposed. Most statically typed languages
     offer modifiers like `private` and `public` to control which parts of a
     class are externally accessible on a per-member basis.
+    Python和JavaScript允许你从对象自身的方法之外的地方自由访问对象的字段。Ruby和Smalltalk封装了实例状态。只有类上的方法可以访问原始字段，并且由类来决定哪些状态被暴露。大多数静态类型的语言都提供了像`private`和`public`这样的修饰符，以便按成员维度控制类的哪些部分可以被外部访问。
 
     What are the trade-offs between these approaches and why might a language
     prefer one or the other?
-Python和JavaScript允许你从对象自身的方法之外的地方自由访问对象的字段。Ruby和Smalltalk封装了实例状态。只有类上的方法可以访问原始字段，并且由类来决定哪些状态被暴露。大多数静态类型的语言都提供了像`private`和`public`这样的修饰符，以便按成员维度控制类的哪些部分可以被外部访问。
-这些方式之间的权衡是什么？为什么一门语言可能会更偏爱某一种方法？
+    这些方式之间的权衡是什么？为什么一门语言可能会更偏爱某一种方法？
 
 [metaclasses]: https://en.wikipedia.org/wiki/Metaclass
 
@@ -1433,7 +1431,7 @@ Python和JavaScript允许你从对象自身的方法之外的地方自由访问�
 
 <div class="design-note">
 
-## Design Note: Prototypes and Power 原型与功率
+## Design Note: 原型与功率(Prototypes and Power)
 
 In this chapter, we introduced two new runtime entities, LoxClass and
 LoxInstance. The former is where behavior for objects lives, and the latter is

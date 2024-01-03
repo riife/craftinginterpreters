@@ -107,7 +107,7 @@ pieces click together in your mind. We'll build them one step at a time, and
 I'll try to introduce the concepts in stages.
 我在这里解释的技术来自于Lua虚拟机的设计。它速度快，内存占用少，并且只用相对较少的代码就实现了。更令人印象深刻的是，它很自然地适用于clox和Lua都在使用的单遍编译器。不过，它有些复杂，可能需要一段时间才能把所有的碎片在你的脑海中拼凑起来。我们将一步一步地构建它们，我将尝试分阶段介绍这些概念。
 
-## Closure Objects  闭包对象
+## 闭包对象
 
 Our VM represents functions at runtime using ObjFunction. These objects are
 created by the front end during compilation. At runtime, all the VM does is load
@@ -243,7 +243,7 @@ detail. With that out of the way, we have a working but empty representation for
 closures.
 它们的显示和ObjFunction一样。从用户的角度来看，ObjFunction和ObjClosure之间的区别纯粹是一个隐藏的实现细节。有了这些，我们就有了一个可用但空白的闭包表示形式。
 
-### Compiling to closure objects  编译为闭包对象
+### 编译为闭包对象
 
 We have closure objects, but our VM never creates them. The next step is getting
 the compiler to emit instructions to tell the runtime when to create a new
@@ -277,7 +277,7 @@ instruction. It's straightforward right now -- just a single byte operand -- but
 we'll be adding to it. This code here anticipates that future.
 这里做的事情比我们通常在反汇编程序中看到的要多。在本章结束时，你会发现`OP_CLOSURE`是一个相当不寻常的指令。它现在很简单——只有一个单字节的操作数——但我们会增加它的内容。这里的代码预示了未来。
 
-### Interpreting function declarations  解释函数声明
+### 解释函数声明
 
 Most of the work we need to do is in the runtime. We have to handle the new
 instruction, naturally. But we also need to touch every piece of code in the VM
@@ -387,7 +387,7 @@ ObjClosures floating around. That's the boring stuff out of the way. Now we're
 ready to make these closures actually *do* something.
 我们又得到了一个可以工作的解释器。*用户*看不出有什么不同，但是编译器现在生成的代码会告诉虚拟机，为每一个函数声明创建一个闭包。每当VM执行一个函数声明时，它都会将ObjFunction包装在一个新的ObjClosure中。VM的其余部分会处理那些四处漂浮的ObjClosures。无聊的事情就到此为止吧。现在，我们准备让这些闭包实际*做*一些事情。
 
-## Upvalues  上值
+## 上值
 
 Our existing instructions for reading and writing local variables are limited to
 a single function's stack window. Locals from a surrounding function are outside
@@ -876,7 +876,7 @@ for each upvalue it needs to capture at runtime. It's time to hop over to that
 side of the VM and get things running.
 有了这些，我们的编译器就达到了我们想要的效果。对于每个函数声明，它都会输出一条`OP_CLOSURE`指令，后跟一系列操作数字节对，对应需要在运行时捕获的每个上值。现在是时候跳到虚拟机那边，让整个程序运转起来。
 
-## Upvalue Objects  Upvalue对象
+## Upvalue对象
 
 Each `OP_CLOSURE` instruction is now followed by the series of bytes that
 specify the upvalues the ObjClosure should own. Before we process those
@@ -1130,7 +1130,7 @@ stack when the function where they were declared returns. This final section of
 the chapter does that.
 但是如果你现在运行它……天知道它会做什么？在运行时，他会从不包含关闭变量的栈槽中读取数据。正如我多次提到的，问题的关键在于闭包中的变量不具有栈语义。这意味着当声明它们的函数返回时，我们必须将它们从栈中取出。本章的最后一节就是实现这一点的。
 
-### Values and variables  值与变量
+### 值与变量
 
 Before we get to writing code, I want to dig into an important semantic point.
 Does a closure close over a *value* or a *variable?* This isn't purely an <span
@@ -1673,8 +1673,7 @@ memory so that we can free some of those objects when they're no longer needed.
 : 还有一种更简短的实现，通过使用一个指向指针的指针，来统一处理更新头部指针或前一个上值的`next`指针两种情况，但这种代码几乎会让所有未达到指针专业水平的人感到困惑。我选择了基本的`if`语句的方法。
 : 我并不是在自夸。这都是Lua开发团队的创新。
 : 没有什么*阻止*我们在编译器中关闭最外层的函数作用域，并生成`OP_POP`和`OP_CLOSE_UPVALUE`指令。这样做只是没有必要，因为运行时在弹出调用帧时，隐式地丢弃了函数使用的所有栈槽。
-## 习题
-1. > Wrapping every ObjFunction in an ObjClosure introduces a level of indirection that has a performance cost. That cost isn’t necessary for functions that do not close over any variables, but it does let the runtime treat all calls uniformly.
+
 
 [next step]: garbage-collection.html
 
@@ -1686,6 +1685,7 @@ memory so that we can free some of those objects when they're no longer needed.
     indirection that has a performance cost. That cost isn't necessary for
     functions that do not close over any variables, but it does let the runtime
     treat all calls uniformly.
+    将每个ObjFunction 包装在ObjClosure中，会引人一个有性能代价的中间层。这个代价对于那些没有关闭任何变量的函数来说是不必要的，但它确实让运行时能够统一处理所有的调用。  
 
     Change clox to only wrap functions in ObjClosures that need upvalues. How
     does the code complexity and performance compare to always wrapping
@@ -1693,15 +1693,13 @@ memory so that we can free some of those objects when they're no longer needed.
     How should you weight the importance of each benchmark? If one gets slower
     and one faster, how do you decide what trade-off to make to choose an
     implementation strategy?
-将每个ObjFunction 包装在ObjClosure中，会引人一个有性能代价的中间层。这个代价对于那些没有关闭任何变量的函数来说是不必要的，但它确实让运行时能够统一处理所有的调用。
-将clox改为只用ObjClosure包装需要上值的函数。与包装所有函数相比，代码的复杂性与性能如何？请注意对使用闭包和不使用闭包的程序进行基准测试。你应该如何衡量每个基准的重要性？如果一个变慢了，另一个变快了，你决定通过什么权衡来选择实现策略？
-2. > Read the design note below. I’ll wait. Now, how do you think Lox *should* behave? Change the implementation to create a new variable for each loop iteration.
-请阅读下面的[设计笔记](#设计笔记：关闭循环变量)。我在这里等着。现在，你觉得Lox应该怎么做？改变实现方式，为每个循环迭代创建一个新的变量。
-3. > A [famous koan](http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent) teaches us that “objects are a poor man’s closure” (and vice versa). Our VM doesn’t support objects yet, but now that we have closures we can approximate them. Using closures, write a Lox program that models two-dimensional vector “objects”. It should:
+    将clox改为只用ObjClosure包装需要上值的函数。与包装所有函数相比，代码的复杂性与性能如何？请注意对使用闭包和不使用闭包的程序进行基准测试。你应该如何衡量每个基准的重要性？如果一个变慢了，另一个变快了，你决定通过什么权衡来选择实现策略？
+
 
 2.  Read the design note below. I'll wait. Now, how do you think Lox *should*
     behave? Change the implementation to create a new variable for each loop
     iteration.
+    请阅读下面的[设计笔记](#设计笔记：关闭循环变量)。我在这里等着。现在，你觉得Lox应该怎么做？改变实现方式，为每个循环迭代创建一个新的变量。
 
 3.  A [famous koan][koan] teaches us that "objects are a poor man's closure"
     (and vice versa). Our VM doesn't support objects yet, but now that we have
@@ -1723,7 +1721,7 @@ memory so that we can free some of those objects when they're no longer needed.
 
 <div class="design-note">
 
-## Design Note: Closing Over the Loop Variable 关闭循环变量
+## Design Note: 关闭循环变量
 
 Closures capture variables. When two closures capture the same variable, they
 share a reference to the same underlying storage location. This fact is visible

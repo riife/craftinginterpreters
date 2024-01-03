@@ -35,7 +35,7 @@ many bytes as we need. We get back a pointer that we'll use to keep track of the
 value as it flows through the VM.
 我们需要一种方法来支持那些大小变化（有时变化很大）的值。这正是堆上动态分配的设计目的。我们可以根据需要分配任意多的字节。我们会得到一个指针，当值在虚拟机中流动时，我们会用该指针来跟踪它。
 
-## Values and Objects  值与对象
+## 值与对象
 
 Using the heap for larger, variable-sized values and the stack for smaller,
 atomic ones leads to a two-level representation. Every Lox value that you can
@@ -93,7 +93,7 @@ It extracts the Obj pointer from the value. We can also go the other way.
 This takes a bare Obj pointer and wraps it in a full Value.
 该方法会接受一个Obj指针，并将其包装成一个完整的Value。
 
-## Struct Inheritance  结构体继承
+## 结构体继承
 
 Every heap-allocated value is an Obj, but <span name="objs">Objs</span> are
 not all the same. For strings, we need the array of characters. When we get to
@@ -257,7 +257,7 @@ second one steps through that to return the character array itself, since that's
 often what we'll end up needing.
 这两个宏会接受一个Value，其中应当包含一个指向堆上的有效ObjString指针。第一个函数返回 `ObjString*` 指针。第二个函数更进一步返回了字符数组本身，因为这往往是我们最终需要的。
 
-## Strings
+## 字符串
 
 OK, our VM can now represent string values. It's time to add strings to the
 language itself. As usual, we begin in the front end. The lexer already
@@ -386,7 +386,7 @@ did spend two hours drawing a viola just to mention that.
 
 </aside>
 
-## Operations on Strings  字符串操作
+## 字符串操作
 
 Our fancy strings are there, but they don't do much of anything yet. A good
 first step is to make the existing print code not barf on the new value type.
@@ -452,7 +452,7 @@ And here:
 
 ^code value-include-object (2 before, 1 after)
 
-### Concatenation  连接
+### 连接
 
 Full-grown languages provide lots of operations for working with strings --
 access to individual characters, the string's length, changing case, splitting,
@@ -531,7 +531,7 @@ As usual, stitching this functionality together requires a couple of includes.
 
 ^code vm-include-object-memory (1 before, 1 after)
 
-## Freeing Objects  释放对象
+## 释放对象
 
 Behold this innocuous-seeming expression:
 看看这个看似无害的表达式：
@@ -732,10 +732,6 @@ We won’t address that until we’ve added [a real garbage collector](http://ww
 : 下面是每条指令执行后的堆栈：
 : 我见过很多人在实现看语言的大部分内容之后，才试图开始实现GC。对于在开发语言时通常会运行的那种玩具程序，实际上不会在程序结束之前耗尽内存，所以在需要GC之前，你可以开发出很多的特性。<BR>但是，这低估了以后添加垃圾收集器的难度。收集器必须确保它能够找到每一点仍在使用的内存，这样它就不会收集活跃数据。一个语言的实现可以在数百个地方存储对某个对象的引用。如果你不能找到所有这些地方，你就会遇到噩梦般的漏洞。<BR>我曾见过一些语言实现因为后来的GC太困难而夭折。如果你的语言需要GC，请尽快实现它。它是涉及整个代码库的横切关注点。
 : 使用`reallocate()`来释放内存似乎毫无意义。为什么不直接调用`free()`呢？稍后，这将帮助虚拟机跟踪仍在使用的内存数量。如果所有的分配和释放都通过`reallocate()`进行，那么就很容易对已分配的内存字节数进行记录。
-## 习题
-1. > Each string requires two separate dynamic allocations—one for the ObjString and a second for the character array. Accessing the characters from a value requires two pointer indirections, which can be bad for performance. A more efficient solution relies on a technique called **[flexible array members](https://en.wikipedia.org/wiki/Flexible_array_member)**. Use that to store the ObjString and its character array in a single contiguous allocation.
-每个字符串都需要两次单独的动态分配——一个是ObjString，另一个是字符数组。从一个值中访问字符需要两个指针间接访问，这对性能是不利的。一个更有效的解决方案是依靠一种名为[**灵活数组成员**](https://en.wikipedia.org/wiki/Flexible_array_member)的技术。用该方法将ObjString和它的字符数据存储在一个连续分配的内存中。
-2. > When we create the ObjString for each string literal, we copy the characters onto the heap. That way, when the string is later freed, we know it is safe to free the characters too.
 
 We won't address that until we've added [a real garbage collector][gc], but this
 is a big step. We now have the infrastructure to support a variety of different
@@ -756,24 +752,24 @@ languages: the venerable [hash table][]. But that's for the next chapter...
     performance. A more efficient solution relies on a technique called
     **[flexible array members][]**. Use that to store the ObjString and its
     character array in a single contiguous allocation.
+    每个字符串都需要两次单独的动态分配——一个是ObjString，另一个是字符数组。从一个值中访问字符需要两个指针间接访问，这对性能是不利的。一个更有效的解决方案是依靠一种名为[**灵活数组成员**](https://en.wikipedia.org/wiki/Flexible_array_member)的技术。用该方法将ObjString和它的字符数据存储在一个连续分配的内存中。
 
 2.  When we create the ObjString for each string literal, we copy the characters
     onto the heap. That way, when the string is later freed, we know it is safe
     to free the characters too.
+    当我们为每个字符串字面量创建ObjString时，会将字符复制到堆中。这样，当字符串后来被释放时，我们知道释放这些字符也是安全的。
 
     This is a simpler approach but wastes some memory, which might be a problem
     on very constrained devices. Instead, we could keep track of which
     ObjStrings own their character array and which are "constant strings" that
     just point back to the original source string or some other non-freeable
     location. Add support for this.
-当我们为每个字符串字面量创建ObjString时，会将字符复制到堆中。这样，当字符串后来被释放时，我们知道释放这些字符也是安全的。
-这是一个简单但是会浪费一下内存的方法，这在非常受限的设备上可能是一个问题。相反，我们可以追踪哪些ObjString拥有自己的字符数组，哪些是“常量字符串”，只是指向原始的源字符串或其它不可释放的位置。添加对此的支持。
-3. > If Lox was your language, what would you have it do when a user tries to use `+` with one string operand and the other some other type? Justify your choice. What do other languages do?
-如果Lox是你的语言，当用户试图用一个字符串操作数使用`+`，而另一个操作数是其它类型时，你会让它做什么？证明你的选择是正确的，其它的语言是怎么做的？
+    这是一个简单但是会浪费一下内存的方法，这在非常受限的设备上可能是一个问题。相反，我们可以追踪哪些ObjString拥有自己的字符数组，哪些是“常量字符串”，只是指向原始的源字符串或其它不可释放的位置。添加对此的支持。
 
 3.  If Lox was your language, what would you have it do when a user tries to use
     `+` with one string operand and the other some other type? Justify your
     choice. What do other languages do?
+    如果Lox是你的语言，当用户试图用一个字符串操作数使用`+`，而另一个操作数是其它类型时，你会让它做什么？证明你的选择是正确的，其它的语言是怎么做的？
 
 [flexible array members]: https://en.wikipedia.org/wiki/Flexible_array_member
 
@@ -781,7 +777,7 @@ languages: the venerable [hash table][]. But that's for the next chapter...
 
 <div class="design-note">
 
-## Design Note: String Encoding 字符串编码
+## Design Note: 字符串编码
 
 In this book, I try not to shy away from the gnarly problems you'll run into in
 a real language implementation. We might not always use the most *sophisticated*

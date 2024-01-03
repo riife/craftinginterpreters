@@ -23,7 +23,7 @@ also get a chance to learn about *semantic analysis* -- a powerful technique for
 extracting meaning from the user's source code without having to run it.
 我们将用整整一章的时间来探索这个漏洞，然后小心翼翼地把它补上。在这个过程中，我们将对Lox和其他C语言传统中使用的词法范围有一个更严格的理解。我们还将有机会学习语义分析——这是一种强大的技术，用于从用户的源代码中提取语义而无需运行它。
 
-## Static Scope  静态作用域
+## 静态作用域
 
 A quick refresher: Lox, like most modern languages, uses *lexical* scoping. This
 means that you can figure out which declaration a variable name refers to just
@@ -194,7 +194,7 @@ never-assigned variable prints two different values at different points in time.
 We definitely broke something somewhere.
 我要强调一下，这个代码中从未重新分配任何变量，并且只包含一个`print`语句。然而，不知何故，对于这个从未分配过的变量，`print`语句在不同的时间点上打印了两个不同的值。我们肯定在什么地方出了问题。
 
-### Scopes and mutable environments  作用域和可变环境
+### 作用域和可变环境
 
 In our interpreter, environments are the dynamic manifestation of static scopes.
 The two mostly stay in sync with each other -- we create a new environment when
@@ -306,7 +306,7 @@ declared in the scope that environment corresponds to, the closure sees the new
 variable, even though the declaration does *not* precede the function.
 但是在我们的实现中，环境确实表现得像整个代码块是一个作用域，只是这个作用域会随时间变化。而闭包不是这样的。当函数被声明时，它会捕获一个指向当前环境的引用。函数*应该*捕获一个冻结的环境快照，就像它存在于函数被声明的那一瞬间。但是事实上，在Java代码中，它引用的是一个实际可变的环境对象。当后续在该环境所对应的作用域内声明一个变量时，闭包会看到该变量，即使变量声明*没有*出现在函数之前。
 
-### Persistent environments  持久环境
+### 持久性环境
 
 There is a style of programming that uses what are called **persistent data
 structures**. Unlike the squishy data structures you're familiar with in
@@ -349,7 +349,7 @@ same. Instead of making the data more statically structured, we'll bake the
 static resolution into the access *operation* itself.
 我不会把你拖下水的。我们将保持表示环境的方式不变。我们不会让数据变得更加静态结构化，而是将静态解析嵌入访问操作本身。
 
-## Semantic Analysis  语义分析
+## 语义分析
 
 Our interpreter **resolves** a variable -- tracks down which declaration it
 refers to -- each and every time the variable expression is evaluated. If that
@@ -415,7 +415,7 @@ where we'll put it later in clox. It would work here too, but I want an excuse t
 show you another technique. We'll write our resolver as a separate pass.
 因为我们是根据源代码的结构来计算一个静态属性，所以答案显然是在解析器中。那是传统的选择，也是我们以后在 clox 中实现它的地方。在这里同样也适用，但是我想给你展示另一种技巧。我们会单独写一个解析器。
 
-### A variable resolution pass  变量解析过程
+### 变量解析过程
 
 After the parser produces the syntax tree, but before the interpreter starts
 executing it, we'll do a single walk over the tree to resolve all of the
@@ -454,7 +454,7 @@ the user's program grows.
 
 </aside>
 
-## A Resolver Class  Resolver类
+## Resolver类
 
 Like everything in Java, our variable resolution pass is embodied in a class.
 与Java中的所有内容一样，我们将变量解析处理也放在一个类中。
@@ -489,7 +489,7 @@ expression doesn't *itself* have any variables to resolve, either of its
 operands might.
 其余的节点不做任何特别的事情，但是我们仍然需要为它们实现visit方法，以遍历其子树。尽管`+`表达式本身没有任何变量需要解析，但是它的任一操作数都可能需要。
 
-### Resolving blocks  解析代码块
+### 解析代码块
 
 We start with blocks since they create the local scopes where all the magic
 happens.
@@ -554,7 +554,7 @@ Since scopes are stored in an explicit stack, exiting one is straightforward.
 Now we can push and pop a stack of empty scopes. Let's put some things in them.
 现在我们可以在一个栈中压入和弹出一个空作用域，接下来我们往里面放些内容。
 
-### Resolving variable declarations  解析变量声明
+### 解析变量声明
 
 Resolving a variable declaration adds a new entry to the current innermost
 scope's map. That seems simple, but there's a little dance we need to do.
@@ -649,7 +649,7 @@ We set the variable's value in the scope map to `true` to mark it as fully
 initialized and available for use. It's alive! 
 我们在作用域map中将变量的值置为`true`，以标记它已完全初始化并可使用。它有了生命！
 
-### Resolving variable expressions  解析变量表达式
+### 解析变量表达式
 
 Variable declarations -- and function declarations, which we'll get to -- write
 to the scope maps. Those maps are read when we resolve variable expressions.
@@ -682,7 +682,7 @@ it unresolved and assume it's global. We'll get to the implementation of that
 other syntax nodes.
 如果我们遍历了所有的作用域也没有找到这个变量，我们就不解析它，并假定它是一个全局变量。稍后我们将讨论`resolve()`方法的实现。现在，让我们继续浏览其他语法节点。
 
-### Resolving assignment expressions  解析赋值表达式
+### 解析赋值表达式
 
 The other expression that references a variable is assignment. Resolving one
 looks like this:
@@ -695,7 +695,7 @@ references to other variables. Then we use our existing `resolveLocal()` method
 to resolve the variable that's being assigned to.
 首先，我们解析右值的表达式，以防它还包含对其它变量的引用。然后使用现有的 `resolveLocal()` 方法解析待赋值的变量。
 
-### Resolving function declarations  解析函数声明
+### 解析函数声明
 
 Finally, functions. Functions both bind names and introduce a scope. The name of
 the function itself is bound in the surrounding scope where the function is
@@ -728,7 +728,7 @@ doesn't get touched until later when the function is called. In a *static*
 analysis, we immediately traverse into the body right then and there.
 一旦就绪，它就会在这个作用域中解析函数体。这与解释器处理函数声明的方式不同。在*运行时*，声明一个函数不会对函数体做任何处理。直到后续函数被调用时，才会触及主体。在*静态*分析中，我们会立即遍历函数体。
 
-### Resolving the other syntax tree nodes  解析其它语法树节点
+### 解析其它语法树节点
 
 That covers the interesting corners of the grammars. We handle every place where
 a variable is declared, read, or written, and every place where a scope is
@@ -825,7 +825,7 @@ Resolver fully implements Stmt.Visitor and Expr.Visitor. Now is a good time to
 take a break, have a snack, maybe a little nap.
 有了这些visit方法，Java编译器应该会认为Resolver完全实现了Stmt.Visitor 和 Expr.Visitor。现在是时候休息一下了。
 
-## Interpreting Resolved Variables  解释已解析的变量
+## 解释已解析的变量
 
 Let's see what our resolver is good for. Each time it visits a variable, it
 tells the interpreter how many scopes there are between the current scope and
@@ -882,7 +882,7 @@ And:
 
 ^code import-map (1 before, 2 after)
 
-### Accessing a resolved variable  访问已解析的变量
+### 访问已解析的变量
 
 Our interpreter now has access to each variable's resolved location. Finally, we
 get to make use of that. We replace the visit method for variable expressions
@@ -943,7 +943,7 @@ to have already upheld.
 
 </aside>
 
-### Assigning to a resolved variable  赋值已解析的变量
+### 赋值已解析的变量
 
 We can also use a variable by assigning to it. The changes to visiting an
 assignment expression are similar.
@@ -967,7 +967,7 @@ continue working as they did before. Even the code for modifying environments is
 unchanged.
 解释器就只需要做这些调整。这也就是为什么我为解析数据选择了一种侵入性最小的表示方法。其余所有节点都跟之前一样，甚至连修改环境的代码也没有改动。
 
-### Running the resolver  运行解析器
+### 运行解析器
 
 We do need to actually *run* the resolver, though. We insert the new pass after
 the parser does its magic.
@@ -987,7 +987,7 @@ At least, that's true if the resolver *succeeds*. But what about errors during
 resolution?
 退一步讲，如果解析器成功了，这么说就是对的。但是如果解析过程中出现错误会怎么办？
 
-## Resolution Errors  解析错误
+## 解析错误
 
 Since we are doing a semantic analysis pass, we have an opportunity to make
 Lox's semantics more precise, and to help users catch bugs early before running
@@ -1018,7 +1018,7 @@ variable previously declared in that same scope. If we see a collision, we
 report an error.
 当我们在局部作用域中声明一个变量时，我们已经知道了之前在同一作用域中声明的每个变量的名字。如果我们看到有冲突，我们就报告一个错误。
 
-### Invalid return errors  无效返回错误
+### 无效返回错误
 
 Here's another nasty little script:
 这是另一个讨人厌的小脚本：
@@ -1134,11 +1134,11 @@ surprising that it took this much work to do it.
 1.  Why is it safe to eagerly define the variable bound to a function's name
     when other variables must wait until after they are initialized before they
     can be used?
-1、为什么先定义与函数名称绑定的变量是安全的，而其它变量必须等到初始化后才能使用？
+    为什么先定义与函数名称绑定的变量是安全的，而其它变量必须等到初始化后才能使用？
 
 1.  How do other languages you know handle local variables that refer to the
     same name in their initializer, like:
-2、你知道其它语言中是如何处理局部变量在初始化式中引用了相同名称变量的情况？比如：
+    你知道其它语言中是如何处理局部变量在初始化式中引用了相同名称变量的情况？比如：
 
     ```lox
     var a = "outer";
@@ -1149,10 +1149,10 @@ surprising that it took this much work to do it.
 
     Is it a runtime error? Compile error? Allowed? Do they treat global
     variables differently? Do you agree with their choices? Justify your answer.
-这是一个运行时错误？编译错误？还是允许这种操作？它们对待全局变量的方式有区别吗？你是否认同它们的选择？证明你的答案。
+    这是一个运行时错误？编译错误？还是允许这种操作？它们对待全局变量的方式有区别吗？你是否认同它们的选择？证明你的答案。
 
 1.  Extend the resolver to report an error if a local variable is never used.
-3、对解析器进行扩展，如果局部变量没有被使用就报告一个错误。
+    对解析器进行扩展，如果局部变量没有被使用就报告一个错误。
 
 1.  Our resolver calculates *which* environment the variable is found in, but
     it's still looked up by name in that map. A more efficient environment

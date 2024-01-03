@@ -43,7 +43,7 @@ assign to variables. Finally, we'll add blocks and local scope. That's a lot to
 stuff into one chapter, but we'll chew through it all one bite at a time.
 在这一章中，我们会实现所有这些。我们会定义可以产生输出和创建状态的语句，然后会添加表达式来访问和赋值给这些变量，最后，我们会引入代码块和局部作用域。这一章要讲的内容太多了，但是我们会一点一点地把它们嚼碎。
 
-## Statements  语句
+## 语句
 
 We start by extending Lox's grammar with statements. They aren't very different
 from expressions. We start with the two simplest kinds:
@@ -115,7 +115,7 @@ The next step is turning this grammar into something we can store in memory --
 syntax trees.
 目前，`statement`只有两种情况，分别对应于我们描述的两类语句。我们将在本章后面和接下来的章节中补充更多内容。接下来就是将这个语法转化为我们可以存储在内存中的东西——语法树。。
 
-### Statement syntax trees  Statement语法树
+### 语法树
 
 There is no place in the grammar where both an expression and a statement are
 allowed. The operands of, say, `+` are always expressions, never statements. The
@@ -163,7 +163,7 @@ syntax tree classes we need for expression and `print` statements. Don't forget
 to add the file to your IDE project or makefile or whatever.
 运行AST生成器脚本，查看生成的`Stmt.java`文件，其中包含表达式和`print`语句所需的语法树类。不要忘记将该文件添加到IDE项目或makefile或其他文件中。
 
-### Parsing statements  解析语句
+### 解析语句
 
 The parser's `parse()` method that parses and returns a single expression was a
 temporary hack to get the last chapter up and running. Now that our grammar has
@@ -225,7 +225,7 @@ Similar to the previous method, we parse an expression followed by a semicolon.
 We wrap that Expr in a Stmt of the right type and return it.
 与前面的方法类似，我们解析一个后面带分号的表达式。我们将Expr封装在一个正确类型的Stmt中，并返回它。
 
-### Executing statements  执行语句
+### 执行语句
 
 We're running through the previous couple of chapters in microcosm, working our
 way through the front end. Our parser can now produce statement syntax trees, so
@@ -327,7 +327,7 @@ to enter a full statement instead of a simple expression. Don't forget your
 semicolons.
 它看起来就像一个真实的程序！ 请注意，REPL现在也要求你输入完整的语句，而不是简单的表达式。 所以不要忘记后面的分号。
 
-## Global Variables  全局变量
+## 全局变量
 
 Now that we have statements, we can start working on state. Before we get into
 all of the complexity of lexical scoping, we'll start off with the easiest kind
@@ -375,7 +375,7 @@ do fun stuff.
 
 </aside>
 
-### Variable syntax  变量语法
+### 变量语法
 
 As before, we'll work through the implementation from front to back, starting
 with the syntax. Variable declarations are statements, but they are different
@@ -512,7 +512,7 @@ The generated code for the new node is in [Appendix II][appendix-var-expr].
 
 </aside>
 
-### Parsing variables  解析变量
+### 解析变量
 
 Before we parse variable statements, we need to shift around some code to make
 room for the new `declaration` rule in the grammar. The top level of a program
@@ -581,7 +581,7 @@ left is to feed it into the interpreter. Before we get to that, we need to talk
 about where variables live in memory.
 这为我们提供了声明和使用变量的可用前端，剩下的就是将其接入解释器中。在此之前，我们需要讨论变量在内存中的位置。
 
-## Environments  环境
+## 环境
 
 The bindings that associate variables to values need to be stored somewhere.
 Ever since the Lisp folks invented parentheses, this data structure has been
@@ -778,7 +778,7 @@ by throwing an exception. The exception contains the variable's token so we can
 tell the user where in their code they messed up.
 与表达式计算代码中的类型错误一样，我们通过抛出一个异常来报告运行时错误。异常中包含变量的标记，以便我们告诉用户代码的什么位置出现了错误。
 
-### Interpreting global variables  解释全局变量
+### 解释全局变量
 
 The Interpreter class gets an instance of the new Environment class.
 Interpreter类会获取Environment类的一个实例。
@@ -838,7 +838,7 @@ We can't reuse *code* yet, but we can start to build up programs that reuse
 *data*.
 我们还不能复用代码，但是我们可以构建能够复用数据的程序。
 
-## Assignment  赋值
+## 赋值
 
 It's possible to create a language that has variables but does not let you
 reassign -- or **mutate** -- them. Haskell is one example. SML supports only
@@ -870,7 +870,7 @@ the territory. Adding support for assignment doesn't require much work. Global
 variables already support redefinition, so most of the machinery is there now.
 Mainly, we're missing an explicit assignment notation.
 
-### Assignment syntax  赋值语法
+### 赋值语法
 
 That little `=` syntax is more complex than it might seem. Like most C-derived
 languages, assignment is an <span name="assign">expression</span> and not a
@@ -1072,7 +1072,7 @@ that knows what it is assigning to and has an expression subtree for the value
 being assigned. All with only a single token of lookahead and no backtracking.
 现在，唯一有效的赋值目标就是一个简单的变量表达式，但是我们后面会添加属性字段。这个技巧的最终结果是一个赋值表达式树节点，该节点知道要向什么赋值，并且有一个表达式子树用于计算要使用的值。所有这些都只用了一个前瞻标记，并且没有回溯。
 
-### Assignment semantics
+### 赋值语句
 
 We have a new syntax tree node, so our interpreter gets a new visit method.
 我们有了一个新的语法树节点，所以我们的解释器也需要一个新的访问方法。
@@ -1126,7 +1126,7 @@ names longer than two characters.
 
 </aside>
 
-## Scope
+## 作用域
 
 A **scope** defines a region where a name maps to a certain entity. Multiple
 scopes enable the same name to refer to different things in different contexts.
@@ -1237,7 +1237,7 @@ execution passes the closing `}`. Any variables declared inside the block
 disappear.
 块的开始引入了一个新的局部作用域，当执行通过结束的`}`时，这个作用域就结束了。块内声明的任何变量都会消失。
 
-### Nesting and shadowing  嵌套和遮蔽
+### 嵌套和遮蔽
 
 A first cut at implementing block scope might work like this:
 实现块作用域的第一步可能是这样的：
@@ -1385,7 +1385,7 @@ Again, if the variable isn't in this environment, it checks the outer one,
 recursively.
 同样，如果变量不在此环境中，它会递归地检查外围环境。
 
-### Block syntax and semantics  块语法和语义
+### 块语法和语义
 
 Now that Environments nest, we're ready to add blocks to the language. Behold
 the grammar:
@@ -1533,13 +1533,13 @@ something resembling a full-featured programming language.
     users type in both statements and expressions. If they enter a statement,
     execute it. If they enter an expression, evaluate it and display the result
     value.
-1、REPL不再支持输入一个表达式并自动打印其结果值。这是个累赘。在 REPL 中增加支持，让用户既可以输入语句又可以输入表达式。如果他们输入一个语句，就执行它。如果他们输入一个表达式，则对表达式求值并显示结果值。
+    REPL不再支持输入一个表达式并自动打印其结果值。这是个累赘。在 REPL 中增加支持，让用户既可以输入语句又可以输入表达式。如果他们输入一个语句，就执行它。如果他们输入一个表达式，则对表达式求值并显示结果值。
 
 2.  Maybe you want Lox to be a little more explicit about variable
     initialization. Instead of implicitly initializing variables to `nil`, make
     it a runtime error to access a variable that has not been initialized or
     assigned to, as in:
-2、也许你希望Lox对变量的初始化更明确一些。与其隐式地将变量初始化为nil，不如将访问一个未被初始化或赋值的变量作为一个运行时错误，如：
+    也许你希望Lox对变量的初始化更明确一些。与其隐式地将变量初始化为nil，不如将访问一个未被初始化或赋值的变量作为一个运行时错误，如：
 
     ```lox
     // No initializers.
@@ -1553,7 +1553,7 @@ something resembling a full-featured programming language.
     ```
 
 3.  What does the following program do?
-3、下面的代码会怎么执行？
+    下面的代码会怎么执行？
 
     ```lox
     var a = 1;
@@ -1566,13 +1566,13 @@ something resembling a full-featured programming language.
     What did you *expect* it to do? Is it what you think it should do? What
     does analogous code in other languages you are familiar with do? What do
     you think users will expect this to do?
-你期望它怎么执行？它是按照你的想法执行的吗？你所熟悉的其他语言中的类似代码怎么执行？你认为用户会期望它怎么执行？
+    你期望它怎么执行？它是按照你的想法执行的吗？你所熟悉的其他语言中的类似代码怎么执行？你认为用户会期望它怎么执行？
 
 </div>
 
 <div class="design-note">
 
-## Design Note: Implicit Variable Declaration 隐式变量声明
+## Design Note: 隐式变量声明
 
 Lox has distinct syntax for declaring a new variable and assigning to an
 existing one. Some languages collapse those to only assignment syntax. Assigning

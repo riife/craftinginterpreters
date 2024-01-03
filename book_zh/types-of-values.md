@@ -29,7 +29,7 @@ As of this moment, clox is unityped.
 
 </aside>
 
-## Tagged Unions  带标签联合体
+## 带标签的联合体
 
 The nice thing about working in C is that we can build our data structures from
 the raw bits up. The bad thing is that we *have* to do that. C doesn't give you
@@ -169,7 +169,7 @@ forever.
 
 [optimization]: optimization.html
 
-## Lox Values and C Values  Lox值和C值
+## Lox的值和C语言的值
 
 That's our new value representation, but we aren't done. Right now, the rest of
 clox assumes Value is an alias for `double`. We have code that does a straight C
@@ -237,7 +237,7 @@ back down.
 
 </aside>
 
-## Dynamically Typed Numbers  动态类型数字
+## 动态类型数字
 
 We've got our value representation and the tools to convert to and from it. All
 that's left to get clox running again is to grind through the code and fix every
@@ -263,7 +263,7 @@ double value. We'll revisit this function shortly to add the other types, but
 let's get our existing code working first.
 在我们将Value发送给`printf()`之前，我们将其拆装并提取出double值。我们很快会重新回顾这个函数并添加其它类型，但是我们先让现有的代码工作起来。
 
-### Unary negation and runtime errors  一元取负与运行时错误
+### 一元取负与运行时错误
 
 The next simplest operation is unary negation. It pops a value off the stack,
 negates it, and pushes the result. Now that we have other types of values, we
@@ -384,7 +384,7 @@ it used to before we broke it), but it also gracefully handles erroneous
 attempts to negate other types (which we don't have yet, but still).
 有了它，我们的虚拟机不仅可以在对数字取负时正确执行（原本就会这样做），而且还可以优雅地处理对其它类型取负的错误尝试（目前还没有，但仍然存在）。
 
-### Binary arithmetic operators  二元数字运算符
+### 二元数字运算符
 
 We have our runtime error machinery in place now, so fixing the binary operators
 is easier even though they're more complex. We support four binary operators
@@ -428,7 +428,7 @@ Did you know you can pass macros as parameters to macros? Now you do!
 Soon, I'll show you why we made the wrapping macro an argument.
 很快，我就会告诉你为什么我们要将包装宏作为参数。
 
-## Two New Types  两个新类型
+## 两个新类型
 
 All of our existing clox code is back in working order. Finally, it's time to
 add some new types. We've got a running numeric calculator that now does a
@@ -541,7 +541,7 @@ before `nil` comes into play, but we can start putting Booleans to work in the
 logical operators.
 我们继续！现在我们有了一些新的类型，只是它们目前还不是很有用。除了字面量之外，你无法真正对其做任何事。还需要一段时间`nil`才会发挥作用，但我们可以先让布尔值在逻辑运算符中发挥作用。
 
-### Logical not and falsiness  逻辑非和falsiness
+### 逻辑非和false
 
 The simplest logical operator is our old exclamatory friend unary not.
 最简单的逻辑运算符是我们充满感叹意味的老朋友一元取非。
@@ -608,7 +608,7 @@ Lox遵循Ruby的规定，`nil`和`false`是假的，其它的值都表现为`tru
 
 ^code disassemble-not (2 before, 1 after)
 
-### Equality and comparison operators  相等与比较运算符
+### 相等与比较运算符
 
 That wasn't too bad. Let's keep the momentum going and knock out the equality
 and comparison operators too: `==`, `!=`, `<`, `>`, `<=`, and `>=`. That covers

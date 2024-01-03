@@ -104,7 +104,7 @@ We start by moving one level up the [Chomsky hierarchy][]...
 
 [chomsky hierarchy]: https://en.wikipedia.org/wiki/Chomsky_hierarchy
 
-## Context-Free Grammars  上下文无关语法
+## 上下文无关语法
 
 In the last chapter, the formalism we used for defining the lexical grammar --
 the rules for how characters get grouped into tokens -- was called a *regular
@@ -174,7 +174,7 @@ breakfast" would be in the grammar, but "tasty breakfast for are eggs" would
 probably not.
 形式化语法的工作是指定哪些字符串有效，哪些无效。如果我们要为英语句子定义一个语法，"eggs are tasty for breakfast "会包含在语法中，但 "tasty breakfast for are eggs "可能不会。
 
-### Rules for grammars  语法规则
+### 语法规则
 
 How do we write down a grammar that contains an infinite number of valid
 strings? We obviously can't list them all out. Instead, we create a finite set
@@ -353,7 +353,7 @@ refer to itself -- directly or indirectly -- kicks it up even more, letting us
 pack an infinite number of strings into a finite grammar.
 每当我们遇到具有多个结果的规则时，我们都只是随意选择了一个。 正是这种灵活性允许用少量的语法规则来编码出组合性更强的字符串集。一个规则可以直接或间接地引用它自己，这就更提高了它的灵活性，让我们可以将无限多的字符串打包到一个有限的语法中。
 
-### Enhancing our notation  增强符号
+### 增强符号
 
 Stuffing an infinite set of strings in a handful of rules is pretty fantastic,
 but let's take it further. Our notation works, but it's tedious. So, like any
@@ -456,7 +456,7 @@ that, we need an actual grammar for Lox, or at least enough of one for us to get
 started.
 我们为Lox定义的规则和生成式也是我们将要实现的树数据结构（用于表示内存中的代码）的指南。 在此之前，我们需要为Lox编写一个实际的语法，或者至少要有一个足够上手的语法。
 
-### A Grammar for Lox expressions  Lox表达式语法
+### Lox表达式语法
 
 In the previous chapter, we did Lox's entire lexical grammar in one fell swoop.
 Every keyword and bit of punctuation is there. The syntactic grammar is larger,
@@ -532,7 +532,7 @@ right to you? Can you make it generate anything wrong like `1 + / 3`?
 
 </aside>
 
-## Implementing Syntax Trees  实现语法树
+## 实现语法树
 
 Finally, we get to write some code. That little expression grammar is our
 skeleton. Since the grammar is recursive -- note how `grouping`, `unary`, and
@@ -613,7 +613,7 @@ from `Binary`, the subclasses are nested inside of it. There's no technical need
 for this, but it lets us cram all of the classes into a single Java file.
 Expr是所有表达式类继承的基类。从`Binary`中可以看到，子类都嵌套在它的内部。这在技术上没有必要，但它允许我们将所有类都塞进一个Java文件中。
 
-### Disoriented objects  非面向对象
+### 非面向对象
 
 You'll note that, much like the Token class, there aren't any methods here. It's
 a dumb structure. Nicely typed, but merely a bag of data. This feels strange in
@@ -646,7 +646,7 @@ object-oriented style. It is the data structures that flow between them that are
 stripped of behavior.
 我的感觉是，在面向对象的风格下，解释器的每个阶段或部分都能正常工作。只不过在它们之间流动的数据结构剥离了行为。
 
-### Metaprogramming the trees  节点树元编程
+### 节点树元编程
 
 Java can express behavior-less classes, but I wouldn't say that it's
 particularly great at it. Eleven lines of code to stuff three fields in an
@@ -760,7 +760,7 @@ implementing jlox and defined all of its syntax tree nodes.
 
 </aside>
 
-## Working with Trees  处理树结构
+## 处理树结构
 
 Put on your imagination hat for a moment. Even though we aren't there yet,
 consider what the interpreter will do with the syntax trees. Each kind of
@@ -820,7 +820,7 @@ violates [separation of concerns][] and leads to hard-to-maintain code.
 
 [separation of concerns]: https://en.wikipedia.org/wiki/Separation_of_concerns
 
-### The expression problem  表达式问题
+### 表达式问题
 
 This problem is more fundamental than it may seem at first. We have a handful of
 types, and a handful of high-level operations like "interpret". For each pair of
@@ -913,7 +913,7 @@ classes rub against the grain of Java. Fortunately, there's a design pattern we
 can bring to bear on it.
 面向对象在我们的解释器的许多部分都可以正常工作，但是这些树类与Java的本质背道而驰。 幸运的是，我们可以采用一种设计模式来解决这个问题。
 
-### The Visitor pattern  访问者模式
+### 访问者模式
 
 The **Visitor pattern** is the most widely misunderstood pattern in all of
 *Design Patterns*, which is really saying something when you look at the
@@ -1018,7 +1018,7 @@ visitors as we want without ever having to touch the pastry classes again. It's
 a clever pattern.
 我们为每个类添加了一个`accept（）`方法，我们可以根据需要将其用于任意数量的访问者，而无需再次修改*pastry*类。 这是一个聪明的模式。
 
-### Visitors for expressions  表达式访问者
+### 表达式访问者
 
 OK, let's weave it into our expression classes. We'll also <span
 name="context">refine</span> the pattern a little. In the pastry example, the
@@ -1076,7 +1076,7 @@ Before we end this rambling chapter, let's implement that Visitor interface and
 see the pattern in action.
 在结束这杂乱的一章之前，我们先实现一下这个Visitor接口，看看这个模式的运行情况。
 
-## A (Not Very) Pretty Printer  一个（不是很）漂亮的打印器
+## 一个（不是很）漂亮的打印器
 
 When we debug our parser and interpreter, it's often useful to look at a parsed
 syntax tree and make sure it has the structure we expect. We could inspect it in
@@ -1196,26 +1196,25 @@ maintain AstPrinter, feel free to delete it. We won't need it again.
     object-oriented language. Devise a complementary pattern for a functional
     language. It should let you bundle all of the operations on one type
     together and let you define new types easily.
-2、Visitor 模式让你可以在面向对象的语言中模仿函数式。为函数式语言设计一个互补的模式，该模式让你可以将一个类型上的所有操作捆绑在一起，并轻松扩展新的类型。
-(SML或Haskell是这个练习的理想选择，但Scheme或其它Lisp方言也可以。)
+    Visitor 模式让你可以在面向对象的语言中模仿函数式。为函数式语言设计一个互补的模式，该模式让你可以将一个类型上的所有操作捆绑在一起，并轻松扩展新的类型。
 
     (SML or Haskell would be ideal for this exercise, but Scheme or another Lisp
     works as well.)
+    (SML或Haskell是这个练习的理想选择，但Scheme或其它Lisp方言也可以。)
 
 1.  In [reverse Polish notation][rpn] (RPN), the operands to an arithmetic
     operator are both placed before the operator, so `1 + 2` becomes `1 2 +`.
     Evaluation proceeds from left to right. Numbers are pushed onto an implicit
     stack. An arithmetic operator pops the top two numbers, performs the
     operation, and pushes the result. Thus, this:
-3、在[逆波兰表达式](https://en.wikipedia.org/wiki/Reverse_Polish_notation)(RPN)中，算术运算符的操作数都放在运算符之前，所以`1 + 2`变成了`1 2 +`。计算时从左到右进行，操作数被压入隐式栈。算术运算符弹出前两个数字，执行运算，并将结果推入栈中。因此,
-在RPN中变为了
-为我们的语法树类定义一个Vistor类，该类接受一个表达式，将其转换为RPN，并返回结果字符串。
+    在[逆波兰表达式](https://en.wikipedia.org/wiki/Reverse_Polish_notation)(RPN)中，算术运算符的操作数都放在运算符之前，所以`1 + 2`变成了`1 2 +`。计算时从左到右进行，操作数被压入隐式栈。算术运算符弹出前两个数字，执行运算，并将结果推入栈中。因此,
 
     ```lox
     (1 + 2) * (4 - 3)
     ```
 
     in RPN becomes:
+    在RPN中变为了
 
     ```lox
     1 2 + 4 3 - *
@@ -1223,6 +1222,7 @@ maintain AstPrinter, feel free to delete it. We won't need it again.
 
     Define a visitor class for our syntax tree classes that takes an expression,
     converts it to RPN, and returns the resulting string.
+    为我们的语法树类定义一个Vistor类，该类接受一个表达式，将其转换为RPN，并返回结果字符串。
 
 [rpn]: https://en.wikipedia.org/wiki/Reverse_Polish_notation
 

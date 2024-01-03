@@ -34,7 +34,7 @@ string of Lox source code and produce the tokens that we'll feed into the parser
 in the next chapter.
 对于我们来说，扫描也是一个很好的起点，因为代码不是很难——相当于有很多分支的`switch`语句。这可以帮助我们在学习更后面有趣的部分之前进行热身。在本章结束时，我们将拥有一个功能齐全、速度快的扫描器，它可以接收任何一串Lox源代码，并产生标记，我们将在下一章把这些标记输入到解析器中。
 
-## The Interpreter Framework  解释器框架
+## 解释器框架
 
 Since this is our first real chapter, before we get to actually scanning some
 code we need to sketch out the basic shape of our interpreter, jlox. Everything
@@ -106,7 +106,7 @@ steps, you know? Right now, it prints out the tokens our forthcoming scanner
 will emit so that we can see if we're making progress.
 因为我们还没有写出解释器，所以这些代码还不是很有用，但这只是小步骤，你要明白？现在，它可以打印出我们即将完成的扫描器所返回的标记，这样我们就可以看到我们的解析是否生效。
 
-### Error handling  错误处理
+### 错误处理
 
 While we're setting things up, another key piece of infrastructure is *error
 handling*. Textbooks sometimes gloss over this because it's more a practical
@@ -218,7 +218,6 @@ Once we have a Scanner class with a `scanTokens()` method, we can start running
 it. Before we get to that, let's get more precise about what tokens are.
 有了一些基本的错误处理，我们的应用程序外壳已经准备好了。一旦我们有了一个带有 `scanTokens() `方法的 Scanner 类，我们就可以开始运行它了。在我们开始之前，让我们更精确地了解什么是标记（tokens）。
 
-## Lexemes and Tokens
 ## 词素和标记（词法单元）
 下面是一行lox代码：
 
@@ -247,7 +246,7 @@ other useful information. When we take the lexeme and bundle it together with
 that other data, the result is a token. It includes useful stuff like:
 词素只是源代码的原始子字符串。 但是，在将字符序列分组为词素的过程中，我们也会发现了一些其他有用的信息。 当我们获取词素并将其与其他数据捆绑在一起时，结果是一个标记（token，词法单元）。它包含一些有用的内容，比如：
 
-### Token type
+### 标识符类型
 
 Keywords are part of the shape of the language's grammar, so the parser often
 has code like, "If the next token is `while` then do..." That means the parser
@@ -272,7 +271,7 @@ that the scanner's job?
 
 ^code token-type
 
-### Literal value  字面量
+### 字面量
 
 There are lexemes for literal values -- numbers and strings and the like. Since
 the scanner has to walk each character in the literal to correctly identify it,
@@ -280,7 +279,7 @@ it can also convert that textual representation of a value to the living runtime
 object that will be used by the interpreter later.
 字面量有对应词素——数字和字符串等。由于扫描器必须遍历文字中的每个字符才能正确识别，所以它还可以将值的文本表示转换为运行时对象，解释器后续将使用该对象。
 
-### Location information  位置信息
+### 位置信息
 
 Back when I was preaching the gospel about error handling, we saw that we need
 to tell users *where* errors occurred. Tracking that starts here. In our simple
@@ -315,7 +314,7 @@ Now we have an object with enough structure to be useful for all of the later
 phases of the interpreter.
 现在我们有了一个信息充分的对象，足以支撑解释器的所有后期阶段。
 
-## Regular Languages and Expressions  正则语言和表达式
+## 正则语言和表达式
 
 Now that we know what we're trying to produce, let's, well, produce it. The core
 of the scanner is a loop. Starting at the first character of the source code,
@@ -398,7 +397,6 @@ Since our goal is to understand how a scanner does what it does, we won't be
 delegating that task. We're about handcrafted goods.
 由于我们的目标是了解扫描器是如何工作的，所以我们不会把这个任务交给正则表达式。我们要亲自动手实现。
 
-## The Scanner Class
 ## Scanner类
 事不宜迟，我们先来建一个扫描器吧。
 
@@ -446,7 +444,7 @@ characters.
 
 ^code is-at-end
 
-## Recognizing Lexemes  识别词素
+## 识别词素
 
 In each turn of the loop, we scan a single token. This is the real heart of the
 scanner. We'll start simple. Imagine if every lexeme were only a single character
@@ -475,7 +473,7 @@ the text of the current lexeme and creates a new token for it. We'll use the
 other overload to handle tokens with literal values soon.
 `advance()`方法获取源文件中的下一个字符并返回它。`advance()`用于处理输入，`addToken()`则用于输出。该方法获取当前词素的文本并为其创建一个新 token。我们马上会使用另一个重载方法来处理带有字面值的 token。
 
-### Lexical errors  词法错误
+### 词法错误
 
 Before we get too far in, let's take a moment to think about errors at the
 lexical level. What happens if a user throws a source file containing some
@@ -512,7 +510,7 @@ user experience.
 
 </aside>
 
-### Operators
+### 操作符 Operators
 
 We have single-character lexemes working, but that doesn't cover all of Lox's
 operators. What about `!`? It's a single character, right? Sometimes, yes, but
@@ -544,7 +542,7 @@ with `!`. Then we look at the next character to determine if we're on a `!=` or
 merely a `!`.
 使用`match()`，我们分两个阶段识别这些词素。例如，当我们得到`!`时，我们会跳转到它的case分支。这意味着我们知道这个词素是以 `!`开始的。然后，我们查看下一个字符，以确认词素是一个 `!=` 还是仅仅是一个 `!`。
 
-## Longer Lexemes  更长的词素
+## 更长的词素
 
 We're still missing one operator: `/` for division. That character needs a
 little special handling because comments begin with a slash too.
@@ -611,7 +609,7 @@ Our scanner is getting smarter. It can handle fairly free-form code like:
 !*+-/=<> <= == // operators
 ```
 
-### String literals  字符串字面量
+### 字符串字面量
 
 Now that we're comfortable with longer lexemes, we're ready to tackle literals.
 We'll do strings first, since they always begin with a specific character, `"`.
@@ -642,7 +640,7 @@ Here, that conversion only requires a `substring()` to strip off the surrounding
 quotes. If Lox supported escape sequences like `\n`, we'd unescape those here.
 最后，还有一个有趣的地方就是当我们创建标记时，我们也会产生实际的字符串值，该值稍后将被解释器使用。这里，值的转换只需要调用`substring()`剥离前后的引号。如果Lox支持转义序列，比如`\n`，我们会在这里取消转义。
 
-### Number literals  数字字面量
+### 数字字面量
 
 All numbers in Lox are floating point at runtime, but both integer and decimal
 literals are supported. A number literal is a series of <span
@@ -758,7 +756,7 @@ The remaining literals are Booleans and `nil`, but we handle those as keywords,
 which gets us to...
 剩下的词素是Boolean和`nil`，但我们把它们作为关键字来处理，这样我们就来到了......
 
-## Reserved Words and Identifiers  保留字和标识符
+## 保留字和标识符
 
 Our scanner is almost done. The only remaining pieces of the lexical grammar to
 implement are identifiers and their close cousins, the reserved words. You might
@@ -871,7 +869,7 @@ and see if it handles them as it should.
 
 1.  The lexical grammars of Python and Haskell are not *regular*. What does that
     mean, and why aren't they?
-1、Python和Haskell的语法不是*常规的*。 这是什么意思，为什么不是呢？
+    Python和Haskell的语法不是*常规的*。 这是什么意思，为什么不是呢？
 * Python和Haskell都采用了对缩进敏感的语法，所以它们必须将缩进级别的变动识别为词法标记。这样做需要比较连续行的开头空格数量，这是使用常规语法无法做到的。
 
 1.  Aside from separating tokens -- distinguishing `print foo` from `printfoo`
@@ -879,23 +877,23 @@ and see if it handles them as it should.
     dark corners, a space *does* affect how code is parsed in CoffeeScript,
     Ruby, and the C preprocessor. Where and what effect does it have in each of
     those languages?
-2、除了分隔标记——区分`print foo`和`printfoo`——空格在大多数语言中并没有什么用处。在CoffeeScript、Ruby和C预处理器中的一些隐秘的地方，空格确实会影响代码解析方式。在这些语言中，空格在什么地方，会有什么影响？
+    除了分隔标记——区分`print foo`和`printfoo`——空格在大多数语言中并没有什么用处。在CoffeeScript、Ruby和C预处理器中的一些隐秘的地方，空格确实会影响代码解析方式。在这些语言中，空格在什么地方，会有什么影响？
 
 1.  Our scanner here, like most, discards comments and whitespace since those
     aren't needed by the parser. Why might you want to write a scanner that does
     *not* discard those? What would it be useful for?
-3、我们这里的扫描器和大多数扫描器一样，会丢弃注释和空格，因为解析器不需要这些。什么情况下你会写一个不丢弃这些的扫描器？它有什么用呢？
+    我们这里的扫描器和大多数扫描器一样，会丢弃注释和空格，因为解析器不需要这些。什么情况下你会写一个不丢弃这些的扫描器？它有什么用呢？
 
 1.  Add support to Lox's scanner for C-style `/* ... */` block comments. Make
     sure to handle newlines in them. Consider allowing them to nest. Is adding
     support for nesting more work than you expected? Why?
-4、为Lox扫描器增加对C样式`/ * ... * /`屏蔽注释的支持。确保要处理其中的换行符。 考虑允许它们嵌套， 增加对嵌套的支持是否比你预期的工作更多？ 为什么？
+    为Lox扫描器增加对C样式`/ * ... * /`屏蔽注释的支持。确保要处理其中的换行符。 考虑允许它们嵌套， 增加对嵌套的支持是否比你预期的工作更多？ 为什么？
 
 </div>
 
 <div class="design-note">
 
-## Design Note: Implicit Semicolons 隐藏的分号
+## Design Note: 隐藏的分号
 
 Programmers today are spoiled for choice in languages and have gotten picky
 about syntax. They want their language to look clean and modern. One bit of

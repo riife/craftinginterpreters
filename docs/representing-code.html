@@ -37,10 +37,10 @@
         <h3><a href="#top">代码表示<small>5</small></a></h3>
     
     <ul>
-        <li><a href="#context-free-grammars--上下文无关语法"><small>5.1</small> Context-Free Grammars  上下文无关语法</a></li>
-        <li><a href="#implementing-syntax-trees--实现语法树"><small>5.2</small> Implementing Syntax Trees  实现语法树</a></li>
-        <li><a href="#working-with-trees--处理树结构"><small>5.3</small> Working with Trees  处理树结构</a></li>
-        <li><a href="#a-not-very-pretty-printer--一个（不是很）漂亮的打印器"><small>5.4</small> A (Not Very) Pretty Printer  一个（不是很）漂亮的打印器</a></li>
+        <li><a href="#上下文无关语法"><small>5.1</small> 上下文无关语法</a></li>
+        <li><a href="#实现语法树"><small>5.2</small> 实现语法树</a></li>
+        <li><a href="#处理树结构"><small>5.3</small> 处理树结构</a></li>
+        <li><a href="#一个（不是很）漂亮的打印器"><small>5.4</small> 一个（不是很）漂亮的打印器</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -67,10 +67,10 @@
         <h3><a href="#top">代码表示<small>5</small></a></h3>
         
         <ul>
-            <li><a href="#context-free-grammars--上下文无关语法"><small>5.1</small> Context-Free Grammars  上下文无关语法</a></li>
-            <li><a href="#implementing-syntax-trees--实现语法树"><small>5.2</small> Implementing Syntax Trees  实现语法树</a></li>
-            <li><a href="#working-with-trees--处理树结构"><small>5.3</small> Working with Trees  处理树结构</a></li>
-            <li><a href="#a-not-very-pretty-printer--一个（不是很）漂亮的打印器"><small>5.4</small> A (Not Very) Pretty Printer  一个（不是很）漂亮的打印器</a></li>
+            <li><a href="#上下文无关语法"><small>5.1</small> 上下文无关语法</a></li>
+            <li><a href="#实现语法树"><small>5.2</small> 实现语法树</a></li>
+            <li><a href="#处理树结构"><small>5.3</small> 处理树结构</a></li>
+            <li><a href="#一个（不是很）漂亮的打印器"><small>5.4</small> 一个（不是很）漂亮的打印器</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -166,7 +166,7 @@ grammars. We&rsquo;re going into that theory a little more than we did when scan
 because it turns out to be a useful tool throughout much of the interpreter.
 We start by moving one level up the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 那么我们需要更精确地了解这个语法是什么。就像上一章的词汇语法一样，围绕句法语法也有一大堆理论。我们要比之前处理扫描时投入更多精力去研究这个理论，因为它在整个解释器的很多地方都是一个有用的工具。我们先从<a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">乔姆斯基谱系</a>中往上升一级……</p>
-<h2><a href="#context-free-grammars--上下文无关语法" id="context-free-grammars--上下文无关语法"><small>5&#8202;.&#8202;1</small>Context-Free Grammars  上下文无关语法</a></h2>
+<h2><a href="#上下文无关语法" id="上下文无关语法"><small>5&#8202;.&#8202;1</small>上下文无关语法</a></h2>
 <p>In the last chapter, the formalism we used for defining the lexical grammar<span class="em">&mdash;</span>the rules for how characters get grouped into tokens<span class="em">&mdash;</span>was called a <em>regular
 language</em>. That was fine for our scanner, which emits a flat sequence of tokens.
 But regular languages aren&rsquo;t powerful enough to handle expressions which can
@@ -224,7 +224,7 @@ If we were defining a grammar for English sentences, &ldquo;eggs are tasty for
 breakfast&rdquo; would be in the grammar, but &ldquo;tasty breakfast for are eggs&rdquo; would
 probably not.
 形式化语法的工作是指定哪些字符串有效，哪些无效。如果我们要为英语句子定义一个语法，&ldquo;eggs are tasty for breakfast &ldquo;会包含在语法中，但 &ldquo;tasty breakfast for are eggs &ldquo;可能不会。</p>
-<h3><a href="#rules-for-grammars--语法规则" id="rules-for-grammars--语法规则"><small>5&#8202;.&#8202;1&#8202;.&#8202;1</small>Rules for grammars  语法规则</a></h3>
+<h3><a href="#语法规则" id="语法规则"><small>5&#8202;.&#8202;1&#8202;.&#8202;1</small>语法规则</a></h3>
 <p>How do we write down a grammar that contains an infinite number of valid
 strings? We obviously can&rsquo;t list them all out. Instead, we create a finite set
 of rules. You can think of them as a game that you can &ldquo;play&rdquo; in one of two
@@ -364,7 +364,7 @@ to encode a combinatorially larger set of strings. The fact that a rule can
 refer to itself<span class="em">&mdash;</span>directly or indirectly<span class="em">&mdash;</span>kicks it up even more, letting us
 pack an infinite number of strings into a finite grammar.
 每当我们遇到具有多个结果的规则时，我们都只是随意选择了一个。 正是这种灵活性允许用少量的语法规则来编码出组合性更强的字符串集。一个规则可以直接或间接地引用它自己，这就更提高了它的灵活性，让我们可以将无限多的字符串打包到一个有限的语法中。</p>
-<h3><a href="#enhancing-our-notation--增强符号" id="enhancing-our-notation--增强符号"><small>5&#8202;.&#8202;1&#8202;.&#8202;2</small>Enhancing our notation  增强符号</a></h3>
+<h3><a href="#增强符号" id="增强符号"><small>5&#8202;.&#8202;1&#8202;.&#8202;2</small>增强符号</a></h3>
 <p>Stuffing an infinite set of strings in a handful of rules is pretty fantastic,
 but let&rsquo;s take it further. Our notation works, but it&rsquo;s tedious. So, like any
 good language designer, we&rsquo;ll sprinkle a little syntactic sugar on top<span class="em">&mdash;</span>some
@@ -473,7 +473,7 @@ structure we&rsquo;re going to implement to represent code in memory. Before we 
 that, we need an actual grammar for Lox, or at least enough of one for us to get
 started.
 我们为Lox定义的规则和生成式也是我们将要实现的树数据结构（用于表示内存中的代码）的指南。 在此之前，我们需要为Lox编写一个实际的语法，或者至少要有一个足够上手的语法。</p>
-<h3><a href="#a-grammar-for-lox-expressions--lox表达式语法" id="a-grammar-for-lox-expressions--lox表达式语法"><small>5&#8202;.&#8202;1&#8202;.&#8202;3</small>A Grammar for Lox expressions  Lox表达式语法</a></h3>
+<h3><a href="#lox表达式语法" id="lox表达式语法"><small>5&#8202;.&#8202;1&#8202;.&#8202;3</small>Lox表达式语法</a></h3>
 <p>In the previous chapter, we did Lox&rsquo;s entire lexical grammar in one fell swoop.
 Every keyword and bit of punctuation is there. The syntactic grammar is larger,
 and it would be a real bore to grind through the entire thing before we actually
@@ -559,7 +559,7 @@ we did with the breakfast grammar before. Do the resulting expressions look
 right to you? Can you make it generate anything wrong like <code>1 + / 3</code>?
 如果你愿意，可以尝试使用这个语法生成一些表达式，就像我们之前用早餐语法做的那样。生成的表达式你觉得对吗？你能让它生成任何错误的东西，比如<code>1 + / 3</code>吗？</p>
 </aside>
-<h2><a href="#implementing-syntax-trees--实现语法树" id="implementing-syntax-trees--实现语法树"><small>5&#8202;.&#8202;2</small>Implementing Syntax Trees  实现语法树</a></h2>
+<h2><a href="#实现语法树" id="实现语法树"><small>5&#8202;.&#8202;2</small>实现语法树</a></h2>
 <p>Finally, we get to write some code. That little expression grammar is our
 skeleton. Since the grammar is recursive<span class="em">&mdash;</span>note how <code>grouping</code>, <code>unary</code>, and
 <code>binary</code> all refer back to <code>expression</code><span class="em">&mdash;</span>our data structure will form a tree.
@@ -623,7 +623,7 @@ ubiquitous that I may as well start getting you used to them now.
 from <code>Binary</code>, the subclasses are nested inside of it. There&rsquo;s no technical need
 for this, but it lets us cram all of the classes into a single Java file.
 Expr是所有表达式类继承的基类。从<code>Binary</code>中可以看到，子类都嵌套在它的内部。这在技术上没有必要，但它允许我们将所有类都塞进一个Java文件中。</p>
-<h3><a href="#disoriented-objects--非面向对象" id="disoriented-objects--非面向对象"><small>5&#8202;.&#8202;2&#8202;.&#8202;1</small>Disoriented objects  非面向对象</a></h3>
+<h3><a href="#非面向对象" id="非面向对象"><small>5&#8202;.&#8202;2&#8202;.&#8202;1</small>非面向对象</a></h3>
 <p>You&rsquo;ll note that, much like the Token class, there aren&rsquo;t any methods here. It&rsquo;s
 a dumb structure. Nicely typed, but merely a bag of data. This feels strange in
 an object-oriented language like Java. Shouldn&rsquo;t the class <em>do stuff</em>?
@@ -650,7 +650,7 @@ private helpers.
 object-oriented style. It is the data structures that flow between them that are
 stripped of behavior.
 我的感觉是，在面向对象的风格下，解释器的每个阶段或部分都能正常工作。只不过在它们之间流动的数据结构剥离了行为。</p>
-<h3><a href="#metaprogramming-the-trees--节点树元编程" id="metaprogramming-the-trees--节点树元编程"><small>5&#8202;.&#8202;2&#8202;.&#8202;2</small>Metaprogramming the trees  节点树元编程</a></h3>
+<h3><a href="#节点树元编程" id="节点树元编程"><small>5&#8202;.&#8202;2&#8202;.&#8202;2</small>节点树元编程</a></h3>
 <p>Java can express behavior-less classes, but I wouldn&rsquo;t say that it&rsquo;s
 particularly great at it. Eleven lines of code to stuff three fields in an
 object is pretty tedious, and when we&rsquo;re all done, we&rsquo;re going to have 21 of
@@ -824,7 +824,7 @@ about to get even longer.
 implementing jlox and defined all of its syntax tree nodes.
 <a href="appendix-ii.html">附录II</a>包含了在我们完成jlox的实现并定义了它的所有语法树节点之后，这个脚本生成的代码。</p>
 </aside>
-<h2><a href="#working-with-trees--处理树结构" id="working-with-trees--处理树结构"><small>5&#8202;.&#8202;3</small>Working with Trees  处理树结构</a></h2>
+<h2><a href="#处理树结构" id="处理树结构"><small>5&#8202;.&#8202;3</small>处理树结构</a></h2>
 <p>Put on your imagination hat for a moment. Even though we aren&rsquo;t there yet,
 consider what the interpreter will do with the syntax trees. Each kind of
 expression in Lox behaves differently at runtime. That means the interpreter
@@ -866,7 +866,7 @@ type checking pass.
 <p>If we added instance methods to the expression classes for every one of those
 operations, that would smush a bunch of different domains together. That
 violates <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a> and leads to hard-to-maintain code.</p>
-<h3><a href="#the-expression-problem--表达式问题" id="the-expression-problem--表达式问题"><small>5&#8202;.&#8202;3&#8202;.&#8202;1</small>The expression problem  表达式问题</a></h3>
+<h3><a href="#表达式问题" id="表达式问题"><small>5&#8202;.&#8202;3&#8202;.&#8202;1</small>表达式问题</a></h3>
 <p>This problem is more fundamental than it may seem at first. We have a handful of
 types, and a handful of high-level operations like &ldquo;interpret&rdquo;. For each pair of
 type and operation, we need a specific implementation. Picture a table:
@@ -934,7 +934,7 @@ program we&rsquo;re writing.
 classes rub against the grain of Java. Fortunately, there&rsquo;s a design pattern we
 can bring to bear on it.
 面向对象在我们的解释器的许多部分都可以正常工作，但是这些树类与Java的本质背道而驰。 幸运的是，我们可以采用一种设计模式来解决这个问题。</p>
-<h3><a href="#the-visitor-pattern--访问者模式" id="the-visitor-pattern--访问者模式"><small>5&#8202;.&#8202;3&#8202;.&#8202;2</small>The Visitor pattern  访问者模式</a></h3>
+<h3><a href="#访问者模式" id="访问者模式"><small>5&#8202;.&#8202;3&#8202;.&#8202;2</small>访问者模式</a></h3>
 <p>The <strong>Visitor pattern</strong> is the most widely misunderstood pattern in all of
 <em>Design Patterns</em>, which is really saying something when you look at the
 software architecture excesses of the past couple of decades.
@@ -1043,7 +1043,7 @@ for a single visitor, they form a <em>column</em>.
 visitors as we want without ever having to touch the pastry classes again. It&rsquo;s
 a clever pattern.
 我们为每个类添加了一个<code>accept（）</code>方法，我们可以根据需要将其用于任意数量的访问者，而无需再次修改<em>pastry</em>类。 这是一个聪明的模式。</p>
-<h3><a href="#visitors-for-expressions--表达式访问者" id="visitors-for-expressions--表达式访问者"><small>5&#8202;.&#8202;3&#8202;.&#8202;3</small>Visitors for expressions  表达式访问者</a></h3>
+<h3><a href="#表达式访问者" id="表达式访问者"><small>5&#8202;.&#8202;3&#8202;.&#8202;3</small>表达式访问者</a></h3>
 <p>OK, let&rsquo;s weave it into our expression classes. We&rsquo;ll also <span
 name="context">refine</span> the pattern a little. In the pastry example, the
 visit and <code>accept()</code> methods don&rsquo;t return anything. In practice, visitors often
@@ -1140,7 +1140,7 @@ using it.
 <p>Before we end this rambling chapter, let&rsquo;s implement that Visitor interface and
 see the pattern in action.
 在结束这杂乱的一章之前，我们先实现一下这个Visitor接口，看看这个模式的运行情况。</p>
-<h2><a href="#a-not-very-pretty-printer--一个（不是很）漂亮的打印器" id="a-not-very-pretty-printer--一个（不是很）漂亮的打印器"><small>5&#8202;.&#8202;4</small>A (Not Very) Pretty Printer  一个（不是很）漂亮的打印器</a></h2>
+<h2><a href="#一个（不是很）漂亮的打印器" id="一个（不是很）漂亮的打印器"><small>5&#8202;.&#8202;4</small>一个（不是很）漂亮的打印器</a></h2>
 <p>When we debug our parser and interpreter, it&rsquo;s often useful to look at a parsed
 syntax tree and make sure it has the structure we expect. We could inspect it in
 the debugger, but that can be a chore.
@@ -1299,10 +1299,10 @@ that notational sugar.</p>
 object-oriented language. Devise a complementary pattern for a functional
 language. It should let you bundle all of the operations on one type
 together and let you define new types easily.
-2、Visitor 模式让你可以在面向对象的语言中模仿函数式。为函数式语言设计一个互补的模式，该模式让你可以将一个类型上的所有操作捆绑在一起，并轻松扩展新的类型。
-(SML或Haskell是这个练习的理想选择，但Scheme或其它Lisp方言也可以。)</p>
+Visitor 模式让你可以在面向对象的语言中模仿函数式。为函数式语言设计一个互补的模式，该模式让你可以将一个类型上的所有操作捆绑在一起，并轻松扩展新的类型。</p>
 <p>(SML or Haskell would be ideal for this exercise, but Scheme or another Lisp
-works as well.)</p>
+works as well.)
+(SML或Haskell是这个练习的理想选择，但Scheme或其它Lisp方言也可以。)</p>
 </li>
 <li>
 <p>In <a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">reverse Polish notation</a> (RPN), the operands to an arithmetic
@@ -1310,16 +1310,16 @@ operator are both placed before the operator, so <code>1 + 2</code> becomes <cod
 Evaluation proceeds from left to right. Numbers are pushed onto an implicit
 stack. An arithmetic operator pops the top two numbers, performs the
 operation, and pushes the result. Thus, this:
-3、在<a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">逆波兰表达式</a>(RPN)中，算术运算符的操作数都放在运算符之前，所以<code>1 + 2</code>变成了<code>1 2 +</code>。计算时从左到右进行，操作数被压入隐式栈。算术运算符弹出前两个数字，执行运算，并将结果推入栈中。因此,
-在RPN中变为了
-为我们的语法树类定义一个Vistor类，该类接受一个表达式，将其转换为RPN，并返回结果字符串。</p>
+在<a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">逆波兰表达式</a>(RPN)中，算术运算符的操作数都放在运算符之前，所以<code>1 + 2</code>变成了<code>1 2 +</code>。计算时从左到右进行，操作数被压入隐式栈。算术运算符弹出前两个数字，执行运算，并将结果推入栈中。因此,</p>
 <div class="codehilite"><pre>(<span class="n">1</span> + <span class="n">2</span>) * (<span class="n">4</span> - <span class="n">3</span>)
 </pre></div>
-<p>in RPN becomes:</p>
+<p>in RPN becomes:
+在RPN中变为了</p>
 <div class="codehilite"><pre><span class="n">1</span> <span class="n">2</span> + <span class="n">4</span> <span class="n">3</span> - *
 </pre></div>
 <p>Define a visitor class for our syntax tree classes that takes an expression,
-converts it to RPN, and returns the resulting string.</p>
+converts it to RPN, and returns the resulting string.
+为我们的语法树类定义一个Vistor类，该类接受一个表达式，将其转换为RPN，并返回结果字符串。</p>
 </li>
 </ol>
 </div>

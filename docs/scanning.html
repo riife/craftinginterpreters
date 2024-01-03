@@ -37,18 +37,16 @@
         <h3><a href="#top">扫描<small>4</small></a></h3>
     
     <ul>
-        <li><a href="#the-interpreter-framework--解释器框架"><small>4.1</small> The Interpreter Framework  解释器框架</a></li>
-        <li><a href="#lexemes-and-tokens"><small>4.2</small> Lexemes and Tokens</a></li>
-        <li><a href="#词素和标记（词法单元）"><small>4.3</small> 词素和标记（词法单元）</a></li>
-        <li><a href="#regular-languages-and-expressions--正则语言和表达式"><small>4.4</small> Regular Languages and Expressions  正则语言和表达式</a></li>
-        <li><a href="#the-scanner-class"><small>4.5</small> The Scanner Class</a></li>
-        <li><a href="#scanner类"><small>4.6</small> Scanner类</a></li>
-        <li><a href="#recognizing-lexemes--识别词素"><small>4.7</small> Recognizing Lexemes  识别词素</a></li>
-        <li><a href="#longer-lexemes--更长的词素"><small>4.8</small> Longer Lexemes  更长的词素</a></li>
-        <li><a href="#reserved-words-and-identifiers--保留字和标识符"><small>4.9</small> Reserved Words and Identifiers  保留字和标识符</a></li>
+        <li><a href="#解释器框架"><small>4.1</small> 解释器框架</a></li>
+        <li><a href="#词素和标记（词法单元）"><small>4.2</small> 词素和标记（词法单元）</a></li>
+        <li><a href="#正则语言和表达式"><small>4.3</small> 正则语言和表达式</a></li>
+        <li><a href="#scanner类"><small>4.4</small> Scanner类</a></li>
+        <li><a href="#识别词素"><small>4.5</small> 识别词素</a></li>
+        <li><a href="#更长的词素"><small>4.6</small> 更长的词素</a></li>
+        <li><a href="#保留字和标识符"><small>4.7</small> 保留字和标识符</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Implicit Semicolons 隐藏的分号</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>隐藏的分号</a></li>
     </ul>
     
     
@@ -73,18 +71,16 @@
         <h3><a href="#top">扫描<small>4</small></a></h3>
         
         <ul>
-            <li><a href="#the-interpreter-framework--解释器框架"><small>4.1</small> The Interpreter Framework  解释器框架</a></li>
-            <li><a href="#lexemes-and-tokens"><small>4.2</small> Lexemes and Tokens</a></li>
-            <li><a href="#词素和标记（词法单元）"><small>4.3</small> 词素和标记（词法单元）</a></li>
-            <li><a href="#regular-languages-and-expressions--正则语言和表达式"><small>4.4</small> Regular Languages and Expressions  正则语言和表达式</a></li>
-            <li><a href="#the-scanner-class"><small>4.5</small> The Scanner Class</a></li>
-            <li><a href="#scanner类"><small>4.6</small> Scanner类</a></li>
-            <li><a href="#recognizing-lexemes--识别词素"><small>4.7</small> Recognizing Lexemes  识别词素</a></li>
-            <li><a href="#longer-lexemes--更长的词素"><small>4.8</small> Longer Lexemes  更长的词素</a></li>
-            <li><a href="#reserved-words-and-identifiers--保留字和标识符"><small>4.9</small> Reserved Words and Identifiers  保留字和标识符</a></li>
+            <li><a href="#解释器框架"><small>4.1</small> 解释器框架</a></li>
+            <li><a href="#词素和标记（词法单元）"><small>4.2</small> 词素和标记（词法单元）</a></li>
+            <li><a href="#正则语言和表达式"><small>4.3</small> 正则语言和表达式</a></li>
+            <li><a href="#scanner类"><small>4.4</small> Scanner类</a></li>
+            <li><a href="#识别词素"><small>4.5</small> 识别词素</a></li>
+            <li><a href="#更长的词素"><small>4.6</small> 更长的词素</a></li>
+            <li><a href="#保留字和标识符"><small>4.7</small> 保留字和标识符</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Implicit Semicolons 隐藏的分号</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>隐藏的分号</a></li>
         </ul>
         
         
@@ -132,7 +128,7 @@ of this chapter, we&rsquo;ll have a full-featured, fast scanner that can take an
 string of Lox source code and produce the tokens that we&rsquo;ll feed into the parser
 in the next chapter.
 对于我们来说，扫描也是一个很好的起点，因为代码不是很难——相当于有很多分支的<code>switch</code>语句。这可以帮助我们在学习更后面有趣的部分之前进行热身。在本章结束时，我们将拥有一个功能齐全、速度快的扫描器，它可以接收任何一串Lox源代码，并产生标记，我们将在下一章把这些标记输入到解析器中。</p>
-<h2><a href="#the-interpreter-framework--解释器框架" id="the-interpreter-framework--解释器框架"><small>4&#8202;.&#8202;1</small>The Interpreter Framework  解释器框架</a></h2>
+<h2><a href="#解释器框架" id="解释器框架"><small>4&#8202;.&#8202;1</small>解释器框架</a></h2>
 <p>Since this is our first real chapter, before we get to actually scanning some
 code we need to sketch out the basic shape of our interpreter, jlox. Everything
 starts with a class in Java.
@@ -243,7 +239,7 @@ add after <em>runPrompt</em>()</div>
 steps, you know? Right now, it prints out the tokens our forthcoming scanner
 will emit so that we can see if we&rsquo;re making progress.
 因为我们还没有写出解释器，所以这些代码还不是很有用，但这只是小步骤，你要明白？现在，它可以打印出我们即将完成的扫描器所返回的标记，这样我们就可以看到我们的解析是否生效。</p>
-<h3><a href="#error-handling--错误处理" id="error-handling--错误处理"><small>4&#8202;.&#8202;1&#8202;.&#8202;1</small>Error handling  错误处理</a></h3>
+<h3><a href="#错误处理" id="错误处理"><small>4&#8202;.&#8202;1&#8202;.&#8202;1</small>错误处理</a></h3>
 <p>While we&rsquo;re setting things up, another key piece of infrastructure is <em>error
 handling</em>. Textbooks sometimes gloss over this because it&rsquo;s more a practical
 matter than a formal computer science-y problem. But if you care about making a
@@ -364,8 +360,7 @@ because it felt over-engineered for the minimal interpreter in this book.
 Once we have a Scanner class with a <code>scanTokens()</code> method, we can start running
 it. Before we get to that, let&rsquo;s get more precise about what tokens are.
 有了一些基本的错误处理，我们的应用程序外壳已经准备好了。一旦我们有了一个带有 <code>scanTokens()</code>方法的 Scanner 类，我们就可以开始运行它了。在我们开始之前，让我们更精确地了解什么是标记（tokens）。</p>
-<h2><a href="#lexemes-and-tokens" id="lexemes-and-tokens"><small>4&#8202;.&#8202;2</small>Lexemes and Tokens</a></h2>
-<h2><a href="#词素和标记（词法单元）" id="词素和标记（词法单元）"><small>4&#8202;.&#8202;3</small>词素和标记（词法单元）</a></h2>
+<h2><a href="#词素和标记（词法单元）" id="词素和标记（词法单元）"><small>4&#8202;.&#8202;2</small>词素和标记（词法单元）</a></h2>
 <p>下面是一行lox代码：</p>
 <p>Here&rsquo;s a line of Lox code:</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">language</span> = <span class="s">&quot;lox&quot;</span>;
@@ -384,7 +379,7 @@ process of grouping character sequences into lexemes, we also stumble upon some
 other useful information. When we take the lexeme and bundle it together with
 that other data, the result is a token. It includes useful stuff like:
 词素只是源代码的原始子字符串。 但是，在将字符序列分组为词素的过程中，我们也会发现了一些其他有用的信息。 当我们获取词素并将其与其他数据捆绑在一起时，结果是一个标记（token，词法单元）。它包含一些有用的内容，比如：</p>
-<h3><a href="#token-type" id="token-type"><small>4&#8202;.&#8202;3&#8202;.&#8202;1</small>Token type</a></h3>
+<h3><a href="#标识符类型" id="标识符类型"><small>4&#8202;.&#8202;2&#8202;.&#8202;1</small>标识符类型</a></h3>
 <p>Keywords are part of the shape of the language&rsquo;s grammar, so the parser often
 has code like, &ldquo;If the next token is <code>while</code> then do<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo; That means the parser
 wants to know not just that it has a lexeme for some identifier, but that it has
@@ -428,13 +423,13 @@ create new file</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/TokenType.java</em>, create new file</div>
 
-<h3><a href="#literal-value--字面量" id="literal-value--字面量"><small>4&#8202;.&#8202;3&#8202;.&#8202;2</small>Literal value  字面量</a></h3>
+<h3><a href="#字面量" id="字面量"><small>4&#8202;.&#8202;2&#8202;.&#8202;2</small>字面量</a></h3>
 <p>There are lexemes for literal values<span class="em">&mdash;</span>numbers and strings and the like. Since
 the scanner has to walk each character in the literal to correctly identify it,
 it can also convert that textual representation of a value to the living runtime
 object that will be used by the interpreter later.
 字面量有对应词素——数字和字符串等。由于扫描器必须遍历文字中的每个字符才能正确识别，所以它还可以将值的文本表示转换为运行时对象，解释器后续将使用该对象。</p>
-<h3><a href="#location-information--位置信息" id="location-information--位置信息"><small>4&#8202;.&#8202;3&#8202;.&#8202;3</small>Location information  位置信息</a></h3>
+<h3><a href="#位置信息" id="位置信息"><small>4&#8202;.&#8202;2&#8202;.&#8202;3</small>位置信息</a></h3>
 <p>Back when I was preaching the gospel about error handling, we saw that we need
 to tell users <em>where</em> errors occurred. Tracking that starts here. In our simple
 interpreter, we note only which line the token appears on, but more
@@ -483,7 +478,7 @@ create new file</div>
 <p>Now we have an object with enough structure to be useful for all of the later
 phases of the interpreter.
 现在我们有了一个信息充分的对象，足以支撑解释器的所有后期阶段。</p>
-<h2><a href="#regular-languages-and-expressions--正则语言和表达式" id="regular-languages-and-expressions--正则语言和表达式"><small>4&#8202;.&#8202;4</small>Regular Languages and Expressions  正则语言和表达式</a></h2>
+<h2><a href="#正则语言和表达式" id="正则语言和表达式"><small>4&#8202;.&#8202;3</small>正则语言和表达式</a></h2>
 <p>Now that we know what we&rsquo;re trying to produce, let&rsquo;s, well, produce it. The core
 of the scanner is a loop. Starting at the first character of the source code,
 the scanner figures out what lexeme the character belongs to, and consumes it
@@ -536,8 +531,7 @@ Lex是由Mike Lesk和Eric Schmidt创建的。是的，就是那个曾任谷歌�
 <p>Since our goal is to understand how a scanner does what it does, we won&rsquo;t be
 delegating that task. We&rsquo;re about handcrafted goods.
 由于我们的目标是了解扫描器是如何工作的，所以我们不会把这个任务交给正则表达式。我们要亲自动手实现。</p>
-<h2><a href="#the-scanner-class" id="the-scanner-class"><small>4&#8202;.&#8202;5</small>The Scanner Class</a></h2>
-<h2><a href="#scanner类" id="scanner类"><small>4&#8202;.&#8202;6</small>Scanner类</a></h2>
+<h2><a href="#scanner类" id="scanner类"><small>4&#8202;.&#8202;4</small>Scanner类</a></h2>
 <p>事不宜迟，我们先来建一个扫描器吧。</p>
 <p>Without further ado, let&rsquo;s make ourselves a scanner.</p>
 <div class="codehilite"><div class="source-file"><em>lox/Scanner.java</em><br>
@@ -623,7 +617,7 @@ add after <em>scanTokens</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/Scanner.java</em>, add after <em>scanTokens</em>()</div>
 
-<h2><a href="#recognizing-lexemes--识别词素" id="recognizing-lexemes--识别词素"><small>4&#8202;.&#8202;7</small>Recognizing Lexemes  识别词素</a></h2>
+<h2><a href="#识别词素" id="识别词素"><small>4&#8202;.&#8202;5</small>识别词素</a></h2>
 <p>In each turn of the loop, we scan a single token. This is the real heart of the
 scanner. We&rsquo;ll start simple. Imagine if every lexeme were only a single character
 long. All you would need to do is consume the next character and pick a token type for
@@ -678,7 +672,7 @@ returns it. Where <code>advance()</code> is for input, <code>addToken()</code> i
 the text of the current lexeme and creates a new token for it. We&rsquo;ll use the
 other overload to handle tokens with literal values soon.
 <code>advance()</code>方法获取源文件中的下一个字符并返回它。<code>advance()</code>用于处理输入，<code>addToken()</code>则用于输出。该方法获取当前词素的文本并为其创建一个新 token。我们马上会使用另一个重载方法来处理带有字面值的 token。</p>
-<h3><a href="#lexical-errors--词法错误" id="lexical-errors--词法错误"><small>4&#8202;.&#8202;7&#8202;.&#8202;1</small>Lexical errors  词法错误</a></h3>
+<h3><a href="#词法错误" id="词法错误"><small>4&#8202;.&#8202;5&#8202;.&#8202;1</small>词法错误</a></h3>
 <p>Before we get too far in, let&rsquo;s take a moment to think about errors at the
 lexical level. What happens if a user throws a source file containing some
 characters Lox doesn&rsquo;t use, like <code>@#^</code>, at our interpreter? Right now, those
@@ -717,7 +711,7 @@ Coalescing a run of invalid characters into a single error would give a nicer
 user experience.
 代码会单独报告每个无效字符，因此如果用户不小心粘贴了一大堆奇怪的文本，就会出现大量错误。如果将一系列无效字符合并为一个错误，用户体验会更好。</p>
 </aside>
-<h3><a href="#operators" id="operators"><small>4&#8202;.&#8202;7&#8202;.&#8202;2</small>Operators</a></h3>
+<h3><a href="#操作符-operators" id="操作符-operators"><small>4&#8202;.&#8202;5&#8202;.&#8202;2</small>操作符 Operators</a></h3>
 <p>We have single-character lexemes working, but that doesn&rsquo;t cover all of Lox&rsquo;s
 operators. What about <code>!</code>? It&rsquo;s a single character, right? Sometimes, yes, but
 if the very next character is an equals sign, then we should instead create a
@@ -772,7 +766,7 @@ example, <code>!</code>, we jump to its switch case. That means we know the lexe
 with <code>!</code>. Then we look at the next character to determine if we&rsquo;re on a <code>!=</code> or
 merely a <code>!</code>.
 使用<code>match()</code>，我们分两个阶段识别这些词素。例如，当我们得到<code>!</code>时，我们会跳转到它的case分支。这意味着我们知道这个词素是以 <code>!</code>开始的。然后，我们查看下一个字符，以确认词素是一个 <code>!=</code> 还是仅仅是一个 <code>!</code>。</p>
-<h2><a href="#longer-lexemes--更长的词素" id="longer-lexemes--更长的词素"><small>4&#8202;.&#8202;8</small>Longer Lexemes  更长的词素</a></h2>
+<h2><a href="#更长的词素" id="更长的词素"><small>4&#8202;.&#8202;6</small>更长的词素</a></h2>
 <p>We&rsquo;re still missing one operator: <code>/</code> for division. That character needs a
 little special handling because comments begin with a slash too.
 我们还缺少一个操作符：表示除法的<code>/</code>。这个字符需要一些特殊处理，因为注释也是以斜线开头的。</p>
@@ -865,7 +859,7 @@ that newline to get us here so we can update <code>line</code>.)
 (( )){} <span class="c">// grouping stuff</span>
 !*+-/=&lt;&gt; &lt;= == <span class="c">// operators</span>
 </pre></div>
-<h3><a href="#string-literals--字符串字面量" id="string-literals--字符串字面量"><small>4&#8202;.&#8202;8&#8202;.&#8202;1</small>String literals  字符串字面量</a></h3>
+<h3><a href="#字符串字面量" id="字符串字面量"><small>4&#8202;.&#8202;6&#8202;.&#8202;1</small>字符串字面量</a></h3>
 <p>Now that we&rsquo;re comfortable with longer lexemes, we&rsquo;re ready to tackle literals.
 We&rsquo;ll do strings first, since they always begin with a specific character, <code>"</code>.
 现在我们对长词素已经很熟悉了，我们可以开始处理字面量了。我们先处理字符串，因为字符串总是以一个特定的字符<code>"</code>开头。</p>
@@ -921,7 +915,7 @@ produce the actual string <em>value</em> that will be used later by the interpre
 Here, that conversion only requires a <code>substring()</code> to strip off the surrounding
 quotes. If Lox supported escape sequences like <code>\n</code>, we&rsquo;d unescape those here.
 最后，还有一个有趣的地方就是当我们创建标记时，我们也会产生实际的字符串值，该值稍后将被解释器使用。这里，值的转换只需要调用<code>substring()</code>剥离前后的引号。如果Lox支持转义序列，比如<code>\n</code>，我们会在这里取消转义。</p>
-<h3><a href="#number-literals--数字字面量" id="number-literals--数字字面量"><small>4&#8202;.&#8202;8&#8202;.&#8202;2</small>Number literals  数字字面量</a></h3>
+<h3><a href="#数字字面量" id="数字字面量"><small>4&#8202;.&#8202;6&#8202;.&#8202;2</small>数字字面量</a></h3>
 <p>All numbers in Lox are floating point at runtime, but both integer and decimal
 literals are supported. A number literal is a series of <span
 name="minus">digits</span> optionally followed by a <code>.</code> and one or more trailing
@@ -1045,7 +1039,7 @@ an upcoming programming interview, it&rsquo;s not worth your time.
 <p>The remaining literals are Booleans and <code>nil</code>, but we handle those as keywords,
 which gets us to<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 剩下的词素是Boolean和<code>nil</code>，但我们把它们作为关键字来处理，这样我们就来到了<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
-<h2><a href="#reserved-words-and-identifiers--保留字和标识符" id="reserved-words-and-identifiers--保留字和标识符"><small>4&#8202;.&#8202;9</small>Reserved Words and Identifiers  保留字和标识符</a></h2>
+<h2><a href="#保留字和标识符" id="保留字和标识符"><small>4&#8202;.&#8202;7</small>保留字和标识符</a></h2>
 <p>Our scanner is almost done. The only remaining pieces of the lexical grammar to
 implement are identifiers and their close cousins, the reserved words. You might
 think we could match keywords like <code>or</code> in the same way we handle
@@ -1197,7 +1191,7 @@ and see if it handles them as it should.
 <ol>
 <li>The lexical grammars of Python and Haskell are not <em>regular</em>. What does that
 mean, and why aren&rsquo;t they?
-1、Python和Haskell的语法不是<em>常规的</em>。 这是什么意思，为什么不是呢？</li>
+Python和Haskell的语法不是<em>常规的</em>。 这是什么意思，为什么不是呢？</li>
 </ol>
 <ul>
 <li>Python和Haskell都采用了对缩进敏感的语法，所以它们必须将缩进级别的变动识别为词法标记。这样做需要比较连续行的开头空格数量，这是使用常规语法无法做到的。</li>
@@ -1208,24 +1202,24 @@ mean, and why aren&rsquo;t they?
 dark corners, a space <em>does</em> affect how code is parsed in CoffeeScript,
 Ruby, and the C preprocessor. Where and what effect does it have in each of
 those languages?
-2、除了分隔标记——区分<code>print foo</code>和<code>printfoo</code>——空格在大多数语言中并没有什么用处。在CoffeeScript、Ruby和C预处理器中的一些隐秘的地方，空格确实会影响代码解析方式。在这些语言中，空格在什么地方，会有什么影响？</p>
+除了分隔标记——区分<code>print foo</code>和<code>printfoo</code>——空格在大多数语言中并没有什么用处。在CoffeeScript、Ruby和C预处理器中的一些隐秘的地方，空格确实会影响代码解析方式。在这些语言中，空格在什么地方，会有什么影响？</p>
 </li>
 <li>
 <p>Our scanner here, like most, discards comments and whitespace since those
 aren&rsquo;t needed by the parser. Why might you want to write a scanner that does
 <em>not</em> discard those? What would it be useful for?
-3、我们这里的扫描器和大多数扫描器一样，会丢弃注释和空格，因为解析器不需要这些。什么情况下你会写一个不丢弃这些的扫描器？它有什么用呢？</p>
+我们这里的扫描器和大多数扫描器一样，会丢弃注释和空格，因为解析器不需要这些。什么情况下你会写一个不丢弃这些的扫描器？它有什么用呢？</p>
 </li>
 <li>
 <p>Add support to Lox&rsquo;s scanner for C-style <code>/* ... */</code> block comments. Make
 sure to handle newlines in them. Consider allowing them to nest. Is adding
 support for nesting more work than you expected? Why?
-4、为Lox扫描器增加对C样式<code>/ * ... * /</code>屏蔽注释的支持。确保要处理其中的换行符。 考虑允许它们嵌套， 增加对嵌套的支持是否比你预期的工作更多？ 为什么？</p>
+为Lox扫描器增加对C样式<code>/ * ... * /</code>屏蔽注释的支持。确保要处理其中的换行符。 考虑允许它们嵌套， 增加对嵌套的支持是否比你预期的工作更多？ 为什么？</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Implicit Semicolons 隐藏的分号</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 隐藏的分号</a></h2>
 <p>Programmers today are spoiled for choice in languages and have gotten picky
 about syntax. They want their language to look clean and modern. One bit of
 syntactic lichen that almost every new language scrapes off (and some ancient

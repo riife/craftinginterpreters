@@ -37,11 +37,10 @@
         <h3><a href="#top">全局变量<small>21</small></a></h3>
     
     <ul>
-        <li><a href="#statements--语句"><small>21.1</small> Statements  语句</a></li>
-        <li><a href="#variable-declarations--变量声明"><small>21.2</small> Variable Declarations  变量声明</a></li>
-        <li><a href="#reading-variables--读取变量"><small>21.3</small> Reading Variables  读取变量</a></li>
-        <li><a href="#assignment--赋值"><small>21.4</small> Assignment  赋值</a></li>
-        <li><a href="#习题"><small>21.5</small> 习题</a></li>
+        <li><a href="#语句"><small>21.1</small> 语句</a></li>
+        <li><a href="#变量声明"><small>21.2</small> 变量声明</a></li>
+        <li><a href="#读取变量"><small>21.3</small> 读取变量</a></li>
+        <li><a href="#赋值"><small>21.4</small> 赋值</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -68,11 +67,10 @@
         <h3><a href="#top">全局变量<small>21</small></a></h3>
         
         <ul>
-            <li><a href="#statements--语句"><small>21.1</small> Statements  语句</a></li>
-            <li><a href="#variable-declarations--变量声明"><small>21.2</small> Variable Declarations  变量声明</a></li>
-            <li><a href="#reading-variables--读取变量"><small>21.3</small> Reading Variables  读取变量</a></li>
-            <li><a href="#assignment--赋值"><small>21.4</small> Assignment  赋值</a></li>
-            <li><a href="#习题"><small>21.5</small> 习题</a></li>
+            <li><a href="#语句"><small>21.1</small> 语句</a></li>
+            <li><a href="#变量声明"><small>21.2</small> 变量声明</a></li>
+            <li><a href="#读取变量"><small>21.3</small> 读取变量</a></li>
+            <li><a href="#赋值"><small>21.4</small> 赋值</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -151,7 +149,7 @@ simple single-pass compiler. That will let us use a smarter representation for
 locals. But that&rsquo;s for the next chapter. Right now, let&rsquo;s just worry about
 globals.
 局部变量的工作方式不同。因为局部变量的声明总是发生在使用之前，虚拟机可以在编译时解析它们，即使是在简单的单遍编译器中。这让我们可以为局部变量使用更聪明的表示形式。但这是下一章的内容。现在，我们只考虑全局变量。</p>
-<h2><a href="#statements--语句" id="statements--语句"><small>21&#8202;.&#8202;1</small>Statements  语句</a></h2>
+<h2><a href="#语句" id="语句"><small>21&#8202;.&#8202;1</small>语句</a></h2>
 <p>Variables come into being using variable declarations, which means now is also
 the time to add support for statements to our compiler. If you recall, Lox
 splits statements into two categories. &ldquo;Declarations&rdquo; are those statements that
@@ -256,7 +254,7 @@ add after <em>expression</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, add after <em>expression</em>()</div>
 
-<h3><a href="#print-statements--print语句" id="print-statements--print语句"><small>21&#8202;.&#8202;1&#8202;.&#8202;1</small>Print statements  Print语句</a></h3>
+<h3><a href="#print语句" id="print语句"><small>21&#8202;.&#8202;1&#8202;.&#8202;1</small>Print语句</a></h3>
 <p>We have two statement types to support in this chapter. Let&rsquo;s start with <code>print</code>
 statements, which begin, naturally enough, with a <code>print</code> token. We detect that
 using this helper function:
@@ -401,7 +399,7 @@ in <em>disassembleInstruction</em>()</div>
 <p>Exciting! OK, maybe not thrilling, but we can build scripts that contain as many
 statements as we want now, which feels like progress.
 令人兴奋！好吧，也许没有那么激动人心，但是我们现在可以构建包含任意多语句的脚本，这感觉是一种进步。</p>
-<h3><a href="#expression-statements--表达式语句" id="expression-statements--表达式语句"><small>21&#8202;.&#8202;1&#8202;.&#8202;2</small>Expression statements  表达式语句</a></h3>
+<h3><a href="#表达式语句" id="表达式语句"><small>21&#8202;.&#8202;1&#8202;.&#8202;2</small>表达式语句</a></h3>
 <p>Wait until you see the next statement. If we <em>don&rsquo;t</em> see a <code>print</code> keyword, then
 we must be looking at an expression statement.
 等待，直到你看到下一条语句。如果没有看到<code>print</code>关键字，那么我们看到的一定是一条表达式语句。</p>
@@ -477,7 +475,7 @@ statements in real-world code in languages like C are expression statements.
 <p>By my count, 80 of the 149 statements, in the version of &ldquo;compiler.c&rdquo; that we
 have at the end of this chapter are expression statements.</p>
 </aside>
-<h3><a href="#error-synchronization--错误同步" id="error-synchronization--错误同步"><small>21&#8202;.&#8202;1&#8202;.&#8202;3</small>Error synchronization  错误同步</a></h3>
+<h3><a href="#错误同步" id="错误同步"><small>21&#8202;.&#8202;1&#8202;.&#8202;3</small>错误同步</a></h3>
 <p>While we&rsquo;re getting this initial work done in the compiler, we can tie off a
 loose end we left <a href="compiling-expressions.html#handling-syntax-errors">several chapters back</a>. Like jlox, clox uses panic
 mode error recovery to minimize the number of cascaded compile errors that it
@@ -532,7 +530,7 @@ that can end a statement, like a semicolon. Or we&rsquo;ll look for a subsequent
 that begins a statement, usually one of the control flow or declaration
 keywords.
 我们会不分青红皂白地跳过标识，直到我们到达一个看起来像是语句边界的位置。我们识别边界的方式包括，查找可以结束一条语句的前驱标识，如分号；或者我们可以查找能够开始一条语句的后续标识，通常是控制流或声明语句的关键字之一。</p>
-<h2><a href="#variable-declarations--变量声明" id="variable-declarations--变量声明"><small>21&#8202;.&#8202;2</small>Variable Declarations  变量声明</a></h2>
+<h2><a href="#变量声明" id="变量声明"><small>21&#8202;.&#8202;2</small>变量声明</a></h2>
 <p>Merely being able to <em>print</em> doesn&rsquo;t win your language any prizes at the
 programming language <span name="fair">fair</span>, so let&rsquo;s move on to
 something a little more ambitious and get variables going. There are three
@@ -806,7 +804,7 @@ in <em>disassembleInstruction</em>()</div>
 <p>And with that, we can define global variables. Not that users can <em>tell</em> that
 they&rsquo;ve done so, because they can&rsquo;t actually <em>use</em> them. So let&rsquo;s fix that next.
 有了这个，我们就可以定义全局变量了。但用户并不能说他们可以定义全局变量，因为他们实际上还不能使用这些变量。所以，接下来我们解决这个问题。</p>
-<h2><a href="#reading-variables--读取变量" id="reading-variables--读取变量"><small>21&#8202;.&#8202;3</small>Reading Variables  读取变量</a></h2>
+<h2><a href="#读取变量" id="读取变量"><small>21&#8202;.&#8202;3</small>读取变量</a></h2>
 <p>As in every programming language ever, we access a variable&rsquo;s value using its
 name. We hook up identifier tokens to the expression parser here:
 像所有编程语言中一样，我们使用变量的名称来访问它的值。我们在这里将标识符和表达式解析器进行挂钩：</p>
@@ -899,7 +897,7 @@ run code like this:
 </pre></div>
 <p>There&rsquo;s only one operation left.
 只剩一个操作了。</p>
-<h2><a href="#assignment--赋值" id="assignment--赋值"><small>21&#8202;.&#8202;4</small>Assignment  赋值</a></h2>
+<h2><a href="#赋值" id="赋值"><small>21&#8202;.&#8202;4</small>赋值</a></h2>
 <p>Throughout this book, I&rsquo;ve tried to keep you on a fairly safe and easy path. I
 don&rsquo;t avoid hard <em>problems</em>, but I try to not make the <em>solutions</em> more complex
 than they need to be. Alas, other design choices in our <span
@@ -1283,14 +1281,6 @@ this:
 : 对<code>tableSet()</code>的调用会将值存储在全局变量表中，即使该变量之前没有定义。这个问题在REPL会话中是用户可见的，因为即使报告了运行时错误，它仍然在运行。因此，我们也要注意从表中删除僵尸值。
 : 如果<code>a*b</code>是一个有效的赋值目标，这岂不是很疯狂？你可以想象一些类似代数的语言，试图以某种合理的方式划分所赋的值，并将其分配给<code>a</code>和<code>b</code>……这可能是一个很糟糕的主意。
 : 如果Lox有数组和下标操作符，如<code>array[index]</code>，那么中缀操作符<code>[</code>也能允许赋值，支持：<code>array[index] = value</code>。</p>
-<h2><a href="#习题" id="习题"><small>21&#8202;.&#8202;5</small>习题</a></h2>
-<ol>
-<li>
-<blockquote>
-<p>The compiler adds a global variable’s name to the constant table as a string every time an identifier is encountered. It creates a new constant each time, even if that variable name is already in a previous slot in the constant table. That’s wasteful in cases where the same variable is referenced multiple times by the same function. That, in turn, increases the odds of filling up the constant table and running out of slots since we allow only 256 constants in a single chunk.</p>
-</blockquote>
-</li>
-</ol>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -1301,37 +1291,27 @@ time, even if that variable name is already in a previous slot in the
 constant table. That&rsquo;s wasteful in cases where the same variable is
 referenced multiple times by the same function. That, in turn, increases the
 odds of filling up the constant table and running out of slots since we
-allow only 256 constants in a single chunk.</p>
+allow only 256 constants in a single chunk.
+每次遇到标识符时，编译器都会将全局变量的名称作为字符串添加到常量表中。它每次都会创建一个新的常量，即使这个变量的名字已经在常量表中的前一个槽中存在。在同一个函数多次引用同一个变量的情况下，这是一种浪费。这反过来又增加了填满常量表的可能性，因为我们在一个字节码块中只允许有256个常量。</p>
 <p>Optimize this. How does your optimization affect the performance of the
 compiler compared to the runtime? Is this the right trade-off?
-每次遇到标识符时，编译器都会将全局变量的名称作为字符串添加到常量表中。它每次都会创建一个新的常量，即使这个变量的名字已经在常量表中的前一个槽中存在。在同一个函数多次引用同一个变量的情况下，这是一种浪费。这反过来又增加了填满常量表的可能性，因为我们在一个字节码块中只允许有256个常量。
 对此进行优化。与运行时相比，你的优化对编译器的性能有何影响？这是正确的取舍吗？</p>
-</li>
-<li>
-<blockquote>
-<p>Looking up a global variable by name in a hash table each time it is used is pretty slow, even with a good hash table. Can you come up with a more efficient way to store and access global variables without changing the semantics?
-每次使用全局变量时，根据名称在哈希表中查找变量是很慢的，即使有一个很好的哈希表。你能否想出一种更有效的方法来存储和访问全局变量而不改变语义？</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>When running in the REPL, a user might write a function that references an unknown global variable. Then, in the next line, they declare the variable. Lox should handle this gracefully by not reporting an “unknown variable” compile error when the function is first defined.</p>
-</blockquote>
 </li>
 <li>
 <p>Looking up a global variable by name in a hash table each time it is used
 is pretty slow, even with a good hash table. Can you come up with a more
 efficient way to store and access global variables without changing the
-semantics?</p>
+semantics?
+每次使用全局变量时，根据名称在哈希表中查找变量是很慢的，即使有一个很好的哈希表。你能否想出一种更有效的方法来存储和访问全局变量而不改变语义？</p>
 </li>
 <li>
 <p>When running in the REPL, a user might write a function that references an
 unknown global variable. Then, in the next line, they declare the variable.
 Lox should handle this gracefully by not reporting an &ldquo;unknown variable&rdquo;
-compile error when the function is first defined.</p>
+compile error when the function is first defined.
+当在REPL中运行时，用户可能会编写一个引用未知全局变量的函数。然后，在下一行中，他们声明了这个变量。Lox应该优雅地处理这个问题，在第一次定义函数时不报告“未知变量”的编译错误。</p>
 <p>But when a user runs a Lox <em>script</em>, the compiler has access to the full
 text of the entire program before any code is run. Consider this program:
-当在REPL中运行时，用户可能会编写一个引用未知全局变量的函数。然后，在下一行中，他们声明了这个变量。Lox应该优雅地处理这个问题，在第一次定义函数时不报告“未知变量”的编译错误。
 但是，当用户运行Lox脚本时，编译器可以在任何代码运行之前访问整个程序的全部文本。考虑一下这个程序：</p>
 <div class="codehilite"><pre><span class="k">fun</span> <span class="i">useVar</span>() {
   <span class="k">print</span> <span class="i">oops</span>;

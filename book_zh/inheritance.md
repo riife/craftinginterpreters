@@ -34,7 +34,7 @@ I'll, uh, see myself out.
 
 </aside>
 
-## Superclasses and Subclasses  超类和子类
+## 超类和子类
 
 Given that the concept is "inheritance", you would hope they would pick a
 consistent metaphor and call them "parent" and "child" classes, but that would
@@ -204,7 +204,7 @@ With that, we can define classes that are subclasses of other classes. Now, what
 does having a superclass actually *do?*
 有了这个，我们就可以定义一个类作为其它类的子类。现在，拥有一个超类究竟有什么用呢？
 
-## Inheriting Methods  继承方法
+## 继承方法
 
 Inheriting from another class means that everything that's <span
 name="liskov">true</span> of the superclass should be true, more or less, of the
@@ -258,7 +258,7 @@ There we go, half of our inheritance features are complete with only three lines
 of Java code.
 好了，一半的继承特性只用了三行Java代码就完成了。
 
-## Calling Superclass Methods  调用超类方法
+## 调用超类方法
 
 In `findMethod()` we look for a method on the current class *before* walking up
 the superclass chain. If a method with the same name exists in both the subclass
@@ -309,7 +309,7 @@ identifier, looks for a method with that name. Unlike calls on `this`, the searc
 starts at the superclass.
 我们有了一个新的表达式形式。`super`关键字，后跟一个点和一个标识符，以使用该名称查找方法。与`this`调用不同，该搜索是从超类开始的。
 
-### Syntax
+### 语法
 
 With `this`, the keyword works sort of like a magic variable, and the expression
 is that one lone token. But with `super`, the subsequent `.` and property name
@@ -367,7 +367,7 @@ A leading `super` keyword tells us we've hit a `super` expression. After that we
 consume the expected `.` and method name.
 开头的`super`关键字告诉我们遇到了一个`super`表达式，之后我们消费预期中的`.`和方法名称。
 
-### Semantics
+### 语义
 
 Earlier, I said a `super` expression starts the method lookup from "the
 superclass", but *which* superclass? The naïve answer is the superclass of
@@ -589,7 +589,7 @@ Assuming you and I did everything right, it should fry it first, then stuff it
 with cream.
 这就对了！试着运行一下前面那个BostonCream的例子。如果你我都做对了，它的结果应该是：
 
-### Invalid uses of super  super的无效使用
+### super的无效使用
 
 As with previous language features, our implementation does the right thing when
 the user writes correct code, but we haven't bulletproofed the intepreter
@@ -654,7 +654,7 @@ currently inside a scope where that's allowed.
 If not -- oopsie! -- the user made a mistake.
 如果不是，那就是用户出错了。
 
-## Conclusion  总结
+## 总结
 
 We made it! That final bit of error handling is the last chunk of code needed to
 complete our Java implementation of Lox. This is a real <span
@@ -737,19 +737,18 @@ refreshed and ready, we'll embark on our [next adventure][].
     languages have explored a variety of ways to more freely reuse and share
     capabilities across classes: mixins, traits, multiple inheritance, virtual
     inheritance, extension methods, etc.
+    Lox只支持*单继承*——一个类可以有一个超类，这是唯一跨类复用方法的方式。其它语言中已经探索出了各种方法来更自由地跨类重用和共享功能：mixins, traits, multiple inheritance, virtual inheritance, extension methods, 等等。
 
     If you were to add some feature along these lines to Lox, which would you
     pick and why? If you're feeling courageous (and you should be at this
     point), go ahead and add it.
-Lox只支持*单继承*——一个类可以有一个超类，这是唯一跨类复用方法的方式。其它语言中已经探索出了各种方法来更自由地跨类重用和共享功能：mixins, traits, multiple inheritance, virtual inheritance, extension methods, 等等。
-如果你要在Lox中添加一些类似的功能，你会选择哪种，为什么？如果你有勇气的话（这时候你应该有勇气了），那就去添加它。
-2. > In Lox, as in most other object-oriented languages, when looking up a method, we start at the bottom of the class hierarchy and work our way up—a subclass’s method is preferred over a superclass’s. In order to get to the superclass method from within an overriding method, you use `super`.
-在Lox中，与其它大多数面向对象语言一样，当查找一个方法时，我们从类的底层开始向上查找——子类的方法优先于超类的方法。为了在覆盖方法中访问超类方法，你可以使用`super`。
+    如果你要在Lox中添加一些类似的功能，你会选择哪种，为什么？如果你有勇气的话（这时候你应该有勇气了），那就去添加它。
 
 1.  In Lox, as in most other object-oriented languages, when looking up a
     method, we start at the bottom of the class hierarchy and work our way up --
     a subclass's method is preferred over a superclass's. In order to get to the
     superclass method from within an overriding method, you use `super`.
+    在Lox中，与其它大多数面向对象语言一样，当查找一个方法时，我们从类的底层开始向上查找——子类的方法优先于超类的方法。为了在覆盖方法中访问超类方法，你可以使用`super`。
 
     The language [BETA][] takes the [opposite approach][inner]. When you call a
     method, it starts at the *top* of the class hierarchy and works *down*. A
@@ -757,32 +756,30 @@ Lox只支持*单继承*——一个类可以有一个超类，这是唯一跨类
     subclass method, the superclass method can call `inner`, which is sort of
     like the inverse of `super`. It chains to the next method down the
     hierarchy.
-[BEAT](https://beta.cs.au.dk/)语言采用了[相反的方法](http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/)。当你调用一个方法时，它从类继承结构的顶层开始向下寻找。超类方法的优先级高于子类方法。为了访问子类的方法，超类方法可以调用`inner`，这有点像是`super`的反义词。它与继承层次结构中的下一级方法相连接。
+    [BEAT](https://beta.cs.au.dk/)语言采用了[相反的方法](http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/)。当你调用一个方法时，它从类继承结构的顶层开始向下寻找。超类方法的优先级高于子类方法。为了访问子类的方法，超类方法可以调用`inner`，这有点像是`super`的反义词。它与继承层次结构中的下一级方法相连接。
 
     The superclass method controls when and where the subclass is allowed to
     refine its behavior. If the superclass method doesn't call `inner` at all,
     then the subclass has no way of overriding or modifying the superclass's
     behavior.
-超类方法控制着子类何时何地可以改进其行为。如果超类方法根本没有调用`inner`，那么子类就无法覆盖或修改超类的行为。
+    超类方法控制着子类何时何地可以改进其行为。如果超类方法根本没有调用`inner`，那么子类就无法覆盖或修改超类的行为。
 
     Take out Lox's current overriding and `super` behavior and replace it with
     BETA's semantics. In short:
-去掉Lox目前的覆盖和`super`行为，用BEAT的语义来替换。简而言之：
-- > When calling a method on a class, prefer the method *highest* on the class’s inheritance chain.
-当调用类上的方法时，优先选择类继承链中最高的方法。
-- > Inside the body of a method, a call to `inner` looks for a method with the same name in the nearest subclass along the inheritance chain between the class containing the `inner` and the class of `this`. If there is no matching method, the `inner` call does nothing.
-在方法体内部，`inner`调用会在继承链中包含`inner`的类和包含`this`的类之间，查找具有相同名称的最近的子类中的方法。如果没有匹配的方法，`inner`调用不做任何事情。
+    去掉Lox目前的覆盖和`super`行为，用BEAT的语义来替换。简而言之：
 
     *   When calling a method on a class, prefer the method *highest* on the
         class's inheritance chain.
+        当调用类上的方法时，优先选择类继承链中最高的方法。
 
     *   Inside the body of a method, a call to `inner` looks for a method with
         the same name in the nearest subclass along the inheritance chain
         between the class containing the `inner` and the class of `this`. If
         there is no matching method, the `inner` call does nothing.
+        在方法体内部，`inner`调用会在继承链中包含`inner`的类和包含`this`的类之间，查找具有相同名称的最近的子类中的方法。如果没有匹配的方法，`inner`调用不做任何事情。
 
     For example:
-举例来说：
+    举例来说：
 
     ```lox
     class Doughnut {
@@ -803,9 +800,7 @@ Lox只支持*单继承*——一个类可以有一个超类，这是唯一跨类
     ```
 
     This should print:
-这应该输出：
-3. > In the chapter where I introduced Lox, [I challenged you](http://craftinginterpreters.com/the-lox-language.html#challenges) to come up with a couple of features you think the language is missing. Now that you know how to build an interpreter, implement one of those features.
-在介绍Lox的那一章，我让你想出几个你认为该语言缺少的功能。现在你知道了如何构建一个解释器，请实现其中的一个功能。
+    这应该输出：
 
     ```text
     Fry until golden brown.
@@ -816,6 +811,7 @@ Lox只支持*单继承*——一个类可以有一个超类，这是唯一跨类
 1.  In the chapter where I introduced Lox, [I challenged you][challenge] to
     come up with a couple of features you think the language is missing. Now
     that you know how to build an interpreter, implement one of those features.
+    在介绍Lox的那一章，我让你想出几个你认为该语言缺少的功能。现在你知道了如何构建一个解释器，请实现其中的一个功能。
 
 [challenge]: the-lox-language.html#challenges
 [inner]: http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/

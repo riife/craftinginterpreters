@@ -48,7 +48,7 @@ compiler is work we *don't* have to do at runtime, so our implementation of
 local variables will lean heavily on the compiler.
 幸运的是，词法作用域可以帮助我们。顾名思义，词法作用域意味着我们可以通过查看程序文本来解析局部变量——局部变量*不是*后期绑定的。我们在编译器中所做的任何处理工作都不必在运行时完成，因此局部变量的实现将在很大程度上依赖于编译器。
 
-## Representing Local Variables  表示局部变量
+## 表示局部变量
 
 The nice thing about hacking on a programming language in modern times is
 there's a long lineage of other languages to learn from. So how do C and Java
@@ -216,7 +216,7 @@ no way to create and destroy scopes, or add and resolve variables. We'll add
 those as we need them. First, let's start building some language features.
 我们的编译器有了它需要的数据，但还没有对这些数据的操作。没有办法创建或销毁作用域，添加和解析变量。我们会在需要的时候添加这些功能。首先，让我们开始构建一些语言特性。
 
-## Block Statements  块语句
+## 块语句
 
 Before we can have any local variables, we need some local scopes. These come
 from two things: function bodies and <span name="block">blocks</span>. Functions
@@ -288,7 +288,7 @@ That's it for blocks and scopes -- more or less -- so we're ready to stuff some
 variables into them.
 这就是块和作用域的全部内容——或多或少吧——现在我们准备在其中添加一些变量。
 
-## Declaring Local Variables  声明局部变量
+## 声明局部变量
 
 Usually we start with parsing here, but our compiler already supports parsing
 and compiling variable declarations. We've got `var` statements, identifier
@@ -508,7 +508,7 @@ that takes an operand for the number of slots to pop and pops them all at once.
 
 </aside>
 
-## Using Locals  使用局部变量
+## 使用局部变量
 
 We can now compile and execute local variable declarations. At runtime, their
 values are sitting where they should be on the stack. Let's start using them.
@@ -569,7 +569,7 @@ name, it must not be a local. In that case, we return `-1` to signal that it
 wasn't found and should be assumed to be a global variable instead.
 如果我们在整个数组中都没有找到具有指定名称的变量，那它肯定不是局部变量。在这种情况下，我们返回`-1`，表示没有找到，应该假定它是一个全局变量。
 
-### Interpreting local variables  解释局部变量
+### 解释局部变量
 
 Our compiler is emitting two new instructions, so let's get them working. First
 is loading a local variable:
@@ -641,7 +641,7 @@ local variable at each stack slot.
 
 ^code byte-instruction
 
-### Another scope edge case  另一种作用域边界情况
+### 另一种作用域边界情况
 
 We already sunk some time into handling a couple of weird edge cases around
 scopes. We made sure shadowing works correctly. We report an error if two
@@ -750,8 +750,6 @@ lookup or resolution needs to happen.
 : 如果我们想为虚拟机实现一个调试器，在编译器中擦除局部变量名称是一个真正的问题。当用户逐步执行代码时，他们希望看到局部变量的值按名称排列。为了支持这一点，我们需要输出一些额外的信息，以跟踪每个栈槽中的局部变量的名称。
 : 没有，即便Scheme也不是。
 : 你可以把静态类型看作是这种趋势的一个极端例子。静态类型语言将所有的类型分析和类型错误处理都在编译过程中进行了整理。这样，运行时就不必浪费时间来检查值是否具有适合其操作的类型。事实上，在一些静态类型语言（如C）中，你甚至不*知道*运行时的类型。编译器完全擦除值类型的任何表示，只留下空白的比特位。
-## 习题
-1. > Our simple local array makes it easy to calculate the stack slot of each local variable. But it means that when the compiler resolves a reference to a variable, we have to do a linear scan through the array.
 
 <aside name="static">
 
@@ -772,23 +770,21 @@ the bare bits.
 1.  Our simple local array makes it easy to calculate the stack slot of each
     local variable. But it means that when the compiler resolves a reference to
     a variable, we have to do a linear scan through the array.
+    我们这个简单的局部变量数组使得计算每个局部变量的栈槽很容易。但这意味着，当编译器解析一个变量的引用时，我们必须对数组进行线性扫描。
 
     Come up with something more efficient. Do you think the additional
     complexity is worth it?
-我们这个简单的局部变量数组使得计算每个局部变量的栈槽很容易。但这意味着，当编译器解析一个变量的引用时，我们必须对数组进行线性扫描。
-想出一些更有效的方法。你认为这种额外的复杂性是否值得？
-2. > How do other languages handle code like this:
-其它语言中如何处理这样的代码：
+    想出一些更有效的方法。你认为这种额外的复杂性是否值得？
 
 1.  How do other languages handle code like this:
+    其它语言中如何处理这样的代码：
 
     ```lox
     var a = a;
     ```
 
     What would you do if it was your language? Why?
-如果这是你的语言，你会怎么做？为什么？
-3. > Many languages make a distinction between variables that can be reassigned and those that can’t. In Java, the `final` modifier prevents you from assigning to a variable. In JavaScript, a variable declared with `let` can be assigned, but one declared using `const` can’t. Swift treats `let` as single-assignment and uses `var` for assignable variables. Scala and Kotlin use `val` and `var`.
+    如果这是你的语言，你会怎么做？为什么？
 
 1.  Many languages make a distinction between variables that can be reassigned
     and those that can't. In Java, the `final` modifier prevents you from
@@ -796,16 +792,15 @@ the bare bits.
     be assigned, but one declared using `const` can't. Swift treats `let` as
     single-assignment and uses `var` for assignable variables. Scala and Kotlin
     use `val` and `var`.
+    许多语言中，对可以重新赋值的变量与不能重新赋值的变量进行了区分。在Java中，`final`修饰符可以阻止你对变量进行赋值。在JavaScript中，用`let`声明的变量可以被赋值，但用`const`声明的变量不能被赋值。`Swift`将`let`视为单次赋值，并对可赋值变量使用`var`。`Scala`和`Kotlin`则使用`val`和`var`。
 
     Pick a keyword for a single-assignment variable form to add to Lox. Justify
     your choice, then implement it. An attempt to assign to a variable declared
     using your new keyword should cause a compile error.
-许多语言中，对可以重新赋值的变量与不能重新赋值的变量进行了区分。在Java中，`final`修饰符可以阻止你对变量进行赋值。在JavaScript中，用`let`声明的变量可以被赋值，但用`const`声明的变量不能被赋值。`Swift`将`let`视为单次赋值，并对可赋值变量使用`var`。`Scala`和`Kotlin`则使用`val`和`var`。
-选一个关键字作为单次赋值变量的形式添加到Lox中。解释一下你的选择，然后实现它。试图赋值给一个用新关键字声明的变量应该会引起编译错误。
-4. > Extend clox to allow more than 256 local variables to be in scope at a time.
-扩展Lox，允许作用域中同时有超过256个局部变量。
+    选一个关键字作为单次赋值变量的形式添加到Lox中。解释一下你的选择，然后实现它。试图赋值给一个用新关键字声明的变量应该会引起编译错误。
 
 1.  Extend clox to allow more than 256 local variables to be in scope at a time.
+    扩展Lox，允许作用域中同时有超过256个局部变量。
 
 </div>
 

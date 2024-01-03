@@ -38,9 +38,9 @@
     
     <ul>
         <li><a href="#the-parts-of-a-language--语言的各部分"><small>2.1</small> The Parts of a Language  语言的各部分</a></li>
-        <li><a href="#shortcuts-and-alternate-routes--捷径和备选路线"><small>2.2</small> Shortcuts and Alternate Routes  捷径和备选路线</a></li>
-        <li><a href="#compilers-and-interpreters--编译器和解释器"><small>2.3</small> Compilers and Interpreters  编译器和解释器</a></li>
-        <li><a href="#our-journey--我们的旅程"><small>2.4</small> Our Journey  我们的旅程</a></li>
+        <li><a href="#捷径和备选路线"><small>2.2</small> 捷径和备选路线</a></li>
+        <li><a href="#编译器与解释器"><small>2.3</small> 编译器与解释器</a></li>
+        <li><a href="#我们的旅程"><small>2.4</small> 我们的旅程</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -68,9 +68,9 @@
         
         <ul>
             <li><a href="#the-parts-of-a-language--语言的各部分"><small>2.1</small> The Parts of a Language  语言的各部分</a></li>
-            <li><a href="#shortcuts-and-alternate-routes--捷径和备选路线"><small>2.2</small> Shortcuts and Alternate Routes  捷径和备选路线</a></li>
-            <li><a href="#compilers-and-interpreters--编译器和解释器"><small>2.3</small> Compilers and Interpreters  编译器和解释器</a></li>
-            <li><a href="#our-journey--我们的旅程"><small>2.4</small> Our Journey  我们的旅程</a></li>
+            <li><a href="#捷径和备选路线"><small>2.2</small> 捷径和备选路线</a></li>
+            <li><a href="#编译器与解释器"><small>2.3</small> 编译器与解释器</a></li>
+            <li><a href="#我们的旅程"><small>2.4</small> 我们的旅程</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -146,7 +146,7 @@ to make the CPU actually execute.
 <p>Let&rsquo;s trace through each of those trails and points of interest. Our journey
 begins on the left with the bare text of the user&rsquo;s source code:
 让我们开始遍历所有有趣的路线和地点。我们的旅程从左边的用户源代码的纯文本开始</p><img src="image/a-map-of-the-territory/string.png" alt="var average = (min + max) / 2;" />
-<h3><a href="#scanning--扫描" id="scanning--扫描"><small>2&#8202;.&#8202;1&#8202;.&#8202;1</small>Scanning  扫描</a></h3>
+<h3><a href="#扫描" id="扫描"><small>2&#8202;.&#8202;1&#8202;.&#8202;1</small>扫描</a></h3>
 <p>The first step is <strong>scanning</strong>, also known as <strong>lexing</strong>, or (if you&rsquo;re trying
 to impress someone) <strong>lexical analysis</strong>. They all mean pretty much the same
 thing. I like &ldquo;lexing&rdquo; because it sounds like something an evil supervillain
@@ -169,7 +169,7 @@ often insignificant, and comments, by definition, are ignored by the language.
 The scanner usually discards these, leaving a clean sequence of meaningful
 tokens.
 源文件中的一些字符实际上没有任何意义。空格通常是无关紧要的，而注释，从定义就能看出来，会被语言忽略。扫描仪通常会丢弃这些字符，留下一个干净的有意义的词法单元序列。</p><img src="image/a-map-of-the-territory/tokens.png" alt="[var] [average] [=] [(] [min] [+] [max] [)] [/] [2] [;]" />
-<h3><a href="#parsing--语法分析" id="parsing--语法分析"><small>2&#8202;.&#8202;1&#8202;.&#8202;2</small>Parsing  语法分析</a></h3>
+<h3><a href="#语法分析" id="语法分析"><small>2&#8202;.&#8202;1&#8202;.&#8202;2</small>语法分析</a></h3>
 <p>The next step is <strong>parsing</strong>. This is where our syntax gets a <strong>grammar</strong><span class="em">&mdash;</span>the
 ability to compose larger expressions and statements out of smaller parts. Did
 you ever diagram sentences in English class? If so, you&rsquo;ve done what a parser
@@ -194,7 +194,7 @@ programming languages. Alas, we flawed humans still manage to use those simple
 grammars incorrectly, so the parser&rsquo;s job also includes letting us know when we
 do by reporting <strong>syntax errors</strong>.
 事实证明，人类语言对于只能处理严密语法的解析器来说太混乱了，但面对编程语言这种简单的人造语法时，解析器表现得十分合适。唉，可惜我们这些有缺陷的人类在使用这些简单的语法时，仍然会不停地出错，因此解析器的工作还包括通过报告<strong>语法错误</strong>让我们知道出错了。</p>
-<h3><a href="#static-analysis--静态分析" id="static-analysis--静态分析"><small>2&#8202;.&#8202;1&#8202;.&#8202;3</small>Static analysis  静态分析</a></h3>
+<h3><a href="#静态分析" id="静态分析"><small>2&#8202;.&#8202;1&#8202;.&#8202;3</small>静态分析</a></h3>
 <p>The first two stages are pretty similar across all implementations. Now, the
 individual characteristics of each language start coming into play. At this
 point, we know the syntactic structure of the code<span class="em">&mdash;</span>things like which
@@ -242,6 +242,12 @@ new data structure that more directly expresses the semantics of the code.
 That&rsquo;s the next section.</p>
 </li>
 </ul>
+<p>深吸一口气。 我们已经到达了山顶，并对用户的程序有了全面的了解。从分析中可见的所有语义信息都需要存储在某个地方。我们可以把它存储在几个地方：</p>
+<ul>
+<li>通常，它会被直接存储在语法树本身的<strong>属性</strong>中——属性是节点中的额外字段，这些字段在解析时不会初始化，但在稍后会进行填充。</li>
+<li>有时，我们可能会将数据存储在外部的查找表中。 通常，该表的关键字是标识符，即变量和声明的名称。 在这种情况下，我们称其为<strong>符号表</strong>，并且其中与每个键关联的值告诉我们该标识符所指的是什么。</li>
+<li>最强大的记录工具是将树转化为一个全新的数据结构，更直接地表达代码的语义。这是下一节的内容。</li>
+</ul>
 <p>Everything up to this point is considered the <strong>front end</strong> of the
 implementation. You might guess everything after this is the <strong>back end</strong>, but
 no. Back in the days of yore when &ldquo;front end&rdquo; and &ldquo;back end&rdquo; were coined,
@@ -250,7 +256,7 @@ between the two halves. Rather than discard the old terms, William Wulf and
 company lumped those new phases into the charming but spatially paradoxical name
 <strong>middle end</strong>.
 到目前为止，所有内容都被视为实现的<strong>前端</strong>。 你可能会猜至此以后是<strong>后端</strong>，其实并不是。 在过去的年代，当“前端”和“后端”被创造出来时，编译器要简单得多。 后来，研究人员在两个半部之间引入了新阶段。 威廉·沃尔夫（William Wulf）和他的同伴没有放弃旧术语，而是新添加了一个迷人但有点自相矛盾的名称“<strong>中端</strong>”。</p>
-<h3><a href="#intermediate-representations--中介码" id="intermediate-representations--中介码"><small>2&#8202;.&#8202;1&#8202;.&#8202;4</small>Intermediate representations  中介码</a></h3>
+<h3><a href="#中间代码-intermediate-representation" id="中间代码-intermediate-representation"><small>2&#8202;.&#8202;1&#8202;.&#8202;4</small>中间代码 Intermediate representation</a></h3>
 <p>You can think of the compiler as a pipeline where each stage&rsquo;s job is to
 organize the data representing the user&rsquo;s code in a way that makes the next
 stage simpler to implement. The front end of the pipeline is specific to the
@@ -289,7 +295,7 @@ like the one for 68k then take those IRs and produce native code.
 <p>There&rsquo;s another big reason we might want to transform the code into a form that
 makes the semantics more apparent<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 还有一个重要的原因是，我们可能希望将代码转化为某种形式，使语义更加明确<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>。</p>
-<h3><a href="#optimization--优化" id="optimization--优化"><small>2&#8202;.&#8202;1&#8202;.&#8202;5</small>Optimization  优化</a></h3>
+<h3><a href="#优化" id="优化"><small>2&#8202;.&#8202;1&#8202;.&#8202;5</small>优化</a></h3>
 <p>Once we understand what the user&rsquo;s program means, we are free to swap it out
 with a different program that has the <em>same semantics</em> but implements them more
 efficiently<span class="em">&mdash;</span>we can <strong>optimize</strong> it.
@@ -321,7 +327,7 @@ invariant code motion&rdquo;, &ldquo;global value numbering&rdquo;, &ldquo;stren
 replacement of aggregates&rdquo;, &ldquo;dead code elimination&rdquo;, and &ldquo;loop unrolling&rdquo;.
 如果你无法抗拒要进入这个领域，可以从以下关键字开始，例如“常量折叠”，“公共表达式消除”，“循环不变代码外提”，“全局值编号”，“强度降低”，“ 聚合量标量替换”，“死码删除”和“循环展开”。</p>
 </aside>
-<h3><a href="#code-generation--代码生成" id="code-generation--代码生成"><small>2&#8202;.&#8202;1&#8202;.&#8202;6</small>Code generation  代码生成</a></h3>
+<h3><a href="#代码生成" id="代码生成"><small>2&#8202;.&#8202;1&#8202;.&#8202;6</small>代码生成</a></h3>
 <p>We have applied all of the optimizations we can think of to the user&rsquo;s program.
 The last step is converting it to a form the machine can actually run. In other
 words, <strong>generating code</strong> (or <strong>code gen</strong>), where &ldquo;code&rdquo; here usually refers to
@@ -365,7 +371,7 @@ language&rsquo;s semantics, and not be so tied to the peculiarities of any one
 computer architecture and its accumulated historical cruft. You can think of it
 like a dense, binary encoding of the language&rsquo;s low-level operations.
 这些合成指令的设计是为了更紧密地映射到语言的语义上，而不必与任何一个计算机体系结构的特性和它积累的历史错误绑定在一起。你可以把它想象成语言底层操作的密集二进制编码。</p>
-<h3><a href="#virtual-machine--虚拟机" id="virtual-machine--虚拟机"><small>2&#8202;.&#8202;1&#8202;.&#8202;7</small>Virtual machine  虚拟机</a></h3>
+<h3><a href="#虚拟机" id="虚拟机"><small>2&#8202;.&#8202;1&#8202;.&#8202;7</small>虚拟机</a></h3>
 <p>If your compiler produces bytecode, your work isn&rsquo;t over once that&rsquo;s done. Since
 there is no chip that speaks that bytecode, it&rsquo;s your job to translate. Again,
 you have two options. You can write a little mini-compiler for each target
@@ -406,7 +412,7 @@ computers for each user.
 or <strong>process virtual machines</strong> if you want to be unambiguous.
 在本书中，我们将要讨论的虚拟机类型是 <strong>语言虚拟机</strong> 或 <strong>进程虚拟机</strong>（如果你需要明确的话）。</p>
 </aside>
-<h3><a href="#runtime" id="runtime"><small>2&#8202;.&#8202;1&#8202;.&#8202;8</small>Runtime</a></h3>
+<h3><a href="#运行时" id="运行时"><small>2&#8202;.&#8202;1&#8202;.&#8202;8</small>运行时</a></h3>
 <p>We have finally hammered the user&rsquo;s program into a form that we can execute. The
 last step is running it. If we compiled it to machine code, we simply tell the
 operating system to load the executable and off it goes. If we compiled it to
@@ -427,12 +433,12 @@ If the language is run inside an interpreter or VM, then the runtime lives
 there. This is how most implementations of languages like Java, Python, and
 JavaScript work.
 所有这些东西都是在运行时进行的，所以它被恰当地称为，<strong>运行时</strong>。在一个完全编译的语言中，实现运行时的代码会直接插入到生成的可执行文件中。比如说，在<a href="https://golang.org/">Go</a>中，每个编译后的应用程序都有自己的一份Go的运行时副本直接嵌入其中。如果语言是在解释器或虚拟机内运行，那么运行时将驻留于虚拟机中。这也就是Java、Python和JavaScript等大多数语言实现的工作方式。</p>
-<h2><a href="#shortcuts-and-alternate-routes--捷径和备选路线" id="shortcuts-and-alternate-routes--捷径和备选路线"><small>2&#8202;.&#8202;2</small>Shortcuts and Alternate Routes  捷径和备选路线</a></h2>
+<h2><a href="#捷径和备选路线" id="捷径和备选路线"><small>2&#8202;.&#8202;2</small>捷径和备选路线</a></h2>
 <p>That&rsquo;s the long path covering every possible phase you might implement. Many
 languages do walk the entire route, but there are a few shortcuts and alternate
 paths.
 这是一条漫长的道路，涵盖了你要实现的每个可能的阶段。许多语言的确走完了整条路线，但也有一些捷径和备选路径。</p>
-<h3><a href="#single-pass-compilers--单遍编译器" id="single-pass-compilers--单遍编译器"><small>2&#8202;.&#8202;2&#8202;.&#8202;1</small>Single-pass compilers  单遍编译器</a></h3>
+<h3><a href="#单遍编译器" id="单遍编译器"><small>2&#8202;.&#8202;2&#8202;.&#8202;1</small>单遍编译器</a></h3>
 <p>Some simple compilers interleave parsing, analysis, and code generation so that
 they produce output code directly in the parser, without ever allocating any
 syntax trees or other IRs. These <span name="sdt"><strong>single-pass
@@ -457,7 +463,7 @@ function above the code that defines it unless you have an explicit forward
 declaration that tells the compiler what it needs to know to generate code for a
 call to the later function.
 Pascal和C语言就是围绕这个限制而设计的。在当时，内存非常珍贵，一个编译器可能连整个源文件都无法存放在内存中，更不用说整个程序了。这也是为什么Pascal的语法要求类型声明要先出现在一个块中。这也是为什么在C语言中，你不能在定义函数的代码上面调用函数，除非你有一个明确的前向声明，告诉编译器它需要知道什么，以便生成调用后面函数的代码。</p>
-<h3><a href="#tree-walk-interpreters--树遍历解释器" id="tree-walk-interpreters--树遍历解释器"><small>2&#8202;.&#8202;2&#8202;.&#8202;2</small>Tree-walk interpreters  树遍历解释器</a></h3>
+<h3><a href="#树遍历解释器" id="树遍历解释器"><small>2&#8202;.&#8202;2&#8202;.&#8202;2</small>树遍历解释器</a></h3>
 <p>Some programming languages begin executing code right after parsing it to an AST
 (with maybe a bit of static analysis applied). To run the program, the
 interpreter traverses the syntax tree one branch and leaf at a time, evaluating
@@ -477,7 +483,7 @@ Interpreter) to Koichi Sasada&rsquo;s YARV (Yet Another Ruby VM). YARV is a
 bytecode virtual machine.
 一个明显的例外是早期版本的Ruby，它们是树遍历型解释器。在1.9时，Ruby的规范实现从最初的MRI（&ldquo;Matz&rsquo; Ruby Interpreter&rdquo;）切换到了Koichi Sasada的YARV（&ldquo;Yet Another Ruby VM&rdquo;）。YARV是一个字节码虚拟机。</p>
 </aside>
-<h3><a href="#transpilers--转译器" id="transpilers--转译器"><small>2&#8202;.&#8202;2&#8202;.&#8202;3</small>Transpilers  转译器</a></h3>
+<h3><a href="#转译器" id="转译器"><small>2&#8202;.&#8202;2&#8202;.&#8202;3</small>转译器</a></h3>
 <p><span name="gary">Writing</span> a complete back end for a language can be a lot
 of work. If you have some existing generic IR to target, you could bolt your
 front end onto that. Otherwise, it seems like you&rsquo;re stuck. But what if you
@@ -546,11 +552,12 @@ source (well, destination) code in the target language.
 <p>Either way, you then run that resulting code through the output language&rsquo;s
 existing compilation pipeline, and you&rsquo;re good to go.
 不管是哪种方式，你再通过目标语言已有的编译流水线运行生成的代码就可以了。</p>
-<h3><a href="#just-in-time-compilation--即时编译" id="just-in-time-compilation--即时编译"><small>2&#8202;.&#8202;2&#8202;.&#8202;4</small>Just-in-time compilation  即时编译</a></h3>
+<h3><a href="#即时编译" id="即时编译"><small>2&#8202;.&#8202;2&#8202;.&#8202;4</small>即时编译</a></h3>
 <p>This last one is less a shortcut and more a dangerous alpine scramble best
 reserved for experts. The fastest way to execute code is by compiling it to
 machine code, but you might not know what architecture your end user&rsquo;s machine
-supports. What to do?</p>
+supports. What to do?
+最后一个与其说是捷径，不如说是危险的高山争霸赛，最好留给专家。执行代码最快的方法是将代码编译成机器代码，但你可能不知道你的最终用户的机器支持什么架构。该怎么做呢？</p>
 <p>You can do the same thing that the HotSpot Java Virtual Machine (JVM),
 Microsoft&rsquo;s Common Language Runtime (CLR), and most JavaScript interpreters do.
 On the end user&rsquo;s machine, when the program is loaded<span class="em">&mdash;</span>either from source in
@@ -568,7 +575,7 @@ name="hot">hot spots</span> with more advanced optimizations.
 <p>This is, of course, exactly where the HotSpot JVM gets its name.
 当然，这正是HotSpot JVM名称的来源。</p>
 </aside>
-<h2><a href="#compilers-and-interpreters--编译器和解释器" id="compilers-and-interpreters--编译器和解释器"><small>2&#8202;.&#8202;3</small>Compilers and Interpreters  编译器和解释器</a></h2>
+<h2><a href="#编译器与解释器" id="编译器与解释器"><small>2&#8202;.&#8202;3</small>编译器与解释器</a></h2>
 <p>Now that I&rsquo;ve stuffed your head with a dictionary&rsquo;s worth of programming
 language jargon, we can finally address a question that&rsquo;s plagued coders since
 time immemorial: What&rsquo;s the difference between a compiler and an interpreter?
@@ -610,6 +617,12 @@ takes in source code and executes it immediately. It runs programs &ldquo;from
 source&rdquo;.</p>
 </li>
 </ul>
+<p>好，回到语言上：</p>
+<ul>
+<li><strong>编译</strong>是一种实现技术，其中涉及到将源语言翻译成其他语言--通常是较低级的形式。当你生成字节码或机器代码时，你就是在编译。当你移植到另一种高级语言时，你也在编译。</li>
+<li>当我们说语言实现“是<strong>编译器</strong>”时，是指它会将源代码转换为其他形式，但不会执行。 用户必须获取结果输出并自己运行。</li>
+<li>相反，当我们说一个实现“是一个<strong>解释器</strong>”时，是指它接受源代码并立即执行它。 它“从源代码”运行程序。</li>
+</ul>
 <p>Like apples and oranges, some implementations are clearly compilers and <em>not</em>
 interpreters. GCC and Clang take your C code and compile it to machine code. An
 end user runs that executable directly and may never even know which tool was
@@ -643,7 +656,7 @@ is still compiling internally).
 since it internally compiles to bytecode. So while this book is nominally about
 interpreters, we&rsquo;ll cover some compilation too.
 中间那个重叠的区域也是我们第二个解释器所在的位置，因为它会在内部编译成字节码。所以，虽然本书名义上是关于解释器的，但我们也会涉及一些编译的内容。</p>
-<h2><a href="#our-journey--我们的旅程" id="our-journey--我们的旅程"><small>2&#8202;.&#8202;4</small>Our Journey  我们的旅程</a></h2>
+<h2><a href="#我们的旅程" id="我们的旅程"><small>2&#8202;.&#8202;4</small>我们的旅程</a></h2>
 <p>That&rsquo;s a lot to take in all at once. Don&rsquo;t worry. This isn&rsquo;t the chapter where
 you&rsquo;re expected to <em>understand</em> all of these pieces and parts. I just want you
 to know that they are out there and roughly how they fit together.

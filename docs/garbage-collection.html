@@ -37,18 +37,16 @@
         <h3><a href="#top">垃圾回收<small>26</small></a></h3>
     
     <ul>
-        <li><a href="#reachability--可达性"><small>26.1</small> Reachability  可达性</a></li>
-        <li><a href="#mark-sweep-garbage-collection--标记-清除垃圾回收"><small>26.2</small> Mark-Sweep Garbage Collection  标记-清除垃圾回收</a></li>
-        <li><a href="#marking-the-roots--标记根"><small>26.3</small> Marking the Roots  标记根</a></li>
-        <li><a href="#tracing-object-references--跟踪对象引用"><small>26.4</small> Tracing Object References  跟踪对象引用</a></li>
-        <li><a href="#sweeping-unused-objects--清除未使用的对象"><small>26.5</small> Sweeping Unused Objects  清除未使用的对象</a></li>
-        <li><a href="#when-to-collect--何时回收"><small>26.6</small> When to Collect  何时回收</a></li>
-        <li><a href="#garbage-collection-bugs--垃圾回收bug"><small>26.7</small> Garbage Collection Bugs  垃圾回收Bug</a></li>
-        <li><a href="#习题"><small>26.8</small> 习题</a></li>
-        <li><a href="#设计笔记：分代回收器"><small>26.9</small> 设计笔记：分代回收器</a></li>
+        <li><a href="#可达性"><small>26.1</small> 可达性</a></li>
+        <li><a href="#标记-清除-垃圾回收"><small>26.2</small> 标记-清除 垃圾回收</a></li>
+        <li><a href="#标记-root"><small>26.3</small> 标记 Root</a></li>
+        <li><a href="#跟踪对象引用"><small>26.4</small> 跟踪对象引用</a></li>
+        <li><a href="#清除未使用的对象"><small>26.5</small> 清除未使用的对象</a></li>
+        <li><a href="#何时回收"><small>26.6</small> 何时回收</a></li>
+        <li><a href="#垃圾回收bug"><small>26.7</small> 垃圾回收Bug</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors 分代回收器</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>分代回收器(Generational Collectors)</a></li>
     </ul>
     
     
@@ -73,18 +71,16 @@
         <h3><a href="#top">垃圾回收<small>26</small></a></h3>
         
         <ul>
-            <li><a href="#reachability--可达性"><small>26.1</small> Reachability  可达性</a></li>
-            <li><a href="#mark-sweep-garbage-collection--标记-清除垃圾回收"><small>26.2</small> Mark-Sweep Garbage Collection  标记-清除垃圾回收</a></li>
-            <li><a href="#marking-the-roots--标记根"><small>26.3</small> Marking the Roots  标记根</a></li>
-            <li><a href="#tracing-object-references--跟踪对象引用"><small>26.4</small> Tracing Object References  跟踪对象引用</a></li>
-            <li><a href="#sweeping-unused-objects--清除未使用的对象"><small>26.5</small> Sweeping Unused Objects  清除未使用的对象</a></li>
-            <li><a href="#when-to-collect--何时回收"><small>26.6</small> When to Collect  何时回收</a></li>
-            <li><a href="#garbage-collection-bugs--垃圾回收bug"><small>26.7</small> Garbage Collection Bugs  垃圾回收Bug</a></li>
-            <li><a href="#习题"><small>26.8</small> 习题</a></li>
-            <li><a href="#设计笔记：分代回收器"><small>26.9</small> 设计笔记：分代回收器</a></li>
+            <li><a href="#可达性"><small>26.1</small> 可达性</a></li>
+            <li><a href="#标记-清除-垃圾回收"><small>26.2</small> 标记-清除 垃圾回收</a></li>
+            <li><a href="#标记-root"><small>26.3</small> 标记 Root</a></li>
+            <li><a href="#跟踪对象引用"><small>26.4</small> 跟踪对象引用</a></li>
+            <li><a href="#清除未使用的对象"><small>26.5</small> 清除未使用的对象</a></li>
+            <li><a href="#何时回收"><small>26.6</small> 何时回收</a></li>
+            <li><a href="#垃圾回收bug"><small>26.7</small> 垃圾回收Bug</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Generational Collectors 分代回收器</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>分代回收器(Generational Collectors)</a></li>
         </ul>
         
         
@@ -140,7 +136,7 @@ away</em> the memory, it reclaims it to be reused for new data. But managed
 languages are older than Earth Day, so the inventors went with the analogy they
 knew.</p><img src="image/garbage-collection/recycle.png" class="above" alt="A recycle bin full of bits." />
 </aside>
-<h2><a href="#reachability--可达性" id="reachability--可达性"><small>26&#8202;.&#8202;1</small>Reachability  可达性</a></h2>
+<h2><a href="#可达性" id="可达性"><small>26&#8202;.&#8202;1</small>可达性</a></h2>
 <p>This raises a surprisingly difficult question: how does a VM tell what memory is
 <em>not</em> needed? Memory is only needed if it is read in the future, but short of
 having a time machine, how can an implementation tell what code the program
@@ -277,7 +273,7 @@ differ in <em>how</em> they perform each step.
 reference. For a large book on such a deep, narrow topic, it is quite enjoyable
 to read. Or perhaps I have a strange idea of fun.</p>
 </aside>
-<h2><a href="#mark-sweep-garbage-collection--标记-清除垃圾回收" id="mark-sweep-garbage-collection--标记-清除垃圾回收"><small>26&#8202;.&#8202;2</small>Mark-Sweep Garbage Collection  标记-清除垃圾回收</a></h2>
+<h2><a href="#标记-清除-垃圾回收" id="标记-清除-垃圾回收"><small>26&#8202;.&#8202;2</small>标记-清除 垃圾回收</a></h2>
 <p>The first managed language was Lisp, the second &ldquo;high-level&rdquo; language to be
 invented, right after Fortran. John McCarthy considered using manual memory
 management or reference counting, but <span
@@ -325,7 +321,7 @@ different strategy for tracking the reachable objects.</p>
 bytes, we&rsquo;ll trace everything and mark all the reachable objects, free what
 didn&rsquo;t get marked, and then resume the user&rsquo;s program.
 这就是我们要实现的。每当我们决定是时候回收一些字节的时候，我们就会跟踪一切，并标记所有可达的对象，释放没有被标记的对象，然后恢复用户的程序。</p>
-<h3><a href="#collecting-garbage--回收垃圾" id="collecting-garbage--回收垃圾"><small>26&#8202;.&#8202;2&#8202;.&#8202;1</small>Collecting garbage  回收垃圾</a></h3>
+<h3><a href="#垃圾回收" id="垃圾回收"><small>26&#8202;.&#8202;2&#8202;.&#8202;1</small>垃圾回收</a></h3>
 <p>This entire chapter is about implementing this one <span
 name="one">function</span>:
 整个章节都是关于实现这一个函数的：</p>
@@ -403,7 +399,7 @@ never collects any.
 periodically during program execution<span class="em">&mdash;</span>often at function call boundaries or
 when a backward jump occurs.</p>
 </aside>
-<h3><a href="#debug-logging--调试日志" id="debug-logging--调试日志"><small>26&#8202;.&#8202;2&#8202;.&#8202;2</small>Debug logging  调试日志</a></h3>
+<h3><a href="#调试日志" id="调试日志"><small>26&#8202;.&#8202;2&#8202;.&#8202;2</small>调试日志</a></h3>
 <p>While we&rsquo;re on the subject of diagnostics, let&rsquo;s put some more in. A real
 challenge I&rsquo;ve found with garbage collectors is that they are opaque. We&rsquo;ve been
 running lots of Lox programs just fine without any GC <em>at all</em> so far. Once we
@@ -501,7 +497,7 @@ in <em>freeObject</em>()</div>
 <p>With these two flags, we should be able to see that we&rsquo;re making progress as we
 work through the rest of the chapter.
 有了这两个标志，我们应该能够看到我们在本章其余部分的学习中取得了进展。</p>
-<h2><a href="#marking-the-roots--标记根" id="marking-the-roots--标记根"><small>26&#8202;.&#8202;3</small>Marking the Roots  标记根</a></h2>
+<h2><a href="#标记-root" id="标记-root"><small>26&#8202;.&#8202;3</small>标记 Root</a></h2>
 <p>Objects are scattered across the heap like stars in the inky night sky. A
 reference from one object to another forms a connection, and these
 constellations are the graph that the mark phase traverses. Marking begins at
@@ -671,7 +667,7 @@ add after <em>tableFindString</em>()</div>
 value. We also mark the key strings for each entry since the GC manages those
 strings too.
 非常简单。我们遍历条目数组。对于每个条目，我们标记其值。我们还会标记每个条目的键字符串，因为GC也要管理这些字符串。</p>
-<h3><a href="#less-obvious-roots--不明显的根" id="less-obvious-roots--不明显的根"><small>26&#8202;.&#8202;3&#8202;.&#8202;1</small>Less obvious roots  不明显的根</a></h3>
+<h3><a href="#不明显的-root" id="不明显的-root"><small>26&#8202;.&#8202;3&#8202;.&#8202;1</small>不明显的 Root</a></h3>
 <p>Those cover the roots that we typically think of<span class="em">&mdash;</span>the values that are
 obviously reachable because they&rsquo;re stored in variables the user&rsquo;s program can
 see. But the VM has a few of its own hidey-holes where it squirrels away
@@ -788,7 +784,7 @@ whole list.
 and compiler<span class="em">&mdash;</span>can get to <em>without</em> going through some other object has its
 mark bit set.
 这些就是所有的根。运行这段程序后，虚拟机（运行时和编译器）无需通过其它对象就可以达到的每个对象，其标记位都被设置了。</p>
-<h2><a href="#tracing-object-references--跟踪对象引用" id="tracing-object-references--跟踪对象引用"><small>26&#8202;.&#8202;4</small>Tracing Object References  跟踪对象引用</a></h2>
+<h2><a href="#跟踪对象引用" id="跟踪对象引用"><small>26&#8202;.&#8202;4</small>跟踪对象引用</a></h2>
 <p>The next step in the marking process is tracing through the graph of references
 between objects to find the indirectly reachable values. We don&rsquo;t have instances
 with fields yet, so there aren&rsquo;t many objects that contain references, but we do
@@ -816,7 +812,7 @@ which memory to preload into the caches.</p>
 It&rsquo;s very difficult to determine which order objects will be used in in the
 future, so it&rsquo;s hard for the GC to know which order will help performance.</p>
 </aside>
-<h3><a href="#the-tricolor-abstraction--三色抽象" id="the-tricolor-abstraction--三色抽象"><small>26&#8202;.&#8202;4&#8202;.&#8202;1</small>The tricolor abstraction  三色抽象</a></h3>
+<h3><a href="#三色抽象" id="三色抽象"><small>26&#8202;.&#8202;4&#8202;.&#8202;1</small>三色抽象</a></h3>
 <p>As the collector wanders through the graph of objects, we need to make sure it
 doesn&rsquo;t lose track of where it is or get stuck going in circles. This is
 particularly a concern for advanced implementations like incremental GCs that
@@ -897,7 +893,7 @@ black<span class="em">&mdash;</span>are reset to white for the next garbage coll
 node. This property is called the <strong>tricolor invariant</strong>. The traversal process
 maintains this invariant to ensure that no reachable object is ever collected.</p>
 </aside>
-<h3><a href="#a-worklist-for-gray-objects--灰色对象的工作列表" id="a-worklist-for-gray-objects--灰色对象的工作列表"><small>26&#8202;.&#8202;4&#8202;.&#8202;2</small>A worklist for gray objects  灰色对象的工作列表</a></h3>
+<h3><a href="#灰色对象的工作列表" id="灰色对象的工作列表"><small>26&#8202;.&#8202;4&#8202;.&#8202;2</small>灰色对象的工作列表</a></h3>
 <p>In our implementation we have already marked the roots. They&rsquo;re all gray. The
 next step is to start picking them and traversing their references. But we don&rsquo;t
 have any easy way to find them. We set a field on the object, but that&rsquo;s it. We
@@ -998,7 +994,7 @@ in <em>markObject</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>memory.c</em>, in <em>markObject</em>()</div>
 
-<h3><a href="#processing-gray-objects--处理灰色对象" id="processing-gray-objects--处理灰色对象"><small>26&#8202;.&#8202;4&#8202;.&#8202;3</small>Processing gray objects  处理灰色对象</a></h3>
+<h3><a href="#处理灰色对象" id="处理灰色对象"><small>26&#8202;.&#8202;4&#8202;.&#8202;3</small>处理灰色对象</a></h3>
 <p>OK, now when we&rsquo;re done marking the roots, we have both set a bunch of fields
 and filled our work list with objects to chew through. It&rsquo;s time for the next
 phase.
@@ -1173,7 +1169,7 @@ the gray stack. This ensures that an already-gray object is not redundantly
 added and that a black object is not inadvertently turned back to gray. In other
 words, it keeps the wavefront moving forward through only the white objects.
 如果对象已经被标记，我们就不会再标记它，因此也不会把它添加到灰色栈中。这就保证了已经是灰色的对象不会被重复添加，而且黑色对象不会无意中变回灰色。换句话说，它使得波前只通过白色对象向前移动。</p>
-<h2><a href="#sweeping-unused-objects--清除未使用的对象" id="sweeping-unused-objects--清除未使用的对象"><small>26&#8202;.&#8202;5</small>Sweeping Unused Objects  清除未使用的对象</a></h2>
+<h2><a href="#清除未使用的对象" id="清除未使用的对象"><small>26&#8202;.&#8202;5</small>清除未使用的对象</a></h2>
 <p>When the loop in <code>traceReferences()</code> exits, we have processed all the objects we
 could get our hands on. The gray stack is empty, and every object in the heap is
 either black or white. The black objects are reachable, and we want to hang on to
@@ -1244,7 +1240,7 @@ with their mark bits set. That&rsquo;s correct, but when the <em>next</em> colle
 starts, we need every object to be white. So whenever we reach a black object,
 we go ahead and clear the bit now in anticipation of the next run.
 在<code>sweep()</code>完成后，仅剩下的对象是带有标记位的活跃黑色对象。这是正确的，但在<em>下一个</em>回收周期开始时，我们需要每个对象都是白色的。因此，每当我们碰到黑色对象时，我们就继续并清除标记位，为下一轮作业做好准备。</p>
-<h3><a href="#weak-references-and-the-string-pool--弱引用与字符串池" id="weak-references-and-the-string-pool--弱引用与字符串池"><small>26&#8202;.&#8202;5&#8202;.&#8202;1</small>Weak references and the string pool  弱引用与字符串池</a></h3>
+<h3><a href="#弱引用与字符串池" id="弱引用与字符串池"><small>26&#8202;.&#8202;5&#8202;.&#8202;1</small>弱引用与字符串池</a></h3>
 <p>We are almost done collecting. There is one remaining corner of the VM that has
 some unusual requirements around memory. Recall that when we added strings to
 clox we made the VM intern them all. That means the VM has a hash table
@@ -1331,7 +1327,7 @@ object&rsquo;s mark bit is not set, then it is a white object that is moments fr
 being swept away. We delete it from the hash table first and thus ensure we
 won&rsquo;t see any dangling pointers.
 我们遍历表中的每一项。字符串驻留表只使用了每一项的键——它基本上是一个HashSet而不是HashMap。如果键字符串对象的标记位没有被设置，那么它就是一个白色对象，很快就会被清除。我们首先从哈希表中删除它，从而确保不会看到任何悬空指针。</p>
-<h2><a href="#when-to-collect--何时回收" id="when-to-collect--何时回收"><small>26&#8202;.&#8202;6</small>When to Collect  何时回收</a></h2>
+<h2><a href="#何时回收" id="何时回收"><small>26&#8202;.&#8202;6</small>何时回收</a></h2>
 <p>We have a fully functioning mark-sweep garbage collector now. When the stress
 testing flag is enabled, it gets called all the time, and with the logging
 enabled too, we can watch it do its thing and see that it is indeed reclaiming
@@ -1352,7 +1348,7 @@ your program request as much as it wants and then page in and out from the disc
 when physical memory gets full. You never really &ldquo;run out&rdquo; of memory, you just
 get slower and slower.
 现代计算机拥有数以G计的物理内存，而操作系统在其基础上提供了更多的虚拟内存抽象，这些物理内存是由一系列其它程序共享的，所有程序都在争夺自己的那块内存。操作系统会允许你的程序尽可能多地申请内存，然后当物理内存满时会利用磁盘进行页面换入换出。你永远不会真的“耗尽”内存，只是变得越来越慢。</p>
-<h3><a href="#latency-and-throughput--延迟和吞吐量" id="latency-and-throughput--延迟和吞吐量"><small>26&#8202;.&#8202;6&#8202;.&#8202;1</small>Latency and throughput  延迟和吞吐量</a></h3>
+<h3><a href="#延迟和吞吐量" id="延迟和吞吐量"><small>26&#8202;.&#8202;6&#8202;.&#8202;1</small>延迟和吞吐量</a></h3>
 <p>It no longer makes sense to wait until you &ldquo;have to&rdquo;, to run the GC, so we need
 a more subtle timing strategy. To reason about this more precisely, it&rsquo;s time to
 introduce two fundamental numbers used when measuring a memory manager&rsquo;s
@@ -1494,7 +1490,7 @@ want to run the collector really <em>in</em>frequently.
 collector runs is one of our main knobs for tuning the trade-off between latency
 and throughput.
 事实上，我们想要的是介于两者之间的东西，而回收器的运行频率是我们调整延迟和吞吐量之间权衡的主要因素之一。</p>
-<h3><a href="#self-adjusting-heap--自适应堆" id="self-adjusting-heap--自适应堆"><small>26&#8202;.&#8202;6&#8202;.&#8202;2</small>Self-adjusting heap  自适应堆</a></h3>
+<h3><a href="#自适应堆" id="自适应堆"><small>26&#8202;.&#8202;6&#8202;.&#8202;2</small>自适应堆</a></h3>
 <p>We want our GC to run frequently enough to minimize latency but infrequently
 enough to maintain decent throughput. But how do we find the balance between
 these when we have no idea how much memory the user&rsquo;s program needs and how
@@ -1645,7 +1641,7 @@ in <em>collectGarbage</em>()</div>
 
 <p>This way we can see how much the garbage collector accomplished while it ran.
 这样，我们就可以看到垃圾回收器在运行时完成了多少任务。</p>
-<h2><a href="#garbage-collection-bugs--垃圾回收bug" id="garbage-collection-bugs--垃圾回收bug"><small>26&#8202;.&#8202;7</small>Garbage Collection Bugs  垃圾回收Bug</a></h2>
+<h2><a href="#垃圾回收bug" id="垃圾回收bug"><small>26&#8202;.&#8202;7</small>垃圾回收Bug</a></h2>
 <p>In theory, we are all done now. We have a GC. It kicks in periodically, collects
 what it can, and leaves the rest. If this were a typical textbook, we would wipe
 the dust from our hands and bask in the soft glow of the flawless marble edifice
@@ -1701,7 +1697,7 @@ hint of what it&rsquo;s like to encounter these bugs in the wild. If you enable 
 stress test flag and run some toy Lox programs, you can probably stumble onto a
 few. Give it a try and <em>see if you can fix any yourself</em>.
 但我只修复了其中的大部分。我留下了几个，因为我想给你一些提示，告诉你在野外遇到这些虫子是什么感觉。如果你启用压力测试标志并运行一些玩具Lox程序，你可能会偶然发现一些。试一试，看看你是否能自己解决问题。</p>
-<h3><a href="#adding-to-the-constant-table--添加到常量表中" id="adding-to-the-constant-table--添加到常量表中"><small>26&#8202;.&#8202;7&#8202;.&#8202;1</small>Adding to the constant table  添加到常量表中</a></h3>
+<h3><a href="#添加到常量表中" id="添加到常量表中"><small>26&#8202;.&#8202;7&#8202;.&#8202;1</small>添加到常量表中</a></h3>
 <p>You are very likely to hit the first bug. The constant table each chunk owns is
 a dynamic array. When the compiler adds a new constant to the current function&rsquo;s
 table, that array may need to grow. The constant itself may also be some
@@ -1748,7 +1744,7 @@ void initChunk(Chunk* chunk) {
 </pre></div>
 <div class="source-file-narrow"><em>chunk.c</em></div>
 
-<h3><a href="#interning-strings--驻留字符串" id="interning-strings--驻留字符串"><small>26&#8202;.&#8202;7&#8202;.&#8202;2</small>Interning strings  驻留字符串</a></h3>
+<h3><a href="#驻留字符串" id="驻留字符串"><small>26&#8202;.&#8202;7&#8202;.&#8202;2</small>驻留字符串</a></h3>
 <p>Here&rsquo;s another similar one. All strings are interned in clox, so whenever we
 create a new string, we also add it to the intern table. You can see where this
 is going. Since the string is brand new, it isn&rsquo;t reachable anywhere. And
@@ -1783,7 +1779,7 @@ survives that, <code>allocateString()</code> will return it to some caller which
 take responsibility for ensuring the string is still reachable before the next
 heap allocation occurs.
 这确保了在调整表大小时字符串是安全的。一旦它存活下来，<code>allocateString()</code>会把它返回给某个调用者，随后调用者负责确保，在下一次堆分配之前字符串仍然是可达的。</p>
-<h3><a href="#concatenating-strings--连接字符串" id="concatenating-strings--连接字符串"><small>26&#8202;.&#8202;7&#8202;.&#8202;3</small>Concatenating strings  连接字符串</a></h3>
+<h3><a href="#连接字符串" id="连接字符串"><small>26&#8202;.&#8202;7&#8202;.&#8202;3</small>连接字符串</a></h3>
 <p>One last example: Over in the interpreter, the <code>OP_ADD</code> instruction can be used
 to concatenate two strings. As it does with numbers, it pops the two operands
 from the stack, computes the result, and pushes that new value back onto the
@@ -1849,42 +1845,6 @@ mark-sweep garbage collector.
 : 相比之下，<strong>增量式垃圾回收器</strong>可以做一点回收工作，然后运行一些用户代码，然后再做一点回收工作，以此类推。
 : 学习垃圾回收器的一个挑战是，在孤立的实验室环境中很难发现最佳实践。除非你在大型的、混乱的真实世界的程序上运行回收器，否则你无法看到它的实际表现。这就像调校一辆拉力赛车——你需要把它带到赛道上。
 : 我们的GC无法在C栈中查找地址，但很多GC可以。保守的垃圾回收器会查看所有内存，包括本机堆栈。这类垃圾回收器中最著名的是<a href="https://en.wikipedia.org/wiki/Boehm_garbage_collector"><strong>Boehm–Demers–Weiser垃圾回收器</strong> </a>，通常就叫作“Boehm回收器”。（在CS中，成名的捷径是姓氏在字母顺序上靠前，这样就能在排序的名字列表中出现在第一位）<BR>许多精确GC也在C栈中遍历。即便是这些GC，也必须对指向仅存于CPU寄存器中的活动对象的指针加以注意。</p>
-<h2><a href="#习题" id="习题"><small>26&#8202;.&#8202;8</small>习题</a></h2>
-<ol>
-<li>
-<blockquote>
-<p>The Obj header struct at the top of each object now has three fields: <code>type</code>, <code>isMarked</code>, and <code>next</code>. How much memory do those take up (on your machine)? Can you come up with something more compact? Is there a runtime cost to doing so?
-每个对象顶部的Obj头结构体现在有三个字段：<code>type</code>，<code>isMarked</code>和<code>next</code>。它们（在你的机器上）占用了多少内存？你能想出更紧凑的办法吗？这样做是否有运行时成本？</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>When the sweep phase traverses a live object, it clears the <code>isMarked</code> field to prepare it for the next collection cycle. Can you come up with a more efficient approach?
-当清除阶段遍历某个活动对象时，它会清除<code>isMarked</code>字段，以便为下一个回收周期做好准备。你能想出一个更有效的方法吗？</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>Mark-sweep is only one of a variety of garbage collection algorithms out there. Explore those by replacing or augmenting the current collector with another one. Good candidates to consider are reference counting, Cheney’s algorithm, or the Lisp 2 mark-compact algorithm.
-标记-清除只是众多垃圾回收算法中的一种。通过用另一种回收器来替换或增强当前的回收器来探索这些算法。可以考虑引用计数、Cheney算法或Lisp 2标记-压缩算法。</p>
-</blockquote>
-</li>
-</ol>
-<h2><a href="#设计笔记：分代回收器" id="设计笔记：分代回收器"><small>26&#8202;.&#8202;9</small>设计笔记：分代回收器</a></h2>
-<p>A collector loses throughput if it spends a long time re-visiting objects that are still alive. But it can increase latency if it avoids collecting and accumulates a large pile of garbage to wade through. If only there were some way to tell which objects were likely to be long-lived and which weren’t. Then the GC could avoid revisiting the long-lived ones as often and clean up the ephemeral ones more frequently.
-It turns out there kind of is. Many years ago, GC researchers gathered metrics on the lifetime of objects in real-world running programs. They tracked every object when it was allocated, and eventually when it was no longer needed, and then graphed out how long objects tended to live.
-They discovered something they called the <strong>generational hypothesis</strong>, or the much less tactful term <strong>infant mortality</strong>. Their observation was that most objects are very short-lived but once they survive beyond a certain age, they tend to stick around quite a long time. The longer an object <em>has</em> lived, the longer it likely will <em>continue</em> to live. This observation is powerful because it gave them a handle on how to partition objects into groups that benefit from frequent collections and those that don’t.
-They designed a technique called <strong>generational garbage collection</strong>. It works like this: Every time a new object is allocated, it goes into a special, relatively small region of the heap called the “nursery”. Since objects tend to die young, the garbage collector is invoked frequently over the objects just in this region.
-Nurseries are also usually managed using a copying collector which is faster at allocating and freeing objects than a mark-sweep collector.
-Each time the GC runs over the nursery is called a “generation”. Any objects that are no longer needed get freed. Those that survive are now considered one generation older, and the GC tracks this for each object. If an object survives a certain number of generations—often just a single collection—it gets <em>tenured</em>. At this point, it is copied out of the nursery into a much larger heap region for long-lived objects. The garbage collector runs over that region too, but much less frequently since odds are good that most of those objects will still be alive.
-Generational collectors are a beautiful marriage of empirical data—the observation that object lifetimes are <em>not</em> evenly distributed—and clever algorithm design that takes advantage of that fact. They’re also conceptually quite simple. You can think of one as just two separately tuned GCs and a pretty simple policy for moving objects from one to the other.
-如果回收器花费很长时间重新访问仍然活动的对象，则会损失吞吐量。但是，如果它避免了回收并积累了一大堆需要处理的垃圾，就会增加延迟。要是能有某种办法可以告诉我们哪些对象可能是长寿的以及哪些对象不是就好了。这样GC就可以避免频繁地重新访问寿命较长的数据，而更频繁地清理那些短暂寿命短暂的对象。
-事实证明，确实如此。许多年前，GC研究人员收集了关于真实运行程序中对象生命周期的指标。他们跟踪了每个对象被分配时，以及它最终不再需要时的情况，然后用图表显示出对象的寿命。
-他们发现了一种被称为“<strong>代际假说</strong>”的东西，或者是一个不太委婉的术语“<strong>早夭</strong>”。他们的观察结果是，大多数对象的寿命都很短，但是一旦它们存活超过了一定的年龄，它们往往会存活相当长的时间。一个对象<em>已经</em>存活的时间越长，它将<em>继续</em>存活的时间就越长。这一观察结果非常有说服力，因为这为他们提供了将对象划分为频繁回收的群体和不频繁回收群体的方法。
-他们设计了一种叫作<strong>分代垃圾回收</strong>的技术。它的工作原理是这样的：每次分配一个新对象时，它会进入堆中一个特殊的、相对较小的区域，称为“nursery”（意为托儿所）。由于对象倾向于早夭，所以垃圾回收器会在这个区域中的对象上被频繁调用。
-【nursery通常也是要复制回收器进行管理，它在分配和释放对象方面比标记-清除回收器更快。】
-GC在nursery的每次运行都被称为“一代”。任何不再需要的对象都会被释放。那些存活下来对象现在被认为老了一代，GC会为每个对象记录这一属性。如果一个对象存活了一定数量的代（通常只是一次回收），它就会被永久保留。此时，将它从nursery中复制处理，放入一个更大的、用于存放 长寿命对象的堆区域。垃圾回收器也会在这个区域内运行，但频率要低得多，因为这些对象中的大部分都很有可能还活着。
-分代回收器是经验数据（观察到对象生命周期不是均匀分布的）以及利用这一事实的聪明算法设计的完美结合。它们在概念上也很简单。你可以把它看作是两个单独调优的GC和把对象从一个区域移到另一个区域的一个非常简单的策略。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -1892,23 +1852,26 @@ GC在nursery的每次运行都被称为“一代”。任何不再需要的对�
 <p>The Obj header struct at the top of each object now has three fields:
 <code>type</code>, <code>isMarked</code>, and <code>next</code>. How much memory do those take up (on your
 machine)? Can you come up with something more compact? Is there a runtime
-cost to doing so?</p>
+cost to doing so?
+每个对象顶部的Obj头结构体现在有三个字段：<code>type</code>，<code>isMarked</code>和<code>next</code>。它们（在你的机器上）占用了多少内存？你能想出更紧凑的办法吗？这样做是否有运行时成本？</p>
 </li>
 <li>
 <p>When the sweep phase traverses a live object, it clears the <code>isMarked</code>
 field to prepare it for the next collection cycle. Can you come up with a
-more efficient approach?</p>
+more efficient approach?
+当清除阶段遍历某个活动对象时，它会清除<code>isMarked</code>字段，以便为下一个回收周期做好准备。你能想出一个更有效的方法吗？</p>
 </li>
 <li>
 <p>Mark-sweep is only one of a variety of garbage collection algorithms out
 there. Explore those by replacing or augmenting the current collector with
 another one. Good candidates to consider are reference counting, Cheney&rsquo;s
-algorithm, or the Lisp 2 mark-compact algorithm.</p>
+algorithm, or the Lisp 2 mark-compact algorithm.
+标记-清除只是众多垃圾回收算法中的一种。通过用另一种回收器来替换或增强当前的回收器来探索这些算法。可以考虑引用计数、Cheney算法或Lisp 2标记-压缩算法。</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Generational Collectors 分代回收器</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 分代回收器(Generational Collectors)</a></h2>
 <p>A collector loses throughput if it spends a long time re-visiting objects that
 are still alive. But it can increase latency if it avoids collecting and
 accumulates a large pile of garbage to wade through. If only there were some way

@@ -38,13 +38,12 @@
     
     <ul>
         <li><a href="#function-objects--函数对象"><small>24.1</small> Function Objects  函数对象</a></li>
-        <li><a href="#compiling-to-function-objects--编译为函数对象"><small>24.2</small> Compiling to Function Objects  编译为函数对象</a></li>
-        <li><a href="#call-frames--调用帧"><small>24.3</small> Call Frames  调用帧</a></li>
-        <li><a href="#function-declarations--函数声明"><small>24.4</small> Function Declarations  函数声明</a></li>
+        <li><a href="#编译为函数对象"><small>24.2</small> 编译为函数对象</a></li>
+        <li><a href="#调用帧"><small>24.3</small> 调用帧</a></li>
+        <li><a href="#函数声明"><small>24.4</small> 函数声明</a></li>
         <li><a href="#function-calls--函数调用"><small>24.5</small> Function Calls  函数调用</a></li>
-        <li><a href="#return-statements--return语句"><small>24.6</small> Return Statements  Return语句</a></li>
-        <li><a href="#native-functions--本地函数"><small>24.7</small> Native Functions  本地函数</a></li>
-        <li><a href="#习题"><small>24.8</small> 习题</a></li>
+        <li><a href="#return语句"><small>24.6</small> Return语句</a></li>
+        <li><a href="#本地函数"><small>24.7</small> 本地函数</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -72,13 +71,12 @@
         
         <ul>
             <li><a href="#function-objects--函数对象"><small>24.1</small> Function Objects  函数对象</a></li>
-            <li><a href="#compiling-to-function-objects--编译为函数对象"><small>24.2</small> Compiling to Function Objects  编译为函数对象</a></li>
-            <li><a href="#call-frames--调用帧"><small>24.3</small> Call Frames  调用帧</a></li>
-            <li><a href="#function-declarations--函数声明"><small>24.4</small> Function Declarations  函数声明</a></li>
+            <li><a href="#编译为函数对象"><small>24.2</small> 编译为函数对象</a></li>
+            <li><a href="#调用帧"><small>24.3</small> 调用帧</a></li>
+            <li><a href="#函数声明"><small>24.4</small> 函数声明</a></li>
             <li><a href="#function-calls--函数调用"><small>24.5</small> Function Calls  函数调用</a></li>
-            <li><a href="#return-statements--return语句"><small>24.6</small> Return Statements  Return语句</a></li>
-            <li><a href="#native-functions--本地函数"><small>24.7</small> Native Functions  本地函数</a></li>
-            <li><a href="#习题"><small>24.8</small> 习题</a></li>
+            <li><a href="#return语句"><small>24.6</small> Return语句</a></li>
+            <li><a href="#本地函数"><small>24.7</small> 本地函数</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -100,9 +98,9 @@
 
     <blockquote>
 <p>Any problem in computer science can be solved with another level of
-indirection. Except for the problem of too many layers of indirection.</p>
-<p><cite>David Wheeler</cite>
-计算机科学中的任何问题都可以通过引入一个中间层来解决。除了中间层太多的问题。（David Wheeler）</p>
+indirection. Except for the problem of too many layers of indirection.
+计算机科学中的任何问题都可以通过引入一个中间层来解决。除了中间层太多的问题。</p>
+<p><cite>David Wheeler</cite></p>
 </blockquote>
 <p>This chapter is a beast. I try to break features into bite-sized pieces, but
 sometimes you gotta swallow the whole <span name="eat">meal</span>. Our next
@@ -293,7 +291,7 @@ ObjFunction pointer using this:
 <p>With that, our object model knows how to represent functions. I&rsquo;m feeling warmed
 up now. You ready for something a little harder?
 这样，我们的对象模型就知道如何表示函数了。我现在感觉已经热身了。你准备好来点更难的东西了吗？</p>
-<h2><a href="#compiling-to-function-objects--编译为函数对象" id="compiling-to-function-objects--编译为函数对象"><small>24&#8202;.&#8202;2</small>Compiling to Function Objects  编译为函数对象</a></h2>
+<h2><a href="#编译为函数对象" id="编译为函数对象"><small>24&#8202;.&#8202;2</small>编译为函数对象</a></h2>
 <p>Right now, our compiler assumes it is always compiling to one single chunk. With
 each function&rsquo;s code living in separate chunks, that gets more complex. When the
 compiler reaches a function declaration, it needs to emit code into the
@@ -373,7 +371,7 @@ of compiling. Next, we need to actually create that function. Previously, the VM
 passed a Chunk to the compiler which filled it with code. Instead, the compiler
 will create and return a function that contains the compiled top-level code<span class="em">&mdash;</span>which is all we support right now<span class="em">&mdash;</span>of the user&rsquo;s program.
 当前的字节码块一定是我们正在编译的函数所拥有的块。接下来，我们需要实际创建该函数。之前，虚拟机将一个Chunk传递给编译器，编译器会将代码填入其中。现在取而代之的是，编译器创建并返回一个包含已编译顶层代码的函数——这就是我们目前所支持的。</p>
-<h3><a href="#creating-functions-at-compile-time--编译时创建函数" id="creating-functions-at-compile-time--编译时创建函数"><small>24&#8202;.&#8202;2&#8202;.&#8202;1</small>Creating functions at compile time  编译时创建函数</a></h3>
+<h3><a href="#编译时创建函数" id="编译时创建函数"><small>24&#8202;.&#8202;2&#8202;.&#8202;1</small>编译时创建函数</a></h3>
 <p>We start threading this through in <code>compile()</code>, which is the main entry point
 into the compiler.
 我们在<code>compile()</code>中开始执行此操作，该方法是进入编译器的主要入口点。</p>
@@ -578,12 +576,12 @@ VM doesn&rsquo;t try to execute a function that may contain invalid bytecode.
 <p>Eventually, we will update <code>interpret()</code> to handle the new declaration of
 <code>compile()</code>, but first we have some other changes to make.
 最终，我们会更新<code>interpret()</code>来处理<code>compile()</code>的新声明，但首先我们要做一些其它的改变。</p>
-<h2><a href="#call-frames--调用帧" id="call-frames--调用帧"><small>24&#8202;.&#8202;3</small>Call Frames  调用帧</a></h2>
+<h2><a href="#调用帧" id="调用帧"><small>24&#8202;.&#8202;3</small>调用帧</a></h2>
 <p>It&rsquo;s time for a big conceptual leap. Before we can implement function
 declarations and calls, we need to get the VM ready to handle them. There are
 two main problems we need to worry about:
 是时候进行一次重大的概念性飞跃了。在我们实现函数声明和调用之前，需要让虚拟机准备好处理它们。我们需要考虑两个主要问题：</p>
-<h3><a href="#allocating-local-variables--分配局部变量" id="allocating-local-variables--分配局部变量"><small>24&#8202;.&#8202;3&#8202;.&#8202;1</small>Allocating local variables  分配局部变量</a></h3>
+<h3><a href="#分配局部变量" id="分配局部变量"><small>24&#8202;.&#8202;3&#8202;.&#8202;1</small>分配局部变量</a></h3>
 <p>The compiler allocates stack slots for local variables. How should that work
 when the set of local variables in a program is distributed across multiple
 functions?
@@ -701,7 +699,7 @@ slot on top of which all of the function&rsquo;s variables live.
 <p>That&rsquo;s the first piece of data we need to track. Every time we call a function,
 the VM determines the first stack slot where that function&rsquo;s variables begin.
 这是我们需要跟踪的第一块数据。每次我们调用函数时，虚拟机都会确定该函数变量开始的第一个栈槽。</p>
-<h3><a href="#return-addresses--返回地址" id="return-addresses--返回地址"><small>24&#8202;.&#8202;3&#8202;.&#8202;2</small>Return addresses  返回地址</a></h3>
+<h3><a href="#返回地址" id="返回地址"><small>24&#8202;.&#8202;3&#8202;.&#8202;2</small>返回地址</a></h3>
 <p>Right now, the VM works its way through the instruction stream by incrementing
 the <code>ip</code> field. The only interesting behavior is around control flow
 instructions which offset the <code>ip</code> by larger amounts. <em>Calling</em> a function is
@@ -726,7 +724,7 @@ called at runtime, the program would <em>modify its own code</em> to change a ju
 instruction at the end of the function to jump back to its caller. Sometimes the
 line between genius and madness is hair thin.</p>
 </aside>
-<h3><a href="#the-call-stack--调用栈" id="the-call-stack--调用栈"><small>24&#8202;.&#8202;3&#8202;.&#8202;3</small>The call stack  调用栈</a></h3>
+<h3><a href="#调用栈" id="调用栈"><small>24&#8202;.&#8202;3&#8202;.&#8202;3</small>调用栈</a></h3>
 <p>So for each live function invocation<span class="em">&mdash;</span>each call that hasn&rsquo;t returned yet<span class="em">&mdash;</span>we
 need to track where on the stack that function&rsquo;s locals begin, and where the
 caller should resume. We&rsquo;ll put this, along with some other stuff, in a new
@@ -1028,7 +1026,7 @@ state. Fire it up and it does<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&n
 any new features yet, so this is kind of a let down. But all of the
 infrastructure is there and ready for us now. Let&rsquo;s take advantage of it.
 假如我们都正确执行了所有这些操作，就可以让clox回到可运行的状态。启动它，它就会……像以前一样。我们还没有添加任何新功能，所以这有点让人失望。但是所有的基础设施都已经就绪了。让我们好好利用它。</p>
-<h2><a href="#function-declarations--函数声明" id="function-declarations--函数声明"><small>24&#8202;.&#8202;4</small>Function Declarations  函数声明</a></h2>
+<h2><a href="#函数声明" id="函数声明"><small>24&#8202;.&#8202;4</small>函数声明</a></h2>
 <p>Before we can do call expressions, we need something to call, so we&rsquo;ll do
 function declarations first. The <span name="fun">fun</span> starts with a
 keyword.
@@ -1134,7 +1132,7 @@ followed by the body. The body starts with a left curly brace, which we parse
 here. Then we call our existing <code>block()</code> function, which knows how to compile
 the rest of a block including the closing brace.
 现在，我们不需要考虑参数。我们解析一对空括号，然后是主体。主体以左大括号开始，我们在这里会解析它。然后我们调用现有的<code>block()</code>函数，该函数知道如何编译代码块的其余部分，包括结尾的右大括号。</p>
-<h3><a href="#a-stack-of-compilers--编译器栈" id="a-stack-of-compilers--编译器栈"><small>24&#8202;.&#8202;4&#8202;.&#8202;1</small>A stack of compilers  编译器栈</a></h3>
+<h3><a href="#编译器栈" id="编译器栈"><small>24&#8202;.&#8202;4&#8202;.&#8202;1</small>编译器栈</a></h3>
 <p>The interesting parts are the compiler stuff at the top and bottom. The Compiler
 struct stores data like which slots are owned by which local variables, how many
 blocks of nesting we&rsquo;re currently in, etc. All of that is specific to a single
@@ -1215,7 +1213,7 @@ against pathological or even malicious code<span class="em">&mdash;</span>a real
 JavaScript VMs<span class="em">&mdash;</span>it would be good to have our compiler artificially limit the
 amount of function nesting it permits.</p>
 </aside>
-<h3><a href="#function-parameters--函数参数" id="function-parameters--函数参数"><small>24&#8202;.&#8202;4&#8202;.&#8202;2</small>Function parameters  函数参数</a></h3>
+<h3><a href="#函数参数" id="函数参数"><small>24&#8202;.&#8202;4&#8202;.&#8202;2</small>函数参数</a></h3>
 <p>Functions aren&rsquo;t very useful if you can&rsquo;t pass arguments to them, so let&rsquo;s do
 parameters next.
 如果你不能向函数传递参数，那函数就不是很有用，所以接下来我们实现参数。</p>
@@ -1368,7 +1366,7 @@ in enum <em>OpCode</em></div>
 </pre></div>
 <div class="source-file-narrow"><em>chunk.h</em>, in enum <em>OpCode</em></div>
 
-<h3><a href="#binding-arguments-to-parameters--绑定形参与实参" id="binding-arguments-to-parameters--绑定形参与实参"><small>24&#8202;.&#8202;5&#8202;.&#8202;1</small>Binding arguments to parameters  绑定形参与实参</a></h3>
+<h3><a href="#绑定形参与实参" id="绑定形参与实参"><small>24&#8202;.&#8202;5&#8202;.&#8202;1</small>绑定形参与实参</a></h3>
 <p>Before we get to the implementation, we should think about what the stack looks
 like at the point of a call and what we need to do from there. When we reach the
 call instruction, we have already executed the expression for the function being
@@ -1543,7 +1541,7 @@ replace 4 lines</div>
 
 <p>OK, now back to calls<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 好了，现在回到调用……</p>
-<h3><a href="#runtime-error-checking--运行时错误检查" id="runtime-error-checking--运行时错误检查"><small>24&#8202;.&#8202;5&#8202;.&#8202;2</small>Runtime error checking  运行时错误检查</a></h3>
+<h3><a href="#运行时错误检查" id="运行时错误检查"><small>24&#8202;.&#8202;5&#8202;.&#8202;2</small>运行时错误检查</a></h3>
 <p>The overlapping stack windows work based on the assumption that a call passes
 exactly one argument for each of the function&rsquo;s parameters. But, again, because
 Lox ain&rsquo;t statically typed, a foolish user could pass too many or too few
@@ -1586,7 +1584,7 @@ in <em>call</em>()</div>
 <p>In practice, if a program gets anywhere close to this limit, there&rsquo;s most likely
 a bug in some runaway recursive code.
 在实践中，如果一个程序接近这个极限，那么很可能在某些失控的递归代码中出现了错误。</p>
-<h3><a href="#printing-stack-traces--打印栈跟踪记录" id="printing-stack-traces--打印栈跟踪记录"><small>24&#8202;.&#8202;5&#8202;.&#8202;3</small>Printing stack traces  打印栈跟踪记录</a></h3>
+<h3><a href="#打印栈跟踪记录" id="打印栈跟踪记录"><small>24&#8202;.&#8202;5&#8202;.&#8202;3</small>打印栈跟踪记录</a></h3>
 <p>While we&rsquo;re on the subject of runtime errors, let&rsquo;s spend a little time making
 them more useful. Stopping on a runtime error is important to prevent the VM
 from crashing and burning in some ill-defined way. But simply aborting doesn&rsquo;t
@@ -1666,7 +1664,7 @@ do that.</p>
 </pre></div>
 <p>That doesn&rsquo;t look too bad, does it?
 看起来还不错，是吧？</p>
-<h3><a href="#returning-from-functions--从函数中返回" id="returning-from-functions--从函数中返回"><small>24&#8202;.&#8202;5&#8202;.&#8202;4</small>Returning from functions  从函数中返回</a></h3>
+<h3><a href="#从函数中返回" id="从函数中返回"><small>24&#8202;.&#8202;5&#8202;.&#8202;4</small>从函数中返回</a></h3>
 <p>We&rsquo;re getting close. We can call functions, and the VM will execute them. But we
 can&rsquo;t <em>return</em> from them yet. We&rsquo;ve had an <code>OP_RETURN</code> instruction for quite
 some time, but it&rsquo;s always had some kind of temporary code hanging out in it
@@ -1738,7 +1736,7 @@ end of a function body. Now, before that, it emits an instruction to push <code>
 onto the stack. And with that, we have working function calls! They can even
 take parameters! It almost looks like we know what we&rsquo;re doing here.
 编译器调用<code>emitReturn()</code>，在函数体的末尾写入<code>OP_RETURN</code>指令。现在，在此之前，它会生成一条指令将<code>nil</code>压入栈中。这样，我们就有了可行的函数调用！它们甚至可以接受参数！看起来我们好像知道自己在做什么。</p>
-<h2><a href="#return-statements--return语句" id="return-statements--return语句"><small>24&#8202;.&#8202;6</small>Return Statements  Return语句</a></h2>
+<h2><a href="#return语句" id="return语句"><small>24&#8202;.&#8202;6</small>Return语句</a></h2>
 <p>If you want a function that returns something other than the implicit <code>nil</code>, you
 need a <code>return</code> statement. Let&rsquo;s get that working.
 如果你想让某个函数返回一些数据，而不是隐式的<code>nil</code>，你就需要一个<code>return</code>语句。我们来完成它。</p>
@@ -1814,7 +1812,7 @@ in <em>returnStatement</em>()</div>
 
 <p>This is one of the reasons we added that FunctionType enum to the compiler.
 这是我们在编译器中添加FunctionType枚举的原因之一。</p>
-<h2><a href="#native-functions--本地函数" id="native-functions--本地函数"><small>24&#8202;.&#8202;7</small>Native Functions  本地函数</a></h2>
+<h2><a href="#本地函数" id="本地函数"><small>24&#8202;.&#8202;7</small>本地函数</a></h2>
 <p>Our VM is getting more powerful. We&rsquo;ve got functions, calls, parameters,
 returns. You can define lots of different functions that can call each other in
 interesting ways. But, ultimately, they can&rsquo;t really <em>do</em> anything. The only
@@ -2094,14 +2092,6 @@ quite an improvement.
 : 允许在顶层返回并不是世界上最糟糕的主意。它可以为你提供一种自然的方式来提前终止脚本。你甚至可以用返回的数字来表示进程的推出码。
 : 如果你没搞懂也不用担心，一旦我们开始实现GC，它就会变得更有意义。
 : 它比在Ruby 2.4.3p205中运行的同类Ruby程序稍慢，比在Python 3.7.3中运行的程序快3倍左右。而且我们仍然可以在我们的虚拟机中做很多简单的优化。</p>
-<h2><a href="#习题" id="习题"><small>24&#8202;.&#8202;8</small>习题</a></h2>
-<ol>
-<li>
-<blockquote>
-<p>Reading and writing the <code>ip</code> field is one of the most frequent operations inside the bytecode loop. Right now, we access it through a pointer to the current CallFrame. That requires a pointer indirection which may force the CPU to bypass the cache and hit main memory. That can be a real performance sink.</p>
-</blockquote>
-</li>
-</ol>
 <aside name="faster">
 <p>It&rsquo;s a little slower than a comparable Ruby program run in Ruby 2.4.3p205, and
 about 3x faster than one run in Python 3.7.3. And we still have a lot of simple
@@ -2144,15 +2134,10 @@ affect the performance of native calls?
 扩展本地函数系统，以支持该功能。这个功能会如何影响本地调用的性能？</p>
 </li>
 <li>
-<blockquote>
-<p>Add some more native functions to do things you find useful. Write some programs using those. What did you add? How do they affect the feel of the language and how practical it is?
-添加一些本地函数来做你认为有用的事情。用它们写一些程序。你添加了什么？它们是如何影响语言的感觉和实用性的？</p>
-</blockquote>
-</li>
-<li>
 <p>Add some more native functions to do things you find useful. Write some
 programs using those. What did you add? How do they affect the feel of the
-language and how practical it is?</p>
+language and how practical it is?
+添加一些本地函数来做你认为有用的事情。用它们写一些程序。你添加了什么？它们是如何影响语言的感觉和实用性的？</p>
 </li>
 </ol>
 </div>

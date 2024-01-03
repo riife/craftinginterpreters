@@ -37,13 +37,13 @@
         <h3><a href="#top">解析表达式<small>6</small></a></h3>
     
     <ul>
-        <li><a href="#ambiguity-and-the-parsing-game--歧义与解析游戏"><small>6.1</small> Ambiguity and the Parsing Game  歧义与解析游戏</a></li>
-        <li><a href="#recursive-descent-parsing--递归下降分析"><small>6.2</small> Recursive Descent Parsing  递归下降分析</a></li>
-        <li><a href="#syntax-errors--语法错误"><small>6.3</small> Syntax Errors  语法错误</a></li>
-        <li><a href="#wiring-up-the-parser--调整解析器"><small>6.4</small> Wiring up the Parser  调整解析器</a></li>
+        <li><a href="#歧义与解析的游戏"><small>6.1</small> 歧义与解析的游戏</a></li>
+        <li><a href="#递归下降分析"><small>6.2</small> 递归下降分析</a></li>
+        <li><a href="#语法错误"><small>6.3</small> 语法错误</a></li>
+        <li><a href="#调整解析器"><small>6.4</small> 调整解析器</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Logic Versus History 逻辑和历史</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>逻辑和历史</a></li>
     </ul>
     
     
@@ -68,13 +68,13 @@
         <h3><a href="#top">解析表达式<small>6</small></a></h3>
         
         <ul>
-            <li><a href="#ambiguity-and-the-parsing-game--歧义与解析游戏"><small>6.1</small> Ambiguity and the Parsing Game  歧义与解析游戏</a></li>
-            <li><a href="#recursive-descent-parsing--递归下降分析"><small>6.2</small> Recursive Descent Parsing  递归下降分析</a></li>
-            <li><a href="#syntax-errors--语法错误"><small>6.3</small> Syntax Errors  语法错误</a></li>
-            <li><a href="#wiring-up-the-parser--调整解析器"><small>6.4</small> Wiring up the Parser  调整解析器</a></li>
+            <li><a href="#歧义与解析的游戏"><small>6.1</small> 歧义与解析的游戏</a></li>
+            <li><a href="#递归下降分析"><small>6.2</small> 递归下降分析</a></li>
+            <li><a href="#语法错误"><small>6.3</small> 语法错误</a></li>
+            <li><a href="#调整解析器"><small>6.4</small> 调整解析器</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Logic Versus History 逻辑和历史</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>逻辑和历史</a></li>
         </ul>
         
         
@@ -149,7 +149,7 @@ to know most of that stuff to bang out a high quality parser for a modern
 machine. As always, I encourage you to broaden your education and take it in
 later, but this book omits the trophy case.
 稍微的自我祝贺是当之无愧的，但事实是，你不需要知道其中的大部分知识，就可以为现代机器制作出高质量的解析器。一如既往，我鼓励你先扩大学习范围，以后再慢慢接受它，但这本书省略了奖杯箱。</p>
-<h2><a href="#ambiguity-and-the-parsing-game--歧义与解析游戏" id="ambiguity-and-the-parsing-game--歧义与解析游戏"><small>6&#8202;.&#8202;1</small>Ambiguity and the Parsing Game  歧义与解析游戏</a></h2>
+<h2><a href="#歧义与解析的游戏" id="歧义与解析的游戏"><small>6&#8202;.&#8202;1</small>歧义与解析的游戏</a></h2>
 <p>In the last chapter, I said you can &ldquo;play&rdquo; a context-free grammar like a game in
 order to <em>generate</em> strings. Parsers play that game in reverse. Given a string<span class="em">&mdash;</span>a series of tokens<span class="em">&mdash;</span>we map those tokens to terminals in the grammar to
 figure out which rules could have generated that string.
@@ -445,7 +445,7 @@ This grammar is more complex than the one we had before, but in return we have e
 <p>This grammar is more complex than the one we had before, but in return we have
 eliminated the previous one&rsquo;s ambiguity. It&rsquo;s just what we need to make a
 parser.</p>
-<h2><a href="#recursive-descent-parsing--递归下降分析" id="recursive-descent-parsing--递归下降分析"><small>6&#8202;.&#8202;2</small>Recursive Descent Parsing  递归下降分析</a></h2>
+<h2><a href="#递归下降分析" id="递归下降分析"><small>6&#8202;.&#8202;2</small>递归下降分析</a></h2>
 <p>There is a whole pack of parsing techniques whose names are mostly combinations
 of &ldquo;L&rdquo; and &ldquo;R&rdquo;<span class="em">&mdash;</span><a href="https://en.wikipedia.org/wiki/LL_parser">LL(k)</a>, <a href="https://en.wikipedia.org/wiki/LR_parser">LR(1)</a>, <a href="https://en.wikipedia.org/wiki/LALR_parser">LALR</a><span class="em">&mdash;</span>along with more exotic
 beasts like <a href="https://en.wikipedia.org/wiki/Parser_combinator">parser combinators</a>, <a href="https://en.wikipedia.org/wiki/Earley_parser">Earley parsers</a>, <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">the shunting yard
@@ -507,7 +507,7 @@ rule translates to code roughly like:
 itself<span class="em">&mdash;</span>directly or indirectly<span class="em">&mdash;</span>that translates to a recursive function
 call.
 下降被“递归”修饰是因为，如果一个规则引用自身（直接或间接）就会变为递归的函数调用。</p>
-<h3><a href="#the-parser-class--parser类" id="the-parser-class--parser类"><small>6&#8202;.&#8202;2&#8202;.&#8202;1</small>The parser class  Parser类</a></h3>
+<h3><a href="#parser类" id="parser类"><small>6&#8202;.&#8202;2&#8202;.&#8202;1</small>Parser类</a></h3>
 <p>Each grammar rule becomes a method inside this new class:
 每个语法规则都成为新类中的一个方法:</p>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
@@ -821,7 +821,7 @@ add after <em>unary</em>()</div>
 <p>The interesting branch is the one for handling parentheses. After we match an
 opening <code>(</code> and parse the expression inside it, we <em>must</em> find a <code>)</code> token. If
 we don&rsquo;t, that&rsquo;s an error.</p>
-<h2><a href="#syntax-errors--语法错误" id="syntax-errors--语法错误"><small>6&#8202;.&#8202;3</small>Syntax Errors  语法错误</a></h2>
+<h2><a href="#语法错误" id="语法错误"><small>6&#8202;.&#8202;3</small>语法错误</a></h2>
 <p>A parser really has two jobs:
 解析器实际上有两项工作：</p>
 <ol>
@@ -958,7 +958,7 @@ day to see if the compiler succeeded. With an iteration loop that slow, you
 <p>Today, when parsers complete before you&rsquo;ve even finished typing, it&rsquo;s less of an
 issue. Simple, fast error recovery is fine.
 如今，解析器在您甚至还没有完成输入之前就完成解析了，这不再是一个问题。 简单，快速的错误恢复就可以了。</p>
-<h3><a href="#panic-mode-error-recovery--恐慌模式错误恢复" id="panic-mode-error-recovery--恐慌模式错误恢复"><small>6&#8202;.&#8202;3&#8202;.&#8202;1</small>Panic mode error recovery  恐慌模式错误恢复</a></h3>
+<h3><a href="#恐慌模式错误恢复" id="恐慌模式错误恢复"><small>6&#8202;.&#8202;3&#8202;.&#8202;1</small>恐慌模式错误恢复</a></h3>
 <aside name="panic">
 <p>You know you want to push it.
 你知道你想推动它。</p><img src="image/parsing-expressions/panic.png" alt="A big shiny 'PANIC' button." />
@@ -988,7 +988,7 @@ trade-off.
 don&rsquo;t have those yet, so we won&rsquo;t actually synchronize in this chapter, but
 we&rsquo;ll get the machinery in place for later.
 语法中传统的要同步的地方是语句之间。我们还没有这些，所以我们不会在这一章中真正地同步，但我们会在以后把这些机制准备好。</p>
-<h3><a href="#entering-panic-mode--进入恐慌模式" id="entering-panic-mode--进入恐慌模式"><small>6&#8202;.&#8202;3&#8202;.&#8202;2</small>Entering panic mode  进入恐慌模式</a></h3>
+<h3><a href="#进入恐慌模式" id="进入恐慌模式"><small>6&#8202;.&#8202;3&#8202;.&#8202;2</small>进入恐慌模式</a></h3>
 <p>Back before we went on this side trip around error recovery, we were writing the
 code to parse a parenthesized expression. After parsing the expression, the
 parser looks for the closing <code>)</code> by calling <code>consume()</code>. Here, finally, is that
@@ -1087,7 +1087,7 @@ barnacles since they help users fix common mistakes.
 synchronize. Discarding tokens is pretty easy, but how do we synchronize the
 parser&rsquo;s own state?
 但是，在我们的例子中，语法错误非常严重，以至于我们要进入恐慌模式并进行同步。丢弃标记非常简单，但是我们如何同步解析器自己的状态呢？</p>
-<h3><a href="#synchronizing-a-recursive-descent-parser--同步递归下降解析器" id="synchronizing-a-recursive-descent-parser--同步递归下降解析器"><small>6&#8202;.&#8202;3&#8202;.&#8202;3</small>Synchronizing a recursive descent parser  同步递归下降解析器</a></h3>
+<h3><a href="#同步递归下降解析器" id="同步递归下降解析器"><small>6&#8202;.&#8202;3&#8202;.&#8202;3</small>同步递归下降解析器</a></h3>
 <p>With recursive descent, the parser&rsquo;s state<span class="em">&mdash;</span>which rules it is in the middle of
 recognizing<span class="em">&mdash;</span>is not stored explicitly in fields. Instead, we use Java&rsquo;s
 own call stack to track what the parser is doing. Each rule in the middle of
@@ -1152,7 +1152,7 @@ yet. We&rsquo;ll get to that <a href="statements-and-state.html">in a couple of 
 error occurs, we&rsquo;ll panic and unwind all the way to the top and stop parsing.
 Since we can parse only a single expression anyway, that&rsquo;s no big loss.
 可惜的是，由于我们还没有语句，所以无法看到这种方法的实际应用。我们将在<a href="statements-and-state.html">后面几章</a>讨论这个问题。现在，如果出现错误，我们就会惊慌失措地一直向顶端展开并停止解析。反正我们只能解析单个表达式，这也没什么损失。</p>
-<h2><a href="#wiring-up-the-parser--调整解析器" id="wiring-up-the-parser--调整解析器"><small>6&#8202;.&#8202;4</small>Wiring up the Parser  调整解析器</a></h2>
+<h2><a href="#调整解析器" id="调整解析器"><small>6&#8202;.&#8202;4</small>调整解析器</a></h2>
 <p>We are mostly done parsing expressions now. There is one other place where we
 need to add a little error handling. As the parser descends through the parsing
 methods for each grammar rule, it eventually hits <code>primary()</code>. If none of the
@@ -1258,19 +1258,19 @@ parsing code.</p>
 <p>Likewise, add support for the C-style conditional or &ldquo;ternary&rdquo; operator
 <code>?:</code>. What precedence level is allowed between the <code>?</code> and <code>:</code>? Is the whole
 operator left-associative or right-associative?
-2、同样，添加对C风格的条件操作符或 &ldquo;三元 &ldquo;操作符<code>?:</code>的支持。在<code>?</code>和<code>:</code>之间采用什么优先级顺序？整个操作符是左关联还是右关联？</p>
+同样，添加对C风格的条件操作符或 &ldquo;三元 &ldquo;操作符<code>?:</code>的支持。在<code>?</code>和<code>:</code>之间采用什么优先级顺序？整个操作符是左关联还是右关联？</p>
 </li>
 <li>
 <p>Add error productions to handle each binary operator appearing without a
 left-hand operand. In other words, detect a binary operator appearing at the
 beginning of an expression. Report that as an error, but also parse and
 discard a right-hand operand with the appropriate precedence.
-3、添加错误生成式处理没有左操作数的二元操作符。换句话说，检测出现在表达式开头的二元操作符。将其作为错误报告给用户，同时也要解析并丢弃具有相应优先级的右操作数。</p>
+添加错误生成式处理没有左操作数的二元操作符。换句话说，检测出现在表达式开头的二元操作符。将其作为错误报告给用户，同时也要解析并丢弃具有相应优先级的右操作数。</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Logic Versus History 逻辑和历史</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 逻辑和历史</a></h2>
 <p>Let&rsquo;s say we decide to add bitwise <code>&amp;</code> and <code>|</code> operators to Lox. Where should we
 put them in the precedence hierarchy? C<span class="em">&mdash;</span>and most languages that follow in C&rsquo;s
 footsteps<span class="em">&mdash;</span>place them below <code>==</code>. This is widely considered a mistake because

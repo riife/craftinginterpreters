@@ -25,7 +25,7 @@ sneak in a few interesting differences compared to jlox's scanner. Read on to
 see what they are.
 我承认，这并不是书中最精彩的一章。对于同一种语言的两个实现，肯定会有一些冗余。与jlox的扫描器相比，我确实添加了一些有趣的差异点。往下读，看看它们是什么。
 
-## Spinning Up the Interpreter
+## 启动编译器 Spinning Up the Interpreter
 
 Now that we're building the front end, we can get clox running like a real
 interpreter. No more hand-authored chunks of bytecode. It's time for a REPL and
@@ -161,7 +161,7 @@ error?
 
 </aside>
 
-### Opening the compilation pipeline  开启编译管道
+### 开启编译管线
 
 We've got ourselves a string of Lox source code, so now we're ready to set up a
 pipeline to scan, compile, and execute it. It's driven by `interpret()`. Right
@@ -200,7 +200,7 @@ chapter -- so right now all the compiler does is set that up.
 This will also grow in later chapters, naturally.
 当然，这在后面的章节中也会继续扩展。
 
-### The scanner scans  扫描器扫描
+### 扫描器扫描
 
 There are still a few more feet of scaffolding to stand up before we can start
 writing useful code. First, a new header:
@@ -250,7 +250,7 @@ We start at the very first character on the very first line, like a runner
 crouched at the starting line.
 我们从第一行的第一个字符开始，就像一个运动员蹲在起跑线上。
 
-## A Token at a Time  一次一个标识
+## 一次一个标识
 
 In jlox, when the starting gun went off, the scanner raced ahead and eagerly
 scanned the whole program, returning a list of tokens. This would be a challenge
@@ -372,7 +372,7 @@ long enough lifetime. That's why `runFile()` doesn't free the string until
 
 </aside>
 
-### Scanning tokens  扫描标识
+### 扫描标识符
 
 We're ready to scan some tokens. We'll work our way up to the complete
 implementation, starting with this:
@@ -443,7 +443,7 @@ error. That's not exactly a fun language to program in, so let's fill in the
 rules.
 我们现在所拥有的是一个基本可用的扫描器，用于扫描空语法语言。因为语法没有产生式，所以每个字符都是一个错误。这并不是一种有趣的编程语言，所以让我们把规则填进去。
 
-## A Lexical Grammar for Lox  Lox语法
+## Lox语法
 
 The simplest tokens are only a single character. We recognize those like so:
 最简单的词法标识只有一个字符。我们这样来识别它们：
@@ -488,7 +488,7 @@ the longer ones, let's take a little side trip to handle characters that aren't
 part of a token at all.
 现在我们的扫描器支持所有类似标点符号的标识。在我们处理更长的字符之前，我们先来处理一下那些根本不属于标识的字符。
 
-### Whitespace
+### 空白符
 
 Our scanner needs to handle spaces, tabs, and newlines, but those characters
 don't become part of any token's lexeme. We could check for those inside the
@@ -526,7 +526,7 @@ code handles all the whitespace characters except for newlines.
 When we consume one of those, we also bump the current line number.
 当我们消费换行符时，也会增加当前行数。
 
-### Comments
+### 注释
 
 Comments aren't technically "whitespace", if you want to get all precise with
 your terminology, but as far as Lox is concerned, they may as well be, so we
@@ -556,7 +556,7 @@ newline will be the current character on the next turn of the outer loop in
 `skipWhitespace()` and we'll recognize it and increment `scanner.line`.
 我们使用`peek()`来检查换行符，但是不消费它。这样一来，换行符将成为`skipWhitespace()`外部下一轮循环中的当前字符，我们就能识别它并增加`scanner.line`。
 
-### Literal tokens  字面量标识
+### 字面量标识
 
 Number and string tokens are special because they have a runtime value
 associated with them. We'll start with strings because they are easy to
@@ -625,7 +625,7 @@ It's virtually identical to jlox's version except, again, we don't convert the
 lexeme to a double yet.
 它与jlox版本几乎是相同的，只是我们还没有将词素转换为浮点数。
 
-## Identifiers and Keywords  标识符和关键字
+## 标识符和关键字
 
 The last batch of tokens are identifiers, both user-defined and reserved. This
 section should be fun -- the way we recognize keywords in clox is quite
@@ -713,7 +713,7 @@ stop. If we reach a double-lined box, and we're at the last character of the
 lexeme, then we found a keyword.
 我们从根节点开始。如果有一个子节点的字母与词素中的第一个字符相匹配，我们就移动到该节点上。然后对词素中的下一个字母重复此操作，以此类推。如果在任意节点上，词素的下一个字符没有匹配到子节点，那么该标识符一定不是一个关键字，我们就停止。如果我们到达了一个双线框，并且我们在词素的最后一个字符处，那么我们就找到了一个关键字。
 
-### Tries and state machines  字典树和状态机
+### 字典树和状态机
 
 This tree diagram is an example of a thing called a <span
 name="trie">[**trie**][trie]</span>. A trie stores a set of strings. Most other
@@ -919,7 +919,7 @@ writing the simplest code I can is sufficient to accomplish that.
     surrounding string literal.
 
     For example, if Lox supported string interpolation, then this...
-举例来说，如果Lox支持字符串插值，那么下面的代码……
+    举例来说，如果Lox支持字符串插值，那么下面的代码……
 
     ```lox
     var drink = "Tea";
@@ -929,7 +929,7 @@ writing the simplest code I can is sufficient to accomplish that.
     ```
 
     ...would print:
-将会输出：
+    将会输出：
 
     ```text
     Tea will be ready in 6 minutes.
@@ -938,10 +938,10 @@ writing the simplest code I can is sufficient to accomplish that.
     What token types would you define to implement a scanner for string
     interpolation? What sequence of tokens would you emit for the above string
     literal?
-你会定义什么标识类型来实现支持字符串插值的扫描器？对于上面的字符串，你会生成什么样的标识序列？
+    你会定义什么标识类型来实现支持字符串插值的扫描器？对于上面的字符串，你会生成什么样的标识序列？
 
     What tokens would you emit for:
-下面的字符串会产生哪些标识：
+    下面的字符串会产生哪些标识：
 
     ```text
     "Nested ${"interpolation?! Are you ${"mad?!"}"}"
@@ -949,12 +949,11 @@ writing the simplest code I can is sufficient to accomplish that.
 
     Consider looking at other language implementations that support
     interpolation to see how they handle it.
-可以考虑看看其它支持插值的语言实现，看它们是如何处理的。
-2. > Several languages use angle brackets for generics and also have a `>>` right shift operator. This led to a classic problem in early versions of C++:
-有些语言使用尖括号来表示泛型，也有右移操作符`>>`。这就导致了C++早期版本中的一个经典问题：
+    可以考虑看看其它支持插值的语言实现，看它们是如何处理的。
 
 2.  Several languages use angle brackets for generics and also have a `>>` right
     shift operator. This led to a classic problem in early versions of C++:
+    有些语言使用尖括号来表示泛型，也有右移操作符`>>`。这就导致了C++早期版本中的一个经典问题：
 
     ```c++
     vector<vector<string>> nestedVectors;
@@ -963,27 +962,26 @@ writing the simplest code I can is sufficient to accomplish that.
     This would produce a compile error because the `>>` was lexed to a single
     right shift token, not two `>` tokens. Users were forced to avoid this by
     putting a space between the closing angle brackets.
-这将产生一个编译错误，因为`>>`被词法识别为一个右移符号，而不是两个`>`标识。用户不得不在右侧的两个尖括号之间增加一个空格来避免这种情况。
+    这将产生一个编译错误，因为`>>`被词法识别为一个右移符号，而不是两个`>`标识。用户不得不在右侧的两个尖括号之间增加一个空格来避免这种情况。
 
     Later versions of C++ are smarter and can handle the above code. Java and C#
     never had the problem. How do those languages specify and implement this?
-后续的C++版本更加智能，可以处理上述代码。Java和C#从未出现过这个问题。这些语言是如何规定和实现这一点的呢？
-3. > Many languages, especially later in their evolution, define “contextual keywords”. These are identifiers that act like reserved words in some contexts but can be normal user-defined identifiers in others.
-许多语言，尤其是在其发展的后期，都定义了“上下文式关键字”。这些标识符在某些情况下类似于保留字，但在其它上下文中可以是普通的用户定义的标识符。
+    后续的C++版本更加智能，可以处理上述代码。Java和C#从未出现过这个问题。这些语言是如何规定和实现这一点的呢？
 
 3.  Many languages, especially later in their evolution, define "contextual
     keywords". These are identifiers that act like reserved words in some
     contexts but can be normal user-defined identifiers in others.
+    许多语言，尤其是在其发展的后期，都定义了“上下文式关键字”。这些标识符在某些情况下类似于保留字，但在其它上下文中可以是普通的用户定义的标识符。
 
     For example, `await` is a keyword inside an `async` method in C#, but
     in other methods, you can use `await` as your own identifier.
-例如，在C#中，`await`在`async`方法中是一个关键字，但在其它方法中，你可以使用`await`作为自己的标识符。
+    例如，在C#中，`await`在`async`方法中是一个关键字，但在其它方法中，你可以使用`await`作为自己的标识符。
 
     Name a few contextual keywords from other languages, and the context where
     they are meaningful. What are the pros and cons of having contextual
     keywords? How would you implement them in your language's front end if you
     needed to?
-说出几个来自其它语言中的上下文关键字，以及它们在哪些情况下是有意义的。拥有上下文关键字的优点和缺点是什么？如果需要的话，你要如何在语言的前端中实现它们？
+    说出几个来自其它语言中的上下文关键字，以及它们在哪些情况下是有意义的。拥有上下文关键字的优点和缺点是什么？如果需要的话，你要如何在语言的前端中实现它们？
 
 [interp]: https://en.wikipedia.org/wiki/String_interpolation
 

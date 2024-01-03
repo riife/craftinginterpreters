@@ -22,7 +22,7 @@ State](statements-and-state.html#assignment)".
 
 ^code expr-assign
 
-### Binary expression  Binary表达式
+### Binary expression
 
 Binary operators are introduced in "[Representing
 Code](representing-code.html)".

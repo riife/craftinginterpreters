@@ -18,7 +18,7 @@ this chapter, our interpreter takes a big step towards the programming
 language major leagues: *Turing-completeness*.
 现在，我们的解释器只不过是一个计算器而已。一个Lox程序在结束之前只能做固定的工作量。要想让它的运行时间延长一倍，你就必须让源代码的长度增加一倍。我们即将解决这个问题。在本章中，我们的解释器向编程语言大联盟迈出了一大步：图灵完备性。
 
-## Turing Machines (Briefly)  图灵机（简介）
+## 图灵机（简介）
 
 In the early part of last century, mathematicians stumbled into a series of
 confusing <span name="paradox">paradoxes</span> that led them to doubt the
@@ -122,7 +122,7 @@ to access parts of a string.
 
 </aside>
 
-## Conditional Execution  条件执行
+## 条件执行
 
 Enough history, let's jazz up our language. We can divide control flow roughly
 into two kinds:
@@ -303,7 +303,7 @@ not evaluate the then or else statement. If either of those has a side effect,
 the choice not to evaluate it becomes user visible.
 如果你把这段代码与解释器中我们已实现的处理其它语法的代码进行比较，会发现控制流中特殊的地方就在于Java的`if`语句。其它大多数语法树总是会对子树求值，但是这里，我们可能会不执行`then`语句或`else`语句。如果其中任何一个语句有副作用，那么选择不执行某条语句就是用户可见的。
 
-## Logical Operators  逻辑操作符
+## 逻辑操作符
 
 Since we don't have the conditional operator, you might think we're done with
 branching, but no. Even without the ternary operator, there are two other
@@ -435,7 +435,7 @@ loops. You see what I did there? *Jump. Ahead.* Get it? See, it's like a
 reference to... oh, forget it.
 这样就完成了Lox中的所有分支原语，我们准备实现循环吧。
 
-## While Loops  While循环
+## While循环
 
 Lox features two looping control flow statements, `while` and `for`. The `while`
 loop is the simpler one, so we'll start there. Its grammar is the same as in C.
@@ -496,7 +496,7 @@ finally write a program whose running time isn't strictly bound by the length of
 the source code.
 和`if`的访问方法一样，这里的访问方法使用了相应的Java特性。这个方法并不复杂，但它使Lox变得更加强大。我们终于可以编写一个运行时间不受源代码长度严格限制的程序了。
 
-## For Loops  For循环
+## For循环
 
 We're down to the last control flow construct, <span name="for">Ye Olde</span>
 C-style `for` loop. I probably don't need to remind you, but it looks like this:
@@ -775,7 +775,7 @@ for (var b = 1; a < 10000; b = temp + b) {
 
 <div class="design-note">
 
-## Design Note: Spoonfuls of Syntactic Sugar 一些语法糖
+## Design Note: 一些语法糖
 
 When you design your own language, you choose how much syntactic sugar to pour
 into the grammar. Do you make an unsweetened health food where each semantic

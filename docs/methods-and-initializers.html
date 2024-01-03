@@ -37,15 +37,14 @@
         <h3><a href="#top">方法和初始化<small>28</small></a></h3>
     
     <ul>
-        <li><a href="#method-declarations--方法声明"><small>28.1</small> Method Declarations  方法声明</a></li>
-        <li><a href="#method-references--方法引用"><small>28.2</small> Method References  方法引用</a></li>
+        <li><a href="#方法声明"><small>28.1</small> 方法声明</a></li>
+        <li><a href="#方法引用"><small>28.2</small> 方法引用</a></li>
         <li><a href="#this"><small>28.3</small> This</a></li>
-        <li><a href="#instance-initializers--实例初始化器"><small>28.4</small> Instance Initializers  实例初始化器</a></li>
-        <li><a href="#optimized-invocations--优化调用"><small>28.5</small> Optimized Invocations  优化调用</a></li>
-        <li><a href="#习题"><small>28.6</small> 习题</a></li>
+        <li><a href="#实例初始化器"><small>28.4</small> 实例初始化器</a></li>
+        <li><a href="#优化调用"><small>28.5</small> 优化调用</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Novelty Budget 新奇性预算</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>新奇的预算(Novelty Budget)</a></li>
     </ul>
     
     
@@ -70,15 +69,14 @@
         <h3><a href="#top">方法和初始化<small>28</small></a></h3>
         
         <ul>
-            <li><a href="#method-declarations--方法声明"><small>28.1</small> Method Declarations  方法声明</a></li>
-            <li><a href="#method-references--方法引用"><small>28.2</small> Method References  方法引用</a></li>
+            <li><a href="#方法声明"><small>28.1</small> 方法声明</a></li>
+            <li><a href="#方法引用"><small>28.2</small> 方法引用</a></li>
             <li><a href="#this"><small>28.3</small> This</a></li>
-            <li><a href="#instance-initializers--实例初始化器"><small>28.4</small> Instance Initializers  实例初始化器</a></li>
-            <li><a href="#optimized-invocations--优化调用"><small>28.5</small> Optimized Invocations  优化调用</a></li>
-            <li><a href="#习题"><small>28.6</small> 习题</a></li>
+            <li><a href="#实例初始化器"><small>28.4</small> 实例初始化器</a></li>
+            <li><a href="#优化调用"><small>28.5</small> 优化调用</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Novelty Budget 新奇性预算</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>新奇的预算(Novelty Budget)</a></li>
         </ul>
         
         
@@ -109,11 +107,11 @@ in this second trip is an important optimization we&rsquo;ll implement to make m
 calls over seven times faster than our baseline performance. But before we get
 to that fun, we gotta get the basic stuff working.
 所有这些都是我们以前的jlox解释器中所熟悉的领域。第二次旅行中的新内容是我们将实现一个重要的优化，使方法调用的速度比基线性能快7倍以上。但在此之前，我们得先把基本的东西弄好。</p>
-<h2><a href="#method-declarations--方法声明" id="method-declarations--方法声明"><small>28&#8202;.&#8202;1</small>Method Declarations  方法声明</a></h2>
+<h2><a href="#方法声明" id="方法声明"><small>28&#8202;.&#8202;1</small>方法声明</a></h2>
 <p>We can&rsquo;t optimize method calls before we have method calls, and we can&rsquo;t call
 methods without having methods to call, so we&rsquo;ll start with declarations.
 没有方法调用，我们就无法优化方法调用，而没有可供调用的方法，我们就无法调用方法，因此我们从声明开始。</p>
-<h3><a href="#representing-methods--表示方法" id="representing-methods--表示方法"><small>28&#8202;.&#8202;1&#8202;.&#8202;1</small>Representing methods  表示方法</a></h3>
+<h3><a href="#表示方法" id="表示方法"><small>28&#8202;.&#8202;1&#8202;.&#8202;1</small>表示方法</a></h3>
 <p>We usually start in the compiler, but let&rsquo;s knock the object model out first
 this time. The runtime representation for methods in clox is similar to that of
 jlox. Each class stores a hash table of methods. Keys are method names, and each
@@ -177,7 +175,7 @@ How do we take a class declaration, which can contain an arbitrarily large set
 of methods, and represent it as bytecode? Let&rsquo;s hop over to the compiler and
 find out.
 现在，编译器想要分发到运行时的每一条信息都必须通过一个扁平的字节码指令序列形式。我们如何接受一个可以包含任意大的方法集的类声明，并以字节码的形式将其表现出来？让我们跳到编译器上看看。</p>
-<h3><a href="#compiling-method-declarations--编译方法声明" id="compiling-method-declarations--编译方法声明"><small>28&#8202;.&#8202;1&#8202;.&#8202;2</small>Compiling method declarations  编译方法声明</a></h3>
+<h3><a href="#编译方法声明" id="编译方法声明"><small>28&#8202;.&#8202;1&#8202;.&#8202;2</small>编译方法声明</a></h3>
 <p>The last chapter left us with a compiler that parses classes but allows only an
 empty body. Now we insert a little code to compile a series of method
 declarations between the braces.
@@ -345,7 +343,7 @@ affect the stack at runtime:
 <p>All that remains for us is to implement the runtime for that new <code>OP_METHOD</code>
 instruction.
 我们剩下要做的就是为这个新的<code>OP_METHOD</code>指令实现运行时。</p>
-<h3><a href="#executing-method-declarations--执行方法声明" id="executing-method-declarations--执行方法声明"><small>28&#8202;.&#8202;1&#8202;.&#8202;3</small>Executing method declarations  执行方法声明</a></h3>
+<h3><a href="#执行方法声明" id="执行方法声明"><small>28&#8202;.&#8202;1&#8202;.&#8202;3</small>执行方法声明</a></h3>
 <p>First we define the opcode.
 首先我们定义操作码。</p>
 <div class="codehilite"><pre class="insert-before">  OP_CLASS,
@@ -417,7 +415,7 @@ the class, we will have a class with a nicely populated method table, ready to
 start doing things. The next step is pulling those methods back out and using
 them.
 在完成一系列的<code>OP_METHOD</code>指令并且<code>OP_POP</code>弹出类后，我们将得到一个已填充好方法表的类，可以开始做事情了。下一步是将这些方法拉出来并使用它们。</p>
-<h2><a href="#method-references--方法引用" id="method-references--方法引用"><small>28&#8202;.&#8202;2</small>Method References  方法引用</a></h2>
+<h2><a href="#方法引用" id="方法引用"><small>28&#8202;.&#8202;2</small>方法引用</a></h2>
 <p>Most of the time, methods are accessed and immediately called, leading to this
 familiar syntax:
 大多数情况下，方法被访问并立即被调用，导致了这种熟悉的语法：</p>
@@ -461,7 +459,7 @@ variables and temporaries</a> are on the stack, <a href="global-variables.html#v
 table, and variables in closures use <a href="closures.html#upvalues">upvalues</a>. That necessitates a somewhat
 more complex solution for tracking a method&rsquo;s receiver in clox, and a new
 runtime type.</p>
-<h3><a href="#bound-methods--已绑定方法" id="bound-methods--已绑定方法"><small>28&#8202;.&#8202;2&#8202;.&#8202;1</small>Bound methods  已绑定方法</a></h3>
+<h3><a href="#已绑定的方法" id="已绑定的方法"><small>28&#8202;.&#8202;2&#8202;.&#8202;1</small>已绑定的方法</a></h3>
 <p>When the user executes a method access, we&rsquo;ll find the closure for that method
 and wrap it in a new <span name="bound">&ldquo;bound method&rdquo;</span> object that tracks
 the instance that the method was accessed from. This bound object can be called
@@ -615,7 +613,7 @@ milestone. ObjBoundMethod is the very last runtime type to add to clox. You&rsqu
 written your last <code>IS_</code> and <code>AS_</code> macros. We&rsquo;re only a few chapters from the end
 of the book, and we&rsquo;re getting close to a complete VM.
 庆祝一下，因为我们刚刚到达了一个小小的里程碑。ObjBoundMethod是要添加到clox中的最后一个运行时类型。你已经写完了最后的<code>IS_</code>和<code>AS_</code>宏。我们离本书的结尾只有几章了，而且我们已经接近一个完整的虚拟机了。</p>
-<h3><a href="#accessing-methods--访问方法" id="accessing-methods--访问方法"><small>28&#8202;.&#8202;2&#8202;.&#8202;2</small>Accessing methods  访问方法</a></h3>
+<h3><a href="#访问方法" id="访问方法"><small>28&#8202;.&#8202;2&#8202;.&#8202;2</small>访问方法</a></h3>
 <p>Let&rsquo;s get our new object type doing something. Methods are accessed using the
 same &ldquo;dot&rdquo; property syntax we implemented in the last chapter. The compiler
 already parses the right expressions and emits <code>OP_GET_PROPERTY</code> instructions
@@ -697,7 +695,7 @@ the stack with the bound method.
 <p>That&rsquo;s a lot of machinery under the hood, but from the user&rsquo;s perspective, they
 simply get a function that they can call.
 在底层有很多机制，但从用户的角度来看，他们只是得到了一个可以调用的函数。</p>
-<h3><a href="#calling-methods--调用方法" id="calling-methods--调用方法"><small>28&#8202;.&#8202;2&#8202;.&#8202;3</small>Calling methods  调用方法</a></h3>
+<h3><a href="#调用方法" id="调用方法"><small>28&#8202;.&#8202;2&#8202;.&#8202;3</small>调用方法</a></h3>
 <p>Users can declare methods on classes, access them on instances, and get bound
 methods onto the stack. They just can&rsquo;t <span name="do"><em>do</em></span> anything
 useful with those bound method objects. The operation we&rsquo;re missing is calling
@@ -886,7 +884,7 @@ that slot. For example, given a method call like this:
 <p>The <code>-argCount</code> skips past the arguments and the <code>- 1</code> adjusts for the fact that
 <code>stackTop</code> points just <em>past</em> the last used stack slot.
 <code>-argCount</code>跳过传递的参数，而<code>-1</code>则是因为<code>stackTop</code>指向刚刚最后一个实用的栈槽而做的调整。</p>
-<h3><a href="#misusing-this--误用this" id="misusing-this--误用this"><small>28&#8202;.&#8202;3&#8202;.&#8202;1</small>Misusing this  误用this</a></h3>
+<h3><a href="#误用this" id="误用this"><small>28&#8202;.&#8202;3&#8202;.&#8202;1</small>误用this</a></h3>
 <p>Our VM now supports users <em>correctly</em> using <code>this</code>, but we also need to make
 sure it properly handles users <em>mis</em>using <code>this</code>. Lox says it is a compile
 error for a <code>this</code> expression to appear outside of the body of a method. These
@@ -998,7 +996,7 @@ in <em>this_</em>()</div>
 really feel like <em>methods</em> in the object-oriented sense. Accessing the receiver
 lets them affect the instance you called the method on. We&rsquo;re getting there!
 有个这个，类之外的<code>this</code>就被正确地禁止了。现在我们的方法就像是面向对象意义上的<em>方法</em>。对接收器的访问使得它们可以影响调用方法的实例。我们正在走向成功！</p>
-<h2><a href="#instance-initializers--实例初始化器" id="instance-initializers--实例初始化器"><small>28&#8202;.&#8202;4</small>Instance Initializers  实例初始化器</a></h2>
+<h2><a href="#实例初始化器" id="实例初始化器"><small>28&#8202;.&#8202;4</small>实例初始化器</a></h2>
 <p>The reason object-oriented languages tie state and behavior together<span class="em">&mdash;</span>one of
 the core tenets of the paradigm<span class="em">&mdash;</span>is to ensure that objects are always in a
 valid, meaningful state. When the only way to touch an object&rsquo;s state is <span
@@ -1047,7 +1045,7 @@ since the value would never be seen anyway.</p>
 <p>Now that we support methods, to add initializers, we merely need to implement
 those three special rules. We&rsquo;ll go in order.
 既然我们支持方法，为了添加初始化式，我们只需要实现这三条特殊规则。我们按顺序进行。</p>
-<h3><a href="#invoking-initializers--调用初始化器" id="invoking-initializers--调用初始化器"><small>28&#8202;.&#8202;4&#8202;.&#8202;1</small>Invoking initializers  调用初始化器</a></h3>
+<h3><a href="#调用初始化器" id="调用初始化器"><small>28&#8202;.&#8202;4&#8202;.&#8202;1</small>调用初始化器</a></h3>
 <p>First, automatically calling <code>init()</code> on new instances:
 首先，在新实例上自动调用<code>init()</code>：</p>
 <div class="codehilite"><pre class="insert-before">        vm.stackTop[-argCount - 1] = OBJ_VAL(newInstance(klass));
@@ -1165,7 +1163,7 @@ in <em>freeVM</em>()</div>
 
 <p>OK, that lets us call initializers.
 好，这样我们就可以调用初始化器了。</p>
-<h3><a href="#initializer-return-values--返回值的初始化器" id="initializer-return-values--返回值的初始化器"><small>28&#8202;.&#8202;4&#8202;.&#8202;2</small>Initializer return values  返回值的初始化器</a></h3>
+<h3><a href="#返回值的初始化器" id="返回值的初始化器"><small>28&#8202;.&#8202;4&#8202;.&#8202;2</small>返回值的初始化器</a></h3>
 <p>The next step is ensuring that constructing an instance of a class with an
 initializer always returns the new instance, and not <code>nil</code> or whatever the body
 of the initializer returns. Right now, if a class defines an initializer, then
@@ -1230,7 +1228,7 @@ also called when compiling a <code>return</code> statement without a value, so t
 correctly handles cases where the user does an early return inside the
 initializer.
 在初始化器中，我们不再在返回前将<code>nil</code>压入栈中，而是加载包含实例的槽0。在编译不带值的<code>return</code>语句时，这个<code>emitReturn()</code>函数也会被调用，因此它也能正确处理用户在初始化器中提前返回的情况。</p>
-<h3><a href="#incorrect-returns-in-initializers--初始化器中的错误返回" id="incorrect-returns-in-initializers--初始化器中的错误返回"><small>28&#8202;.&#8202;4&#8202;.&#8202;3</small>Incorrect returns in initializers  初始化器中的错误返回</a></h3>
+<h3><a href="#初始化器中的错误返回" id="初始化器中的错误返回"><small>28&#8202;.&#8202;4&#8202;.&#8202;3</small>初始化器中的错误返回</a></h3>
 <p>The last step, the last item in our list of special features of initializers, is
 making it an error to try to return anything <em>else</em> from an initializer. Now
 that the compiler tracks the method type, this is straightforward.
@@ -1279,7 +1277,7 @@ name="floppy">floppy</span> disk.
 current generations of programmers. Maybe I should have said &ldquo;a few tweets&rdquo; or
 something.</p>
 </aside>
-<h2><a href="#optimized-invocations--优化调用" id="optimized-invocations--优化调用"><small>28&#8202;.&#8202;5</small>Optimized Invocations  优化调用</a></h2>
+<h2><a href="#优化调用" id="优化调用"><small>28&#8202;.&#8202;5</small>优化调用</a></h2>
 <p>Our VM correctly implements the language&rsquo;s semantics for method calls and
 initializers. We could stop here. But the main reason we are building an entire
 second implementation of Lox from scratch is to execute faster than our old Java
@@ -1508,7 +1506,7 @@ improvement is relative to our own unoptimized method call implementation which
 was quite slow. Doing a heap allocation for every single method call isn&rsquo;t going
 to win any races.</p>
 </aside><img src="image/methods-and-initializers/benchmark.png" alt="Bar chart comparing the two benchmark results." />
-<h3><a href="#invoking-fields--调用字段" id="invoking-fields--调用字段"><small>28&#8202;.&#8202;5&#8202;.&#8202;1</small>Invoking fields  调用字段</a></h3>
+<h3><a href="#调用字段" id="调用字段"><small>28&#8202;.&#8202;5&#8202;.&#8202;1</small>调用字段</a></h3>
 <p>The fundamental creed of optimization is: &ldquo;Thou shalt not break correctness.&rdquo;
 <span name="monte">Users</span> like it when a language implementation gives
 them an answer faster, but only if it&rsquo;s the <em>right</em> answer. Alas, our
@@ -1627,42 +1625,24 @@ of an object-oriented programming language, and with respectable performance.
 : 我们不应该过于自信。这种性能优化是相对于我们自己未优化的方法调用实现而言的，而那种方法调用实现相当缓慢。为每个方法调用都进行堆分配不会赢得任何比赛。
 : 在有些情况下，当程序偶尔返回错误的答案，以换取显著加快的运行速度或更好的性能边界，用户可能也是满意的。这些就是**<a href="https://en.wikipedia.org/wiki/Monte_Carlo_algorithm">蒙特卡洛算法</a>**的领域。对于某些用例来说，这是一个很好的权衡。<BR>不过，重要的是，由用户选择使用这些算法中的某一种。我们这些语言实现者不能单方面地决定牺牲程序的正确性。
 : 作为语言<em>设计者</em>，我们的角色非常不同。如果我们确实控制了语言本身，我们有时可能会选择限制或改变语言的方式来实现优化。用户想要有表达力的语言，但他们也想要快速实现。有时，如果牺牲一点功能来获得完美回报是很好的语言设计。</p>
-<h2><a href="#习题" id="习题"><small>28&#8202;.&#8202;6</small>习题</a></h2>
-<ol>
-<li>
-<blockquote>
-<p>The hash table lookup to find a class’s <code>init()</code> method is constant time, but still fairly slow. Implement something faster. Write a benchmark and measure the performance difference.
-哈希表中查找类的<code>init()</code>方法是常量时间复杂度，但仍然相当慢。实现一些更快的方法。写一个基准测试并度量性能差异。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>In a dynamically typed language like Lox, a single callsite may invoke a variety of methods on a number of classes throughout a program’s execution. Even so, in practice, most of the time a callsite ends up calling the exact same method on the exact same class for the duration of the run. Most calls are actually not polymorphic even if the language says they can be.</p>
-</blockquote>
-</li>
-</ol>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
 <li>
 <p>The hash table lookup to find a class&rsquo;s <code>init()</code> method is constant time,
 but still fairly slow. Implement something faster. Write a benchmark and
-measure the performance difference.</p>
+measure the performance difference.
+哈希表中查找类的<code>init()</code>方法是常量时间复杂度，但仍然相当慢。实现一些更快的方法。写一个基准测试并度量性能差异。</p>
 </li>
 <li>
 <p>In a dynamically typed language like Lox, a single callsite may invoke a
 variety of methods on a number of classes throughout a program&rsquo;s execution.
 Even so, in practice, most of the time a callsite ends up calling the exact
 same method on the exact same class for the duration of the run. Most calls
-are actually not polymorphic even if the language says they can be.</p>
+are actually not polymorphic even if the language says they can be.
+在像Lox这样的动态类型语言中，程序执行过程中的同样的一个调用可能会调用多个类上的多个方法。即便如此，在实践中，大多数情况下某个调用在运行期间会执行同一个类上的同一个方法。大多数调用实际上不是多态的，即使语言说它们是多态的。</p>
 <p>How do advanced language implementations optimize based on that observation?
-在像Lox这样的动态类型语言中，程序执行过程中的同样的一个调用可能会调用多个类上的多个方法。即便如此，在实践中，大多数情况下某个调用在运行期间会执行同一个类上的同一个方法。大多数调用实际上不是多态的，即使语言说它们是多态的。
 高级的语言实现是如何基于这一观察进行优化的？</p>
-</li>
-<li>
-<blockquote>
-<p>When interpreting an <code>OP_INVOKE</code> instruction, the VM has to do two hash table lookups. First, it looks for a field that could shadow a method, and only if that fails does it look for a method. The former check is rarely useful—most fields do not contain functions. But it is <em>necessary</em> because the language says fields and methods are accessed using the same syntax, and fields shadow methods.</p>
-</blockquote>
 </li>
 <li>
 <p>When interpreting an <code>OP_INVOKE</code> instruction, the VM has to do two hash
@@ -1670,17 +1650,17 @@ table lookups. First, it looks for a field that could shadow a method, and
 only if that fails does it look for a method. The former check is rarely
 useful<span class="em">&mdash;</span>most fields do not contain functions. But it is <em>necessary</em>
 because the language says fields and methods are accessed using the same
-syntax, and fields shadow methods.</p>
+syntax, and fields shadow methods.
+在解释<code>OP_INVOKE</code>指令时，虚拟机必须执行两次哈希表查询。首先，它要查找可能会遮蔽方法的字段，只有这一步失败时才会查找方法。前一个检查很少有用——大多数字段都不包含函数。但它是<em>必要</em>的，因为语言要求字段和方法通过同样的语法来访问，并且字段会遮蔽方法。</p>
 <p>That is a language <em>choice</em> that affects the performance of our
 implementation. Was it the right choice? If Lox were your language, what
 would you do?
-在解释<code>OP_INVOKE</code>指令时，虚拟机必须执行两次哈希表查询。首先，它要查找可能会遮蔽方法的字段，只有这一步失败时才会查找方法。前一个检查很少有用——大多数字段都不包含函数。但它是<em>必要</em>的，因为语言要求字段和方法通过同样的语法来访问，并且字段会遮蔽方法。
 这是一种影响实现性能的语言选择。这是个正确的选择吗？如果Lox是你的语言，你会怎么做？</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Novelty Budget 新奇性预算</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 新奇的预算(Novelty Budget)</a></h2>
 <p>I still remember the first time I wrote a tiny BASIC program on a TRS-80 and
 made a computer do something it hadn&rsquo;t done before. It felt like a superpower.
 The first time I cobbled together just enough of a parser and interpreter to let

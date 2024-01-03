@@ -37,14 +37,13 @@
         <h3><a href="#top">来回跳转<small>23</small></a></h3>
     
     <ul>
-        <li><a href="#if-statements--if语句"><small>23.1</small> If Statements  If语句</a></li>
-        <li><a href="#logical-operators--逻辑运算符"><small>23.2</small> Logical Operators  逻辑运算符</a></li>
-        <li><a href="#while-statements--while语句"><small>23.3</small> While Statements  While语句</a></li>
-        <li><a href="#for-statements--for语句"><small>23.4</small> For Statements  For语句</a></li>
-        <li><a href="#习题"><small>23.5</small> 习题</a></li>
+        <li><a href="#if语句"><small>23.1</small> If语句</a></li>
+        <li><a href="#逻辑运算符"><small>23.2</small> 逻辑运算符</a></li>
+        <li><a href="#while语句"><small>23.3</small> While语句</a></li>
+        <li><a href="#for语句"><small>23.4</small> For语句</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful 认为GOTO有害</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>认为GOTO有害</a></li>
     </ul>
     
     
@@ -69,14 +68,13 @@
         <h3><a href="#top">来回跳转<small>23</small></a></h3>
         
         <ul>
-            <li><a href="#if-statements--if语句"><small>23.1</small> If Statements  If语句</a></li>
-            <li><a href="#logical-operators--逻辑运算符"><small>23.2</small> Logical Operators  逻辑运算符</a></li>
-            <li><a href="#while-statements--while语句"><small>23.3</small> While Statements  While语句</a></li>
-            <li><a href="#for-statements--for语句"><small>23.4</small> For Statements  For语句</a></li>
-            <li><a href="#习题"><small>23.5</small> 习题</a></li>
+            <li><a href="#if语句"><small>23.1</small> If语句</a></li>
+            <li><a href="#逻辑运算符"><small>23.2</small> 逻辑运算符</a></li>
+            <li><a href="#while语句"><small>23.3</small> While语句</a></li>
+            <li><a href="#for语句"><small>23.4</small> For语句</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Considering Goto Harmful 认为GOTO有害</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>认为GOTO有害</a></li>
         </ul>
         
         
@@ -160,7 +158,7 @@ have that one conditional jump instruction, that&rsquo;s enough to implement Lox
 <code>if</code> statement, as long as it doesn&rsquo;t have an <code>else</code> clause. So let&rsquo;s go ahead
 and get started with that.
 不管这么说，我并不是故意要搞得这么哲学化。重要的是，如果我们有一个条件跳转指令，就足以实现Lox的<code>if</code>语句了，只要它没有<code>else</code>子句。让我们开始吧。</p>
-<h2><a href="#if-statements--if语句" id="if-statements--if语句"><small>23&#8202;.&#8202;1</small>If Statements  If语句</a></h2>
+<h2><a href="#if语句" id="if语句"><small>23&#8202;.&#8202;1</small>If语句</a></h2>
 <p>This many chapters in, you know the drill. Any new feature starts in the front
 end and works its way through the pipeline. An <code>if</code> statement is, well, a
 statement, so that&rsquo;s where we hook it into the parser.
@@ -359,7 +357,7 @@ the stack. We&rsquo;ll clean that up soon. Ignoring that for the moment, we do h
 working <code>if</code> statement in Lox now, with only one little instruction required to
 support it at runtime in the VM.
 请注意，跳转指令并没有将条件值弹出栈。因此，我们在这里还没有全部完成，因为还在堆栈上留下了一个额外的值。我们很快就会把它清理掉。暂时先忽略这个问题，我们现在在Lox中已经有了可用的<code>if</code>语句，只需要一条小指令在虚拟机运行时支持它。</p>
-<h3><a href="#else-clauses" id="else-clauses"><small>23&#8202;.&#8202;1&#8202;.&#8202;1</small>Else clauses</a></h3>
+<h3><a href="#else-子句" id="else-子句"><small>23&#8202;.&#8202;1&#8202;.&#8202;1</small>Else 子句</a></h3>
 <p>An <code>if</code> statement without support for <code>else</code> clauses is like Morticia Addams
 without Gomez. So, after we compile the then branch, we look for an <code>else</code>
 keyword. If we find one, we compile the else branch.
@@ -514,7 +512,7 @@ so we&rsquo;ll have to grind it out ourselves.
 <aside name="80s">
 <p>My enduring love of Depeche Mode notwithstanding.</p>
 </aside>
-<h2><a href="#logical-operators--逻辑运算符" id="logical-operators--逻辑运算符"><small>23&#8202;.&#8202;2</small>Logical Operators  逻辑运算符</a></h2>
+<h2><a href="#逻辑运算符" id="逻辑运算符"><small>23&#8202;.&#8202;2</small>逻辑运算符</a></h2>
 <p>You probably remember this from jlox, but the logical operators <code>and</code> and <code>or</code>
 aren&rsquo;t just another pair of binary operators like <code>+</code> and <code>-</code>. Because they
 short-circuit and may not evaluate their right operand depending on the value of
@@ -569,7 +567,7 @@ suppose. But I&rsquo;m trying to keep things minimal for the book. In your bytec
 VM, it&rsquo;s worth exploring adding more specialized instructions and seeing how
 they affect performance.</p>
 </aside>
-<h3><a href="#logical-or-operator--逻辑or运算符" id="logical-or-operator--逻辑or运算符"><small>23&#8202;.&#8202;2&#8202;.&#8202;1</small>Logical or operator  逻辑or运算符</a></h3>
+<h3><a href="#逻辑or运算符" id="逻辑or运算符"><small>23&#8202;.&#8202;2&#8202;.&#8202;1</small>逻辑or运算符</a></h3>
 <p>The <code>or</code> operator is a little more complex. First we add it to the parse table.
 <code>or</code>运算符有点复杂。首先，我们将它添加到解析表中。</p>
 <div class="codehilite"><pre class="insert-before">  [TOKEN_NIL]           = {literal,  NULL,   PREC_NONE},
@@ -619,7 +617,7 @@ are the control flow features that only jump <em>forward</em> over code. Other
 languages often have some kind of multi-way branching statement like <code>switch</code>
 and maybe a conditional expression like <code>?:</code>, but Lox keeps it simple.
 好了，这就是Lox中的三个分支结构。我的意思是，这些控制流特性只能在代码上<em>向前</em>跳转。其它语言中通常有某种多路分支语句，如<code>switch</code>，也许还有条件表达式<code>?:</code>，但Lox保持简单。</p>
-<h2><a href="#while-statements--while语句" id="while-statements--while语句"><small>23&#8202;.&#8202;3</small>While Statements  While语句</a></h2>
+<h2><a href="#while语句" id="while语句"><small>23&#8202;.&#8202;3</small>While语句</a></h2>
 <p>That takes us to the <em>looping</em> statements, which jump <em>backward</em> so that code
 can be executed more than once. Lox only has two loop constructs, <code>while</code> and
 <code>for</code>. A <code>while</code> loop is (much) simpler, so we start the party there.
@@ -764,7 +762,7 @@ in <em>disassembleInstruction</em>()</div>
 to escape the loop when the condition is not met, and an unconditional loop
 backward after we have executed the body. The flow looks like this:
 这就是我们的<code>while</code>语句。它包含两个跳转——一个是有条件的前向跳转，用于在不满足条件的时候退出循环；另一个是在执行完主体代码后的无条件跳转。流程看起来如下：</p><img src="image/jumping-back-and-forth/while.png" alt="Flowchart of the compiled bytecode of a while statement." />
-<h2><a href="#for-statements--for语句" id="for-statements--for语句"><small>23&#8202;.&#8202;4</small>For Statements  For语句</a></h2>
+<h2><a href="#for语句" id="for语句"><small>23&#8202;.&#8202;4</small>For语句</a></h2>
 <p>The other looping statement in Lox is the venerable <code>for</code> loop, inherited from
 C. It&rsquo;s got a lot more going on with it compared to a <code>while</code> loop. It has three
 clauses, all of which are optional:
@@ -832,7 +830,7 @@ implementation of <span name="infinite">infinite</span> loops now.
 <p>Alas, without <code>return</code> statements, there isn&rsquo;t any way to terminate it short of
 a runtime error.</p>
 </aside>
-<h3><a href="#initializer-clause--初始化子句" id="initializer-clause--初始化子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;1</small>Initializer clause  初始化子句</a></h3>
+<h3><a href="#初始化子句" id="初始化子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;1</small>初始化子句</a></h3>
 <p>Now we&rsquo;ll add the first clause, the initializer. It executes only once, before
 the body, so compiling is straightforward.
 现在我们要添加第一个子句，初始化器。它只在主体之前执行一次，因此编译很简单。</p>
@@ -881,7 +879,7 @@ in <em>forStatement</em>()</div>
 </pre></div>
 <div class="source-file-narrow"><em>compiler.c</em>, in <em>forStatement</em>()</div>
 
-<h3><a href="#condition-clause--条件子句" id="condition-clause--条件子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;2</small>Condition clause  条件子句</a></h3>
+<h3><a href="#条件子句" id="条件子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;2</small>条件子句</a></h3>
 <p>Next, is the condition expression that can be used to exit the loop.
 接下来，是可以用来退出循环的条件表达式。</p>
 <div class="codehilite"><pre class="insert-before">  int loopStart = currentChunk()-&gt;count;
@@ -931,7 +929,7 @@ in <em>forStatement</em>()</div>
 <p>We do this only when there is a condition clause. If there isn&rsquo;t, there&rsquo;s no
 jump to patch and no condition value on the stack to pop.
 我们只在有条件子句的时候才会这样做。如果没有条件子句，就没有需要修补的跳转指令，堆栈中也没有条件值需要弹出。</p>
-<h3><a href="#increment-clause--增量子句" id="increment-clause--增量子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;3</small>Increment clause  增量子句</a></h3>
+<h3><a href="#增量子句" id="增量子句"><small>23&#8202;.&#8202;4&#8202;.&#8202;3</small>增量子句</a></h3>
 <p>I&rsquo;ve saved the best for last, the increment clause. It&rsquo;s pretty convoluted. It
 appears textually before the body, but executes <em>after</em> it. If we parsed to an
 AST and generated code in a separate pass, we could simply traverse into and
@@ -1004,15 +1002,6 @@ architecture of our VM.
 : 我说过我们不会使用C的<code>if</code>语句来实现Lox的控制流，但我们在这里确实使用了<code>if</code>语句来决定是否偏移指令指针。但我们并没有真正使用C语言来实现控制流。如果我们想的话，可以用纯粹的算术做到同样的事情。假设我们有一个函数<code>falsey()</code>，它接受一个Lox Value，如果是假则返回1，否则返回0。那我们可以这样实现跳转指令：<BR><BR><code>falsey()</code>函数可能会使用一些控制流来处理不同的值类型，但这是该函数的实现细节，并不影响我们的虚拟机如何处理自己的控制流。
 : 我们的操作码范围中还有足够的空间，所以我们可以为隐式弹出值的条件跳转和不弹出值的条件跳转制定单独的指令。但我想尽量在书中保持简约。在你的字节码虚拟机中，值得探索添加更多的专用指令，看看它们是如何影响性能的。
 : 真的开始怀疑我对逻辑运算符使用相同的跳转指令的决定了。</p>
-<h2><a href="#习题" id="习题"><small>23&#8202;.&#8202;5</small>习题</a></h2>
-<ol>
-<li>
-<blockquote>
-<p>In addition to <code>if</code> statements, most C-family languages have a multi-way <code>switch</code> statement. Add one to clox. The grammar is:
-除了<code>if</code>语句，大多数C家族语言都要一个多路<code>switch</code>语句。在clox中添加一个。语法如下：</p>
-</blockquote>
-</li>
-</ol>
 <aside name="leap">
 <p>I couldn&rsquo;t resist the pun. I regret nothing.</p>
 </aside>
@@ -1021,7 +1010,8 @@ architecture of our VM.
 <ol>
 <li>
 <p>In addition to <code>if</code> statements, most C-family languages have a multi-way
-<code>switch</code> statement. Add one to clox. The grammar is:</p>
+<code>switch</code> statement. Add one to clox. The grammar is:
+除了<code>if</code>语句，大多数C家族语言都要一个多路<code>switch</code>语句。在clox中添加一个。语法如下：</p>
 <div class="codehilite"><pre><span class="i">switchStmt</span>     → <span class="s">&quot;switch&quot;</span> <span class="s">&quot;(&quot;</span> <span class="i">expression</span> <span class="s">&quot;)&quot;</span>
                  <span class="s">&quot;{&quot;</span> <span class="i">switchCase</span>* <span class="i">defaultCase</span>? <span class="s">&quot;}&quot;</span> ;
 <span class="i">switchCase</span>     → <span class="s">&quot;case&quot;</span> <span class="i">expression</span> <span class="s">&quot;:&quot;</span> <span class="i">statement</span>* ;
@@ -1033,54 +1023,44 @@ expression. If the case value is equal to the switch value, execute the
 statements under the case and then exit the <code>switch</code> statement. Otherwise,
 try the next case. If no case matches and there is a <code>default</code> clause,
 execute its statements.
-为了执行<code>switch</code>语句，首先要计算括号内的switch值表达式。然后遍历分支。对于每个分支，计算其值表达式。如果case值等于switch值，就执行case下的语句，然后退出<code>switch</code>语句。否则，就尝试下一个case分支。如果没有匹配的分支，并且有<code>default</code>子句，就执行其中的语句。
+为了执行<code>switch</code>语句，首先要计算括号内的switch值表达式。然后遍历分支。对于每个分支，计算其值表达式。如果case值等于switch值，就执行case下的语句，然后退出<code>switch</code>语句。否则，就尝试下一个case分支。如果没有匹配的分支，并且有<code>default</code>子句，就执行其中的语句。</p>
+<p>To keep things simpler, we&rsquo;re omitting fallthrough and <code>break</code> statements.
+Each case automatically jumps to the end of the switch statement after its
+statements are done.
 为了让事情更简单，我们省略了fall through和<code>break</code>语句。每个case子句在其语句完成后会自动跳转到switch语句的结尾。</p>
 </li>
 <li>
-<blockquote>
-<p>In jlox, we had a challenge to add support for <code>break</code> statements. This time, let’s do <code>continue</code>:
-在jlox中，我们有一个习题是添加对<code>break</code>语句的支持。这一次，我们来做<code>continue</code>：</p>
-</blockquote>
-<p>To keep things simpler, we&rsquo;re omitting fallthrough and <code>break</code> statements.
- Each case automatically jumps to the end of the switch statement after its
- statements are done.</p>
-</li>
-<li>
 <p>In jlox, we had a challenge to add support for <code>break</code> statements. This
-time, let&rsquo;s do <code>continue</code>:</p>
+time, let&rsquo;s do <code>continue</code>:
+在jlox中，我们有一个习题是添加对<code>break</code>语句的支持。这一次，我们来做<code>continue</code>：</p>
 <div class="codehilite"><pre><span class="i">continueStmt</span>   → <span class="s">&quot;continue&quot;</span> <span class="s">&quot;;&quot;</span> ;
 </pre></div>
 <p>A <code>continue</code> statement jumps directly to the top of the nearest enclosing
 loop, skipping the rest of the loop body. Inside a <code>for</code> loop, a <code>continue</code>
 jumps to the increment clause, if there is one. It&rsquo;s a compile-time error to
 have a <code>continue</code> statement not enclosed in a loop.
-<code>continue</code>语句直接跳转到最内层的封闭循环的顶部，跳过循环体的其余部分。在<code>for</code>循环中，如果有增量子句，<code>continue</code>会跳到增量子句。如果<code>continue</code>子句没有被包含在循环中，则是一个编译时错误。
-一定要考虑作用域问题。当执行<code>continue</code>语句时，在循环体内或嵌套在循环体中的代码块内声明的局部变量应该如何处理？</p>
-</li>
-<li>
-<blockquote>
-<p>Control flow constructs have been mostly unchanged since Algol 68. Language evolution since then has focused on making code more declarative and high level, so imperative control flow hasn’t gotten much attention.</p>
-</blockquote>
+<code>continue</code>语句直接跳转到最内层的封闭循环的顶部，跳过循环体的其余部分。在<code>for</code>循环中，如果有增量子句，<code>continue</code>会跳到增量子句。如果<code>continue</code>子句没有被包含在循环中，则是一个编译时错误。</p>
 <p>Make sure to think about scope. What should happen to local variables
- declared inside the body of the loop or in blocks nested inside the loop
- when a <code>continue</code> is executed?</p>
+declared inside the body of the loop or in blocks nested inside the loop
+when a <code>continue</code> is executed?
+一定要考虑作用域问题。当执行<code>continue</code>语句时，在循环体内或嵌套在循环体中的代码块内声明的局部变量应该如何处理？</p>
 </li>
 <li>
 <p>Control flow constructs have been mostly unchanged since Algol 68. Language
 evolution since then has focused on making code more declarative and high
-level, so imperative control flow hasn&rsquo;t gotten much attention.</p>
+level, so imperative control flow hasn&rsquo;t gotten much attention.
+自Algol 68以来，控制流结构基本没有变化。从那时起，语言的发展就专注于使代码更具有声明性和高层次，因此命令式控制流并没有得到太多的关注。</p>
 <p>For fun, try to invent a useful novel control flow feature for Lox. It can
 be a refinement of an existing form or something entirely new. In practice,
 it&rsquo;s hard to come up with something useful enough at this low expressiveness
 level to outweigh the cost of forcing a user to learn an unfamiliar notation
 and behavior, but it&rsquo;s a good chance to practice your design skills.
-自Algol 68以来，控制流结构基本没有变化。从那时起，语言的发展就专注于使代码更具有声明性和高层次，因此命令式控制流并没有得到太多的关注。
 为了好玩，可以试着为Lox发明一个有用的新的控制流功能。它可以是现有形式的改进，也可以是全新的东西。实践中，在这种较低的表达层次上，很难想出足够有用的东西来抵消迫使用户学习不熟悉的符号和行为的代价，但这是一个练习设计技能的好机会。</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Considering Goto Harmful 认为GOTO有害</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 认为GOTO有害</a></h2>
 <p>Discovering that all of our beautiful structured control flow in Lox is actually
 compiled to raw unstructured jumps is like the moment in Scooby Doo when the
 monster rips the mask off their face. It was goto all along! Except in this

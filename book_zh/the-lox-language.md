@@ -28,7 +28,7 @@ Fear not. You can use [mine][repo].
 
 </aside>
 
-## Hello, Lox  Hello, Lox
+## Hello, Lox
 
 Here's your very first taste of <span name="salmon">Lox</span>:
 下面是你对Lox的第一次体验：
@@ -80,7 +80,7 @@ also inherit it. Using a similar syntax for Lox gives you one less thing to
 learn.
 但是，类C的语法所具有的反而是一些在语言中更有价值的东西：*熟悉度*。我知道你已经对这种风格很熟悉了，因为我们将用来实现Lox的两种语言——Java和C——也继承了这种风格。让Lox使用类似的语法，你就少了一件需要学习的事情。
 
-## A High-Level Language  高级语言
+## 高级语言
 
 While this book ended up bigger than I was hoping, it's still not big enough to
 fit a huge language like Java in it. In order to fit two complete
@@ -120,7 +120,7 @@ I had the luxury of taking my time on Lox, so it should be a little cleaner.
 Lox shares two other aspects with those three languages:
 Lox与这三种语言有两个共同之处：
 
-### Dynamic typing  动态类型
+### 动态类型
 
 Lox is dynamically typed. Variables can store values of any type, and a single
 variable can even store values of different types at different times. If you try
@@ -143,7 +143,7 @@ statically typed.
 
 </aside>
 
-### Automatic memory management  自动内存管理
+### 自动内存管理
 
 High-level languages exist to eliminate error-prone, low-level drudgery, and what
 could be more tedious than manually managing the allocation and freeing of
@@ -184,13 +184,10 @@ collector. I think you'll find the algorithm is quite simple and a lot of fun to
 implement.
 追踪式垃圾收集是一个听起来就很可怕的名称。在原始内存的层面上工作是有点折磨人的。调试GC的时候会让你在梦中也能看到hex dumps。但是，请记住，这本书是关于驱散魔法和杀死那些怪物的，所以我们要写出自己的垃圾收集器。我想你会发现这个算法相当简单，而且实现起来很有趣。
 
-## Data Types
 ## 数据类型
 In Lox’s little universe, the atoms that make up all matter are the built-in data types. There are only a few:
 在Lox的小宇宙中，构成所有物质的原子是内置的数据类型。只有几个：
 
-In Lox's little universe, the atoms that make up all matter are the built-in
-data types. There are only a few:
 
 *   **<span name="bool">Booleans</span>.** You can't code without logic and you
     can't logic without Boolean values. "True" and "false", the yin and yang of
@@ -212,6 +209,7 @@ data types. There are only a few:
     </aside>
 
     There are two Boolean values, obviously, and a literal for each one.
+    显然，有两个布尔值，每个值都有一个字面量：
 
     ```lox
     true;  // Not false.
@@ -221,10 +219,12 @@ data types. There are only a few:
 *   **Numbers.** Lox has only one kind of number: double-precision floating
     point. Since floating-point numbers can also represent a wide range of
     integers, that covers a lot of territory, while keeping things simple.
+    **Numbers**——Lox只有一种数字：双精度浮点数。 由于浮点数还可以表示各种各样的整数，因此可以覆盖很多领域，同时保持简单。
 
     Full-featured languages have lots of syntax for numbers -- hexadecimal,
     scientific notation, octal, all sorts of fun stuff. We'll settle for basic
     integer and decimal literals.
+    功能齐全的语言具有多种数字语法-十六进制，科学计数法，八进制和各种有趣的东西。 我们只使用基本的整数和十进制文字：
 
     ```lox
     1234;  // An integer.
@@ -233,7 +233,7 @@ data types. There are only a few:
 
 *   **Strings.** We've already seen one string literal in the first example.
     Like most languages, they are enclosed in double quotes.
-**Strings**——在第一个示例中，我们已经看到一个字符串字面量。 与大多数语言一样，它们用双引号引起来：
+    **Strings**——在第一个示例中，我们已经看到一个字符串字面量。 与大多数语言一样，它们用双引号引起来：
 
     ```lox
     "I am a string";
@@ -260,20 +260,22 @@ data types. There are only a few:
     many other languages. In Lox we spell it `nil`. (When we get to implementing
     it, that will help distinguish when we're talking about Lox's `nil` versus
     Java or C's `null`.)
+    **Nil**——还有最后一个内置数据，它从未被邀请参加聚会，但似乎总是会出现。 它代表“没有价值”。 在许多其他语言中称为“null”。 在Lox中，我们将其拼写为`nil`。 （当我们实现它时，这将有助于区分Lox的`nil`与Java或C的`null`）
 
     There are good arguments for not having a null value in a language since
     null pointer errors are the scourge of our industry. If we were doing a
     statically typed language, it would be worth trying to ban it. In a
     dynamically typed one, though, eliminating it is often more annoying
     than having it.
+    有一些很好的理由表明在语言中不使用空值是合理的，因为空指针错误是我们行业的祸害。如果我们使用的是静态类型语言，那么禁止它是值得的。然而，在动态类型中，消除它往往比保留它更加麻烦。
 
-## Expressions  表达式
+## 表达式
 
 If built-in data types and their literals are atoms, then **expressions** must
 be the molecules. Most of these will be familiar.
 如果内置数据类型及其字面量是原子，那么表达式必须是分子。其中大部分大家都很熟悉。
 
-### Arithmetic
+### 算术运算
 
 Lox features the basic arithmetic operators you know and love from C and other
 languages:
@@ -324,7 +326,7 @@ types to them. The exception is the `+` operator -- you can also pass it two
 strings to concatenate them.
 所有这些操作符都是针对数字的，将任何其他类型操作数传递给它们都是错误的。唯一的例外是`+`运算符——你也可以传给它两个字符串将它们串接起来。
 
-### Comparison and equality  比较与相等
+### 比较与相等
 
 Moving along, we have a few more operators that always return a Boolean result.
 We can compare numbers (and only numbers), using Ye Olde Comparison Operators.
@@ -362,7 +364,7 @@ Values of different types are *never* equivalent.
 I'm generally against implicit conversions.
 我通常是反对隐式转换的。
 
-### Logical operators  逻辑运算
+### 逻辑运算
 
 The not operator, a prefix `!`, returns `false` if its operand is true, and vice
 versa.
@@ -413,7 +415,7 @@ it doesn't even *evaluate* the right one in that case. Conversely
 skipped.
 `and`和 `or`之所以像控制流结构，是因为它们会**短路**。如果左操作数为假，`and`不仅会返回左操作数，在这种情况下，它甚至不会计算右操作数。反过来，("相对的"?)如果`or`的左操作数为真，右操作数就会被跳过。
 
-### Precedence and grouping  优先级与分组
+### 优先级与分组
 
 All of these operators have the same precedence and associativity that you'd
 expect coming from C. (When we get to parsing, we'll get *way* more precise
@@ -435,7 +437,7 @@ Those are the expression forms (except for a couple related to specific features
 that we'll get to later), so let's move up a level.
 这些都是表达式形式(除了一些与我们将在后面介绍的特定特性相关的)，所以让我们继续。
 
-## Statements  语句
+## 语句
 
 Now we're at statements. Where an expression's main job is to produce a *value*,
 a statement's job is to produce an *effect*. Since, by definition, statements
@@ -487,7 +489,7 @@ can wrap them up in a **block**.
 Blocks also affect scoping, which leads us to the next section...
 块还会影响作用域，我们将在下一节中进行说明。
 
-## Variables  变量
+## 变量
 
 You declare variables using `var` statements. If you <span
 name="omit">omit</span> the initializer, the variable's value defaults to `nil`.
@@ -532,7 +534,7 @@ a surprising amount of time in later chapters mapping every square inch of the
 rules. In most cases, it works like you would expect coming from C or Java.
 我不会在这里讨论变量作用域的规则，因为我们在后面的章节中将会花费大量的时间来详细讨论这些规则。在大多数情况下，它的工作方式与您期望的C或Java一样。
 
-## Control Flow  控制流
+## 控制流
 
 It's hard to write <span name="flow">useful</span> programs if you can't skip
 some code or execute some more than once. That means control flow. In addition
@@ -613,7 +615,7 @@ later, but I didn't think doing so would teach you anything super interesting.
 
 </aside>
 
-## Functions  函数
+## 函数
 
 A function call expression looks the same as it does in C.
 函数调用表达式与C语言中一样：
@@ -700,7 +702,7 @@ See, I told you `nil` would sneak in when we weren't looking.
 
 </aside>
 
-### Closures
+### 闭包
 
 Functions are *first class* in Lox, which just means they are real values that
 you can get a reference to, store in variables, pass around, etc. This works:
@@ -787,7 +789,7 @@ evaporate the moment the function returns. We're going to have a fun time
 learning how to make these work correctly and efficiently.
 可以想象，实现这些会增加一些复杂性，因为我们不能再假定变量作用域严格地像堆栈一样工作，在函数返回时局部变量就消失了。我们将度过一段有趣的时间来学习如何使这些工作，并有效地做到这一点。
 
-## Classes  类
+## 类
 
 Since Lox has dynamic typing, lexical (roughly, "block") scope, and closures,
 it's about halfway to being a functional language. But as you'll see, it's
@@ -799,7 +801,7 @@ Since classes have come under fire for not living up to their hype, let me first
 explain why I put them into Lox and this book. There are really two questions:
 类因为没有达到其宣传效果而受到抨击，所以让我先解释一下为什么我把它们放到Lox和这本书中。这里实际上有两个问题：
 
-### Why might any language want to be object oriented?  为什么任何语言都想要面向对象？
+### 为什么任何语言都想要面向对象？
 
 Now that object-oriented languages like Java have sold out and only play arena
 shows, it's not cool to like them anymore. Why would anyone make a *new*
@@ -826,7 +828,7 @@ up having to name your functions like `hash-copy` (to copy a hash table) and
 are scoped to the object, so that problem goes away.
 如果我们也能把方法挂在这些对象上，那么我们就不需要把函数操作的数据类型的名字作为函数名称的前缀，以避免与不同类型的类似函数发生冲突。比如说，在Racket中，你最终不得不将你的函数命名为hash-copy(复制一个哈希表)和vector-copy(复制一个向量)，这样它们就不会互相覆盖。方法的作用域是对象，所以这个问题就不存在了。
 
-### Why is Lox object oriented?  为什么Lox是面向对象的？
+### 为什么Lox是面向对象的？
 
 I could claim objects are groovy but still out of scope for the book. Most
 programming language books, especially ones that try to implement a whole
@@ -840,7 +842,7 @@ turns out to be pretty interesting. Not as hard as you might fear, but not as
 simple as you might presume, either.
 鉴于我们很多人整天都在使用OOP语言，似乎这个世界应该有一些关于如何制作OOP语言的文档。正如你将看到的那样，事实证明这很有趣。没有你担心的那么难，但也没有你想象的那么简单。
 
-### Classes or prototypes  类还是原型？
+### 类还是原型？
 
 When it comes to objects, there are actually two approaches to them, [classes][]
 and [prototypes][]. Classes came first, and are more common thanks to C++, Java,
@@ -895,11 +897,13 @@ happy to let you attach methods to individual instances.
 This means that in some ways prototypal languages are more fundamental than
 classes. They are really neat to implement because they're *so* simple. Also,
 they can express lots of unusual patterns that classes steer you away from.
+这意味着原型语言在某些方面比类更基础。 它们实现起来真的很整洁，因为它们很简单。另外，它们还可以表达很多不寻常的模式，而这些模式是类所不具备的。
 
 But I've looked at a *lot* of code written in prototypal languages -- including
 [some of my own devising][finch]. Do you know what people generally do with all
 of the power and flexibility of prototypes? ...They use them to reinvent
 classes.
+但是我看过很多用原型语言写的代码——包括[我自己设计的一些代码](http://finch.stuffwithstuff.com/)。你知道人们一般会怎么使用原型的强大功能和灵活性吗？...他们用它来重新发明类。
 
 [finch]: http://finch.stuffwithstuff.com/
 
@@ -925,7 +929,7 @@ metaprogramming libraries.
 
 </aside>
 
-### Classes in Lox  Lox中的类
+### Lox中的类
 
 Enough rationale, let's see what we actually have. Classes encompass a
 constellation of features in most languages. For Lox, I've selected what I think
@@ -977,7 +981,7 @@ var breakfast = Breakfast();
 print breakfast; // "Breakfast instance".
 ```
 
-### Instantiation and initialization  实例化和初始化
+### 实例化和初始化
 
 Classes that only have behavior aren't super useful. The idea behind
 object-oriented programming is encapsulating behavior *and state* together. To
@@ -1030,7 +1034,7 @@ baconAndToast.serve("Dear Reader");
 // "Enjoy your bacon and toast, Dear Reader."
 ```
 
-### Inheritance  继承
+### 继承
 
 Every object-oriented language lets you not only define methods, but reuse them
 across multiple classes or objects. For that, Lox supports single inheritance.
@@ -1065,8 +1069,10 @@ than the superclass's set, though type nerds usually use `<:` for that relation.
 
 Here, Brunch is the **derived class** or **subclass**, and Breakfast is the
 **base class** or **superclass**.
+这里，Brunch是**派生类**或**子类**，而Breakfast是**基类**或**超类**。父类中定义的每个方法对其子类也可用：
 
 Every method defined in the superclass is also available to its subclasses.
+超类中定义的每种方法也适用于子类。
 
 ```lox
 var benedict = Brunch("ham", "English muffin");
@@ -1113,7 +1119,7 @@ or properties. If I were trying to make Lox a real language for real users, I
 would fix that.
 因为我们开始使用内置类型很久之后才会实现类，所以这一点很难实现。因此，从类实例的意义上说，基本类型的值并不是真正的对象。它们没有方法或属性。如果以后我想让Lox成为真正的用户使用的语言，我会解决这个问题。
 
-## The Standard Library  标准库
+## 标准库
 
 We're almost done. That's the whole language, so all that's left is the "core"
 or "standard" library -- the set of functionality that is implemented directly
@@ -1168,7 +1174,7 @@ us busy.
 
 <div class="design-note">
 
-## Design Note: Expressions and Statements 表达式和语句
+## Design Note: 表达式和语句
 
 Lox has both expressions and statements. Some languages omit the latter.
 Instead, they treat declarations and control flow constructs as expressions too.

@@ -37,11 +37,11 @@
         <h3><a href="#top">解析和绑定<small>11</small></a></h3>
     
     <ul>
-        <li><a href="#static-scope--静态作用域"><small>11.1</small> Static Scope  静态作用域</a></li>
-        <li><a href="#semantic-analysis--语义分析"><small>11.2</small> Semantic Analysis  语义分析</a></li>
-        <li><a href="#a-resolver-class--resolver类"><small>11.3</small> A Resolver Class  Resolver类</a></li>
-        <li><a href="#interpreting-resolved-variables--解释已解析的变量"><small>11.4</small> Interpreting Resolved Variables  解释已解析的变量</a></li>
-        <li><a href="#resolution-errors--解析错误"><small>11.5</small> Resolution Errors  解析错误</a></li>
+        <li><a href="#静态作用域"><small>11.1</small> 静态作用域</a></li>
+        <li><a href="#语义分析"><small>11.2</small> 语义分析</a></li>
+        <li><a href="#resolver类"><small>11.3</small> Resolver类</a></li>
+        <li><a href="#解释已解析的变量"><small>11.4</small> 解释已解析的变量</a></li>
+        <li><a href="#解析错误"><small>11.5</small> 解析错误</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
     </ul>
@@ -68,11 +68,11 @@
         <h3><a href="#top">解析和绑定<small>11</small></a></h3>
         
         <ul>
-            <li><a href="#static-scope--静态作用域"><small>11.1</small> Static Scope  静态作用域</a></li>
-            <li><a href="#semantic-analysis--语义分析"><small>11.2</small> Semantic Analysis  语义分析</a></li>
-            <li><a href="#a-resolver-class--resolver类"><small>11.3</small> A Resolver Class  Resolver类</a></li>
-            <li><a href="#interpreting-resolved-variables--解释已解析的变量"><small>11.4</small> Interpreting Resolved Variables  解释已解析的变量</a></li>
-            <li><a href="#resolution-errors--解析错误"><small>11.5</small> Resolution Errors  解析错误</a></li>
+            <li><a href="#静态作用域"><small>11.1</small> 静态作用域</a></li>
+            <li><a href="#语义分析"><small>11.2</small> 语义分析</a></li>
+            <li><a href="#resolver类"><small>11.3</small> Resolver类</a></li>
+            <li><a href="#解释已解析的变量"><small>11.4</small> 解释已解析的变量</a></li>
+            <li><a href="#解析错误"><small>11.5</small> 解析错误</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
         </ul>
@@ -112,7 +112,7 @@ lexical scoping as used by Lox and other languages in the C tradition. We&rsquo;
 also get a chance to learn about <em>semantic analysis</em><span class="em">&mdash;</span>a powerful technique for
 extracting meaning from the user&rsquo;s source code without having to run it.
 我们将用整整一章的时间来探索这个漏洞，然后小心翼翼地把它补上。在这个过程中，我们将对Lox和其他C语言传统中使用的词法范围有一个更严格的理解。我们还将有机会学习语义分析——这是一种强大的技术，用于从用户的源代码中提取语义而无需运行它。</p>
-<h2><a href="#static-scope--静态作用域" id="static-scope--静态作用域"><small>11&#8202;.&#8202;1</small>Static Scope  静态作用域</a></h2>
+<h2><a href="#静态作用域" id="静态作用域"><small>11&#8202;.&#8202;1</small>静态作用域</a></h2>
 <p>A quick refresher: Lox, like most modern languages, uses <em>lexical</em> scoping. This
 means that you can figure out which declaration a variable name refers to just
 by reading the text of the program. For example:
@@ -263,7 +263,7 @@ single <code>print</code> statement. Yet, somehow, that <code>print</code> state
 never-assigned variable prints two different values at different points in time.
 We definitely broke something somewhere.
 我要强调一下，这个代码中从未重新分配任何变量，并且只包含一个<code>print</code>语句。然而，不知何故，对于这个从未分配过的变量，<code>print</code>语句在不同的时间点上打印了两个不同的值。我们肯定在什么地方出了问题。</p>
-<h3><a href="#scopes-and-mutable-environments--作用域和可变环境" id="scopes-and-mutable-environments--作用域和可变环境"><small>11&#8202;.&#8202;1&#8202;.&#8202;1</small>Scopes and mutable environments  作用域和可变环境</a></h3>
+<h3><a href="#作用域和可变环境" id="作用域和可变环境"><small>11&#8202;.&#8202;1&#8202;.&#8202;1</small>作用域和可变环境</a></h3>
 <p>In our interpreter, environments are the dynamic manifestation of static scopes.
 The two mostly stay in sync with each other<span class="em">&mdash;</span>we create a new environment when
 we enter a new scope, and discard it when we leave the scope. There is one other
@@ -345,7 +345,7 @@ reference to the actual mutable environment object. When a variable is later
 declared in the scope that environment corresponds to, the closure sees the new
 variable, even though the declaration does <em>not</em> precede the function.
 但是在我们的实现中，环境确实表现得像整个代码块是一个作用域，只是这个作用域会随时间变化。而闭包不是这样的。当函数被声明时，它会捕获一个指向当前环境的引用。函数<em>应该</em>捕获一个冻结的环境快照，就像它存在于函数被声明的那一瞬间。但是事实上，在Java代码中，它引用的是一个实际可变的环境对象。当后续在该环境所对应的作用域内声明一个变量时，闭包会看到该变量，即使变量声明<em>没有</em>出现在函数之前。</p>
-<h3><a href="#persistent-environments--持久环境" id="persistent-environments--持久环境"><small>11&#8202;.&#8202;1&#8202;.&#8202;2</small>Persistent environments  持久环境</a></h3>
+<h3><a href="#持久性环境" id="持久性环境"><small>11&#8202;.&#8202;1&#8202;.&#8202;2</small>持久性环境</a></h3>
 <p>There is a style of programming that uses what are called <strong>persistent data
 structures</strong>. Unlike the squishy data structures you&rsquo;re familiar with in
 imperative programming, a persistent data structure can never be directly
@@ -377,7 +377,7 @@ going back and changing a pile of existing code.
 same. Instead of making the data more statically structured, we&rsquo;ll bake the
 static resolution into the access <em>operation</em> itself.
 我不会把你拖下水的。我们将保持表示环境的方式不变。我们不会让数据变得更加静态结构化，而是将静态解析嵌入访问操作本身。</p>
-<h2><a href="#semantic-analysis--语义分析" id="semantic-analysis--语义分析"><small>11&#8202;.&#8202;2</small>Semantic Analysis  语义分析</a></h2>
+<h2><a href="#语义分析" id="语义分析"><small>11&#8202;.&#8202;2</small>语义分析</a></h2>
 <p>Our interpreter <strong>resolves</strong> a variable<span class="em">&mdash;</span>tracks down which declaration it
 refers to<span class="em">&mdash;</span>each and every time the variable expression is evaluated. If that
 variable is swaddled inside a loop that runs a thousand times, that variable
@@ -429,7 +429,7 @@ code, the obvious answer is in the parser. That is the traditional home, and is
 where we&rsquo;ll put it later in clox. It would work here too, but I want an excuse to
 show you another technique. We&rsquo;ll write our resolver as a separate pass.
 因为我们是根据源代码的结构来计算一个静态属性，所以答案显然是在解析器中。那是传统的选择，也是我们以后在 clox 中实现它的地方。在这里同样也适用，但是我想给你展示另一种技巧。我们会单独写一个解析器。</p>
-<h3><a href="#a-variable-resolution-pass--变量解析过程" id="a-variable-resolution-pass--变量解析过程"><small>11&#8202;.&#8202;2&#8202;.&#8202;1</small>A variable resolution pass  变量解析过程</a></h3>
+<h3><a href="#变量解析过程" id="变量解析过程"><small>11&#8202;.&#8202;2&#8202;.&#8202;1</small>变量解析过程</a></h3>
 <p>After the parser produces the syntax tree, but before the interpreter starts
 executing it, we&rsquo;ll do a single walk over the tree to resolve all of the
 variables it contains. Additional passes between parsing and execution are
@@ -472,7 +472,7 @@ greater complexity, but most are carefully designed to be linear or not far from
 it. It&rsquo;s an embarrassing faux pas if your compiler gets exponentially slower as
 the user&rsquo;s program grows.</p>
 </aside>
-<h2><a href="#a-resolver-class--resolver类" id="a-resolver-class--resolver类"><small>11&#8202;.&#8202;3</small>A Resolver Class  Resolver类</a></h2>
+<h2><a href="#resolver类" id="resolver类"><small>11&#8202;.&#8202;3</small>Resolver类</a></h2>
 <p>Like everything in Java, our variable resolution pass is embodied in a class.
 与Java中的所有内容一样，我们将变量解析处理也放在一个类中。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Resolver.java</em><br>
@@ -544,7 +544,7 @@ visit methods for them that traverse into their subtrees. Even though a <code>+<
 expression doesn&rsquo;t <em>itself</em> have any variables to resolve, either of its
 operands might.
 其余的节点不做任何特别的事情，但是我们仍然需要为它们实现visit方法，以遍历其子树。尽管<code>+</code>表达式本身没有任何变量需要解析，但是它的任一操作数都可能需要。</p>
-<h3><a href="#resolving-blocks--解析代码块" id="resolving-blocks--解析代码块"><small>11&#8202;.&#8202;3&#8202;.&#8202;1</small>Resolving blocks  解析代码块</a></h3>
+<h3><a href="#解析代码块" id="解析代码块"><small>11&#8202;.&#8202;3&#8202;.&#8202;1</small>解析代码块</a></h3>
 <p>We start with blocks since they create the local scopes where all the magic
 happens.
 我们从块语法开始，因为它们创建了局部作用域——魔法出现的地方。</p>
@@ -647,7 +647,7 @@ add after <em>beginScope</em>()</div>
 
 <p>Now we can push and pop a stack of empty scopes. Let&rsquo;s put some things in them.
 现在我们可以在一个栈中压入和弹出一个空作用域，接下来我们往里面放些内容。</p>
-<h3><a href="#resolving-variable-declarations--解析变量声明" id="resolving-variable-declarations--解析变量声明"><small>11&#8202;.&#8202;3&#8202;.&#8202;2</small>Resolving variable declarations  解析变量声明</a></h3>
+<h3><a href="#解析变量声明" id="解析变量声明"><small>11&#8202;.&#8202;3&#8202;.&#8202;2</small>解析变量声明</a></h3>
 <p>Resolving a variable declaration adds a new entry to the current innermost
 scope&rsquo;s map. That seems simple, but there&rsquo;s a little dance we need to do.
 解析一个变量声明，会在当前最内层的作用域map中添加一个新的条目。这看起来很简单，但是我们需要做一些小动作。</p>
@@ -770,7 +770,7 @@ add after <em>declare</em>()</div>
 <p>We set the variable&rsquo;s value in the scope map to <code>true</code> to mark it as fully
 initialized and available for use. It&rsquo;s alive! 
 我们在作用域map中将变量的值置为<code>true</code>，以标记它已完全初始化并可使用。它有了生命！</p>
-<h3><a href="#resolving-variable-expressions--解析变量表达式" id="resolving-variable-expressions--解析变量表达式"><small>11&#8202;.&#8202;3&#8202;.&#8202;3</small>Resolving variable expressions  解析变量表达式</a></h3>
+<h3><a href="#解析变量表达式" id="解析变量表达式"><small>11&#8202;.&#8202;3&#8202;.&#8202;3</small>解析变量表达式</a></h3>
 <p>Variable declarations<span class="em">&mdash;</span>and function declarations, which we&rsquo;ll get to<span class="em">&mdash;</span>write
 to the scope maps. Those maps are read when we resolve variable expressions.
 变量声明——以及我们即将讨论的函数声明——会向作用域map中写数据。在我们解析变量表达式时，需要读取这些map。</p>
@@ -822,7 +822,7 @@ it unresolved and assume it&rsquo;s global. We&rsquo;ll get to the implementatio
 <code>resolve()</code> method a little later. For now, let&rsquo;s keep on cranking through the
 other syntax nodes.
 如果我们遍历了所有的作用域也没有找到这个变量，我们就不解析它，并假定它是一个全局变量。稍后我们将讨论<code>resolve()</code>方法的实现。现在，让我们继续浏览其他语法节点。</p>
-<h3><a href="#resolving-assignment-expressions--解析赋值表达式" id="resolving-assignment-expressions--解析赋值表达式"><small>11&#8202;.&#8202;3&#8202;.&#8202;4</small>Resolving assignment expressions  解析赋值表达式</a></h3>
+<h3><a href="#解析赋值表达式" id="解析赋值表达式"><small>11&#8202;.&#8202;3&#8202;.&#8202;4</small>解析赋值表达式</a></h3>
 <p>The other expression that references a variable is assignment. Resolving one
 looks like this:
 另一个引用变量的表达式就是赋值表达式。解析方法如下：</p>
@@ -841,7 +841,7 @@ add after <em>visitVarStmt</em>()</div>
 references to other variables. Then we use our existing <code>resolveLocal()</code> method
 to resolve the variable that&rsquo;s being assigned to.
 首先，我们解析右值的表达式，以防它还包含对其它变量的引用。然后使用现有的 <code>resolveLocal()</code> 方法解析待赋值的变量。</p>
-<h3><a href="#resolving-function-declarations--解析函数声明" id="resolving-function-declarations--解析函数声明"><small>11&#8202;.&#8202;3&#8202;.&#8202;5</small>Resolving function declarations  解析函数声明</a></h3>
+<h3><a href="#解析函数声明" id="解析函数声明"><small>11&#8202;.&#8202;3&#8202;.&#8202;5</small>解析函数声明</a></h3>
 <p>Finally, functions. Functions both bind names and introduce a scope. The name of
 the function itself is bound in the surrounding scope where the function is
 declared. When we step into the function&rsquo;s body, we also bind its parameters
@@ -891,7 +891,7 @@ declaring a function doesn&rsquo;t do anything with the function&rsquo;s body. T
 doesn&rsquo;t get touched until later when the function is called. In a <em>static</em>
 analysis, we immediately traverse into the body right then and there.
 一旦就绪，它就会在这个作用域中解析函数体。这与解释器处理函数声明的方式不同。在<em>运行时</em>，声明一个函数不会对函数体做任何处理。直到后续函数被调用时，才会触及主体。在<em>静态</em>分析中，我们会立即遍历函数体。</p>
-<h3><a href="#resolving-the-other-syntax-tree-nodes--解析其它语法树节点" id="resolving-the-other-syntax-tree-nodes--解析其它语法树节点"><small>11&#8202;.&#8202;3&#8202;.&#8202;6</small>Resolving the other syntax tree nodes  解析其它语法树节点</a></h3>
+<h3><a href="#解析其它语法树节点" id="解析其它语法树节点"><small>11&#8202;.&#8202;3&#8202;.&#8202;6</small>解析其它语法树节点</a></h3>
 <p>That covers the interesting corners of the grammars. We handle every place where
 a variable is declared, read, or written, and every place where a scope is
 created or destroyed. Even though they aren&rsquo;t affected by variable resolution,
@@ -1068,7 +1068,7 @@ add after <em>visitLogicalExpr</em>()</div>
 Resolver fully implements Stmt.Visitor and Expr.Visitor. Now is a good time to
 take a break, have a snack, maybe a little nap.
 有了这些visit方法，Java编译器应该会认为Resolver完全实现了Stmt.Visitor 和 Expr.Visitor。现在是时候休息一下了。</p>
-<h2><a href="#interpreting-resolved-variables--解释已解析的变量" id="interpreting-resolved-variables--解释已解析的变量"><small>11&#8202;.&#8202;4</small>Interpreting Resolved Variables  解释已解析的变量</a></h2>
+<h2><a href="#解释已解析的变量" id="解释已解析的变量"><small>11&#8202;.&#8202;4</small>解释已解析的变量</a></h2>
 <p>Let&rsquo;s see what our resolver is good for. Each time it visits a variable, it
 tells the interpreter how many scopes there are between the current scope and
 the scope where the variable is defined. At runtime, this corresponds exactly to
@@ -1140,7 +1140,7 @@ class Interpreter implements Expr.Visitor&lt;Object&gt;,
 </pre></div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em></div>
 
-<h3><a href="#accessing-a-resolved-variable--访问已解析的变量" id="accessing-a-resolved-variable--访问已解析的变量"><small>11&#8202;.&#8202;4&#8202;.&#8202;1</small>Accessing a resolved variable  访问已解析的变量</a></h3>
+<h3><a href="#访问已解析的变量" id="访问已解析的变量"><small>11&#8202;.&#8202;4&#8202;.&#8202;1</small>访问已解析的变量</a></h3>
 <p>Our interpreter now has access to each variable&rsquo;s resolved location. Finally, we
 get to make use of that. We replace the visit method for variable expressions
 with this:
@@ -1225,7 +1225,7 @@ easier is to have the interpreter explicitly assert<span class="em">&mdash;</spa
 statements or some other validation tool<span class="em">&mdash;</span>the contract it expects the resolver
 to have already upheld.</p>
 </aside>
-<h3><a href="#assigning-to-a-resolved-variable--赋值已解析的变量" id="assigning-to-a-resolved-variable--赋值已解析的变量"><small>11&#8202;.&#8202;4&#8202;.&#8202;2</small>Assigning to a resolved variable  赋值已解析的变量</a></h3>
+<h3><a href="#赋值已解析的变量" id="赋值已解析的变量"><small>11&#8202;.&#8202;4&#8202;.&#8202;2</small>赋值已解析的变量</a></h3>
 <p>We can also use a variable by assigning to it. The changes to visiting an
 assignment expression are similar.
 我们也可以通过赋值来使用一个变量。赋值表达式对应的visit方法的修改也是类似的。</p>
@@ -1266,7 +1266,7 @@ for our resolved data that was minimally invasive. All of the rest of the nodes
 continue working as they did before. Even the code for modifying environments is
 unchanged.
 解释器就只需要做这些调整。这也就是为什么我为解析数据选择了一种侵入性最小的表示方法。其余所有节点都跟之前一样，甚至连修改环境的代码也没有改动。</p>
-<h3><a href="#running-the-resolver--运行解析器" id="running-the-resolver--运行解析器"><small>11&#8202;.&#8202;4&#8202;.&#8202;3</small>Running the resolver  运行解析器</a></h3>
+<h3><a href="#运行解析器" id="运行解析器"><small>11&#8202;.&#8202;4&#8202;.&#8202;3</small>运行解析器</a></h3>
 <p>We do need to actually <em>run</em> the resolver, though. We insert the new pass after
 the parser does its magic.
 不过，我们确实需要<em>运行</em>解析器。我们在解析器完成工作之后插入一次解析器处理。</p>
@@ -1292,7 +1292,7 @@ needs.
 <p>At least, that&rsquo;s true if the resolver <em>succeeds</em>. But what about errors during
 resolution?
 退一步讲，如果解析器成功了，这么说就是对的。但是如果解析过程中出现错误会怎么办？</p>
-<h2><a href="#resolution-errors--解析错误" id="resolution-errors--解析错误"><small>11&#8202;.&#8202;5</small>Resolution Errors  解析错误</a></h2>
+<h2><a href="#解析错误" id="解析错误"><small>11&#8202;.&#8202;5</small>解析错误</a></h2>
 <p>Since we are doing a semantic analysis pass, we have an opportunity to make
 Lox&rsquo;s semantics more precise, and to help users catch bugs early before running
 their code. Take a look at this bad boy:
@@ -1326,7 +1326,7 @@ in <em>declare</em>()</div>
 variable previously declared in that same scope. If we see a collision, we
 report an error.
 当我们在局部作用域中声明一个变量时，我们已经知道了之前在同一作用域中声明的每个变量的名字。如果我们看到有冲突，我们就报告一个错误。</p>
-<h3><a href="#invalid-return-errors--无效返回错误" id="invalid-return-errors--无效返回错误"><small>11&#8202;.&#8202;5&#8202;.&#8202;1</small>Invalid return errors  无效返回错误</a></h3>
+<h3><a href="#无效返回错误" id="无效返回错误"><small>11&#8202;.&#8202;5&#8202;.&#8202;1</small>无效返回错误</a></h3>
 <p>Here&rsquo;s another nasty little script:
 这是另一个讨人厌的小脚本：</p>
 <div class="codehilite"><pre><span class="k">return</span> <span class="s">&quot;at top level&quot;</span>;
@@ -1480,12 +1480,12 @@ surprising that it took this much work to do it.
 <p>Why is it safe to eagerly define the variable bound to a function&rsquo;s name
 when other variables must wait until after they are initialized before they
 can be used?
-1、为什么先定义与函数名称绑定的变量是安全的，而其它变量必须等到初始化后才能使用？</p>
+为什么先定义与函数名称绑定的变量是安全的，而其它变量必须等到初始化后才能使用？</p>
 </li>
 <li>
 <p>How do other languages you know handle local variables that refer to the
 same name in their initializer, like:
-2、你知道其它语言中是如何处理局部变量在初始化式中引用了相同名称变量的情况？比如：</p>
+你知道其它语言中是如何处理局部变量在初始化式中引用了相同名称变量的情况？比如：</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">a</span> = <span class="s">&quot;outer&quot;</span>;
 {
   <span class="k">var</span> <span class="i">a</span> = <span class="i">a</span>;
@@ -1497,7 +1497,7 @@ variables differently? Do you agree with their choices? Justify your answer.
 </li>
 <li>
 <p>Extend the resolver to report an error if a local variable is never used.
-3、对解析器进行扩展，如果局部变量没有被使用就报告一个错误。</p>
+对解析器进行扩展，如果局部变量没有被使用就报告一个错误。</p>
 </li>
 <li>
 <p>Our resolver calculates <em>which</em> environment the variable is found in, but

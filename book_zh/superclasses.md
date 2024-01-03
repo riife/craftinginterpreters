@@ -29,7 +29,7 @@ mechanism for storing state on the stack. But we have an entirely different,
 much faster, way of handling inherited method calls this time around.
 本章中的一些内容会让你想起jlox。我们解决超类调用的方式几乎是一样的，即便是从clox这种在栈中存储状态的更复杂的机制来看。但这次我们会用一种完全不同的、更快的方式来处理继承方法的调用。
 
-## Inheriting Methods  继承方法
+## 继承方法
 
 We'll kick things off with method inheritance since it's the simpler piece. To
 refresh your memory, Lox inheritance syntax looks like this:
@@ -102,7 +102,7 @@ anything *useful*, but I don't think it would cause a crash or infinite loop.
 
 </aside>
 
-### Executing inheritance  执行继承
+### 执行继承
 
 Now onto the new instruction.
 现在来看新指令。
@@ -202,7 +202,7 @@ subclass's method table is empty. Any methods the subclass overrides will
 overwrite those inherited entries in the table.
 那方法重写呢？将超类的方法复制到子类的方法表中，不会与子类自己的方法发生冲突吗？幸运的是，不会。我们是在创建子类的`OP_CLASS`指令之后、但在任何方法声明和`OP_METHOD`指令被编译之前发出`OP_INHERIT`指令。当我们将超类的方法复制下来时，子类的方法表是空的。子类重写的任何方法都会覆盖表中那些继承的条目。
 
-### Invalid superclasses  无效超类
+### 无效超类
 
 Our implementation is simple and fast, which is just the way I like my VM code.
 But it's not robust. Nothing prevents a user from inheriting from an object that
@@ -226,7 +226,7 @@ ObjClass, we report a runtime error to let the user know what we think of them
 and their code.
 如果我们从超类子句的标识符中加载到的值不是ObjClass，就报告一个运行时错误，让用户知道我们对他们及其代码的看法。
 
-## Storing Superclasses  存储超类
+## 存储超类
 
 Did you notice that when we added method inheritance, we didn't actually add any
 reference from a subclass to its superclass? After we copy the inherited methods
@@ -327,7 +327,7 @@ upvalue system. The machinery is a little different, but the overall effect is
 the same.
 我们在clox中采用相同的方法。不同之处在于，我们使用的是字节码虚拟机的值栈和上值系统，而不是jlox的堆分配的Environment 类。机制有些不同，但总体效果是一样的。
 
-### A superclass local variable  超类局部变量
+### 超类局部变量
 
 Our compiler already emits code to load the superclass onto the stack. Instead
 of leaving that slot as a temporary, we create a new scope and make it a local
@@ -404,7 +404,7 @@ that local inside the body of the method or even in functions nested inside that
 method.
 这种机制在运行时为我们提供了一种方法，可以从子类的任何方法中访问外层子类的超类对象——只需发出代码来加载名为“super”的变量。这个变量是方法主体之外的一个局部变量，但是我们现有的上值支持VM在方法主体内、甚至是嵌套方法内的函数中捕获该局部变量。
 
-## Super Calls  超类调用
+## 超类调用
 
 With that runtime support in place, we are ready to implement super calls. As
 usual, we go front to back, starting with the new syntax. A super call <span
@@ -537,7 +537,7 @@ superclass. We detect both of these cases using the value of `currentClass`. If
 that's `NULL` or points to a class with no superclass, we report those errors.
 超类调用只有在方法主体（或方法中嵌套的函数）中才有意义，而且只在具有超类的某个类的方法中才有意义。我们使用`currentClass`的值来检测这两种情况。如果它是`NULL`或者指向一个没有超类的类，我们就报告这些错误。
 
-### Executing super accesses  执行超类访问
+### 执行超类访问
 
 Assuming the user didn't put a `super` expression where it's not allowed, their
 code passes from the compiler over to the runtime. We've got ourselves a new
@@ -596,7 +596,7 @@ fields *could* be inherited, and we would need to check for them here.
 
 </aside>
 
-### Faster super calls  更快的超类调用
+### 更快的超类调用
 
 We have superclass method accesses working now. And since the returned object is
 an ObjBoundMethod that you can then invoke, we've got super *calls* working too.
@@ -694,7 +694,7 @@ stack for the method's closure. That invalidates the interpreter's cached
 CallFrame pointer, so we refresh `frame`.
 我们将超类、方法名和参数数量传递给现有的`invokeFromClass()`函数。该函数在给定的类上查找给定的方法，并尝试用给定的元数创建一个对它的调用。如果找不到某个方法，它就返回false，并退出解释器。否则，`invokeFromClass()`将一个新的CallFrame压入方法闭包的调用栈上。这会使解释器缓存的CallFrame指针失效，所以我们也要刷新`frame`。
 
-## A Complete Virtual Machine  一个完整的虚拟机
+## 一个完整的虚拟机
 
 Take a look back at what we've created. By my count, we wrote around 2,500 lines
 of fairly clean, straightforward C. That little program contains a complete
@@ -735,8 +735,6 @@ squeeze even more perf out. If that sounds fun, [keep reading][opt]...
 : 就是这样，朋友，你要添加到解析表中的最后一项。
 : 假设性问题：如果一个光秃秃的`super`标识是一个表达式，那么它会被计算为哪种对象呢？
 : 与`OP_GET_PROPERTY`相比的另一个区别是，我们不会先尝试寻找遮蔽字段。字段不会被继承，所以`super`表达式总是解析为方法。<BR>如果Lox是一种使用*委托*而不是*继承*的基于原型的语言，那么就不是一个*类*继承另一个*类*，而是实例继承自（委托给）其它实例。在这种情况下，字段可以被继承，我们就需要在这里检查它们。
-## 习题
-1. > A tenet of object-oriented programming is that a class should ensure new objects are in a valid state. In Lox, that means defining an initializer that populates the instance’s fields. Inheritance complicates invariants because the instance must be in a valid state according to all of the classes in the object’s inheritance chain.
 
 [opt]: optimization.html
 
@@ -749,43 +747,41 @@ squeeze even more perf out. If that sounds fun, [keep reading][opt]...
     that populates the instance's fields. Inheritance complicates invariants
     because the instance must be in a valid state according to all of the
     classes in the object's inheritance chain.
+  面向对象编程的一个原则是，类应该确保新对象处于有效状态。在Lox中，这意味着要定义一个填充实例字段的初始化器。继承使不变性复杂化，因为对于对象继承链中的所有类，实例必须处于有效状态。
 
     The easy part is remembering to call `super.init()` in each subclass's
     `init()` method. The harder part is fields. There is nothing preventing two
     classes in the inheritance chain from accidentally claiming the same field
     name. When this happens, they will step on each other's fields and possibly
     leave you with an instance in a broken state.
-面向对象编程的一个原则是，类应该确保新对象处于有效状态。在Lox中，这意味着要定义一个填充实例字段的初始化器。继承使不变性复杂化，因为对于对象继承链中的所有类，实例必须处于有效状态。
-简单的部分是记住在每个子类的`init()`方法中调用`super.init()`。比较难的部分是字段。没有什么方法可以防止继承链中的两个类意外地声明相同的字段名。当这种情况发生时，它们会互相干扰彼此的字段，并可能让你的实例处于崩溃状态。
-如果Lox是你的语言，你会如何解决这个问题？如果你想改变语言，请实现你的更改。
-2. > Our copy-down inheritance optimization is valid only because Lox does not permit you to modify a class’s methods after its declaration. This means we don’t have to worry about the copied methods in the subclass getting out of sync with later changes to the superclass.
+    简单的部分是记住在每个子类的`init()`方法中调用`super.init()`。比较难的部分是字段。没有什么方法可以防止继承链中的两个类意外地声明相同的字段名。当这种情况发生时，它们会互相干扰彼此的字段，并可能让你的实例处于崩溃状态。
 
     If Lox was your language, how would you address this, if at all? If you
     would change the language, implement your change.
+    如果Lox是你的语言，你会如何解决这个问题？如果你想改变语言，请实现你的更改。
 
 2.  Our copy-down inheritance optimization is valid only because Lox does not
     permit you to modify a class's methods after its declaration. This means we
     don't have to worry about the copied methods in the subclass getting out of
     sync with later changes to the superclass.
+    我们的向下复制继承优化之所以有效，仅仅是因为Lox不允许在类声明之后修改它的方法。这意味着我们不必担心子类中复制的方法与后面对超类的修改不同步。
 
     Other languages, like Ruby, *do* allow classes to be modified after the
     fact. How do implementations of languages like that support class
     modification while keeping method resolution efficient?
-我们的向下复制继承优化之所以有效，仅仅是因为Lox不允许在类声明之后修改它的方法。这意味着我们不必担心子类中复制的方法与后面对超类的修改不同步。
-其它语言，如Ruby，确实允许在事后修改类。像这样的语言实现如何支持类的修改，同时保持方法解析的效率呢？
-3. > In the [jlox chapter on inheritance](http://www.craftinginterpreters.com/inheritance.html), we had a challenge to implement the BETA language’s approach to method overriding. Solve the challenge again, but this time in clox. Here’s the description of the previous challenge:
-在jlox关于继承的章节中，我们有一个习题，是实现BETA语言的方法重写。再次解决这个习题，但这次是在clox中。下面是对之前习题的描述：
+    其它语言，如Ruby，确实允许在事后修改类。像这样的语言实现如何支持类的修改，同时保持方法解析的效率呢？
 
 3.  In the [jlox chapter on inheritance][inheritance], we had a challenge to
     implement the BETA language's approach to method overriding. Solve the
     challenge again, but this time in clox. Here's the description of the
     previous challenge:
+    在jlox关于继承的章节中，我们有一个习题，是实现BETA语言的方法重写。再次解决这个习题，但这次是在clox中。下面是对之前习题的描述：
 
     In Lox, as in most other object-oriented languages, when looking up a
     method, we start at the bottom of the class hierarchy and work our way up --
     a subclass's method is preferred over a superclass's. In order to get to the
     superclass method from within an overriding method, you use `super`.
-在Lox中，和其它大多数面向对象的语言一样，当查找一个方法时，我们从类层次结构的底部开始，然后向上查找——子类的方法优于超类的方法。要想在子类方法中访问超类方法，可以使用`super`。
+    在Lox中，和其它大多数面向对象的语言一样，当查找一个方法时，我们从类层次结构的底部开始，然后向上查找——子类的方法优于超类的方法。要想在子类方法中访问超类方法，可以使用`super`。
 
     The language [BETA][] takes the [opposite approach][inner]. When you call a
     method, it starts at the *top* of the class hierarchy and works *down*. A
@@ -793,30 +789,30 @@ squeeze even more perf out. If that sounds fun, [keep reading][opt]...
     subclass method, the superclass method can call `inner`, which is sort of
     like the inverse of `super`. It chains to the next method down the
     hierarchy.
-[BETA](https://beta.cs.au.dk/)语言则采取了[相反的方法](http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/)。当你调用某个方法时，它从类层次结构的顶部开始向下运行。超类方法优于子类方法。要想访问子类方法，超类方法中可以调用`inner()`，这有点像是`super`的反义词。它会链接到层次结构中的下一个方法。
+    [BETA](https://beta.cs.au.dk/)语言则采取了[相反的方法](http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/)。当你调用某个方法时，它从类层次结构的顶部开始向下运行。超类方法优于子类方法。要想访问子类方法，超类方法中可以调用`inner()`，这有点像是`super`的反义词。它会链接到层次结构中的下一个方法。
 
     The superclass method controls when and where the subclass is allowed to
     refine its behavior. If the superclass method doesn't call `inner` at all,
     then the subclass has no way of overriding or modifying the superclass's
     behavior.
-超类方法控制着子类何时何地被允许完善其行为。如果超类方法根本不调用`inner`，那么子类就没有办法覆写或修改超类的行为。
+    超类方法控制着子类何时何地被允许完善其行为。如果超类方法根本不调用`inner`，那么子类就没有办法覆写或修改超类的行为。
 
     Take out Lox's current overriding and `super` behavior, and replace it with
     BETA's semantics. In short:
-去掉Lox中当前的覆写和`super`行为，替换为BETA的语义。简而言之：
+    去掉Lox中当前的覆写和`super`行为，替换为BETA的语义。简而言之：
 
     *   When calling a method on a class, the method *highest* on the
         class's inheritance chain takes precedence.
+    *   当调用某个类中的方法时，该类继承链上最高的方法优先。
 
     *   Inside the body of a method, a call to `inner` looks for a method with
         the same name in the nearest subclass along the inheritance chain
         between the class containing the `inner` and the class of `this`. If
         there is no matching method, the `inner` call does nothing.
-* 当调用某个类中的方法时，该类继承链上最高的方法优先。
-* 在方法体内部，对`inner`的调用，会沿着包含`inner`的类和`this`的类之间的继承链，在最近的子类中查找同名的方法。如果没有匹配的方法，`inner`调用就什么也不做。
+    *   在方法体内部，对`inner`的调用，会沿着包含`inner`的类和`this`的类之间的继承链，在最近的子类中查找同名的方法。如果没有匹配的方法，`inner`调用就什么也不做。
 
     For example:
-举例来说：
+    举例来说：
 
     ```lox
     class Doughnut {
@@ -837,7 +833,7 @@ squeeze even more perf out. If that sounds fun, [keep reading][opt]...
     ```
 
     This should print:
-这里应该打印：
+    这里应该打印：
 
     ```text
     Fry until golden brown.
@@ -848,7 +844,7 @@ squeeze even more perf out. If that sounds fun, [keep reading][opt]...
     Since clox is about not just implementing Lox, but doing so with good
     performance, this time around try to solve the challenge with an eye towards
     efficiency.
-因为clox不仅仅是实现Lox，而是要以良好的性能来实现，所以这次要尝试以效率为导向来解决这个问题。
+    因为clox不仅仅是实现Lox，而是要以良好的性能来实现，所以这次要尝试以效率为导向来解决这个问题。
 
 [inheritance]: inheritance.html
 [inner]: http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/

@@ -13,13 +13,13 @@ calls over seven times faster than our baseline performance. But before we get
 to that fun, we gotta get the basic stuff working.
 所有这些都是我们以前的jlox解释器中所熟悉的领域。第二次旅行中的新内容是我们将实现一个重要的优化，使方法调用的速度比基线性能快7倍以上。但在此之前，我们得先把基本的东西弄好。
 
-## Method Declarations  方法声明
+## 方法声明
 
 We can't optimize method calls before we have method calls, and we can't call
 methods without having methods to call, so we'll start with declarations.
 没有方法调用，我们就无法优化方法调用，而没有可供调用的方法，我们就无法调用方法，因此我们从声明开始。
 
-### Representing methods  表示方法
+### 表示方法
 
 We usually start in the compiler, but let's knock the object model out first
 this time. The runtime representation for methods in clox is similar to that of
@@ -64,7 +64,7 @@ of methods, and represent it as bytecode? Let's hop over to the compiler and
 find out.
 现在，编译器想要分发到运行时的每一条信息都必须通过一个扁平的字节码指令序列形式。我们如何接受一个可以包含任意大的方法集的类声明，并以字节码的形式将其表现出来？让我们跳到编译器上看看。
 
-### Compiling method declarations  编译方法声明
+### 编译方法声明
 
 The last chapter left us with a compiler that parses classes but allows only an
 empty body. Now we insert a little code to compile a series of method
@@ -217,7 +217,7 @@ All that remains for us is to implement the runtime for that new `OP_METHOD`
 instruction.
 我们剩下要做的就是为这个新的`OP_METHOD`指令实现运行时。
 
-### Executing method declarations  执行方法声明
+### 执行方法声明
 
 First we define the opcode.
 首先我们定义操作码。
@@ -270,7 +270,7 @@ start doing things. The next step is pulling those methods back out and using
 them.
 在完成一系列的`OP_METHOD`指令并且`OP_POP`弹出类后，我们将得到一个已填充好方法表的类，可以开始做事情了。下一步是将这些方法拉出来并使用它们。
 
-## Method References  方法引用
+## 方法引用
 
 Most of the time, methods are accessed and immediately called, leading to this
 familiar syntax:
@@ -333,7 +333,7 @@ runtime type.
 [globals]: global-variables.html#variable-declarations
 [upvalues]: closures.html#upvalues
 
-### Bound methods  已绑定方法
+### 已绑定的方法
 
 When the user executes a method access, we'll find the closure for that method
 and wrap it in a new <span name="bound">"bound method"</span> object that tracks
@@ -436,7 +436,7 @@ written your last `IS_` and `AS_` macros. We're only a few chapters from the end
 of the book, and we're getting close to a complete VM.
 庆祝一下，因为我们刚刚到达了一个小小的里程碑。ObjBoundMethod是要添加到clox中的最后一个运行时类型。你已经写完了最后的`IS_`和`AS_`宏。我们离本书的结尾只有几章了，而且我们已经接近一个完整的虚拟机了。
 
-### Accessing methods  访问方法
+### 访问方法
 
 Let's get our new object type doing something. Methods are accessed using the
 same "dot" property syntax we implemented in the last chapter. The compiler
@@ -503,7 +503,7 @@ That's a lot of machinery under the hood, but from the user's perspective, they
 simply get a function that they can call.
 在底层有很多机制，但从用户的角度来看，他们只是得到了一个可以调用的函数。
 
-### Calling methods  调用方法
+### 调用方法
 
 Users can declare methods on classes, access them on instances, and get bound
 methods onto the stack. They just can't <span name="do">*do*</span> anything
@@ -670,7 +670,7 @@ The `-argCount` skips past the arguments and the `- 1` adjusts for the fact that
 `stackTop` points just *past* the last used stack slot.
 `-argCount`跳过传递的参数，而`-1`则是因为`stackTop`指向刚刚最后一个实用的栈槽而做的调整。
 
-### Misusing this  误用this
+### 误用this
 
 Our VM now supports users *correctly* using `this`, but we also need to make
 sure it properly handles users *mis*using `this`. Lox says it is a compile
@@ -747,7 +747,7 @@ really feel like *methods* in the object-oriented sense. Accessing the receiver
 lets them affect the instance you called the method on. We're getting there!
 有个这个，类之外的`this`就被正确地禁止了。现在我们的方法就像是面向对象意义上的*方法*。对接收器的访问使得它们可以影响调用方法的实例。我们正在走向成功！
 
-## Instance Initializers  实例初始化器
+## 实例初始化器
 
 The reason object-oriented languages tie state and behavior together -- one of
 the core tenets of the paradigm -- is to ensure that objects are always in a
@@ -804,7 +804,7 @@ Now that we support methods, to add initializers, we merely need to implement
 those three special rules. We'll go in order.
 既然我们支持方法，为了添加初始化式，我们只需要实现这三条特殊规则。我们按顺序进行。
 
-### Invoking initializers  调用初始化器
+### 调用初始化器
 
 First, automatically calling `init()` on new instances:
 首先，在新实例上自动调用`init()`：
@@ -884,7 +884,7 @@ We clear the pointer when the VM shuts down since the next line will free it.
 OK, that lets us call initializers.
 好，这样我们就可以调用初始化器了。
 
-### Initializer return values  返回值的初始化器
+### 返回值的初始化器
 
 The next step is ensuring that constructing an instance of a class with an
 initializer always returns the new instance, and not `nil` or whatever the body
@@ -928,7 +928,7 @@ correctly handles cases where the user does an early return inside the
 initializer.
 在初始化器中，我们不再在返回前将`nil`压入栈中，而是加载包含实例的槽0。在编译不带值的`return`语句时，这个`emitReturn()`函数也会被调用，因此它也能正确处理用户在初始化器中提前返回的情况。
 
-### Incorrect returns in initializers  初始化器中的错误返回
+### 初始化器中的错误返回
 
 The last step, the last item in our list of special features of initializers, is
 making it an error to try to return anything *else* from an initializer. Now
@@ -976,7 +976,7 @@ something.
 
 </aside>
 
-## Optimized Invocations  优化调用
+## 优化调用
 
 Our VM correctly implements the language's semantics for method calls and
 initializers. We could stop here. But the main reason we are building an entire
@@ -1156,7 +1156,7 @@ to win any races.
 
 <img src="image/methods-and-initializers/benchmark.png" alt="Bar chart comparing the two benchmark results." />
 
-### Invoking fields  调用字段
+### 调用字段
 
 The fundamental creed of optimization is: "Thou shalt not break correctness."
 <span name="monte">Users</span> like it when a language implementation gives
@@ -1277,10 +1277,6 @@ of an object-oriented programming language, and with respectable performance.
 : 我们不应该过于自信。这种性能优化是相对于我们自己未优化的方法调用实现而言的，而那种方法调用实现相当缓慢。为每个方法调用都进行堆分配不会赢得任何比赛。
 : 在有些情况下，当程序偶尔返回错误的答案，以换取显著加快的运行速度或更好的性能边界，用户可能也是满意的。这些就是**[蒙特卡洛算法](https://en.wikipedia.org/wiki/Monte_Carlo_algorithm)**的领域。对于某些用例来说，这是一个很好的权衡。<BR>不过，重要的是，由用户选择使用这些算法中的某一种。我们这些语言实现者不能单方面地决定牺牲程序的正确性。
 : 作为语言*设计者*，我们的角色非常不同。如果我们确实控制了语言本身，我们有时可能会选择限制或改变语言的方式来实现优化。用户想要有表达力的语言，但他们也想要快速实现。有时，如果牺牲一点功能来获得完美回报是很好的语言设计。
-## 习题
-1. > The hash table lookup to find a class’s `init()` method is constant time, but still fairly slow. Implement something faster. Write a benchmark and measure the performance difference.
-哈希表中查找类的`init()`方法是常量时间复杂度，但仍然相当慢。实现一些更快的方法。写一个基准测试并度量性能差异。
-2. > In a dynamically typed language like Lox, a single callsite may invoke a variety of methods on a number of classes throughout a program’s execution. Even so, in practice, most of the time a callsite ends up calling the exact same method on the exact same class for the duration of the run. Most calls are actually not polymorphic even if the language says they can be.
 
 <div class="challenges">
 
@@ -1289,17 +1285,17 @@ of an object-oriented programming language, and with respectable performance.
 1.  The hash table lookup to find a class's `init()` method is constant time,
     but still fairly slow. Implement something faster. Write a benchmark and
     measure the performance difference.
+    哈希表中查找类的`init()`方法是常量时间复杂度，但仍然相当慢。实现一些更快的方法。写一个基准测试并度量性能差异。
 
 1.  In a dynamically typed language like Lox, a single callsite may invoke a
     variety of methods on a number of classes throughout a program's execution.
     Even so, in practice, most of the time a callsite ends up calling the exact
     same method on the exact same class for the duration of the run. Most calls
     are actually not polymorphic even if the language says they can be.
+    在像Lox这样的动态类型语言中，程序执行过程中的同样的一个调用可能会调用多个类上的多个方法。即便如此，在实践中，大多数情况下某个调用在运行期间会执行同一个类上的同一个方法。大多数调用实际上不是多态的，即使语言说它们是多态的。
 
     How do advanced language implementations optimize based on that observation?
-在像Lox这样的动态类型语言中，程序执行过程中的同样的一个调用可能会调用多个类上的多个方法。即便如此，在实践中，大多数情况下某个调用在运行期间会执行同一个类上的同一个方法。大多数调用实际上不是多态的，即使语言说它们是多态的。
-高级的语言实现是如何基于这一观察进行优化的？
-3. > When interpreting an `OP_INVOKE` instruction, the VM has to do two hash table lookups. First, it looks for a field that could shadow a method, and only if that fails does it look for a method. The former check is rarely useful—most fields do not contain functions. But it is *necessary* because the language says fields and methods are accessed using the same syntax, and fields shadow methods.
+    高级的语言实现是如何基于这一观察进行优化的？
 
 1.  When interpreting an `OP_INVOKE` instruction, the VM has to do two hash
     table lookups. First, it looks for a field that could shadow a method, and
@@ -1307,18 +1303,18 @@ of an object-oriented programming language, and with respectable performance.
     useful -- most fields do not contain functions. But it is *necessary*
     because the language says fields and methods are accessed using the same
     syntax, and fields shadow methods.
+    在解释`OP_INVOKE`指令时，虚拟机必须执行两次哈希表查询。首先，它要查找可能会遮蔽方法的字段，只有这一步失败时才会查找方法。前一个检查很少有用——大多数字段都不包含函数。但它是*必要*的，因为语言要求字段和方法通过同样的语法来访问，并且字段会遮蔽方法。
 
     That is a language *choice* that affects the performance of our
     implementation. Was it the right choice? If Lox were your language, what
     would you do?
-在解释`OP_INVOKE`指令时，虚拟机必须执行两次哈希表查询。首先，它要查找可能会遮蔽方法的字段，只有这一步失败时才会查找方法。前一个检查很少有用——大多数字段都不包含函数。但它是*必要*的，因为语言要求字段和方法通过同样的语法来访问，并且字段会遮蔽方法。
-这是一种影响实现性能的语言选择。这是个正确的选择吗？如果Lox是你的语言，你会怎么做？
+    这是一种影响实现性能的语言选择。这是个正确的选择吗？如果Lox是你的语言，你会怎么做？
 
 </div>
 
 <div class="design-note">
 
-## Design Note: Novelty Budget 新奇性预算
+## Design Note: 新奇的预算(Novelty Budget)
 
 I still remember the first time I wrote a tiny BASIC program on a TRS-80 and
 made a computer do something it hadn't done before. It felt like a superpower.

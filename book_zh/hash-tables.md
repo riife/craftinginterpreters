@@ -53,7 +53,7 @@ dramatically. As we'll see, that's not too far from the trick a hash table uses.
 
 </aside>
 
-## An Array of Buckets  桶数组
+## 桶数组
 
 A complete, fast hash table has a couple of moving parts. I'll introduce them
 one at a time by working through a couple of toy problems and their solutions.
@@ -110,7 +110,7 @@ core of every hash table out there -- a contiguous array of buckets that you
 index directly into.
 这是一种柏拉图式的理想数据结构。快如闪电，非常简单，而且内存紧凑。当我们进一步支持更复杂的键时，就必须作出一些让步，但这仍是我们的目标所在。即使加入了哈希函数、动态调整大小和冲突解决，这仍然是每个哈希表的核心——一个可以直接索引到的连续桶数组。
 
-### Load factor and wrapped keys  负载因子和封装键
+### 负载因子和封装键
 
 Confining Lox to single-letter variables would make our job as implementers
 easier, but it's probably no fun programming in a language that gives you only
@@ -188,7 +188,7 @@ array is *full*. Instead, we pick a desired load factor and grow the array when
 it goes over that.
 减少冲突的一种方法是调整数组的大小。就像我们前面实现的动态数组一样，我们在哈希表的数组被填满时，重新分配并扩大该数组。但与常规的动态数组不同的是，我们不会等到数组填满。相反，我们选择一个理想的负载因子，当数组的负载因子超过该值时，我们就扩大数组。
 
-## Collision Resolution  冲突解决
+## 冲突解决
 
 Even with a very low load factor, collisions can still occur. The [*birthday
 paradox*][birthday] tells us that as the number of entries in the hash table
@@ -227,7 +227,7 @@ pigeons before you get a greater than 50% chance of two pigeons in the same box.
 
 </aside>
 
-### Separate chaining  拉链法
+### 拉链法
 
 Techniques for resolving collisions fall into two broad categories. The first is
 **separate chaining**. Instead of each bucket containing a single entry, we let
@@ -261,7 +261,7 @@ store a few entries to reduce the pointer overhead.
 
 </aside>
 
-### Open addressing  开放地址法
+### 开放地址法
 
 The other technique is <span name="open">called</span> **open addressing** or
 (confusingly) **closed hashing**. With this technique, all entries live directly
@@ -376,7 +376,7 @@ that same check, and that also covers the case where you are stepping over
 entries that "belong" to a different original bucket.
 在实践中，这种交错并不是什么大问题。即使是在拉链法中，我们也需要遍历列表来检查每个条目的键，因为多个键会落入同一个桶中。使用开放地址法，我们需要做同样的检查，这也涵盖了你需要遍历“属于”不同原始桶的条目的情况。
 
-## Hash Functions  哈希函数
+## 哈希函数
 
 We can now build ourselves a reasonably efficient table for storing variable
 names up to eight characters long, but that limitation is still annoying. In
@@ -453,7 +453,7 @@ lot of real code. Don't worry if it still seems vague. Once we're done coding it
 up, it will all click into place.
 好了，我们快速浏览了桶、负载因子、开放地址法、冲突解决和哈希函数。这里有非常多的文字，但没有多少真正的代码。如果它看起来仍然很模糊，不要担心。一旦我们完成了编码，一切都会全部就位。
 
-## Building a Hash Table  构建哈希表
+## 构建哈希表
 
 The great thing about hash tables compared to other classic techniques like
 balanced search trees is that the actual data structure is so simple. Ours goes
@@ -516,7 +516,7 @@ items. We don't need to check for `NULL` here since `FREE_ARRAY()` already
 handles that gracefully.
 同样，它看起来就像一个动态数组。实际上，你基本可以把哈希表看作是一个动态数组，它具有一个非常奇怪的插入条目策略。在这里我们不需要检查`NULL`，因为`FREE_ARRAY()`已经优雅地处理了这个问题。
 
-### Hashing strings  哈希字符串
+### 哈希字符串
 
 Before we can start putting entries in the table, we need to, well, hash them.
 To ensure that the entries get distributed uniformly throughout the array, we
@@ -594,7 +594,7 @@ be as widely scattered around the numeric range as possible to avoid collisions
 and clustering.
 “混合”和“扰乱”的含义可以变得相当复杂。不过，最终的基本目标是均匀——我们希望得到的哈希值尽可能广泛地分散在数组范围内，以避免碰撞和聚集。
 
-### Inserting entries  插入条目
+### 插入条目
 
 Now that string objects know their hash code, we can start putting them into
 hash tables.
@@ -723,7 +723,7 @@ so the caller can either insert something into it or read from it. Way back in
 that returned bucket and we're done.
 我们会从循环中直接返回，得到一个指向找到的Entry的指针，这样调用方就可以向其中插入内容或从中读取内容。回到`tableSet()`——最先调用它的函数，我们将新条目存储到返回的桶中，然后就完成了。
 
-### Allocating and resizing  分配和调整
+### 分配和调整
 
 Before we can put entries in the hash table, we do need a place to actually
 store them. We need to allocate an array of buckets. That happens in this
@@ -791,7 +791,7 @@ table. Whenever it finds a non-empty bucket, it adds the entry to the
 destination hash table using the `tableSet()` function we recently defined.
 这没什么可说的。它会遍历源哈希表的桶数组。只要发现一个非空的桶，就使用我们刚定义的`tableSet()`函数将条目添加到目标哈希表中。
 
-### Retrieving values  检索值
+### 检索值
 
 Now that our hash table contains some stuff, let's start pulling things back
 out. Given a key, we can look up the corresponding value, if there is one, with
@@ -820,7 +820,7 @@ our match. We take the Entry's value and copy it to the output parameter so the
 caller can get it. Piece of cake.
 如果表完全是空的，我们肯定找不到这个条目，所以我们先检查一下。这不仅仅是一种优化——它还确保当数组为`NULL`时，我们不会试图访问桶数组。其它情况下，我们就让`findEntry()`发挥它的魔力。这将返回一个指向桶的指针。如果桶是空的（我们通过查看键是否为`NULL`来检测），那么我们就没有找到包含对应键的Entry。如果`findEntry()`确实返回了一个非空的Entry，那么它就是我们的匹配项。我们获取Entry的值并将其复制到输出参数中，这样调用方就可以得到该值。小菜一碟。
 
-### Deleting entries  删除条目
+### 删除条目
 
 There is one more fundamental operation a full-featured hash table needs to
 support: removing an entry. This seems pretty obvious, if you can add things,
@@ -947,7 +947,7 @@ factor and resizing. The key question is, when calculating the load factor,
 should we treat tombstones like full buckets or empty ones?
 所以我们需要仔细考虑墓碑如何与表的负载因子和大小调整进行互动。关键问题是，在计算负载因子时，我们应该把墓碑当作满桶还是空桶？
 
-### Counting tombstones  墓碑计数
+### 墓碑计数
 
 If we treat tombstones like full buckets, then we may end up with a bigger array
 than we probably need because it artificially inflates the load factor. There
@@ -1016,7 +1016,7 @@ affected entries. You basically recycle a node in the chain of probed entries.
 It's a neat trick.
 但如果你仔细想想，墓碑方案并不是将删除的工作完全推给了其它操作，它更像是让删除*延迟*了。首先，它只做了很少的工作，把条目变成墓碑。当以后的查找不得不跳过它时，这可能会造成损失。但是，它也允许墓碑桶被后续的插入操作重用。这种重用是一种非常有效的方法，可以避免重新安排后续受影响的条目的成本。你基本上是回收了探测条目链中的一个节点。这是一个很巧妙的技巧。
 
-## String Interning  字符串驻留
+## 字符串驻留
 
 We've got ourselves a hash table that mostly works, though it has a critical
 flaw in its center. Also, we aren't using it for anything yet. It's time to
@@ -1219,8 +1219,6 @@ then *everything* is slow.
 :
 : 在实践中，我们会首先比较两个字符串的哈希码。这样可以快速检测到几乎所有不同的字符串——如果不能，它就不是一个很好的哈希函数。但是，当两个哈希值相同时，我们仍然需要比较字符，以确保没有在不同的字符串上出现哈希冲突。
 : 我猜想“intern”是“internal（内部）”的缩写。我认为这个想法是，语言的运行时保留了这些字符串的“内部”集合，而其它字符串可以由用户创建并漂浮在内存中。当你要驻留一个字符串时，你要求运行时将该字符串添加到该内部集合，并返回一个指向该字符串的指针。<BR>不同语言在字符串驻留程度以及对用户的暴露方式上有所不同。Lua会驻留*所有*字符串，这也是clox要做的事情。Lisp、Scheme、Smalltalk、Ruby和其他语言都有一个单独的类似字符串的类型“symbol（符号）”，它是隐式驻留的。（这就是为什么他们说Ruby中的符号“更快”）Java默认会驻留常量字符串，并提供一个API让你显式地驻留传入的任何字符串。
-## 习题
-1. > In clox, we happen to only need keys that are strings, so the hash table we built is hardcoded for that key type. If we exposed hash tables to Lox users as a first-class collection, it would be useful to support different kinds of keys.
 
 <div class="challenges">
 
@@ -1230,20 +1228,20 @@ then *everything* is slow.
     built is hardcoded for that key type. If we exposed hash tables to Lox users
     as a first-class collection, it would be useful to support different kinds
     of keys.
+    在clox中，我们碰巧只需要字符串类型的键，所以我们构建的哈希表是针对这种键类型硬编码的。如果我们将哈希表作为一级集合暴露给Lox用户，那么支持不同类型的键就会很有用。
 
     Add support for keys of the other primitive types: numbers, Booleans, and
     `nil`. Later, clox will support user-defined classes. If we want to support
     keys that are instances of those classes, what kind of complexity does that
     add?
-在clox中，我们碰巧只需要字符串类型的键，所以我们构建的哈希表是针对这种键类型硬编码的。如果我们将哈希表作为一级集合暴露给Lox用户，那么支持不同类型的键就会很有用。
-添加对其它基本类型键的支持：数字、布尔值和`nil`。稍后，clox会支持用户定义的类。如果我们想支持那些类的实例作为键，那会增加什么样的复杂性呢？
-2. > Hash tables have a lot of knobs you can tweak that affect their performance. You decide whether to use separate chaining or open addressing. Depending on which fork in that road you take, you can tune how many entries are stored in each node, or the probing strategy you use. You control the hash function, load factor, and growth rate.
+    添加对其它基本类型键的支持：数字、布尔值和`nil`。稍后，clox会支持用户定义的类。如果我们想支持那些类的实例作为键，那会增加什么样的复杂性呢？
 
 1.  Hash tables have a lot of knobs you can tweak that affect their performance.
     You decide whether to use separate chaining or open addressing. Depending on
     which fork in that road you take, you can tune how many entries are stored
     in each node, or the probing strategy you use. You control the hash
     function, load factor, and growth rate.
+    哈希表中有很多你可以调整的旋钮，它们会影响哈希表的性能。你可以决定使用拉链法还是开放地址法。根据你采取的方式，你可以调整每个节点中存储的条目数量，或者是使用的探测策略。你可以控制哈希函数、负载因子和增长率。
 
     All of this variety wasn't created just to give CS doctoral candidates
     something to <span name="publish">publish</span> theses on: each has its
@@ -1251,9 +1249,7 @@ then *everything* is slow.
     into play. Look up a few hash table implementations in different open source
     systems, research the choices they made, and try to figure out why they did
     things that way.
-哈希表中有很多你可以调整的旋钮，它们会影响哈希表的性能。你可以决定使用拉链法还是开放地址法。根据你采取的方式，你可以调整每个节点中存储的条目数量，或者是使用的探测策略。你可以控制哈希函数、负载因子和增长率。
-所有这些变化不仅仅是为了给CS博士发表论文（至少这不是它们被创造的唯一原因，是否是主要原因还有待商榷）：在哈希表能发挥作用的许多不同领域和硬件场景中，每一种都有其用途。在不同的开源系统中查找一些哈希表的实现，研究他们所做的选择，并尝试弄清楚他们为什么这样做。
-3. > Benchmarking a hash table is notoriously difficult. A hash table implementation may perform well with some keysets and poorly with others. It may work well at small sizes but degrade as it grows, or vice versa. It may choke when deletions are common, but fly when they aren’t. Creating benchmarks that accurately represent how your users will use the hash table is a challenge.
+    所有这些变化不仅仅是为了给CS博士发表论文（至少这不是它们被创造的唯一原因，是否是主要原因还有待商榷）：在哈希表能发挥作用的许多不同领域和硬件场景中，每一种都有其用途。在不同的开源系统中查找一些哈希表的实现，研究他们所做的选择，并尝试弄清楚他们为什么这样做。
 
     <aside name="publish">
 
@@ -1268,12 +1264,12 @@ then *everything* is slow.
     choke when deletions are common, but fly when they aren't. Creating
     benchmarks that accurately represent how your users will use the hash table
     is a challenge.
+    对哈希表进行基准测试是出了名的困难。一个哈希表的实现可能在某些键集上表现良好，而在其它键集上则表现不佳。它可能是规模较小时工作得很好，但随着规则扩展会退化，或者正好反过来。当删除操作很多时，它可能被卡住，但删除不常见时，它可能会飞起来。创建能够准确代表用户使用哈希表方式的基准是一项挑战。
 
     Write a handful of different benchmark programs to validate our hash table
     implementation. How does the performance vary between them? Why did you
     choose the specific test cases you chose?
-对哈希表进行基准测试是出了名的困难。一个哈希表的实现可能在某些键集上表现良好，而在其它键集上则表现不佳。它可能是规模较小时工作得很好，但随着规则扩展会退化，或者正好反过来。当删除操作很多时，它可能被卡住，但删除不常见时，它可能会飞起来。创建能够准确代表用户使用哈希表方式的基准是一项挑战。
-编写一些不同的基准程序来验证我们的哈希表实现。它们之间的表现有什么不同？你为什么选择这些测试用例？
+    编写一些不同的基准程序来验证我们的哈希表实现。它们之间的表现有什么不同？你为什么选择这些测试用例？
 
 </div>
 

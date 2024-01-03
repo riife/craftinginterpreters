@@ -1,8 +1,8 @@
 > Any problem in computer science can be solved with another level of
 > indirection. Except for the problem of too many layers of indirection.
+> 计算机科学中的任何问题都可以通过引入一个中间层来解决。除了中间层太多的问题。
 >
 > <cite>David Wheeler</cite>
-计算机科学中的任何问题都可以通过引入一个中间层来解决。除了中间层太多的问题。（David Wheeler）
 
 This chapter is a beast. I try to break features into bite-sized pieces, but
 sometimes you gotta swallow the whole <span name="eat">meal</span>. Our next
@@ -140,7 +140,7 @@ With that, our object model knows how to represent functions. I'm feeling warmed
 up now. You ready for something a little harder?
 这样，我们的对象模型就知道如何表示函数了。我现在感觉已经热身了。你准备好来点更难的东西了吗？
 
-## Compiling to Function Objects  编译为函数对象
+## 编译为函数对象
 
 Right now, our compiler assumes it is always compiling to one single chunk. With
 each function's code living in separate chunks, that gets more complex. When the
@@ -206,7 +206,7 @@ will create and return a function that contains the compiled top-level code --
 which is all we support right now -- of the user's program.
 当前的字节码块一定是我们正在编译的函数所拥有的块。接下来，我们需要实际创建该函数。之前，虚拟机将一个Chunk传递给编译器，编译器会将代码填入其中。现在取而代之的是，编译器创建并返回一个包含已编译顶层代码的函数——这就是我们目前所支持的。
 
-### Creating functions at compile time  编译时创建函数
+### 编译时创建函数
 
 We start threading this through in `compile()`, which is the main entry point
 into the compiler.
@@ -341,14 +341,14 @@ Eventually, we will update `interpret()` to handle the new declaration of
 `compile()`, but first we have some other changes to make.
 最终，我们会更新`interpret()`来处理`compile()`的新声明，但首先我们要做一些其它的改变。
 
-## Call Frames  调用帧
+## 调用帧
 
 It's time for a big conceptual leap. Before we can implement function
 declarations and calls, we need to get the VM ready to handle them. There are
 two main problems we need to worry about:
 是时候进行一次重大的概念性飞跃了。在我们实现函数声明和调用之前，需要让虚拟机准备好处理它们。我们需要考虑两个主要问题：
 
-### Allocating local variables  分配局部变量
+### 分配局部变量
 
 The compiler allocates stack slots for local variables. How should that work
 when the set of local variables in a program is distributed across multiple
@@ -498,7 +498,7 @@ That's the first piece of data we need to track. Every time we call a function,
 the VM determines the first stack slot where that function's variables begin.
 这是我们需要跟踪的第一块数据。每次我们调用函数时，虚拟机都会确定该函数变量开始的第一个栈槽。
 
-### Return addresses  返回地址
+### 返回地址
 
 Right now, the VM works its way through the instruction stream by incrementing
 the `ip` field. The only interesting behavior is around control flow
@@ -530,7 +530,7 @@ line between genius and madness is hair thin.
 
 </aside>
 
-### The call stack  调用栈
+### 调用栈
 
 So for each live function invocation -- each call that hasn't returned yet -- we
 need to track where on the stack that function's locals begin, and where the
@@ -729,7 +729,7 @@ any new features yet, so this is kind of a let down. But all of the
 infrastructure is there and ready for us now. Let's take advantage of it.
 假如我们都正确执行了所有这些操作，就可以让clox回到可运行的状态。启动它，它就会……像以前一样。我们还没有添加任何新功能，所以这有点让人失望。但是所有的基础设施都已经就绪了。让我们好好利用它。
 
-## Function Declarations  函数声明
+## 函数声明
 
 Before we can do call expressions, we need something to call, so we'll do
 function declarations first. The <span name="fun">fun</span> starts with a
@@ -815,7 +815,7 @@ here. Then we call our existing `block()` function, which knows how to compile
 the rest of a block including the closing brace.
 现在，我们不需要考虑参数。我们解析一对空括号，然后是主体。主体以左大括号开始，我们在这里会解析它。然后我们调用现有的`block()`函数，该函数知道如何编译代码块的其余部分，包括结尾的右大括号。
 
-### A stack of compilers  编译器栈
+### 编译器栈
 
 The interesting parts are the compiler stuff at the top and bottom. The Compiler
 struct stores data like which slots are owned by which local variables, how many
@@ -890,7 +890,7 @@ amount of function nesting it permits.
 
 </aside>
 
-### Function parameters  函数参数
+### 函数参数
 
 Functions aren't very useful if you can't pass arguments to them, so let's do
 parameters next.
@@ -996,7 +996,7 @@ middle to declare the new instruction.
 
 ^code op-call (1 before, 1 after)
 
-### Binding arguments to parameters  绑定形参与实参
+### 绑定形参与实参
 
 Before we get to the implementation, we should think about what the stack looks
 like at the point of a call and what we need to do from there. When we reach the
@@ -1148,7 +1148,7 @@ top-level code.
 OK, now back to calls...
 好了，现在回到调用……
 
-### Runtime error checking  运行时错误检查
+### 运行时错误检查
 
 The overlapping stack windows work based on the assumption that a call passes
 exactly one argument for each of the function's parameters. But, again, because
@@ -1174,7 +1174,7 @@ In practice, if a program gets anywhere close to this limit, there's most likely
 a bug in some runaway recursive code.
 在实践中，如果一个程序接近这个极限，那么很可能在某些失控的递归代码中出现了错误。
 
-### Printing stack traces  打印栈跟踪记录
+### 打印栈跟踪记录
 
 While we're on the subject of runtime errors, let's spend a little time making
 them more useful. Stopping on a runtime error is important to prevent the VM
@@ -1253,7 +1253,7 @@ Expected 0 arguments but got 2.
 That doesn't look too bad, does it?
 看起来还不错，是吧？
 
-### Returning from functions  从函数中返回
+### 从函数中返回
 
 We're getting close. We can call functions, and the VM will execute them. But we
 can't *return* from them yet. We've had an `OP_RETURN` instruction for quite
@@ -1313,7 +1313,7 @@ onto the stack. And with that, we have working function calls! They can even
 take parameters! It almost looks like we know what we're doing here.
 编译器调用`emitReturn()`，在函数体的末尾写入`OP_RETURN`指令。现在，在此之前，它会生成一条指令将`nil`压入栈中。这样，我们就有了可行的函数调用！它们甚至可以接受参数！看起来我们好像知道自己在做什么。
 
-## Return Statements  Return语句
+## Return语句
 
 If you want a function that returns something other than the implicit `nil`, you
 need a `return` statement. Let's get that working.
@@ -1375,7 +1375,7 @@ of any function, which we implement like so:
 This is one of the reasons we added that FunctionType enum to the compiler.
 这是我们在编译器中添加FunctionType枚举的原因之一。
 
-## Native Functions  本地函数
+## 本地函数
 
 Our VM is getting more powerful. We've got functions, calls, parameters,
 returns. You can define lots of different functions that can call each other in
@@ -1579,8 +1579,6 @@ quite an improvement.
 : 允许在顶层返回并不是世界上最糟糕的主意。它可以为你提供一种自然的方式来提前终止脚本。你甚至可以用返回的数字来表示进程的推出码。
 : 如果你没搞懂也不用担心，一旦我们开始实现GC，它就会变得更有意义。
 : 它比在Ruby 2.4.3p205中运行的同类Ruby程序稍慢，比在Python 3.7.3中运行的程序快3倍左右。而且我们仍然可以在我们的虚拟机中做很多简单的优化。
-## 习题
-1. > Reading and writing the `ip` field is one of the most frequent operations inside the bytecode loop. Right now, we access it through a pointer to the current CallFrame. That requires a pointer indirection which may force the CPU to bypass the cache and hit main memory. That can be a real performance sink.
 
 <aside name="faster">
 
@@ -1626,12 +1624,11 @@ optimizations we can do in our VM.
     affect the performance of native calls?
 目前，本机函数还没有办法发出运行时错误的信号。在一个真正的语言实现中，这是我们需要支持的，因为本机函数存在于静态类型的C语言世界中，却被动态类型的Lox调用。假如说，用户试图向`sqrt()`传递一个字符串，则该本地函数需要报告一个运行时错误。
 扩展本地函数系统，以支持该功能。这个功能会如何影响本地调用的性能？
-4. > Add some more native functions to do things you find useful. Write some programs using those. What did you add? How do they affect the feel of the language and how practical it is?
-添加一些本地函数来做你认为有用的事情。用它们写一些程序。你添加了什么？它们是如何影响语言的感觉和实用性的？
 
 4.  Add some more native functions to do things you find useful. Write some
     programs using those. What did you add? How do they affect the feel of the
     language and how practical it is?
+    添加一些本地函数来做你认为有用的事情。用它们写一些程序。你添加了什么？它们是如何影响语言的感觉和实用性的？
 
 </div>
 

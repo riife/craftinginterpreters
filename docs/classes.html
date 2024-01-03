@@ -37,16 +37,16 @@
         <h3><a href="#top">类<small>12</small></a></h3>
     
     <ul>
-        <li><a href="#oop-and-classes"><small>12.1</small> OOP and Classes</a></li>
-        <li><a href="#class-declarations"><small>12.2</small> Class Declarations</a></li>
-        <li><a href="#creating-instances--创建实例"><small>12.3</small> Creating Instances  创建实例</a></li>
-        <li><a href="#properties-on-instances--实例属性"><small>12.4</small> Properties on Instances  实例属性</a></li>
-        <li><a href="#methods-on-classes--类中的方法"><small>12.5</small> Methods on Classes  类中的方法</a></li>
+        <li><a href="#oop-与-classes"><small>12.1</small> OOP 与 Classes</a></li>
+        <li><a href="#类声明"><small>12.2</small> 类声明</a></li>
+        <li><a href="#创建实例"><small>12.3</small> 创建实例</a></li>
+        <li><a href="#实例属性"><small>12.4</small> 实例属性</a></li>
+        <li><a href="#类中的方法"><small>12.5</small> 类中的方法</a></li>
         <li><a href="#this"><small>12.6</small> This</a></li>
-        <li><a href="#constructors-and-initializers--构造函数和初始化"><small>12.7</small> Constructors and Initializers  构造函数和初始化</a></li>
+        <li><a href="#构造函数和初始化"><small>12.7</small> 构造函数和初始化</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
-        <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power 原型与功率</a></li>
+        <li class="end-part"><a href="#design-note"><small>note</small>原型与功率(Prototypes and Power)</a></li>
     </ul>
     
     
@@ -71,16 +71,16 @@
         <h3><a href="#top">类<small>12</small></a></h3>
         
         <ul>
-            <li><a href="#oop-and-classes"><small>12.1</small> OOP and Classes</a></li>
-            <li><a href="#class-declarations"><small>12.2</small> Class Declarations</a></li>
-            <li><a href="#creating-instances--创建实例"><small>12.3</small> Creating Instances  创建实例</a></li>
-            <li><a href="#properties-on-instances--实例属性"><small>12.4</small> Properties on Instances  实例属性</a></li>
-            <li><a href="#methods-on-classes--类中的方法"><small>12.5</small> Methods on Classes  类中的方法</a></li>
+            <li><a href="#oop-与-classes"><small>12.1</small> OOP 与 Classes</a></li>
+            <li><a href="#类声明"><small>12.2</small> 类声明</a></li>
+            <li><a href="#创建实例"><small>12.3</small> 创建实例</a></li>
+            <li><a href="#实例属性"><small>12.4</small> 实例属性</a></li>
+            <li><a href="#类中的方法"><small>12.5</small> 类中的方法</a></li>
             <li><a href="#this"><small>12.6</small> This</a></li>
-            <li><a href="#constructors-and-initializers--构造函数和初始化"><small>12.7</small> Constructors and Initializers  构造函数和初始化</a></li>
+            <li><a href="#构造函数和初始化"><small>12.7</small> 构造函数和初始化</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
-            <li class="end-part"><a href="#design-note"><small>note</small>Prototypes and Power 原型与功率</a></li>
+            <li class="end-part"><a href="#design-note"><small>note</small>原型与功率(Prototypes and Power)</a></li>
         </ul>
         
         
@@ -125,7 +125,7 @@ fairly isolated from the rest of the book. Personally, I find it&rsquo;s good to
 more about the things I dislike. Things look simple at a distance, but as I get
 closer, details emerge and I gain a more nuanced perspective.</p>
 </aside>
-<h2><a href="#oop-and-classes" id="oop-and-classes"><small>12&#8202;.&#8202;1</small>OOP and Classes</a></h2>
+<h2><a href="#oop-与-classes" id="oop-与-classes"><small>12&#8202;.&#8202;1</small>OOP 与 Classes</a></h2>
 <p>There are three broad paths to object-oriented programming: classes,
 <a href="http://gameprogrammingpatterns.com/prototype.html">prototypes</a>, and <span name="multimethods"><a href="https://en.wikipedia.org/wiki/Multiple_dispatch">multimethods</a></span>. Classes
 came first and are the most popular style. With the rise of JavaScript (and to a
@@ -186,7 +186,7 @@ together until we have all of the above pieces, so gather your stamina.</p>
 <aside name="circle"><img src="image/classes/circle.png" alt="The relationships between classes, methods, instances, constructors, and fields." />
 <p>It&rsquo;s like the circle of life, <em>sans</em> Sir Elton John.</p>
 </aside>
-<h2><a href="#class-declarations" id="class-declarations"><small>12&#8202;.&#8202;2</small>Class Declarations</a></h2>
+<h2><a href="#类声明" id="类声明"><small>12&#8202;.&#8202;2</small>类声明</a></h2>
 <p>Like we do, we&rsquo;re gonna start with syntax. A <code>class</code> statement introduces a new
 name, so it lives in the <code>declaration</code> grammar rule.
 跟之前一样，我们从语法开始。<code>class</code>语句引入了一个新名称，所以它应该在<code>declaration</code> 语法规则中。</p>
@@ -366,7 +366,7 @@ script and test that class objects are actually being parsed and executed.
 
 <span class="k">print</span> <span class="t">DevonshireCream</span>; <span class="c">// Prints &quot;DevonshireCream&quot;.</span>
 </pre></div>
-<h2><a href="#creating-instances--创建实例" id="creating-instances--创建实例"><small>12&#8202;.&#8202;3</small>Creating Instances  创建实例</a></h2>
+<h2><a href="#创建实例" id="创建实例"><small>12&#8202;.&#8202;3</small>创建实例</a></h2>
 <p>We have classes, but they don&rsquo;t do anything yet. Lox doesn&rsquo;t have &ldquo;static&rdquo;
 methods that you can call right on the class itself, so without actual
 instances, classes are useless. Thus instances are the next step.
@@ -467,7 +467,7 @@ want to give it a try, here&rsquo;s a script to run:
 </pre></div>
 <p>This program doesn&rsquo;t do much, but it&rsquo;s starting to do <em>something</em>.
 这段程序没有做太多事，但是已经开始做<em>一些事情</em>了。</p>
-<h2><a href="#properties-on-instances--实例属性" id="properties-on-instances--实例属性"><small>12&#8202;.&#8202;4</small>Properties on Instances  实例属性</a></h2>
+<h2><a href="#实例属性" id="实例属性"><small>12&#8202;.&#8202;4</small>实例属性</a></h2>
 <p>We have instances, so we should make them useful. We&rsquo;re at a fork in the road.
 We could add behavior first<span class="em">&mdash;</span>methods<span class="em">&mdash;</span>or we could start with state<span class="em">&mdash;</span>properties. We&rsquo;re going to take the latter because, as we&rsquo;ll see, the two get
 entangled in an interesting way and it will be easier to make sense of them if
@@ -501,7 +501,7 @@ the grammar by replacing the existing <code>call</code> rule with:
 calls and dotted property accesses. &ldquo;Property access&rdquo; is a mouthful, so from
 here on out, we&rsquo;ll call these &ldquo;get expressions&rdquo;.
 在基本表达式之后，我们允许跟一系列括号调用和点属性访问的任何混合。属性访问有点拗口，所以自此以后，我们称其为“get表达式”。</p>
-<h3><a href="#get-expressions--get表达式" id="get-expressions--get表达式"><small>12&#8202;.&#8202;4&#8202;.&#8202;1</small>Get expressions  Get表达式</a></h3>
+<h3><a href="#get表达式" id="get表达式"><small>12&#8202;.&#8202;4&#8202;.&#8202;1</small>Get表达式</a></h3>
 <p>The <span name="get-ast">syntax tree node</span> is:
 语法树节点是：</p>
 <div class="codehilite"><pre class="insert-before">      &quot;Call     : Expr callee, Token paren, List&lt;Expr&gt; arguments&quot;,
@@ -639,7 +639,7 @@ name="foreshadowing">later</span>, not every property is a field.
 actually stuff any state into an instance, there are no fields to access. Before
 we can test out reading, we must support writing.
 理论上，我们现在可以读取对象的属性。但是由于没有办法将任何状态真正填充到实例中，所以也没有字段可以访问。在我们测试读取之前，我们需要先支持写入。</p>
-<h3><a href="#set-expressions--set表达式" id="set-expressions--set表达式"><small>12&#8202;.&#8202;4&#8202;.&#8202;2</small>Set expressions  Set表达式</a></h3>
+<h3><a href="#set表达式" id="set表达式"><small>12&#8202;.&#8202;4&#8202;.&#8202;2</small>Set表达式</a></h3>
 <p>Setters use the same syntax as getters, except they appear on the left side of
 an assignment.
 setter和getter使用相同的语法，区别只是它们出现在赋值表达式的左侧。</p>
@@ -770,7 +770,7 @@ add after <em>get</em>()</div>
 live. Since Lox allows freely creating new fields on instances, there&rsquo;s no need
 to see if the key is already present.
 这里没什么复杂的。我们把这些值之间塞入字段所在的Java map中。由于Lox允许在实例上自由创建新字段，所以不需要检查键是否已经存在。</p>
-<h2><a href="#methods-on-classes--类中的方法" id="methods-on-classes--类中的方法"><small>12&#8202;.&#8202;5</small>Methods on Classes  类中的方法</a></h2>
+<h2><a href="#类中的方法" id="类中的方法"><small>12&#8202;.&#8202;5</small>类中的方法</a></h2>
 <p>You can create instances of classes and stuff data into them, but the class
 itself doesn&rsquo;t really <em>do</em> anything. Instances are just maps and all instances
 are more or less the same. To make them feel like instances <em>of classes</em>, we
@@ -1369,7 +1369,7 @@ in <em>visitThisExpr</em>()</div>
 <p>That should help users use <code>this</code> correctly, and it saves us from having to
 handle misuse at runtime in the interpreter.
 这应该能帮助用户正确地使用<code>this</code>，并且它使我们不必在解释器运行时中处理这个误用问题。</p>
-<h2><a href="#constructors-and-initializers--构造函数和初始化" id="constructors-and-initializers--构造函数和初始化"><small>12&#8202;.&#8202;7</small>Constructors and Initializers  构造函数和初始化</a></h2>
+<h2><a href="#构造函数和初始化" id="构造函数和初始化"><small>12&#8202;.&#8202;7</small>构造函数和初始化</a></h2>
 <p>We can do almost everything with classes now, and as we near the end of the
 chapter we find ourselves strangely focused on a beginning. Methods and fields
 let us encapsulate state and behavior together so that an object always <em>stays</em>
@@ -1467,7 +1467,7 @@ access to <code>this</code> inside its body. That, along with the arguments pass
 class, are all you need to be able to set up the new instance however you
 desire.
 基本上就是这样了。因为我们在调用<code>init()</code>方法之前已经将其绑定，所以它可以在方法体内访问<code>this</code>。这样，连同传递给类的参数，你就可以按照自己的意愿设置新实例了。</p>
-<h3><a href="#invoking-init-directly--直接执行init" id="invoking-init-directly--直接执行init"><small>12&#8202;.&#8202;7&#8202;.&#8202;1</small>Invoking init() directly  直接执行init()</a></h3>
+<h3><a href="#直接执行init" id="直接执行init"><small>12&#8202;.&#8202;7&#8202;.&#8202;1</small>直接执行init()</a></h3>
 <p>As usual, exploring this new semantic territory rustles up a few weird
 creatures. Consider:
 像往常一样，探索这一新的语义领域会催生出一些奇怪的事物。考虑一下：</p>
@@ -1569,7 +1569,7 @@ replace 1 line</div>
 </pre></div>
 <div class="source-file-narrow"><em>lox/LoxFunction.java</em>, in <em>bind</em>(), replace 1 line</div>
 
-<h3><a href="#returning-from-init--从init返回" id="returning-from-init--从init返回"><small>12&#8202;.&#8202;7&#8202;.&#8202;2</small>Returning from init()  从init()返回</a></h3>
+<h3><a href="#从init返回" id="从init返回"><small>12&#8202;.&#8202;7&#8202;.&#8202;2</small>从init()返回</a></h3>
 <p>We aren&rsquo;t out of the woods yet. We&rsquo;ve been assuming that a user-written
 initializer doesn&rsquo;t explicitly return a value because most constructors don&rsquo;t.
 What should happen if a user tries:
@@ -1681,22 +1681,12 @@ extend LoxInstance and go from there.</em>
 你可以用你喜欢的方式解决这问题，但是Smalltalk和Ruby使用的“<a href="https://en.wikipedia.org/wiki/Metaclass">metaclasses</a>” 是一种特别优雅的方法。<em>提示：让LoxClass继承LoxInstance，然后开始实现。</em></p>
 </li>
 <li>
-<blockquote>
-<p>Most modern languages support “getters” and “setters”—members on a class that look like field reads and writes but that actually execute user-defined code. Extend Lox to support getter methods. These are declared without a parameter list. The body of the getter is executed when a property with that name is accessed.
-大多数现代语言都支持“getters”和“setters”——类中的成员，看起来像是字段的读写，但实际上执行的用户自定义的代码。扩展Lox以支持getter方法。这些方法在声明时没有参数列表。当访问具有该名称的属性时，会执行getter的主体。</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>Python and JavaScript allow you to freely access an object’s fields from outside of its own methods. Ruby and Smalltalk encapsulate instance state. Only methods on the class can access the raw fields, and it is up to the class to decide which state is exposed. Most statically typed languages offer modifiers like <code>private</code> and <code>public</code> to control which parts of a class are externally accessible on a per-member basis.</p>
-</blockquote>
-</li>
-<li>
 <p>Most modern languages support &ldquo;getters&rdquo; and &ldquo;setters&rdquo;<span class="em">&mdash;</span>members on a class
 that look like field reads and writes but that actually execute user-defined
 code. Extend Lox to support getter methods. These are declared without a
 parameter list. The body of the getter is executed when a property with that
-name is accessed.</p>
+name is accessed.
+大多数现代语言都支持“getters”和“setters”——类中的成员，看起来像是字段的读写，但实际上执行的用户自定义的代码。扩展Lox以支持getter方法。这些方法在声明时没有参数列表。当访问具有该名称的属性时，会执行getter的主体。</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Circle</span> {
   <span class="i">init</span>(<span class="i">radius</span>) {
     <span class="k">this</span>.<span class="i">radius</span> = <span class="i">radius</span>;
@@ -1717,16 +1707,16 @@ outside of its own methods. Ruby and Smalltalk encapsulate instance state.
 Only methods on the class can access the raw fields, and it is up to the
 class to decide which state is exposed. Most statically typed languages
 offer modifiers like <code>private</code> and <code>public</code> to control which parts of a
-class are externally accessible on a per-member basis.</p>
+class are externally accessible on a per-member basis.
+Python和JavaScript允许你从对象自身的方法之外的地方自由访问对象的字段。Ruby和Smalltalk封装了实例状态。只有类上的方法可以访问原始字段，并且由类来决定哪些状态被暴露。大多数静态类型的语言都提供了像<code>private</code>和<code>public</code>这样的修饰符，以便按成员维度控制类的哪些部分可以被外部访问。</p>
 <p>What are the trade-offs between these approaches and why might a language
 prefer one or the other?
-Python和JavaScript允许你从对象自身的方法之外的地方自由访问对象的字段。Ruby和Smalltalk封装了实例状态。只有类上的方法可以访问原始字段，并且由类来决定哪些状态被暴露。大多数静态类型的语言都提供了像<code>private</code>和<code>public</code>这样的修饰符，以便按成员维度控制类的哪些部分可以被外部访问。
 这些方式之间的权衡是什么？为什么一门语言可能会更偏爱某一种方法？</p>
 </li>
 </ol>
 </div>
 <div class="design-note">
-<h2><a href="#design-note" id="design-note">Design Note: Prototypes and Power 原型与功率</a></h2>
+<h2><a href="#design-note" id="design-note">Design Note: 原型与功率(Prototypes and Power)</a></h2>
 <p>In this chapter, we introduced two new runtime entities, LoxClass and
 LoxInstance. The former is where behavior for objects lives, and the latter is
 for state. What if you could define methods right on a single object, inside

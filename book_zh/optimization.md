@@ -13,7 +13,7 @@ feel for measuring and improving the performance of a language implementation --
 or any program, really.
 如果我还住在新奥尔良，我会把这一章称为*lagniappe*（小赠品），即免费送给顾客的一点额外的东西。你已经有了一整本书和一个完整的虚拟机，但我希望你能在clox上获得更多的乐趣。这一次，我们要追求的是纯粹的性能。我们将对虚拟机应用两种截然不同的优化。在这个过程中，你将了解如何测量和提高语言实现的性能——或者说任何程序的性能，真的。
 
-## Measuring Performance  测量性能
+## 测量性能
 
 **Optimization** means taking a working application and improving its
 performance. An optimized program does the same thing, it just takes less
@@ -51,7 +51,7 @@ run faster on *all* hardware. Different Lox programs stress different areas of
 the VM, and different architectures have their own strengths and weaknesses.
 就像敏捷训练要真的一只狗和一项障碍赛，我们不能假设我们的虚拟机优化会使所有的Lox程序在所有硬件上运行得更快。不同的Lox程序侧重虚拟机的不同领域，不同的架构也有其自身的优势和劣势。
 
-### Benchmarks
+### 基准
 
 When we add new functionality, we validate correctness by writing tests -- Lox
 programs that use a feature and validate the VM's behavior. Tests pin down
@@ -132,7 +132,7 @@ hardware and operating system quirks. I won't give you a whole sermon here,
 but treat benchmarking as its own skill that improves with practice.
 基准测试是一门微妙的艺术。就像测试一样，你需要在不过度拟合语言实现的同时，确保基准测试确实适合你所关心的代码路径。在测量性能时，你需要补偿由CPU节流、缓存和其它奇怪的硬件和操作系统特性造成的差异。我不会在这里给你一个完整的说教，但请把基准测试当作可以通过实践来提高的一门技能。
 
-### Profiling
+### 剖析
 
 OK, so you've got a few benchmarks now. You want to make them go faster. Now
 what? First of all, let's assume you've done all the obvious, easy work. You are
@@ -171,7 +171,7 @@ throwing a program at a profiler that would have taken me *days* to discover on
 my own through trial and error. Profilers are wonderful, magical tools.
 现在有很多针对不同操作系统和语言的剖析器。无论你在什么平台上编程，熟悉一个像样的剖析器都是值得的。你不需要称为大师。我在把程序扔给剖析器的几分钟内就学到了很多东西，而这些东西是我自己通过反复试验*好几天*才发现的。剖析器是一种绝妙、神奇的工具。
 
-## Faster Hash Table Probing  更快的哈希表探测
+## 更快的哈希表探测
 
 Enough pontificating, let's get some performance charts going up and to the
 right. The first optimization we'll do, it turns out, is about the *tiniest*
@@ -282,7 +282,7 @@ fair bit of time looking stuff up in hash tables -- it's sort of the price of
 dynamism. But, still, *wow.*
 所以我们有三个热点需要优化？事实上，并不是。因为事实证明，这三条指令几乎所有的时间都花在了调用同一个函数上：`tableGet()`。这个函数占用了整整72%的执行时间（同样的，非独占时间）。现在，在一个动态类型语言中，我们预想到会花费相当多的时间在哈希表中查找内容——这算是动态的代价，但是，仍旧让人惊叹。
 
-### Slow key wrapping  缓慢的键包装
+### 缓慢的键包装
 
 If you take a look at `tableGet()`, you'll see it's mostly a wrapper around a
 call to `findEntry()` where the actual hash table lookup happens. To refresh
@@ -468,7 +468,7 @@ that our optimization didn't just make the program faster, but made it faster
 they are for discovering problems.
 为了强化这一点，我们继续在现在已优化的虚拟机中运行最初的基准测试，看看剖析器会显示什么。在我的机器上，`tableGet()`仍然占用了相当大的执行时间。对于动态类型的语言来说，这是可以预期的结果。但是它已经从72%下降到了35%。这更符合我们希望看到的情况，表明我们的优化不仅使程序更快，而且是以预期的方式使它更快。剖析器在验证解决方法时和发现问题时一样有用。
 
-## NaN Boxing  NaN装箱
+## NaN装箱
 
 This next optimization has a very different feel. Thankfully, despite the odd
 name, it does not involve punching your grandmother. It's different, but not,
@@ -540,7 +540,7 @@ for languages like JavaScript and Lua, where all numbers are double-precision
 floating point. Lox is in that same boat.
 动态语言的人讨厌输给静态阵营，所以他们想出了许多非常聪明的方法，将类型信息和有效载荷打包到少量的比特中。NaN装箱就是其中之一。它特别适合于像JavaScript和Lua这样的语言，在这些语言中，所有数字都是双精度浮点数。Lox也是如此。
 
-### What is (and is not) a number?  什么是（以及不是）数值？
+### 什么是（以及不是）数值？
 
 Before we start optimizing, we need to really understand how our friend the CPU
 represents floating-point numbers. Almost all machines today use the same
@@ -668,7 +668,7 @@ behind a handful of macros. Rewrite those to implement NaN boxing, and the rest
 of the VM should just work.
 对于其它的值类型，当然有一个转换步骤。但幸运的是，我们的虚拟机将从值到原始类型的所有机制都隐藏在少数几个宏后面。重写这些宏来实现NaN装箱，虚拟机的其它部分就可以正常工作了。
 
-### Conditional support  有条件地支持
+### 有条件地支持
 
 I know the details of this new representation aren't clear in your head yet.
 Don't worry, they will crystallize as we work through the implementation. Before
@@ -721,7 +721,7 @@ implementations of all the stuff already in the `#else` side. We'll work through
 it one value type at a time, from easiest to hardest.
 我们剩下的任务只是在第一个`#ifdef`部分中填入已经在`#else`部分存在的所有内容的新实现。我们会从最简单到最难，依次完成每个值类型的工作。
 
-### Numbers
+### 数字
 
 We'll start with numbers since they have the most direct representation under
 NaN boxing. To "convert" a C double to a NaN-boxed clox Value, we don't need to
@@ -861,7 +861,7 @@ This is exactly all of the exponent bits, plus the quiet NaN bit, plus one extra
 to dodge that Intel value.
 这正是所有的指数位，加上静默NaN比特位，再加上一个额外的用来规避英特尔值的比特位。
 
-### Nil, true, and false  Nil、true和false
+### Nil、true和false
 
 The next type to handle is `nil`. That's pretty simple since there's only one
 `nil` value and thus we need only a single bit pattern to represent it. There
@@ -959,7 +959,7 @@ At that point, we can simply compare the result to `TRUE_VAL` to see if we're
 in the first two states or the third.
 在此基础上，我们可以简单地将结果与`TRUE_VAL`进行比较，看看我们是处于前两个状态还是第三个状态。
 
-### Objects
+### 对象
 
 The last value type is the hardest. Unlike the singleton values, there are
 billions of different pointer values we need to box inside a NaN. This means we
@@ -1050,7 +1050,7 @@ the type of the singleton values, except this time we use the sign bit as the
 tag.
 存储Obj指针的Value的符号位被置1，但任意负数也是如此。为了判断Value是否为Obj指针，我们需要同时检查符号位和所有的静默NaN比特位。这与我们检测单例值类型的方法类似，这不过这次我们使用符号位作为标签。
 
-### Value functions  Value函数
+### Value函数
 
 The rest of the VM usually goes through the macros when working with Values, so
 we are almost done. However, there are a couple of functions in the "value"
@@ -1140,7 +1140,7 @@ And that's it. This optimization is complete, as is our clox virtual machine.
 That was the last line of new code in the book.
 就是这样。这个优化完成了，我们的clox虚拟机也完成了。这是本书中最后一行新代码。
 
-### Evaluating performance  评估性能
+### 评估性能
 
 The code is done, but we still need to figure out if we actually made anything
 better with these changes. Evaluating an optimization like this is very
@@ -1207,7 +1207,7 @@ representation. I hope this chapter has shined a light on some of the options
 you have in that area.
 但是，如果你发现自己正在处理的程序中，所有容易赢得的东西都已经被拿走了，那么在某些时候，你可能要考虑调整一下值表示形式。我希望这一章能对你在这方面的一些选择有所启发。
 
-## Where to Next  前路何方
+## 下一步做什么
 
 We'll stop here with the Lox language and our two interpreters. We could tinker
 on it forever, adding new language features and clever speed improvements. But,
@@ -1346,7 +1346,6 @@ handle compilers and interpreters, you can do anything you put your mind to.
 : 这也适用于其它领域。我认为我在编程中所学到的任何一个主题——甚至在编程之外——最终都发现在其它领域中是有用的。我最喜欢软件工程的一个方面正是它对那些兴趣广泛的人的助益。
 : 在这方面，我喜欢Cooper和Torczon的《*编译器工程，Engineering a Compiler*》。Appel的《*现代编译器实现，Modern Compiler Implementation*》一书也广受好评。
 : 本书的文本版权归我所有，但jlox和clox的代码和实现采用了非常宽松的[MIT许可](https://en.wikipedia.org/wiki/MIT_License)。我非常欢迎你使用[这些解释器](https://github.com/munificent/craftinginterpreters)中的任何一个，对它们做任何你想做的事。去吧。<BR>如果你对语言做了重大改动，最好也能改一下名字，主要是为了避免人们对“Lox”这个名字的含义感到困惑。
-## 习题
 
 [mit license]: https://en.wikipedia.org/wiki/MIT_License
 [source]: https://github.com/munificent/craftinginterpreters
@@ -1358,12 +1357,10 @@ handle compilers and interpreters, you can do anything you put your mind to.
 Assigning homework on the last day of school seems cruel but if you really want
 something to do during your summer vacation:
 在学校的最后一天布置家庭作业似乎很残酷，但如果你真的想在暑假做点什么的话：
-1. > Fire up your profiler, run a couple of benchmarks, and look for other hotspots in the VM. Do you see anything in the runtime that you can improve?
-启动你的剖析器，运行几个基准测试，并查找虚拟机中的其它热点。你在运行时中看到什么可以改进的地方吗？
-2. > Many strings in real-world user programs are small, often only a character or two. This is less of a concern in clox because we intern strings, but most VMs don’t. For those that don’t, heap allocating a tiny character array for each of those little strings and then representing the value as a pointer to that array is wasteful. Often, the pointer is larger than the string’s characters. A classic trick is to have a separate value representation for small strings that stores the characters inline in the value.
 
 1.  Fire up your profiler, run a couple of benchmarks, and look for other
     hotspots in the VM. Do you see anything in the runtime that you can improve?
+    启动你的剖析器，运行几个基准测试，并查找虚拟机中的其它热点。你在运行时中看到什么可以改进的地方吗？
 
 2.  Many strings in real-world user programs are small, often only a character
     or two. This is less of a concern in clox because we intern strings, but
@@ -1373,23 +1370,22 @@ something to do during your summer vacation:
     string's characters. A classic trick is to have a separate value
     representation for small strings that stores the characters inline in the
     value.
+    在现实世界的用户程序中，许多字符串都很小，通常只有一两个字符。这种clox中不太需要考虑，因为我们会驻留字符串，但大树下虚拟机不会这样做。对于那些不这样做的虚拟机来说，为每个小字符串在堆上分配一个很小的字符数组，然后用一个指向该数组的指针来表示该值是很浪费的。通常情况下，这个指针要比字符串的字符大。一个经典的技巧是为小字符串设置一个单独的值表示形式，该形式会将字符内联存储在值中。
 
     Starting from clox's original tagged union representation, implement that
     optimization. Write a couple of relevant benchmarks and see if it helps.
-在现实世界的用户程序中，许多字符串都很小，通常只有一两个字符。这种clox中不太需要考虑，因为我们会驻留字符串，但大树下虚拟机不会这样做。对于那些不这样做的虚拟机来说，为每个小字符串在堆上分配一个很小的字符数组，然后用一个指向该数组的指针来表示该值是很浪费的。通常情况下，这个指针要比字符串的字符大。一个经典的技巧是为小字符串设置一个单独的值表示形式，该形式会将字符内联存储在值中。
-从clox最初的带标签联合体表示形式开始，实现这一优化。写几个相关的基准测试，看看是否有帮助。
-3. > Reflect back on your experience with this book. What parts of it worked well for you? What didn’t? Was it easier for you to learn bottom-up or top-down? Did the illustrations help or distract? Did the analogies clarify or confuse?
+    从clox最初的带标签联合体表示形式开始，实现这一优化。写几个相关的基准测试，看看是否有帮助。
 
 3.  Reflect back on your experience with this book. What parts of it worked well
     for you? What didn't? Was it easier for you to learn bottom-up or top-down?
     Did the illustrations help or distract? Did the analogies clarify or
     confuse?
+    回顾一下你在这本书中的经历。哪些部分对你来说很有用？哪些没有？对你来说，自下而上的学习更容易，还是自上而下的学习更简单？插图有帮助还是分散了注意力？类比是澄清了还是混淆了？
 
     The more you understand your personal learning style, the more effectively
     you can upload knowledge into your head. You can specifically target
     material that teaches you the way you learn best.
-回顾一下你在这本书中的经历。哪些部分对你来说很有用？哪些没有？对你来说，自下而上的学习更容易，还是自上而下的学习更简单？插图有帮助还是分散了注意力？类比是澄清了还是混淆了？
-你越了解你的个人学习风格，你就能越有效地将知识输入你的大脑中。你可以有针对性地选择用你最擅长的方式进行教学的材料。
+    你越了解你的个人学习风格，你就能越有效地将知识输入你的大脑中。你可以有针对性地选择用你最擅长的方式进行教学的材料。
 
 </div>
 

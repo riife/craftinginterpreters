@@ -21,7 +21,7 @@ clearer picture of how a compiler might translate the user's source code into a
 series of them.
 因此，在构建新解释器的前端之前，我们先从后端开始——执行指令的虚拟机。它为字节码注入了生命。通过观察这些指令的运行，我们可以更清楚地了解编译器如何将用户的源代码转换成一系列的指令。
 
-## An Instruction Execution Machine  指令执行机器
+## 指令执行机器
 
 The virtual machine is one part of our interpreter's internal architecture. You
 hand it a chunk of code -- literally a Chunk -- and it runs it. The code and
@@ -96,7 +96,7 @@ to do something.
 
 [last chapter]: chunks-of-bytecode.html#disassembling-chunks
 
-### Executing instructions  执行指令
+### 执行指令
 
 The VM springs into action when we command it to interpret a chunk of bytecode.
 当我们命令VM解释一个字节码块时，它就会开始启动了。
@@ -275,7 +275,7 @@ to punish sloppy users, and the C preprocessor doubly so.
 
 </aside>
 
-### Execution tracing  执行跟踪
+### 执行跟踪
 
 If you run clox now, it executes the chunk we hand-authored in the last chapter
 and spits out `1.2` to your terminal. We can see that it's working, but that's
@@ -320,7 +320,7 @@ Contrast this with all of the complexity and overhead we had in jlox with the
 Visitor pattern for walking the AST.
 我知道这段代码到目前为止还不是很令人印象深刻——它实际上只是一个封装在`for`循环中的switch语句，但信不信由你，这就是我们虚拟机的两个主要组成部分之一。有了它，我们就可以命令式地执行指令。它的简单是一种优点——它做的工作越少，就能做得越快。作为对照，可以回想一下我们在jlox中使用Visitor模式遍历AST的复杂度和开销。
 
-## A Value Stack Manipulator  一个值栈操作器
+## 一个值栈操作器
 
 In addition to imperative side effects, Lox has expressions that produce,
 modify, and consume values. Thus, our compiled bytecode needs a way to shuttle
@@ -487,7 +487,7 @@ it pushes it onto the stack. When it needs to consume one or more values, it
 gets them by popping them off the stack.
 由于我们需要跟踪的临时值天然具有类似栈的行为，我们的虚拟机将使用栈来管理它们。当一条指令“生成”一个值时，它会把这个值压入栈中。当它需要消费一个或多个值时，通过从栈中弹出数据来获得这些值。
 
-### The VM's Stack
+### 虚拟机的栈
 
 Maybe this doesn't seem like a revelation, but I *love* stack-based VMs. When
 you first see a magic trick, it feels like something actually magical. But then
@@ -643,7 +643,7 @@ to explicitly "remove" it from the array -- moving `stackTop` down is enough to
 mark that slot as no longer in use.
 首先，我们将栈指针回退到数组中最近使用的槽。然后，我们查找该索引处的值并将其返回。我们不需要显式地将其从数组中“移除”——将`stackTop`下移就足以将该槽标记为不再使用了。
 
-### Stack tracing  栈跟踪
+### 栈跟踪
 
 We have a working stack, but it's hard to *see* that it's working. When we start
 implementing more complex instructions and compiling and running larger pieces
@@ -681,7 +681,7 @@ now, it gives us a way to get the VM executing simple instruction sequences and
 displaying the result.
 接下来，我们让`OP_RETURN`在退出之前弹出栈顶值并打印。等到我们在clox中添加对真正的函数的支持时，我们将会修改这段代码。但是，目前来看，我们可以使用这种方法让VM执行简单的指令序列并显示结果。
 
-## An Arithmetic Calculator  数学计算器
+## 数学计算器
 
 The heart and soul of our VM are in place now. The bytecode loop dispatches and
 executes instructions. The stack grows and shrinks as values flow through it.
@@ -735,7 +735,7 @@ return instruction prints that out:
 Magical!
 神奇！
 
-### Binary operators  二元操作符
+### 二元操作符
 
 OK, unary operators aren't *that* impressive. We still only ever have a single
 value on the stack. To really see some depth, we need binary operators. Lox has
@@ -935,13 +935,12 @@ generate it for us.
 
     (Remember that Lox does not have a syntax for negative number literals, so
     the `-5` is negating the number 5.)
-（请记得，Lox语法中没有负数字面量，所以`-5`是对数字5取负）
-2. > If we really wanted a minimal instruction set, we could eliminate either `OP_NEGATE` or `OP_SUBTRACT`. Show the bytecode instruction sequence you would generate for:
-如果我们真的想要一个最小指令集，我们可以取消`OP_NEGATE`或`OP_SUBTRACT`。请写出你为下面的表达式生成的字节码指令序列：
+    （请记得，Lox语法中没有负数字面量，所以`-5`是对数字5取负）
 
-1.  If we really wanted a minimal instruction set, we could eliminate either
+2.  If we really wanted a minimal instruction set, we could eliminate either
     `OP_NEGATE` or `OP_SUBTRACT`. Show the bytecode instruction sequence you
     would generate for:
+    如果我们真的想要一个最小指令集，我们可以取消`OP_NEGATE`或`OP_SUBTRACT`。请写出你为下面的表达式生成的字节码指令序列：
 
     ```lox
     4 - 3 * -2
@@ -952,36 +951,34 @@ generate it for us.
     Given the above, do you think it makes sense to have both instructions? Why
     or why not? Are there any other redundant instructions you would consider
     including?
-首先是不能使用 `OP_NEGATE`。然后，试一下不使用`OP_SUBTRACT`。
-综上所述，你认为同时拥有这两条指令有意义吗？为什么呢？还有没有其它指令可以考虑加入？
-3. > Our VM’s stack has a fixed size, and we don’t check if pushing a value overflows it. This means the wrong series of instructions could cause our interpreter to crash or go into undefined behavior. Avoid that by dynamically growing the stack as needed.
+    首先是不能使用 `OP_NEGATE`。然后，试一下不使用`OP_SUBTRACT`。
+    综上所述，你认为同时拥有这两条指令有意义吗？为什么呢？还有没有其它指令可以考虑加入？
 
-1.  Our VM's stack has a fixed size, and we don't check if pushing a value
+3.  Our VM's stack has a fixed size, and we don't check if pushing a value
     overflows it. This means the wrong series of instructions could cause our
     interpreter to crash or go into undefined behavior. Avoid that by
     dynamically growing the stack as needed.
+    我们虚拟机的堆栈有一个固定大小，而且我们不会检查压入一个值是否会溢出。这意味着错误的指令序列可能会导致我们的解释器崩溃或进入未定义的行为。通过根据需求动态增长堆栈来避免这种情况。
 
     What are the costs and benefits of doing so?
-我们虚拟机的堆栈有一个固定大小，而且我们不会检查压入一个值是否会溢出。这意味着错误的指令序列可能会导致我们的解释器崩溃或进入未定义的行为。通过根据需求动态增长堆栈来避免这种情况。
-这样做的代价和好处是什么？
-4. > To interpret `OP_NEGATE`, we pop the operand, negate the value, and then push the result. That’s a simple implementation, but it increments and decrements `stackTop` unnecessarily, since the stack ends up the same height in the end. It might be faster to simply negate the value in place on the stack and leave `stackTop` alone. Try that and see if you can measure a performance difference.
+    这样做的代价和好处是什么？
 
-1.  To interpret `OP_NEGATE`, we pop the operand, negate the value, and then
+4.  To interpret `OP_NEGATE`, we pop the operand, negate the value, and then
     push the result. That's a simple implementation, but it increments and
     decrements `stackTop` unnecessarily, since the stack ends up the same height
     in the end. It might be faster to simply negate the value in place on the
     stack and leave `stackTop` alone. Try that and see if you can measure a
     performance difference.
+    为了解释`OP_NEGATE`，我们弹出操作数，对值取负，然后将结果压入栈。这是一个简单的实现，但它对`stackTop`进行了不必要的增减操作，因为栈最终的高度是相同的。简单地对栈中的值取负而不处理`stackTop`可能会更快。试一下，看看你是否能测出性能差异。
 
     Are there other instructions where you can do a similar optimization?
-为了解释`OP_NEGATE`，我们弹出操作数，对值取负，然后将结果压入栈。这是一个简单的实现，但它对`stackTop`进行了不必要的增减操作，因为栈最终的高度是相同的。简单地对栈中的值取负而不处理`stackTop`可能会更快。试一下，看看你是否能测出性能差异。
-是否有其它指令可以做类似的优化？
+    是否有其它指令可以做类似的优化？
 
 </div>
 
 <div class="design-note">
 
-## Design Note: Register-Based Bytecode 基于寄存器的字节码
+## Design Note: 基于寄存器的字节码
 
 For the remainder of this book, we'll meticulously implement an interpreter
 around a stack-based bytecode instruction set. There's another family of
