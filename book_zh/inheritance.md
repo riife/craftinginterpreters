@@ -5,9 +5,9 @@
 > as salty as the sea we used to live in! When we're frightened, the hair on our
 > skin stands up, just like it did when we had fur. We are history! Everything
 > we've ever been on the way to becoming us, we still are.
+> 我们曾经是海里一团一团的东西，然后是鱼，然后是蜥蜴、老鼠、猴子，以及介于其间的数百种形态。这只手曾经是鳍，这只手曾经是爪子！在我人类的嘴里，有狼的尖牙，有兔子的凿齿，还有牛的磨牙！我们的血和我们曾经生活的大海一样咸！当我们受到惊吓时，我们皮肤上的毛发会竖起来，就像我们有毛时一样。我们就是历史！我们在成为我们的路上曾拥有的一切，我们仍然拥有。
 >
 > <cite>Terry Pratchett, <em>A Hat Full of Sky</em></cite>
-我们曾经是海里一团一团的东西，然后是鱼，然后是蜥蜴、老鼠、猴子，以及介于其间的数百种形态。这只手曾经是鳍，这只手曾经是爪子！在我人类的嘴里，有狼的尖牙，有兔子的凿齿，还有牛的磨牙！我们的血和我们曾经生活的大海一样咸！当我们受到惊吓时，我们皮肤上的毛发会竖起来，就像我们有毛时一样。我们就是历史！我们在成为我们的路上曾拥有的一切，我们仍然拥有。
 
 Can you believe it? We've reached the last chapter of [Part II][]. We're almost
 done with our first Lox interpreter. The [previous chapter][] was a big ball of
@@ -31,6 +31,7 @@ parts.
 
 You could say all those other languages *inherited* it from Simula. Hey-ooo!
 I'll, uh, see myself out.
+可以说，所有其他语言都是从 Simula *继承* 来的。emmm，我先走了。
 
 </aside>
 
@@ -54,20 +55,24 @@ inheritance tree like a family tree with the root at the top -- subclasses are
 below their superclasses on the diagram. More generally, "sub-" refers to things
 that refine or are contained by some more general concept. In zoology, a
 subclass is a finer categorization of a larger class of living things.
+"Super-" 和 "sub-" 在拉丁语中表示 "上面" 和 "下面" 。把继承树想象成一个根在顶部的家族树——在这个图上，子类就在超类的下面。更一般地说，"sub-" 指的是细化或被更一般的概念所包含的事物。在动物学中，子类指的是对更大的生物类的一个精细分类。在集合论中，子集被一个更大的超集包含，该超集中包含子集的所有元素，可能还有更多元素。集合论和编程语言在类型论中相遇，就产生了 "超类" 和 "子类" 。在静态类型的面向对象语言中，一个子类通常也是其超类的一个子类。
 
 In set theory, a subset is contained by a larger superset which has all of the
 elements of the subset and possibly more. Set theory and programming languages
 meet each other in type theory. There, you have "supertypes" and "subtypes".
+在集合论中，一个子集被一个更大的超集所包含，这个超集拥有子集的所有元素，甚至可能更多。集合论和编程语言在类型理论中相遇。这里有 "超类" 和"子类"。
 
 In statically typed object-oriented languages, a subclass is also often a
 subtype of its superclass. Say we have a Doughnut superclass and a BostonCream
 subclass. Every BostonCream is also an instance of Doughnut, but there may be
 doughnut objects that are not BostonCreams (like Crullers).
+在静态类型的面向对象语言中，子类通常也是其超类的子类。假设我们有一个 Doughnut 超类和一个 BostonCream 子类。每个 BostonCream 也是 Doughnut 的实例，但也可能存在不是 BostonCream 的甜甜圈对象（如: Crullers）。
 
 Think of a type as the set of all values of that type. The set of all Doughnut
 instances contains the set of all BostonCream instances since every BostonCream
 is also a Doughnut. So BostonCream is a subclass, and a subtype, and its
 instances are a subset. It all lines up.
+将一个类型视为该类型所有值的集合。所有 Doughnut 实例的集合包含所有 BostonCream 实例的集合，因为每个 BostonCream 也是一个 Doughnut。因此，BostonCream 是一个子类，也是一个子类，它的实例也是一个子集。这一切都很吻合。
 
 <img src="image/inheritance/doughnuts.png" alt="Boston cream &lt;: doughnut." />
 
@@ -212,13 +217,15 @@ subclass. In statically typed languages, that carries a lot of implications. The
 sub*class* must also be a sub*type*, and the memory layout is controlled so that
 you can pass an instance of a subclass to a function expecting a superclass and
 it can still access the inherited fields correctly.
-继承自另一个类，意味着对于超类适用的一切，对于子类或多或少也应该适用。在静态类型的语言中，这包含了很多含义。子类也必须是一个子类型，而且内存布局是可控的，这样你就可以把一个子类实例传递给一个期望超类的函数，而它仍然可以正确地访问继承的字段。
+继承自另一个类，意味着对于超类适用的一切，对于子类或多或少也应该适用。在静态类型的语言中，这包含了很多含义。子类也必须是一个子类，而且内存布局是可控的，这样你就可以把一个子类实例传递给一个期望超类的函数，而它仍然可以正确地访问继承的字段。
 
 <aside name="liskov">
 
 A fancier name for this hand-wavey guideline is the [*Liskov substitution
 principle*][liskov]. Barbara Liskov introduced it in a keynote during the
 formative period of object-oriented programming.
+这种 "手把手" 的指导原则有一个更响亮的名字，叫做 "利斯科夫替换原则"（[*Liskov substitution
+principle*][liskov]）。Barbara Liskov 在面向对象编程形成时期的一次主题演讲中介绍了这一原则。
 
 [liskov]: https://en.wikipedia.org/wiki/Liskov_substitution_principle
 
@@ -352,6 +359,7 @@ name="super-ast">syntax tree node</span> is thus:
 <aside name="super-ast">
 
 The generated code for the new node is in [Appendix II][appendix-super].
+新节点的生成代码见[附录 II][appendix-super]。
 
 [appendix-super]: appendix-ii.html#super-expression
 
@@ -455,6 +463,7 @@ answer was no, so... yes.
 <aside name="rhetorical">
 
 Does anyone even like rhetorical questions?
+有人喜欢反问句吗？
 
 </aside>
 
@@ -562,6 +571,7 @@ works.
 
 Writing a book that includes every single line of code for a program means I
 can't hide the hacks by leaving them as an "exercise for the reader".
+写一本包含程序每一行代码的书，意味着我不能把充满黑科技的代码作为 "读者练习" 来隐藏它们。
 
 </aside>
 
@@ -659,41 +669,24 @@ name="superhero">accomplishment</span> and one you should be proud of. In the
 past dozen chapters and a thousand or so lines of code, we have learned and
 implemented...
 我们成功了！最后的错误处理是完成Lox语言的Java实现所需的最后一块代码。这是一项真正的成就，你应该为此感到自豪。在过去的十几章和一千多行代码中，我们已经学习并实现了：
-- [tokens and lexing](http://craftinginterpreters.com/scanning.html), 标记与词法
-- [abstract syntax trees](http://craftinginterpreters.com/representing-code.html), 抽象语法树
-- [recursive descent parsing](http://craftinginterpreters.com/parsing-expressions.html), 递归下降分析
-- prefix and infix expressions, 前缀、中缀表达式
-- runtime representation of objects, 对象的运行时表示
-- [interpreting code using the Visitor pattern](http://craftinginterpreters.com/evaluating-expressions.html), 使用Visitor模式解释代码
-- [lexical scope](http://craftinginterpreters.com/statements-and-state.html), 词法作用域
-- environment chains for storing variables, 保存变量的环境链
-- [control flow](http://craftinginterpreters.com/control-flow.html), 控制流
-- [functions with parameters](http://craftinginterpreters.com/functions.html), 有参函数
-- closures, 闭包
-- [static variable resolution and error detection](http://craftinginterpreters.com/resolving-and-binding.html), 静态变量分析与错误检查
-- [classes](http://craftinginterpreters.com/classes.html), 类
-- constructors, 构造函数
-- fields, 字段
-- methods, and finally, 方法
-- inheritance. 继承
 
-* [tokens and lexing][4],
-* [abstract syntax trees][5],
-* [recursive descent parsing][6],
-* prefix and infix expressions,
-* runtime representation of objects,
-* [interpreting code using the Visitor pattern][7],
-* [lexical scope][8],
-* environment chains for storing variables,
-* [control flow][9],
-* [functions with parameters][10],
-* closures,
-* [static variable resolution and error detection][11],
-* [classes][12],
-* constructors,
-* fields,
-* methods, and finally,
-* inheritance.
+* [tokens and lexing][4], 标记与词法
+* [abstract syntax trees][5], 抽象语法树
+* [recursive descent parsing][6], 递归下降分析
+* prefix and infix expressions, 前缀、中缀表达式
+* runtime representation of objects, 对象的运行时表示
+* [interpreting code using the Visitor pattern][7], 使用Visitor模式解释代码
+* [lexical scope][8], 词法作用域
+* environment chains for storing variables, 保存变量的环境链
+* [control flow][9], 控制流
+* [functions with parameters][10], 有参函数
+* closures, 闭包
+* [static variable resolution and error detection][11], 静态变量分析与错误检查
+* [classes][12], 类
+* constructors, 构造函数
+* fields, 字段
+* methods, and finally, 方法
+* inheritance. 继承
 
 [4]: scanning.html
 [5]: representing-code.html

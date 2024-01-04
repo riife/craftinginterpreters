@@ -2,9 +2,9 @@
 > degrees and in the most natural way but, when you are right in the midst of
 > it, you are suddenly astonished and ask yourself how in the world it all came
 > about.
+> 你也许偶尔会发现自己处于一种奇怪的情况。你曾以最自然的方式逐渐进入其中，但当你身处其中时，你会突然感到惊讶，并问自己这一切到底是怎么发生的。
 >
 > <cite>Thor Heyerdahl, <em>Kon-Tiki</em></cite>
-你也许偶尔会发现自己处于一种奇怪的情况。你曾以最自然的方式逐渐进入其中，但当你身处其中时，你会突然感到惊讶，并问自己这一切到底是怎么发生的。
 
 Oh, no! Our language implementation is taking on water! Way back when we [added
 variables and blocks][statements], we had scoping nice and tight. But when we
@@ -54,11 +54,13 @@ This is still nowhere near as precise as a real language specification. Those
 docs must be so explicit that even a Martian or an outright malicious programmer
 would be forced to implement the correct semantics provided they followed the
 letter of the spec.
+这还远远比不上真正的语言规范那么精确。那些规范文档必须非常明确，即使是一个火星人或一个完全恶意的程序员也会被迫执行正确的语义，只要他们遵循规范说明。
 
 That exactitude is important when a language may be implemented by competing
 companies who want their product to be incompatible with the others to lock
 customers onto their platform. For this book, we can thankfully ignore those
 kinds of shady shenanigans.
+有一些公司希望自己的产品与其它产品不兼容，从而将用户锁定在自己的平台上，当一种语言由这类公司实现时，精确性就非常重要了。对于这本书来说，我们很庆幸可以忽略那些尔虞我诈。
 
 </aside>
 
@@ -99,6 +101,7 @@ There's a lot to unpack in that:
     the beginning of the block. Any use of that name in the block will refer to
     that variable, even if the use appears before the declaration. When you
     write this in JavaScript:
+    在JavaScript中，使用var声明的变量被隐式提升到块的开头，在代码块中对该名称的任何使用都将指向该变量，即使变量使用出现在声明之前。当你用JavaScript写如下代码时：
 
     ```js
     {
@@ -108,6 +111,7 @@ There's a lot to unpack in that:
     ```
 
     It behaves like:
+    它实际相当于：
 
     ```js
     {
@@ -120,6 +124,7 @@ There's a lot to unpack in that:
     That means that in some cases you can read a variable before its initializer
     has run -- an annoying source of bugs. The alternate `let` syntax for
     declaring variables was added later to address this problem.
+    这意味着在某些情况下，您可以在其初始化程序运行之前读取一个变量——一个令人讨厌的错误源。后来添加了用于声明变量的备用`let`语法来解决这个问题。
 
     </aside>
 
@@ -167,6 +172,7 @@ I know, it's a totally pathological, contrived program. It's just *weird*. No
 reasonable person would ever write code like this. Alas, more of your life than
 you'd expect will be spent dealing with bizarro snippets of code like this if
 you stay in the programming language game for long.
+我知道，这完全是一个病态的、人为的程序。这太奇怪了。没有一个理性的人会写这样的代码。唉，如果你长期从事编程语言的工作，你的生活中会有比你想象的更多的时间花在处理这种古怪的代码片段上。
 
 </aside>
 
@@ -290,6 +296,7 @@ which includes the new variable.
 Some languages make this split explicit. In Scheme and ML, when you declare a
 local variable using `let`, you also delineate the subsequent code where the new
 variable is in scope. There is no implicit "rest of the block".
+一些语言中明确进行了这种分割。在Scheme和ML中，当你用`let`声明一个局部变量时，还描述了新变量在作用域内的后续代码。不存在隐含的 “块的其余部分”。
 
 </aside>
 
@@ -318,6 +325,7 @@ the new modification. The original is left unchanged.
 This sounds like it might waste tons of memory and time copying the structure
 for each operation. In practice, persistent data structures share most of their
 data between the different "copies".
+为每个操作复制结构，这听起来可能会浪费大量的内存和时间。在实践中，持久性数据结构在不同的“副本”之间共享大部分的数据。
 
 </aside>
 
@@ -446,6 +454,7 @@ Variable resolution touches each node once, so its performance is *O(n)* where
 greater complexity, but most are carefully designed to be linear or not far from
 it. It's an embarrassing faux pas if your compiler gets exponentially slower as
 the user's program grows.
+变量解析对每个节点只触及一次，因此其性能是*O(n)*，其中 *n* 是语法树中节点的个数。更复杂的分析可能会有更大的复杂性，但是大多数都被精心设计成线性或接近线性。如果编译器随着用户程序的增长而呈指数级变慢，那将是一个很尴尬的失礼。
 
 </aside>
 
@@ -730,6 +739,7 @@ boring, but bear with me. We'll go kind of "top down" and start with statements.
 
 I did say the book would have every single line of code for these interpreters.
 I didn't say they'd all be exciting.
+我确实说过，书中会有这些解释器的每一行代码。我可没说它们都很精彩。
 
 </aside>
 
@@ -842,6 +852,7 @@ with its resolved data.
 I *think* I've heard this map called a "side table" since it's a tabular data
 structure that stores data separately from the objects it relates to. But
 whenever I try to Google for that term, I get pages about furniture.
+我 *好像听说* 过这种 map 被称为 "边表(side table)"，因为它是一种表格数据结构，可以将数据与相关对象分开存储。但每当我试着用谷歌搜索这个词时，得到的都是关于家具的网页。
 
 </aside>
 
@@ -921,6 +932,7 @@ blind. The interpreter code trusts that the resolver did its job and resolved
 the variable correctly. This implies a deep coupling between these two classes.
 In the resolver, each line of code that touches a scope must have its exact
 match in the interpreter for modifying an environment.
+解释器假定变量在map中存在的做法有点像是盲飞。解释器相信解析器完成了工作并正确地解析了变量。这意味着这两个类之间存在深度耦合。在解析器中，涉及作用域的每一行代码都必须与解释器中修改环境的代码完全匹配。
 
 I felt that coupling firsthand because as I wrote the code for the book, I
 ran into a couple of subtle bugs where the resolver and interpreter code were
@@ -928,6 +940,7 @@ slightly out of sync. Tracking those down was difficult. One tool to make that
 easier is to have the interpreter explicitly assert -- using Java's assert
 statements or some other validation tool -- the contract it expects the resolver
 to have already upheld.
+我对这种耦合有切身体会，因为当我在为本书写代码时，我遇到了几个微妙的错误，即解析器代码和解释器代码有点不同步。跟踪这些问题是很困难的。一个行之有效的方法就是，在解释器中使用显式的断言——通过Java的assert或其它验证工具——确认解析器已经具备它所期望的值。
 
 </aside>
 
@@ -1099,6 +1112,7 @@ difficult. Many small isolated passes, each with their own responsibility, are
 simpler to implement and maintain. However, there is a real runtime cost to
 traversing the syntax tree itself, so bundling multiple analyses into a single
 pass is usually faster.
+要选择将多少个不同的静态分析纳入单个处理过程中是很困难的。许多小的、孤立的过程（每个过程都有自己的职责）实现和维护都比较简单。然而，遍历语法树本身是有实际运行时间成本的，所以将多个分析绑定到一个过程中通常会更快。
 
 </aside>
 

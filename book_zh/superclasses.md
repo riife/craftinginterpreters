@@ -1,9 +1,9 @@
 > You can choose your friends but you sho' can't choose your family, an' they're
 > still kin to you no matter whether you acknowledge &rsquo;em or not, and it
 > makes you look right silly when you don't.
+> 你可以选择你的朋友，但无法选择你的家庭，所以不管你承认与否，他们都是你的亲属，而且不承认会让你显得很蠢。
 >
 > <cite>Harper Lee, <em>To Kill a Mockingbird</em></cite>
-你可以选择你的朋友，但无法选择你的家庭，所以不管你承认与否，他们都是你的亲属，而且不承认会让你显得很蠢。（哈珀·李，《杀死一只知更鸟》）
 
 This is the very last chapter where we add new functionality to our VM. We've
 packed almost the entire Lox language in there already. All that remains is

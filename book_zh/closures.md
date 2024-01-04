@@ -1,8 +1,8 @@
 > As the man said, for every complex problem there's a simple solution, and it's
 > wrong.
+> 正如那人所说，每一个复杂的问题都有一个简单的解决方案，而且是错误的。
 >
 > <cite>Umberto Eco, <em>Foucault's Pendulum</em></cite>
-正如那人所说，每一个复杂的问题都有一个简单的解决方案，而且是错误的。（翁贝托·艾柯，《傅科摆》）
 
 Thanks to our diligent labor in [the last chapter][last], we have a virtual
 machine with working functions. What it lacks is closures. Aside from global

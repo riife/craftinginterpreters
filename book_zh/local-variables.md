@@ -1,14 +1,13 @@
 > And as imagination bodies forth<br />
 > The forms of things unknown, the poet's pen<br />
 > Turns them to shapes and gives to airy nothing<br />
-> A local habitation and a name.
+> A local habitation and a name.<br />
+> 当想象力迸发<br />
+> 无名的事物以某种形式呈现，诗人的笔<br />
+> 使它们具有如实的形象<br />
+> 空虚的无物也会有了住处和名字<br />
 >
 > <cite>William Shakespeare, <em>A Midsummer Night's Dream</em></cite>
-*随着想象力的不断涌现*
-*未知事物的形式，诗人的笔*
-*把它们变成形状，变成虚无*
-*当地的居住地和名字。*
-（威廉·莎士比亚《仲夏夜之梦》）
 
 The [last chapter][] introduced variables to clox, but only of the <span
 name="global">global</span> variety. In this chapter, we'll extend that to

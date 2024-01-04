@@ -94,16 +94,16 @@
 <p>Literature is idiosyncratic arrangements in horizontal lines in only
 twenty-six phonetic symbols, ten Arabic numbers, and about eight punctuation
 marks.</p>
-<p><cite>Kurt Vonnegut, <em>Like Shaking Hands With God: A Conversation about Writing</em></cite>
-文学就是26个字母、10个阿拉伯数字和大概8个标点符号的水平排列。（冯尼古特《像与上帝握手：关于写作的谈话》）</p>
+<p>文学就是26个字母、10个阿拉伯数字和大概8个标点符号的水平排列。</p>
+<p><cite>Kurt Vonnegut, <em>Like Shaking Hands With God: A Conversation about Writing</em></cite></p>
 </blockquote>
 <p>Our second interpreter, clox, has three phases<span class="em">&mdash;</span>scanner, compiler, and virtual
 machine. A data structure joins each pair of phases. Tokens flow from scanner to
 compiler, and chunks of bytecode from compiler to VM. We began our
 implementation near the end with <a href="chunks-of-bytecode.html">chunks</a> and the <a href="a-virtual-machine.html">VM</a>. Now, we&rsquo;re going to
 hop back to the beginning and build a scanner that makes tokens. In the
-<a href="compiling-expressions.html">next chapter</a>, we&rsquo;ll tie the two ends together with our bytecode compiler.
-我们的第二个解释器clox分为三个阶段——扫描器、编译器和虚拟机。每两个阶段之间有一个数据结构进行衔接。词法标识从扫描器流入编译器，字节码块从编译器流向虚拟机。我们是从尾部开始先实现了字节码块和虚拟机。现在，我们要回到起点，构建一个生成词法标识的扫描器。在下一章中，我们将用字节码编译器将这两部分连接起来。</p><img src="image/scanning-on-demand/pipeline.png" alt="Source code &rarr; scanner &rarr; tokens &rarr; compiler &rarr; bytecode chunk &rarr; VM." />
+<a href="compiling-expressions.html">next chapter</a>, we&rsquo;ll tie the two ends together with our bytecode compiler.</p>
+<p>我们的第二个解释器clox分为三个阶段——扫描器、编译器和虚拟机。每两个阶段之间有一个数据结构进行衔接。词法标识从扫描器流入编译器，字节码块从编译器流向虚拟机。我们是从尾部开始先实现了字节码块和虚拟机。现在，我们要回到起点，构建一个生成词法标识的扫描器。在下一章中，我们将用字节码编译器将这两部分连接起来。</p><img src="image/scanning-on-demand/pipeline.png" alt="Source code &rarr; scanner &rarr; tokens &rarr; compiler &rarr; bytecode chunk &rarr; VM." />
 <p>I&rsquo;ll admit, this is not the most exciting chapter in the book. With two
 implementations of the same language, there&rsquo;s bound to be some redundancy. I did
 sneak in a few interesting differences compared to jlox&rsquo;s scanner. Read on to
@@ -142,6 +142,7 @@ path to a script to run.
 <aside name="args">
 <p>The code tests for one and two arguments, not zero and one, because the first
 argument in <code>argv</code> is always the name of the executable being run.</p>
+<p>代码里面校验是一个参数还是两个参数，而不是0和1，因为argv中的第一个参数总是被运行的可执行文件的名称。</p>
 </aside>
 <p>We&rsquo;ll need a few system headers, so let&rsquo;s get them all out of the way.
 我们需要一些系统头文件，所以把它们都列出来。</p>
@@ -209,8 +210,10 @@ allocates it and passes ownership to its caller. That function looks like this:
 have to remember the ownership rules and hand-implement them throughout the
 program. Java just does it for us. C++ gives us tools to encode the policy
 directly so that the compiler validates it for us.</p>
+<p>C语言不仅要求我们显式地管理内存，而且要在精神上管理。我们程序员必须记住所有权规则，并在整个程序中手动实现。Java为我们做了这些。C++为我们提供了直接编码策略的工具，这样编译器就会为我们验证它。</p>
 <p>I like C&rsquo;s simplicity, but we pay a real price for it<span class="em">&mdash;</span>the language requires
 us to be more conscientious.</p>
+<p>我喜欢C语言的简洁，但是我们为此付出了真正的代价——这门语言要求我们更加认真。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>main.c</em><br>
 add after <em>repl</em>()</div>
@@ -246,6 +249,7 @@ single batch.
 <aside name="one">
 <p>Well, that size <em>plus one</em>. Always gotta remember to make room for the null
 byte.</p>
+<p>嗯，这个size要加1，永远记得为null字节留出空间。</p>
 </aside>
 <p>So we&rsquo;re done, right? Not quite. These function calls, like most calls in the C
 standard library, can fail. If this were Java, the failures would be thrown as
@@ -316,6 +320,7 @@ go too far off in the weeds, shall we?
 <aside name="printf">
 <p>Even good old <code>printf()</code> can fail. Yup. How many times have you handled <em>that</em>
 error?</p>
+<p>即使是老式的 <code>printf()</code> 也会失败。没错。你处理过多少次这样的错误？</p>
 </aside>
 <h3><a href="#开启编译管线" id="开启编译管线"><small>16&#8202;.&#8202;1&#8202;.&#8202;1</small>开启编译管线</a></h3>
 <p>We&rsquo;ve got ourselves a string of Lox source code, so now we&rsquo;re ready to set up a
@@ -437,6 +442,7 @@ being looked at.
 <aside name="fields">
 <p>Here, we are in the middle of scanning the identifier <code>bacon</code>. The current
 character is <code>o</code> and the character we most recently consumed is <code>c</code>.</p>
+<p>这里，我们正在扫描标识符 <code>bacon</code>。当前的字符是 <code>o</code>，我们最近使用的字符是 <code>c</code>。</p>
 </aside>
 <p>We have a <code>line</code> field to track what line the current lexeme is on for error
 reporting. That&rsquo;s it! We don&rsquo;t even keep a pointer to the beginning of the
@@ -502,6 +508,7 @@ format string. Using <code>*</code> instead lets you pass the precision as an ar
 that <code>printf()</code> call prints the first <code>token.length</code> characters of the string at
 <code>token.start</code>. We need to limit the length like that because the lexeme points
 into the original source string and doesn&rsquo;t have a terminator at the end.</p>
+<p>格式字符串中的<code>%.*s</code>是一个很好的特性。通常情况下，你需要在格式字符串中写入一个数字来设置输出精度——要显示的字符数。使用<code>*</code>则可以把精度作为一个参数来传递。因此，<code>printf()</code>调用将字符串从<code>token.start</code>开始的前<code>token.length</code>个字符。我们需要这样限制长度，因为词素指向原始的源码字符串，并且在末尾没有终止符。</p>
 </aside>
 <p>This loops indefinitely. Each turn through the loop, it scans one token and
 prints it. When it reaches a special &ldquo;end of file&rdquo; token or an error, it stops.
@@ -525,6 +532,7 @@ empty lexeme on line 2 is the EOF token.
 <aside name="token">
 <p>Yeah, the raw index of the token type isn&rsquo;t exactly human readable, but it&rsquo;s all
 C gives us.</p>
+<p>是的，标记类型的原始索引并不完全适合人类阅读，但这是 C 语言为我们提供的全部内容</p>
 </aside>
 <p>The goal for the rest of the chapter is to make that blob of code work by
 implementing this key function:
@@ -620,6 +628,7 @@ all and we can freely copy tokens around. As long as the main source code string
 the source string, which is created far away over in the &ldquo;main&rdquo; module, has a
 long enough lifetime. That&rsquo;s why <code>runFile()</code> doesn&rsquo;t free the string until
 <code>interpret()</code> finishes executing the code and returns.</p>
+<p>我并不想让这个听起来太轻率。我们确实需要考虑并确保在“main”模块中创建的源字符串具有足够长的生命周期。这就是<code>runFile()</code>中会在<code>interpret()</code>执行完代码并返回后才释放字符串的原因。</p>
 </aside>
 <h3><a href="#扫描标识符" id="扫描标识符"><small>16&#8202;.&#8202;2&#8202;.&#8202;1</small>扫描标识符</a></h3>
 <p>We&rsquo;re ready to scan some tokens. We&rsquo;ll work our way up to the complete
@@ -700,7 +709,8 @@ add after <em>makeToken</em>()</div>
 
 <p><span name="axolotl"></span></p>
 <aside name="axolotl">
-<p>This part of the chapter is pretty dry, so here&rsquo;s a picture of an axolotl.</p><img src="image/scanning-on-demand/axolotl.png" alt="A drawing of an axolotl." />
+<p>This part of the chapter is pretty dry, so here&rsquo;s a picture of an axolotl.</p>
+<p>这一章的这部分内容很枯燥，所以这里有一张斧头龙的图片。</p><img src="image/scanning-on-demand/axolotl.png" alt="A drawing of an axolotl." />
 </aside>
 <p>The only difference is that the &ldquo;lexeme&rdquo; points to the error message string
 instead of pointing into the user&rsquo;s source code. Again, we need to ensure that
@@ -981,6 +991,7 @@ redundancy. The work to scan a number literal is awfully similar to the work
 required to convert a sequence of digit characters to a number value. But there
 isn&rsquo;t <em>that</em> much redundancy, it isn&rsquo;t in anything performance critical, and it
 keeps our scanner simpler.</p>
+<p>在编译器中进行词素到运行时值的转换确实会引入一些冗余。扫描一个数字字面量的工作与将一串数字字符转换为一个数值的工作非常相似。但是并没有那么多冗余，它并不是任何性能上的关键点，而且能使得我们的扫描器更加简单。</p>
 </aside>
 <p>Next up, numbers. Instead of adding a switch case for each of the ten digits
 that can start a number, we handle them here:
@@ -1094,6 +1105,7 @@ there.
 <aside name="hash">
 <p>Don&rsquo;t worry if this is unfamiliar to you. When we get to <a href="hash-tables.html">building our own hash
 table from scratch</a>, we&rsquo;ll learn all about it in exquisite detail.</p>
+<p>如果你对此不熟悉，请不要担心。当我们从头开始构建我们自己的哈希表时，将会学习关于它的所有细节。</p>
 </aside>
 <p>Let&rsquo;s say we&rsquo;ve scanned the identifier &ldquo;gorgonzola&rdquo;. How much work <em>should</em> we
 need to do to tell if that&rsquo;s a reserved word? Well, no Lox keyword starts with
@@ -1112,6 +1124,7 @@ We should be able to recognize that and fail fast.
 <p><span name="down"></span></p><img src="image/scanning-on-demand/keywords.png" alt="A trie that contains all of Lox's keywords." />
 <aside name="down">
 <p>Read down each chain of nodes and you&rsquo;ll see Lox&rsquo;s keywords emerge.</p>
+<p>从上向下阅读每个节点链，你将看到Lox的关键字。</p>
 </aside>
 <p>We start at the root node. If there is a child node whose letter matches the
 first character in the lexeme, we move to that node. Then repeat for the next
@@ -1133,6 +1146,7 @@ the middle of the word &ldquo;retrieval&rdquo;, which means it should be pronoun
 &ldquo;tree&rdquo; <em>which tries are a special case of</em>, so unless you never speak of these
 things out loud, no one can tell which one you&rsquo;re talking about. Thus, people
 these days often pronounce it like &ldquo;try&rdquo; to avoid the headache.</p>
+<p>&ldquo;Trie&rdquo; 是CS中最令人困惑的名字之一。Edward Fredkin从 &ldquo;检索（retrieval）&rdquo; 中把这个词提取出来，这意味着它的读音应该像 &ldquo;tree&rdquo; 。但是，已经有一个非常重要的数据结构发音为 &ldquo;tree&rdquo; ，而trie只是一个特例。所以如果你谈论这些东西时，没人能分辨出你在说哪一个。因此，现在人们经常把它读作 &ldquo;try&rdquo; ，以免头痛。</p>
 </aside>
 <p>Instead, each string the trie &ldquo;contains&rdquo; is represented as a <em>path</em> through the
 tree of character nodes, as in our traversal above. Nodes that match the last
@@ -1163,10 +1177,12 @@ long strings. For example, here&rsquo;s a DFA that recognizes number literals:
 <p>This style of diagram is called a <a href="https://en.wikipedia.org/wiki/Syntax_diagram"><strong>syntax diagram</strong></a> or the
 more charming <strong>railroad diagram</strong>. The latter name is because it looks
 something like a switching yard for trains.</p>
+<p>这种风格的图被称为<a href="https://en.wikipedia.org/wiki/Syntax_diagram">语法图</a>或<strong>铁路图</strong>。后者的名字是因为它看起来像火车的调度场。</p>
 <p>Back before Backus-Naur Form was a thing, this was one of the predominant ways
 of documenting a language&rsquo;s grammar. These days, we mostly use text, but there&rsquo;s
 something delightful about the official specification for a <em>textual language</em>
 relying on an <em>image</em>.</p>
+<p>在 Backus-Naur 范式出现之前，这是记录语言语法的主要方式之一。如今，我们大多使用文本，但一种<em>文本语言</em>的官方规范依赖于 <em>图像</em> ，这一点很令人高兴。</p>
 </aside>
 <p>I&rsquo;ve collapsed the nodes for the ten digits together to keep it more readable,
 but the basic process works the same<span class="em">&mdash;</span>you work through the path, entering
@@ -1187,8 +1203,10 @@ If you want to learn the algorithm to convert a regular expression into a DFA, <
 <p>This is also how most regular expression engines in programming languages and
 text editors work under the hood. They take your regex string and convert it to
 a DFA, which they then use to match strings.</p>
+<p>这也是大多数编程语言和文本编辑器中的正则表达式引擎的工作原理。它们获取你的正则表达式字符串并将其转换为DFA，然后使用DFA来匹配字符串。</p>
 <p>If you want to learn the algorithm to convert a regular expression into a DFA,
 <a href="https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools">the dragon book</a> has you covered.</p>
+<p><br>如果你想学习将正则表达式转换为DFA的算法，<a href="https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools">龙书</a>中已经为你提供了答案。</p>
 </aside>
 <p>We won&rsquo;t go down that road. We already have a perfectly serviceable hand-rolled
 scanner. We just need a tiny trie for recognizing keywords. How should we map
@@ -1202,6 +1220,7 @@ node and handle the easy keywords.
 <p>Simple doesn&rsquo;t mean dumb. The same approach is <a href="https://github.com/v8/v8/blob/e77eebfe3b747fb315bd3baad09bec0953e53e68/src/parsing/scanner.cc#L1643">essentially what V8 does</a>,
 and that&rsquo;s currently one of the world&rsquo;s most sophisticated, fastest language
 implementations.</p>
+<p>简单并不意味着愚蠢。<a href="https://github.com/v8/v8/blob/e77eebfe3b747fb315bd3baad09bec0953e53e68/src/parsing/scanner.cc#L1643">v8</a>也采用了同样的方法，而它是目前世界上最复杂、最快的语言实现之一。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">static TokenType identifierType() {
 </pre><div class="source-file"><em>scanner.c</em><br>
@@ -1307,6 +1326,7 @@ identifier will not be a reserved one.
 complicated data structures, layers of caching, and other fancy optimizations.
 But, many times, all that&rsquo;s required is to do less work, and I often find that
 writing the simplest code I can is sufficient to accomplish that.</p>
+<p>我们有时会陷入这样的误区：任务性能来自于复杂的数据结构、多级缓存和其它花哨的优化。但是，很多时候所需要的就是做更少的工作，而我经常发现，编写最简单的代码就足以完成这些工作。</p>
 </aside>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>

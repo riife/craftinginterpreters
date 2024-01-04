@@ -7,6 +7,10 @@ material you may find helpful:
 * **[Appendix II][]** shows the Java classes produced by [the AST generator][]
   we use for jlox.
 
+* **[Appendix I][]** 包含完整的Lox语法，一网打尽。
+
+* **[Appendix II][]** 显示了我们用于 jlox 的 [AST 生成器][the AST generator] 生成的 Java 类。
+
 [appendix i]: appendix-i.html
 [appendix ii]: appendix-ii.html
 [the ast generator]: representing-code.html#metaprogramming-the-trees

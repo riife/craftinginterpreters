@@ -1,9 +1,9 @@
 > When you are a Bear of Very Little Brain, and you Think of Things, you find
 > sometimes that a Thing which seemed very Thingish inside you is quite
 > different when it gets out into the open and has other people looking at it.
+> 你要是一只脑子很小的熊，当你想事情的时候，你会发现，有时在你心里看起来很像回事的事情，当它展示出来，让别人看着它的时候，就完全不同了。
 >
 > <cite>A. A. Milne, <em>Winnie-the-Pooh</em></cite>
-你要是一只脑子很小的熊，当你想事情的时候，你会发现，有时在你心里看起来很像回事的事情，当它展示出来，让别人看着它的时候，就完全不同了。（A. A.米尔恩，《小熊维尼》）
 
 The past few chapters were huge, packed full of complex techniques and pages of
 code. In this chapter, there's only one new concept to learn and a scattering of
@@ -26,6 +26,10 @@ machine register integer. Unityped languages aren't common today, but some
 Forths and BCPL, the language that inspired C, worked like this.
 
 As of this moment, clox is unityped.
+
+在静态类型和动态类型之外，还有第三类：单一类型（**unityped**）。在这种范式中，所有的变量都是一个类型，通常是一个机器寄存器整数。单一类型的语言在今天并不常见，但一些Forth派生语言和BCPL（启发了C的语言）是这样工作的。
+
+从这一刻起，clox是单一类型的。
 
 </aside>
 
@@ -77,6 +81,10 @@ instance of a class is the same type: "instance".
 
 In other words, this is the VM's notion of "type", not the user's.
 
+这个案例中涵盖了*虚拟机中内置支持*的每一种值。等到我们在语言中添加类时，用户定义的每个类并不需要在这个枚举中添加对应的条目。对于虚拟机而言，一个类的每个实例都是相同的类型：“instance”。
+
+换句话说，这是虚拟机中的“类型”概念，而不是用户的。
+
 </aside>
 
 For now, we have only a couple of cases, but this will grow as we add strings,
@@ -99,6 +107,8 @@ If you're familiar with a language in the ML family, structs and unions in C
 roughly mirror the difference between product and sum types, between tuples
 and algebraic data types.
 
+如果您熟悉 ML 系列语言，那么 C 语言中的结构体和联合体大致反映了乘积与总和、元组与代数数据类型之间的区别。
+
 </aside>
 
 <img src="image/types-of-values/union.png" alt="A union with two fields overlapping in memory." />
@@ -116,6 +126,8 @@ Using a union to interpret bits as different types is the quintessence of C. It
 opens up a number of clever optimizations and lets you slice and dice each byte
 of memory in ways that memory-safe languages disallow. But it is also wildly
 unsafe and will happily saw your fingers off if you don't watch out.
+
+使用联合体将比特位解释为不同类型是C语言的精髓。它提供了许多巧妙的优化，让你能够以内存安全型语言中不允许的方式对内存中的每个字节进行切分。但它也是非常不安全的，如果你不小心，它就可能会锯掉你的手指。
 
 </aside>
 
@@ -136,6 +148,8 @@ A smart language hacker gave me the idea to use "as" for the name of the union
 field because it reads nicely, almost like a cast, when you pull the various
 values out.
 
+一个聪明的语言黑客给了我一个想法，把“as”作为联合体字段名称，因为当你取出各种值时，读起来感觉很好，就像是强制转换一样。
+
 </aside>
 
 <img src="image/types-of-values/value.png" alt="The full value struct, with the type and as fields next to each other in memory." />
@@ -155,6 +169,8 @@ We could move the tag field *after* the union, but that doesn't help much
 either. Whenever we create an array of Values -- which is where most of our
 memory usage for Values will be -- the C compiler will insert that same padding
 *between* each Value to keep the doubles aligned.
+
+我们可以把标签字段移动到联合体字段之后，但这也没有多大帮助。每当我们创建一个Value数组时（这也是我们对Value的主要内存使用），C编译器都会在每个数值 *之间* 插入相同的填充，以保持双精度数对齐。
 
 </aside>
 
@@ -202,6 +218,8 @@ back out.
 There's no `AS_NIL` macro because there is only one `nil` value, so a Value with
 type `VAL_NIL` doesn't carry any extra data.
 
+没有`AS_NIL`宏，因为只有一个`nil`值，所以一个类型为`VAL_NIL`的Value不会携带任何额外的数据。
+
 </aside>
 
 <span name="as-null">These</span> macros go in the opposite direction. Given a
@@ -234,6 +252,7 @@ data between Lox's dynamic world and C's static one.
 
 The `_VAL` macros lift a C value into the heavens. The `AS_` macros bring it
 back down.
+`_VAL` 宏将 C 值带到到天上。`AS_` 宏则把它拉回来。
 
 </aside>
 
@@ -297,6 +316,8 @@ immediately halt the interpreter. There's no way for user code to recover from
 an error. If Lox were a real language, this is one of the first things I would
 remedy.
 
+Lox的错误处理方法是相当...... *简朴* 的。所有的错误都是致命的，会立即停止解释器。用户代码无法从错误中恢复。如果Lox是一种真正的语言，这是我首先要补救的事情之一。
+
 </aside>
 
 To access the Value, we use a new little function.
@@ -315,6 +336,8 @@ Why not just pop the operand and then validate it? We could do that. In later
 chapters, it will be important to leave operands on the stack to ensure the
 garbage collector can find them if a collection is triggered in the middle of
 the operation. I do the same thing here mostly out of habit.
+
+为什么不直接弹出操作数然后验证它呢？我们可以这么做。在后面的章节中，将操作数留在栈上是很重要的，可以确保在运行过程中触发垃圾收集时，垃圾收集器能够找到它们。我在这里做了同样的事情，主要是出于习惯。
 
 </aside>
 
@@ -338,6 +361,8 @@ arbitrary number of arguments to `runtimeError()`. It forwards those on to
 If you are looking for a C tutorial, I love *[The C Programming Language][kr]*,
 usually called "K&R" in honor of its authors. It's not entirely up to date, but
 the quality of the writing more than makes up for it.
+
+如果你在寻找一个C教程，我喜欢[C程序设计语言][kr]，通常被称为“K&R”，以纪念它的作者。它并不完全是最新的，但是写作质量足以弥补这一点。
 
 [kr]: https://www.cs.princeton.edu/~bwk/cbook.html
 
@@ -370,6 +395,8 @@ Just showing the immediate line where the error occurred doesn’t provide much 
 Just showing the immediate line where the error occurred doesn't provide much
 context. Better would be a full stack trace. But we don't even have functions to
 call yet, so there is no call stack to trace.
+
+仅仅显示发生错误的那一行并不能提供太多的上下文信息。最后是提供完整的堆栈跟踪，但是我们目前甚至还没有函数调用，所以也没有调用堆栈可以跟踪。
 
 </aside>
 
@@ -421,6 +448,8 @@ existing arithmetic operators, the result is a number, so we pass in the
 
 Did you know you can pass macros as parameters to macros? Now you do!
 
+你知道可以将宏作为参数传递给宏吗？现在你知道了！
+
 </aside>
 
 ^code op-arithmetic (1 before, 1 after)
@@ -463,11 +492,13 @@ faster. A bytecode VM spends much of its execution time reading and decoding
 instructions. The fewer, simpler instructions you need for a given piece of
 behavior, the faster it goes. Short instructions dedicated to common operations
 are a classic optimization.
+我不是在开玩笑，对于某些常量值的专用操作会更快。字节码虚拟机的大部分执行时间都花在读取和解码指令上。对于一个特定的行为，你需要的指令越少、越简单，它就越快。专用于常见操作的短指令是一种典型的优化。
 
 For example, the Java bytecode instruction set has dedicated instructions for
 loading 0.0, 1.0, 2.0, and the integer values from -1 through 5. (This ends up
 being a vestigial optimization given that most mature JVMs now JIT-compile the
 bytecode to machine code before execution anyway.)
+例如，Java字节码指令集中有专门的指令用于加载0.0、1.0、2.0以及从-1到5之间的整数。（考虑到大多数成熟的JVM在执行前都会对字节码进行JIT编译，这最终成为了一种残留的优化）
 
 </aside>
 
@@ -511,6 +542,8 @@ interpreter.
 We could have used separate parser functions for each literal and saved
 ourselves a switch but that felt needlessly verbose to me. I think it's mostly a
 matter of taste.
+
+我们本可以为每个字面意思使用单独的解析器函数，这样就省去了一个开关，但我觉得这样做太冗长了。我认为这主要是品味问题。
 
 </aside>
 
@@ -597,6 +630,8 @@ Now I can't help but try to figure out what it would mean to negate other types
 of values. `nil` is probably its own negation, sort of like a weird pseudo-zero.
 Negating a string could, uh, reverse it?
 
+现在我忍不住想弄清楚，对其它类型的值取反意味着什么。`nil`可能有自己的非值，有点像一个奇怪的伪零。对字符串取反可以，emmm，反转？
+
 </aside>
 
 ^code is-falsey
@@ -648,8 +683,12 @@ comparison operators return false when an operand is NaN. That means `NaN <= 1`
 is false and `NaN > 1` is also false. But our desugaring assumes the latter is
 always the negation of the former.
 
+`a<=b`总是与`!(a>b)`相同吗？根据IEEE 754标准，当操作数为NaN时，所有的比较运算符都返回假。这意味着`NaN <= 1`是假的，`NaN > 1`也是假的。但我们的脱糖操作假定了后者是前者的非值。
+
 For the book, we won't get hung up on this, but these kinds of details will
 matter in your real language implementations.
+
+在本书中，我们不必纠结于此，但这些细节在你的真正的语言实现中会很重要。
 
 [ieee 754]: https://en.wikipedia.org/wiki/IEEE_754
 
@@ -710,15 +749,18 @@ be considered equal if one can be converted to the other's type. For example,
 the number 0 is equivalent to the string "0" in JavaScript. This looseness was a
 large enough source of pain that JS added a separate "strict equality" operator,
 `===`.
+有些语言支持“隐式转换”，如果某个类型的值可以转换为另一个类型，那么这两种类型的值就可以被认为是相等的。举例来说，在JavaScript中，数字0等同于字符串“0”。这种松散性导致JS增加了一个单独的“严格相等”运算符，`===`。
 
 PHP considers the strings "1" and "01" to be equivalent because both can be
 converted to equivalent numbers, though the ultimate reason is because PHP was
 designed by a Lovecraftian eldritch god to destroy the mind.
+PHP认为字符串 "1" 和 "01" 是等价的，因为两者都可以转换成等价的数字，但是最根本的原因在于PHP是由Lovecraftian的邪神设计的，目的是摧毁人类心智。
 
 Most dynamically typed languages that have separate integer and floating-point
 number types consider values of different number types equal if the numeric
 values are the same (so, say, 1.0 is equal to 1), though even that seemingly
 innocuous convenience can bite the unwary.
+大多数具有单独的整数和浮点数类型的动态类型语言认为，如果数值相同，则不同数字类型的值是相等的（所以说，1.0等于1），但即便是这种看似无害的便利，如果一不小心也会让人吃不消。
 
 </aside>
 

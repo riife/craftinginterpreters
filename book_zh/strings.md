@@ -1,9 +1,9 @@
 > "Ah? A small aversion to menial labor?" The doctor cocked an eyebrow.
 > "Understandable, but misplaced. One should treasure those hum-drum
 > tasks that keep the body occupied but leave the mind and heart unfettered."
+> “啊？对琐碎的劳动有点反感？”医生挑了挑眉毛，“可以理解，但这是错误的。一个人应该珍惜那些让身体忙碌，但让思想和心灵不受束缚的琐碎工作。”
 >
 > <cite>Tad Williams, <em>The Dragonbone Chair</em></cite>
-“啊？对琐碎的劳动有点反感？”医生挑了挑眉毛，“可以理解，但这是错误的。一个人应该珍惜那些让身体忙碌，但让思想和心灵不受束缚的琐碎工作。”（泰德-威廉姆斯，《龙骨椅》）
 
 Our little VM can represent three types of values right now: numbers, Booleans,
 and `nil`. Those types have two important things in common: they're immutable
@@ -24,6 +24,8 @@ UCSD Pascal, one of the first implementations of Pascal, had this exact limit.
 Instead of using a terminating null byte to indicate the end of the string like
 C, Pascal strings started with a length value. Since UCSD used only a single
 byte to store the length, strings couldn't be any longer than 255 characters.
+
+UCSD Pascal，Pascal最早的实现之一，就有这个确切的限制。Pascal字符串开头是长度值，而不是像C语言那样用一个终止的空字符表示字符串的结束。因为UCSD只使用一个字节来存储长度，所以字符串不能超过255个字符。
 
 <img src="image/strings/pstring.png" alt="The Pascal string 'hello' with a length byte of 5 preceding it." />
 
@@ -63,6 +65,7 @@ ValueType case to refer to all heap-allocated types.
 <aside name="short">
 
 "Obj" is short for "object", natch.
+当然，"Obj" 是“对象（object）”的简称。
 
 </aside>
 
@@ -106,6 +109,7 @@ another union like we did for Value since the sizes are all over the place.
 
 No, I don't know how to pronounce "objs" either. Feels like there should be a
 vowel in there somewhere.
+不，我也不知道 "objs "怎么发音。感觉里面应该有个元音。
 
 </aside>
 
@@ -192,6 +196,7 @@ it to a pointer to its first field and back.
 <aside name="spec">
 
 The key part of the spec is:
+语言规范中的关键部分是：
 
 > &sect; 6.7.2.1 13
 >
@@ -201,6 +206,8 @@ The key part of the spec is:
 > its initial member (or if that member is a bit-field, then to the unit in
 > which it resides), and vice versa. There may be unnamed padding within a
 > structure object, but not at its beginning.
+
+> 在一个结构体对象中，非位域成员和位域所在的单元的地址按照它们被声明的顺序递增。一个指向结构对象的指针，经过适当转换后，指向其第一个成员（如果该成员是一个位域，则指向其所在的单元），反之亦然。在结构对象中可以有未命名的填充，但不允许在其开头。
 
 </aside>
 
@@ -281,6 +288,7 @@ constant table.
 
 If Lox supported string escape sequences like `\n`, we'd translate those here.
 Since it doesn't, we can take the characters as they are.
+如果Lox支持像`\n`这样的字符串转义序列，我们会在这里对其进行转换。既然不支持，我们就可以原封不动地接受这些字符。
 
 </aside>
 
@@ -317,10 +325,14 @@ terminate it.
 We need to terminate the string ourselves because the lexeme points at a range
 of characters inside the monolithic source string and isn't terminated.
 
+我们需要自己终止字符串，因为词素指向整个源字符串中的一个字符范围，并且没有终止符。
+
 Since ObjString stores the length explicitly, we *could* leave the character
 array unterminated, but slapping a terminator on the end costs us only a byte
 and lets us pass the character array to C standard library functions that expect
 a terminated string.
+
+由于ObjString明确存储了长度，我们 *可以* 让字符数组不终止，但是在结尾处添加一个终止符只花费一个字节，并且可以让我们将字符数组传递给期望带终止符的C标准库函数。
 
 </aside>
 
@@ -360,6 +372,8 @@ I admit this chapter has a sea of helper functions and macros to wade through. I
 try to keep the code nicely factored, but that leads to a scattering of tiny
 functions. They will pay off when we reuse them later.
 
+我承认这一章涉及了大量的辅助函数和宏。我试图让代码保持良好的分解，但这导致了一些分散的小函数。等我们以后重用它们时，将会得到回报。
+
 </aside>
 
 ^code allocate-object (2 before, 2 after)
@@ -383,6 +397,7 @@ literals.
 Don't get "voilà" confused with "viola". One means "there it is" and the other
 is a string instrument, the middle child between a violin and a cello. Yes, I
 did spend two hours drawing a viola just to mention that.
+不要把 "voilà" 和 "viola" 搞混了。一个意思是 "就在那儿"，另一个是一种弦乐器，介于小提琴和大提琴之间。是的，我花了两个小时画了一把中提琴，就是为了说这个。
 
 </aside>
 
@@ -413,6 +428,7 @@ name="term-2">prints</span> the character array as a C string.
 <aside name="term-2">
 
 I told you terminating the string would come in handy.
+我说过，终止字符串会有用的。
 
 </aside>
 
@@ -480,9 +496,11 @@ runtime error.
 This is more conservative than most languages. In other languages, if one
 operand is a string, the other can be any type and it will be implicitly
 converted to a string before concatenating the two.
+这比大多数语言都要保守。在其它语言中，如果一个操作数是字符串，另一个操作数可以是任何类型，在连接这两个操作数之前会隐式地转换为字符串。
 
 I think that's a fine feature, but would require writing tedious "convert to
 string" code for each type, so I left it out of Lox.
+我认为这是一个很好的特性，但是需要为每种类型编写冗长的“转换为字符串”的代码，所以我在Lox中没有支持它。
 
 </aside>
 
@@ -548,6 +566,7 @@ generates this <span name="stack">bytecode</span>:
 <aside name="stack">
 
 Here's what the stack looks like after each instruction:
+下面是每条指令执行后的堆栈：
 
 <img src="image/strings/stack.png" alt="The state of the stack at each instruction." />
 
@@ -594,15 +613,21 @@ trying to start on the GC. For the kind of toy programs you typically run while
 a language is being developed, you actually don't run out of memory before
 reaching the end of the program, so this gets you surprisingly far.
 
+我见过很多人在实现看语言的大部分内容之后，才试图开始实现GC。对于在开发语言时通常会运行的那种玩具程序，实际上不会在程序结束之前耗尽内存，所以在需要GC之前，你可以开发出很多的特性。
+
 But that underestimates how *hard* it is to add a garbage collector later. The
 collector *must* ensure it can find every bit of memory that *is* still being
 used so that it doesn't collect live data. There are hundreds of places a
 language implementation can squirrel away a reference to some object. If you
 don't find all of them, you get nightmarish bugs.
 
+但是，这低估了以后添加垃圾收集器的难度。收集器必须确保它能够找到每一点仍在使用的内存，这样它就不会收集活跃数据。一个语言的实现可以在数百个地方存储对某个对象的引用。如果你不能找到所有这些地方，你就会遇到噩梦般的漏洞。
+
 I've seen language implementations die because it was too hard to get the GC in
 later. If your language needs GC, get it working as soon as you can. It's a
 crosscutting concern that touches the entire codebase.
+
+我曾见过一些语言实现因为后来的GC太困难而夭折。如果你的语言需要GC，请尽快实现它。它是涉及整个代码库的横切关注点。
 
 </aside>
 
@@ -701,6 +726,8 @@ Using `reallocate()` to free memory might seem pointless. Why not just call
 used. If all allocation and freeing goes through `reallocate()`, it's easy to
 keep a running count of the number of bytes of allocated memory.
 
+使用`reallocate()`来释放内存似乎毫无意义。为什么不直接调用`free()`呢？稍后，这将帮助虚拟机跟踪仍在使用的内存数量。如果所有的分配和释放都通过`reallocate()`进行，那么就很容易对已分配的内存字节数进行记录。
+
 </aside>
 
 As usual, we need an include to wire everything together.
@@ -790,6 +817,8 @@ There are two facets to a string encoding:
     It goes without saying that a language that does not let one discuss Gruyère
     or Mötley Crüe is a language not worth using.
 
+    不言而喻，不能讨论 Gruyère 或 Mötley Crüe 的语言是不值得使用的语言。
+
     </aside>
 
     Next came [Unicode][]. Initially, it supported 16,384 different characters
@@ -837,6 +866,9 @@ name="python">perfect</span> solution:
 An example of how difficult this problem is comes from Python. The achingly long
 transition from Python 2 to 3 is painful mostly because of its changes around
 string encoding.
+
+关于这个问题有多难的一个例子就是Python 。从Python 2到3的漫长转变之所以令人痛苦，主要是因为它围绕字符串编码的变化
+
 
 </aside>
 
@@ -890,7 +922,13 @@ scripting language [Wren][], I went with UTF-8 and code points.
 
 字符串编码有两个方面：
 
-* 什么是字符串中的一个“字符”？有多少个不同的值，它们代表什么？第一个被广泛采用的标准答案是ASCII。它给出了127个不同的字符值，并指明了它们是什么。这太棒了……如果你只关心英语的话。虽然它包含有像“记录分隔符”和“同步空闲”这样奇怪的、几乎被遗忘的字符，但它没有元音变音、锐音或钝音。它无法表示 “jalapeño”，“naïve”，“Gruyère”或 “Mötley Crüe”。
+* 什么是字符串中的一个“字符”？有多少个不同的值，它们代表什么？第一个被广泛采用的标准答案是ASCII。它给出了127个不同的字符值，并指明了它们是什么。这太棒了……如果你只关心英语的话。虽然它包含有像“记录分隔符”和“同步空闲”这样奇怪的、几乎被遗忘的字符，但它没有元音变音、锐音或钝音。它无法表示 “jalapeño”，“naïve”，<span name="gruyere_zh">"Gruyère"</span> 或 “Mötley Crüe”。
+
+<aside name="gruyere_zh">
+
+不言而喻，不能讨论 Gruyère 或 Mötley Crüe 的语言是不值得使用的语言。
+
+</aside>
 
   接下来是Unicode。最初，它支持16384个不同的字符（码点），这非常适合在16比特位中使用，还有几位是多余的。后来，这个数字不断增加，现在已经有了超过100,000个不同的码点，包括诸如💩（Unicode字符 "PILE OF POO"，U+1F4A9）等人类交流的重要工具。
 
@@ -908,6 +946,7 @@ name="python_zh">完美</span>的解决方案：
 <aside name="python_zh">
 
 关于这个问题有多难的一个例子就是Python 。从Python 2到3的漫长转变之所以令人痛苦，主要是因为它围绕字符串编码的变化
+
 </aside>
 
 

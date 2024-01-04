@@ -100,10 +100,9 @@
 
     <blockquote>
 <p>In the middle of the journey of our life I found myself within a dark woods
-where the straight way was lost.</p>
-<p><cite>Dante Alighieri, <em>Inferno</em></cite>
-方吾生之半路，恍余处乎幽林，失正轨而迷误。（但丁，《地狱》）
-【译者注：这里引用的是大名鼎鼎的《神曲》，所以我也直接引用了钱稻孙先生的译文】</p>
+where the straight way was lost.
+方吾生之半路，恍余处乎幽林，失正轨而迷误。</p>
+<p><cite>Dante Alighieri, <em>Inferno</em></cite></p>
 </blockquote>
 <p>This chapter is exciting for not one, not two, but <em>three</em> reasons. First, it
 provides the final segment of our VM&rsquo;s execution pipeline. Once in place, we can
@@ -118,6 +117,7 @@ hackers.
 <aside name="wirth">
 <p>Bytecode was good enough for Niklaus Wirth, and no one questions his street
 cred.</p>
+<p>Bytecode 对 Niklaus Wirth 来说已经足够好了，没有人质疑他的街头信誉。</p>
 </aside>
 <p><span name="pratt">Third</span> and finally, I get to show you one of my
 absolute favorite algorithms: Vaughan Pratt&rsquo;s &ldquo;top-down operator precedence
@@ -128,11 +128,13 @@ It deals with precedence and associativity without breaking a sweat. I love it.
 <aside name="pratt">
 <p>Pratt parsers are a sort of oral tradition in industry. No compiler or language
 book I&rsquo;ve read teaches them. Academia is very focused on generated parsers, and
-Pratt&rsquo;s technique is for handwritten ones, so it gets overlooked.</p>
+Pratt&rsquo;s technique is for handwritten ones, so it gets overlooked.
+Pratt 解析器是工业界的一种口头传统。我读过的任何编译器或语言书籍都不教它们。学术界非常关注生成的解析器，而 Pratt 的技术是针对手写解析器的，所以它被忽略了。</p>
 <p>But in production compilers, where hand-rolled parsers are common, you&rsquo;d be
 surprised how many people know it. Ask where they learned it, and it&rsquo;s always,
 &ldquo;Oh, I worked on this compiler years ago and my coworker said they took it from
-this old front end<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo;</p>
+this old front end<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo;
+但在生产编译器中，手写解析器很常见，你会惊讶于有多少人知道这一点。如果问他们是从哪里学到的，他们总是说：&ldquo;哦，我几年前做过这个编译器，我的同事说他们是从这个老前端<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo;。&ldquo;</p>
 </aside>
 <p>As usual, before we get to the fun stuff, we&rsquo;ve got some preliminaries to work
 through. You have to eat your vegetables before you get dessert. First, let&rsquo;s
@@ -236,6 +238,7 @@ algorithm, that table grows additional columns.
 <p>If this chapter isn&rsquo;t clicking with you and you&rsquo;d like another take on the
 concepts, I wrote an article that teaches the same algorithm but using Java and
 an object-oriented style: <a href="http://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/">&ldquo;Pratt Parsing: Expression Parsing Made Easy&rdquo;</a>.</p>
+<p>如果你对这一章不感兴趣，而你又希望从另一个角度了解这些概念，我写过一篇文章讲授了同样的算法，但使用了Java和面向对象的风格：<a href="http://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/">&ldquo;Pratt Parsing: Expression Parsing Made Easy&rdquo;</a></p>
 </aside>
 <p>I don&rsquo;t want to revisit 40-something lines of code each time we extend the
 table. So we&rsquo;re going to work our way into the core of the parser from the
@@ -257,6 +260,7 @@ two passes. Determining not just <em>what</em> optimization passes to have, but 
 order them to squeeze the most performance out of the compiler<span class="em">&mdash;</span>since the
 optimizations often interact in complex ways<span class="em">&mdash;</span>is somewhere between an &ldquo;open
 area of research&rdquo; and a &ldquo;dark art&rdquo;.</p>
+<p>事实上，大多数复杂的优化编译器都不止两遍执行过程。不仅要确定需要进行哪些优化，还要确定如何安排它们的顺序——因为优化往往以复杂的方式相互作用——这是介于“开放的研究领域”和“黑暗的艺术”之间的问题。</p>
 </aside>
 <p>In clox, we&rsquo;re taking an old-school approach and merging these two passes into
 one. Back in the day, language hackers did this because computers literally
@@ -272,7 +276,8 @@ dynamically typed Lox is <span name="lox">well-suited</span> to that.
 像我们要构建的单遍编译器并不是对所有语言都有效。因为编译器在生产代码时只能“管窥”用户的程序，所以语言必须设计成不需要太多外围的上下文环境就能理解一段语法。幸运的是，微小的、动态类型的Lox非常适合这种情况。</p>
 <aside name="lox">
 <p>Not that this should come as much of a surprise. I did design the language
-specifically for this book after all.</p><img src="image/compiling-expressions/keyhole.png" alt="Peering through a keyhole at 'var x;'" />
+specifically for this book after all.
+这并不令人感到意外。毕竟我是专门为这本书设计语言的。</p><img src="image/compiling-expressions/keyhole.png" alt="Peering through a keyhole at 'var x;'" />
 </aside>
 <p>What this means in practical terms is that our &ldquo;compiler&rdquo; C module has
 functionality you&rsquo;ll recognize from jlox for parsing<span class="em">&mdash;</span>consuming tokens,
@@ -423,6 +428,7 @@ mirrors. We add a flag to track whether we&rsquo;re currently in panic mode.
 <p>There is <code>setjmp()</code> and <code>longjmp()</code>, but I&rsquo;d rather not go there. Those make it
 too easy to leak memory, forget to maintain invariants, or otherwise have a Very
 Bad Day.</p>
+<p>有<code>setjmp()</code>和<code>longjmp()</code>，但我不想使用它们。这些使我们很容易泄漏内存、忘记维护不变量，或者说寝食难安。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">  bool hadError;
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -706,8 +712,10 @@ name="256">256</span> constants in a chunk.
 implementation, we&rsquo;d want to add another instruction like <code>OP_CONSTANT_16</code> that
 stores the index as a two-byte operand so we could handle more constants when
 needed.</p>
+<p>确实，这个限制是很低的。如果这是一个完整的语言实现，我们应该添加另一个指令，比如<code>OP_CONSTANT_16</code>，将索引存储为两字节的操作数，这样就可以在需要时处理更多的常量。</p>
 <p>The code to support that isn&rsquo;t particularly illuminating, so I omitted it from
 clox, but you&rsquo;ll want your VMs to scale to larger programs.</p>
+<p>支持这个指令的代码不是特别有启发性，所以我在clox中省略了它，但你会希望你的虚拟机能够扩展成更大的程序。</p>
 </aside>
 <p>That&rsquo;s basically all it takes. Provided there is some suitable code that
 consumes a <code>TOKEN_NUMBER</code> token, looks up <code>number()</code> in the function pointer
@@ -740,6 +748,7 @@ expression between the parentheses, then parse the closing <code>)</code> at the
 <aside name="recursive">
 <p>A Pratt parser isn&rsquo;t a recursive <em>descent</em> parser, but it&rsquo;s still recursive.
 That&rsquo;s to be expected since the grammar itself is recursive.</p>
+<p>Pratt解析器不是递归 <em>下降</em> 解析器，但它仍然是递归的。这是意料之中的，因为语法本身是递归的。</p>
 </aside>
 <p>As far as the back end is concerned, there&rsquo;s literally nothing to a grouping
 expression. Its sole function is syntactic<span class="em">&mdash;</span>it lets you insert a
@@ -795,15 +804,18 @@ happens.
 <p>Emitting the <code>OP_NEGATE</code> instruction after the operands does mean that the
 current token when the bytecode is written is <em>not</em> the <code>-</code> token. That mostly
 doesn&rsquo;t matter, except that we use that token for the line number to associate
-with that instruction.</p>
-<p>This means if you have a multi-line negation expression, like:</p>
+with that instruction.
+在操作数之后发出<code>OP_NEGATE</code>确实意味着写入字节码时的当前标识不是<code>-</code>标识。但这并不重要，除了我们使用标识中的行号与指令相关联。</p>
+<p>This means if you have a multi-line negation expression, like:
+这意味着，如果你有一个多行的取负表达式，比如</p>
 <div class="codehilite"><pre><span class="k">print</span> -
   <span class="k">true</span>;
 </pre></div>
 <p>Then the runtime error will be reported on the wrong line. Here, it would show
 the error on line 2, even though the <code>-</code> is on line 1. A more robust approach
 would be to store the token&rsquo;s line before compiling the operand and then pass
-that into <code>emitByte()</code>, but I wanted to keep things simple for the book.</p>
+that into <code>emitByte()</code>, but I wanted to keep things simple for the book.
+那么运行时错误会报告在错误的代码行上。这里，它将在第2行显示错误，而<code>-</code>是在第一行。一个更稳健的方法是在编译器操作数之前存储标识中的行号，然后将其传递给<code>emitByte()</code>，当我想在本书中尽量保持简单。</p>
 </aside>
 <p>There is one problem with this code, though. The <code>expression()</code> function it
 calls will parse any expression for the operand, regardless of precedence. Once
@@ -915,7 +927,8 @@ binary operators. Speaking of which<span class="ellipse">&thinsp;.&thinsp;.&thin
 我们使用一元运算符本身的<code>PREC_UNARY</code>优先级来允许嵌套的一元表达式，如<code>!!doubleNegative</code>。因为一元运算符的优先级很高，所以正确地排除了二元运算符之类的东西。说到这一点……</p>
 <aside name="useful">
 <p>Not that nesting unary expressions is particularly useful in Lox. But other
-languages let you do it, so we do too.</p>
+languages let you do it, so we do too.
+在 Lox 中，嵌套一元表达式并不是特别有用。但其他语言允许这么做，所以我们也这么做了。</p>
 </aside>
 <h2><a href="#解析中缀表达式" id="解析中缀表达式"><small>17&#8202;.&#8202;5</small>解析中缀表达式</a></h2>
 <p>Binary operators are different from the previous expressions because they are
@@ -1015,22 +1028,27 @@ dynamically with this <code>getRule()</code> thing we&rsquo;ll get to soon. Usin
 但这有点乏味。每个二元运算符的右操作数的优先级都比自己高一级。我们可以通过<code>getRule()</code>动态地查找，我们很快就会讲到。有了它，我们就可以使用比当前运算符高一级的优先级来调用<code>parsePrecedence()</code>。</p>
 <aside name="higher">
 <p>We use one <em>higher</em> level of precedence for the right operand because the binary
-operators are left-associative. Given a series of the <em>same</em> operator, like:</p>
+operators are left-associative. Given a series of the <em>same</em> operator, like:
+我们对右操作数使用高一级的优先级，因为二元操作符是左结合的。给出一系列相同的运算符，如：</p>
 <div class="codehilite"><pre><span class="n">1</span> + <span class="n">2</span> + <span class="n">3</span> + <span class="n">4</span>
 </pre></div>
-<p>We want to parse it like:</p>
+<p>We want to parse it like:
+我们想这样解析它：</p>
 <div class="codehilite"><pre>((<span class="n">1</span> + <span class="n">2</span>) + <span class="n">3</span>) + <span class="n">4</span>
 </pre></div>
 <p>Thus, when parsing the right-hand operand to the first <code>+</code>, we want to consume
 the <code>2</code>, but not the rest, so we use one level above <code>+</code>&rsquo;s precedence. But if
-our operator was <em>right</em>-associative, this would be wrong. Given:</p>
+our operator was <em>right</em>-associative, this would be wrong. Given:
+因此，当解析第一个<code>+</code>的右侧操作数时，我们希望消耗<code>2</code>，但不消耗其余部分，所以我们使用比<code>+</code>高一个优先级的操作数。但如果我们的操作符是右结合的，这就错了。考虑一下：</p>
 <div class="codehilite"><pre><span class="i">a</span> = <span class="i">b</span> = <span class="i">c</span> = <span class="i">d</span>
 </pre></div>
-<p>Since assignment is right-associative, we want to parse it as:</p>
+<p>Since assignment is right-associative, we want to parse it as:
+因为赋值是右结合的，我们希望将其解析为：</p>
 <div class="codehilite"><pre><span class="i">a</span> = (<span class="i">b</span> = (<span class="i">c</span> = <span class="i">d</span>))
 </pre></div>
 <p>To enable that, we would call <code>parsePrecedence()</code> with the <em>same</em> precedence as
-the current operator.</p>
+the current operator.
+为了实现这一点，我们会使用与当前操作符<em>相同</em>的优先级来调用<code>parsePrecedence()</code>。</p>
 </aside>
 <p>This way, we can use a single <code>binary()</code> function for all binary operators even
 though they have different precedences.
@@ -1057,7 +1075,8 @@ that token as an operator.</p>
 </ul>
 <aside name="prefix">
 <p>We don&rsquo;t need to track the precedence of the <em>prefix</em> expression starting with a
-given token because all prefix operators in Lox have the same precedence.</p>
+given token because all prefix operators in Lox have the same precedence.
+我们不需要跟踪以指定标识开头的 <em>前缀</em> 表达式的优先级，因为Lox中的所有前缀操作符都有相同的优先级。</p>
 </aside>
 <p>We wrap these three properties in a little struct which represents a single row
 in the parser table.
@@ -1085,6 +1104,7 @@ type that takes no arguments and returns nothing.
 <p>C&rsquo;s syntax for function pointer types is so bad that I always hide it behind a
 typedef. I understand the intent behind the syntax<span class="em">&mdash;</span>the whole &ldquo;declaration
 reflects use&rdquo; thing<span class="em">&mdash;</span>but I think it was a failed syntactic experiment.</p>
+<p>C语言中函数指针类型的语法非常糟糕，所以我总是把它隐藏在类型定义之后。我理解这种语法背后的意图——整个“声明反映使用”之类的——但我认为这是一个失败的语法实验。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">} Precedence;
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -1150,10 +1170,12 @@ add after <em>unary</em>()</div>
 
 <aside name="big">
 <p>See what I mean about not wanting to revisit the table each time we needed a new
-column? It&rsquo;s a beast.</p>
+column? It&rsquo;s a beast.
+现在明白我所说的“不想每次需要新列时都重新审视这个表格”是什么意思了吧？这就是个野兽。</p>
 <p>If you haven&rsquo;t seen the <code>[TOKEN_DOT] =</code> syntax in a C array literal, that is
 C99&rsquo;s designated initializer syntax. It&rsquo;s clearer than having to count array
-indexes by hand.</p>
+indexes by hand.
+也许你没有见过C语言数组字面量中的<code>[TOKEN_DOT]=</code>语法，这是C99指定的初始化器语法。这比手动计算数组索引要清楚得多。</p>
 </aside>
 <p>You can see how <code>grouping</code> and <code>unary</code> are slotted into the prefix parser column
 for their respective token types. In the next column, <code>binary</code> is wired up to
@@ -1197,7 +1219,8 @@ recursive, so let&rsquo;s get them all out of the way.
 相反地，我们将查询封装在一个函数中。这样我们可以在<code>binary()</code>函数定义之前声明<code>getRule()</code>，然后在表格之后<em>定义</em><code>getRule()</code>。我们还需要一些其它的前置声明来处理语法的递归，所以让我们一次性全部理出来。</p>
 <aside name="forward">
 <p>This is what happens when you write your VM in a language that was designed to
-be compiled on a PDP-11.</p>
+be compiled on a PDP-11.
+这就是用一种专为在 PDP-11 上编译而设计的语言编写虚拟机的结果。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">  emitReturn();
 }
@@ -1299,6 +1322,9 @@ class="arrow" /> arrow connects a function to another function it directly
 calls. The <img src="image/compiling-expressions/points-to.png" alt="An open
 arrow." class="arrow" /> arrow shows the table&rsquo;s pointers to the parsing
 functions.</p>
+<p><img src="image/compiling-expressions/calls.png" alt="A solid arrow."
+class="arrow" /> 箭头连接一个函数与其直接调用的另一个函数， <img src="image/compiling-expressions/points-to.png" alt="An open
+arrow." class="arrow" /> 箭头连接表格中的指针与解析函数。</p>
 </aside>
 <p>Later, we&rsquo;ll need to tweak the code in this chapter to handle assignment. But,
 otherwise, what we wrote covers all of our expression compiling needs for the
@@ -1415,11 +1441,14 @@ love letter to the wonders of parser generators.</p>
 <p>All of us suffer from the vice of &ldquo;when all you have is a hammer, everything
 looks like a nail&rdquo;, but perhaps none so visibly as compiler people. You wouldn&rsquo;t
 believe the breadth of software problems that miraculously seem to require a new
-little language in their solution as soon as you ask a compiler hacker for help.</p>
+little language in their solution as soon as you ask a compiler hacker for help.
+我们所有人都有这样的毛病：“当你只有一把锤子时，一切看起来都像是钉子”，但也许没有人向编译器人员那样明显。你不会相信，只要你向编译器黑客寻求帮助，在他们的解决方案中有那么多的软件问题需要一种新的小语言来解决。</p>
 <p>Yacc and other compiler-compilers are the most delightfully recursive example.
 &ldquo;Wow, writing compilers is a chore. I know, let&rsquo;s write a compiler to write our
-compiler for us.&rdquo;</p>
-<p>For the record, I don&rsquo;t claim immunity to this affliction.</p>
+compiler for us.&rdquo;
+Yacc和其它编译器的编译器是最令人愉快的递归示例。“哇，写编译器是一件苦差事。我知道，让我们写一个编译器来为我们编写编译器吧”。</p>
+<p>For the record, I don&rsquo;t claim immunity to this affliction.
+郑重声明一下，我对这种疾病并没有免疫力。</p>
 </aside>
 <p>Later, the functional programming folks got into parser combinators, packrat
 parsers, and other sorts of things. Because, obviously, if you give a functional

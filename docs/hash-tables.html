@@ -93,7 +93,8 @@
     <h1>哈希表</h1>
 
     <blockquote>
-<p>Hash, x. There is no definition for this word<span class="em">&mdash;</span>nobody knows what hash is.</p>
+<p>Hash, x. There is no definition for this word<span class="em">&mdash;</span>nobody knows what hash is.
+哈希，x。这个词没有定义，没人知道哈希是什么。</p>
 <p><cite>Ambrose Bierce, <em>The Unabridged Devil&rsquo;s Dictionary</em></cite></p>
 </blockquote>
 <p>Before we can add variables to our burgeoning virtual machine, we need some way
@@ -122,6 +123,7 @@ of how many keys are in the hash table</em>.
 <p>More specifically, the <em>average-case</em> lookup time is constant. Worst-case
 performance can be, well, worse. In practice, it&rsquo;s easy to avoid degenerate
 behavior and stay on the happy path.</p>
+<p>更确切地说，平均查找时间是常数。最坏情况下，性能可能会更糟。在实践中，很容易可以避免退化行为并保持在快乐的道路上。</p>
 </aside>
 <p>That&rsquo;s pretty remarkable when you think about it. Imagine you&rsquo;ve got a big stack
 of business cards and I ask you to find a certain person. The bigger the pile
@@ -135,6 +137,7 @@ a million.
 <p>Stuff all those cards in a Rolodex<span class="em">&mdash;</span>does anyone even remember those things
 anymore?<span class="em">&mdash;</span>with dividers for each letter, and you improve your speed
 dramatically. As we&rsquo;ll see, that&rsquo;s not too far from the trick a hash table uses.</p>
+<p>把所有这些卡片都塞进一个 Rolodex（现在还有人记得这种东西吗），每个字母都用分隔线隔开，你的速度就会大大提高。我们将会看到，这与哈希表使用的技巧相差无几。</p>
 </aside>
 <h2><a href="#桶数组" id="桶数组"><small>20&#8202;.&#8202;1</small>桶数组</a></h2>
 <p>A complete, fast hash table has a couple of moving parts. I&rsquo;ll introduce them
@@ -151,6 +154,7 @@ their values?
 <p>This limitation isn&rsquo;t <em>too</em> far-fetched. The initial versions of BASIC out of
 Dartmouth allowed variable names to be only a single letter followed by one
 optional digit.</p>
+<p>这种限制并不算<em>太</em>牵强。达特茅斯大学的初版BASIC只允许变量名是一个字母，后面可以跟一个数字。</p>
 </aside>
 <p>With only 26 possible variables (27 if you consider underscore a &ldquo;letter&rdquo;, I
 guess), the answer is easy. Declare a fixed-size array with 26 elements. We&rsquo;ll
@@ -192,6 +196,7 @@ first six characters of external identifiers as meaningful. Everything after
 that was ignored. If you&rsquo;ve ever wondered why the C standard library is so
 enamored of abbreviation<span class="em">&mdash;</span>looking at you, <code>strncmp()</code><span class="em">&mdash;</span>it turns out it
 wasn&rsquo;t entirely because of the small screens (or teletypes!) of the day.</p>
+<p>同样，这个限制也不是那么疯狂。早期的C语言链接器只将外部标识符的前6个字符视为有意义的。后面的一切都被忽略了。如果你曾好奇为什么C语言标准库对缩写如此着迷——比如，<code>strncmp()</code>——事实证明，这并不完全是因为当时的小屏幕（或小电视）。</p>
 </aside>
 <p>That&rsquo;s small enough that we can pack all eight characters into a 64-bit integer
 and easily turn the string into a number. We can then use it as an array index.
@@ -220,6 +225,7 @@ Then we store the value there as usual.
 <p>I&rsquo;m using powers of two for the array sizes here, but they don&rsquo;t need to be.
 Some styles of hash tables work best with powers of two, including the one we&rsquo;ll
 build in this book. Others prefer prime number array sizes or have other rules.</p>
+<p>我这里使用了2的幂作为数组的大小，但其实不需要这样。有些类型的哈希表在使用2的幂时效果最好，包括我们将在本书中建立的哈希表。其它类型则更偏爱素数作为数组大小或者是其它规则。</p>
 </aside>
 <p>Using the array size as a modulus lets us map the key&rsquo;s numeric range down to
 fit an array of any size. We can thus control the number of buckets
@@ -250,7 +256,8 @@ array size to reduce that, but it&rsquo;s a losing game. Say we wanted to store 
 hundred items in a hash table. To keep the chance of collision below a
 still-pretty-high 10%, we need an array with at least 47,015 elements. To get
 the chance below 1% requires an array with 492,555 elements, over 4,000 empty
-buckets for each one in use.</p>
+buckets for each one in use.
+即使负载因子很低，仍可能发生碰撞。<a href="https://en.wikipedia.org/wiki/Birthday_problem">生日悖论</a>告诉我们，随着哈希表中条目数量的增加，碰撞的概率会很快增加。我们可以选择一个很大的数组规模来减少这种情况，但这是注定失败的。假设我们想在哈希表中存储100个条目，要想使碰撞几率保持在10%以下，我们需要一个至少有47,105个元素的数组。要想使碰撞几率低于1%，需要一个有492,555个元素的数组，每使用一个元素就需要超过4000个空桶。</p>
 <p>A low load factor can make collisions <span name="pigeon">rarer</span>, but the
 <a href="https://en.wikipedia.org/wiki/Pigeonhole_principle"><em>pigeonhole principle</em></a> tells us we can never eliminate them entirely.
 If you&rsquo;ve got five pet pigeons and four holes to put them in, at least one hole
@@ -266,7 +273,8 @@ like it when their programming language can look up variables correctly only
 <p>Put these two funny-named mathematical rules together and you get this
 observation: Take a birdhouse containing 365 pigeonholes, and use each pigeon&rsquo;s
 birthday to assign it to a pigeonhole. You&rsquo;ll need only about 26 randomly chosen
-pigeons before you get a greater than 50% chance of two pigeons in the same box.</p><img src="image/hash-tables/pigeons.png" alt="Two pigeons in the same hole." />
+pigeons before you get a greater than 50% chance of two pigeons in the same box.</p>
+<p>把这两个名字有趣的数学规则放在一起，就能得出这样的结论： 在一个装有 365 个鸽子笼的鸟笼里，用每只鸽子的生日来给它分配鸽子笼。你只需要随机选择大约 26 只鸽子，就会有超过 50% 的几率出现两只鸽子在同一个鸽子笼里的情况。</p><img src="image/hash-tables/pigeons.png" alt="Two pigeons in the same hole." />
 </aside>
 <h3><a href="#拉链法" id="拉链法"><small>20&#8202;.&#8202;2&#8202;.&#8202;1</small>拉链法</a></h3>
 <p>Techniques for resolving collisions fall into two broad categories. The first is
@@ -292,6 +300,7 @@ name="node">nodes</span> around in memory which isn&rsquo;t great for cache usag
 entry right in the bucket so that in the common case where there&rsquo;s only one, no
 extra pointer indirection is needed. You can also make each linked list node
 store a few entries to reduce the pointer overhead.</p>
+<p>有一些技巧可以优化这一点。许多实现将第一个条目直接存储在桶中，因此在通常只有一个条目的情况下，不需要额外的间接指针。你也可以让每个链表节点存储几个条目以减少指针的开销。</p>
 </aside>
 <h3><a href="#开放地址法" id="开放地址法"><small>20&#8202;.&#8202;2&#8202;.&#8202;2</small>开放地址法</a></h3>
 <p>The other technique is <span name="open">called</span> <strong>open addressing</strong> or
@@ -303,6 +312,7 @@ same bucket, we find a different empty bucket to use instead.
 <p>It&rsquo;s called &ldquo;open&rdquo; addressing because the entry may end up at an address
 (bucket) outside of its preferred one. It&rsquo;s called &ldquo;closed&rdquo; hashing because all
 of the entries stay inside the array of buckets.</p>
+<p>它被称为“开放”地址，是因为条目最终可能会出现在其首选地址（桶）之外的地方。它被称为“封闭”哈希，是因为所有的条目都存储在桶数组内。</p>
 </aside>
 <p>Storing all entries in a single, big, contiguous array is great for keeping the
 memory representation simple and fast. But it makes all of the operations on the
@@ -322,6 +332,7 @@ across a range of hardware capabilities.
 <p>If you&rsquo;d like to learn more (and you should, because some of these are really
 cool), look into &ldquo;double hashing&rdquo;, &ldquo;cuckoo hashing&rdquo;, &ldquo;Robin Hood hashing&rdquo;, and
 anything those lead you to.</p>
+<p>如果你想了解更多（你应该了解，因为其中一些真的很酷），可以看看“双重哈希(double hashing)”、“布谷鸟哈希(cuckoo hashing)”以及“罗宾汉哈希(Robin Hood hashing)”。</p>
 </aside>
 <p>As usual in this book, we&rsquo;ll pick the simplest one that gets the job done
 efficiently. That&rsquo;s good old <strong>linear probing</strong>. When looking for an entry, we
@@ -388,6 +399,7 @@ name="crypto">good</span> hash function has three main goals:
 <p>Hash functions are also used for cryptography. In that domain, &ldquo;good&rdquo; has a
 <em>much</em> more stringent definition to avoid exposing details about the data being
 hashed. We, thankfully, don&rsquo;t need to worry about those concerns for this book.</p>
+<p>哈希函数也被用于密码学。在该领域中，“好”有一个更严格的定义，以避免暴露有关被哈希的数据的细节。值得庆幸的是，我们在本书中不需要担心这些问题。</p>
 </aside>
 <ul>
 <li>
@@ -415,6 +427,7 @@ of the underlying array storage.
 the entries and scatters them throughout the array. The word &ldquo;hash&rdquo; came from
 the idea that a hash function takes the input data, chops it up, and tosses it
 all together into a pile to come up with a single number from all of those bits.</p>
+<p>哈希表最初的名称之一是“散列表”，因为它会获取条目并将其分散到整个数组中。“哈希”这个词来自于这样的想法：哈希函数将输入数据分割开来，然后将其组合成一堆，从所有这些比特位中得出一个数字。</p>
 </aside>
 <p>There is a veritable pile of hash functions out there. Some are old and
 optimized for architectures no one uses anymore. Some are designed to be fast,
@@ -428,7 +441,8 @@ like, their <em>jam</em>. I admire them, but I&rsquo;m not mathematically astute
 name="thing">trying</span> out different ones in your code and see if they make
 a difference.</p>
 <aside name="thing">
-<p>Who knows, maybe hash functions could turn out to be your thing too?</p>
+<p>Who knows, maybe hash functions could turn out to be your thing too?
+谁知道呢，也许哈希函数也会成为你的兴趣所在呢？</p>
 </aside>
 <p>OK, that&rsquo;s a quick run through of buckets, load factors, open addressing,
 collision resolution, and hash functions. That&rsquo;s an awful lot of text and not a
@@ -488,6 +502,7 @@ wrapping it in a Value. It&rsquo;s a little faster and smaller this way.
 keys doesn&rsquo;t add much complexity. As long as you can compare two objects for
 equality and reduce them to sequences of bits, it&rsquo;s easy to use them as hash
 keys.</p>
+<p>在clox中，我们只需要支持字符串类型的键。处理其它类型的键不会增加太多复杂性。只要你能比较两个对象是否相等，并把它们简化为比特序列，就很容易将它们用作哈希键。</p>
 </aside>
 <p>To create a new, empty hash table, we declare a constructor-like function.
 为了创建一个新的、空的哈希表，我们声明一个类似构造器的函数。</p>
@@ -754,6 +769,7 @@ strategy, and typical keysets you&rsquo;ll see. Since a toy language like Lox do
 have &ldquo;real world&rdquo; data sets, it&rsquo;s hard to optimize this, and I picked 75%
 somewhat arbitrarily. When you build your own hash tables, benchmark and tune
 this.</p>
+<p>理想的最大负载因子根据哈希函数、冲突处理策略和你将会看到的典型键集而变化。由于像Lox这样的玩具语言没有“真实世界”的数据集，所以很难对其进行优化，所以我随意地选择了75%。当你构建自己的哈希表时，请对其进行基准测试和调整。</p>
 </aside>
 <p>We&rsquo;ll get to the implementation of <code>adjustCapacity()</code> soon. First, let&rsquo;s look
 at that <code>findEntry()</code> function you&rsquo;ve been wondering about.
@@ -809,6 +825,7 @@ entry.
 work, does it? There could be two copies of the same string at different places
 in memory. Fear not, astute reader. We&rsquo;ll solve this further on. And, strangely
 enough, it&rsquo;s a hash table that provides the tool we need.</p>
+<p>看起来我们在用<code>==</code>判断两个字符串是否相等。这行不通，对吧？相同的字符串可能会在内存的不同地方有两个副本。不要害怕，聪明的读者。我们会进一步解决这个问题。而且，奇怪的是，是一个哈希表提供了我们需要的工具。</p>
 </aside>
 <ul>
 <li>Otherwise, the bucket has an entry in it, but with a different key. This is
@@ -867,11 +884,6 @@ in different buckets.
 simplest way to get every entry where it belongs is to rebuild the table from
 scratch by re-inserting every entry into the new empty array.
 这些新的桶可能会出现新的冲突，我们需要处理这些冲突。因此，获取每个条目所属位置的最简单的方法是从头重新构建哈希表，将每个条目都重新插入到新的空数组中。</p>
-<ul>
-<li></li>
-</ul>
-<p>We walk through the old array front to back. Any time we find a non-empty bucket, we insert that entry into the new array. We use <code>findEntry()</code>, passing in the <em>new</em> array instead of the one currently stored in the Table. (This is why <code>findEntry()</code> takes a pointer directly to an Entry array and not the whole <code>Table</code> struct. That way, we can pass the new array and capacity before we’ve stored those in the struct.)
-我们从前到后遍历旧数组。只要发现一个非空的桶，我们就把这个条目插入到新的数组中。我们使用<code>findEntry()</code>，传入的是<em>新</em>数组，而不是当前存储在哈希表中的旧数组。（这就是为什么<code>findEntry()</code>接受一个直接指向Entry数组的指针，而不是整个<code>Table</code>结构体。这样，我们就可以在将新数组和容量存储到结构体之前传递这些数据）</p>
 <div class="codehilite"><pre class="insert-before">    entries[i].value = NIL_VAL;
   }
 </pre><div class="source-file"><em>table.c</em><br>
@@ -897,7 +909,8 @@ bucket, we insert that entry into the new array. We use <code>findEntry()</code>
 in the <em>new</em> array instead of the one currently stored in the Table. (This is
 why <code>findEntry()</code> takes a pointer directly to an Entry array and not the whole
 <code>Table</code> struct. That way, we can pass the new array and capacity before we&rsquo;ve
-stored those in the struct.)</p>
+stored those in the struct.)
+我们从前到后遍历旧数组。只要发现一个非空的桶，我们就把这个条目插入到新的数组中。我们使用<code>findEntry()</code>，传入的是<em>新</em>数组，而不是当前存储在哈希表中的旧数组。（这就是为什么<code>findEntry()</code>接受一个直接指向Entry数组的指针，而不是整个<code>Table</code>结构体。这样，我们就可以在将新数组和容量存储到结构体之前传递这些数据）</p>
 <p>After that&rsquo;s done, we can release the memory for the old array.
 完成之后，我们就可以释放旧数组的内存。</p>
 <div class="codehilite"><pre class="insert-before">    dest-&gt;value = entry-&gt;value;
@@ -1005,6 +1018,7 @@ their desire to overlook it. As we&rsquo;ll see, deleting from a hash table that
 <aside name="delete">
 <p>With separate chaining, deleting is as easy as removing a node from a linked
 list.</p>
+<p>使用拉链法时，删除条目就像从链表中删除一个节点一样容易。</p>
 </aside>
 <p>At least the declaration is simple.
 至少声明是简单的。</p>
@@ -1237,6 +1251,7 @@ quickly detects almost all different strings<span class="em">&mdash;</span>it wo
 function if it didn&rsquo;t. But when the two hashes are the same, we still have to
 compare characters to make sure we didn&rsquo;t have a hash collision on different
 strings.</p>
+<p>在实践中，我们会首先比较两个字符串的哈希码。这样可以快速检测到几乎所有不同的字符串——如果不能，它就不是一个很好的哈希函数。但是，当两个哈希值相同时，我们仍然需要比较字符，以确保没有在不同的字符串上出现哈希冲突。</p>
 </aside>
 <p>Instead, we&rsquo;ll use a technique called <strong>string interning</strong>. The core problem is
 that it&rsquo;s possible to have different strings in memory with the same characters.
@@ -1257,12 +1272,14 @@ language&rsquo;s runtime keeps its own &ldquo;internal&rdquo; collection of thes
 other strings could be user created and floating around in memory. When you
 intern a string, you ask the runtime to add the string to that internal
 collection and return a pointer to it.</p>
+<p>我猜想“intern”是“internal（内部）”的缩写。我认为这个想法是，语言的运行时保留了这些字符串的“内部”集合，而其它字符串可以由用户创建并漂浮在内存中。当你要驻留一个字符串时，你要求运行时将该字符串添加到该内部集合，并返回一个指向该字符串的指针。</p>
 <p>Languages vary in how much string interning they do and how it&rsquo;s exposed to the
 user. Lua interns <em>all</em> strings, which is what clox will do too. Lisp, Scheme,
 Smalltalk, Ruby and others have a separate string-like type called &ldquo;symbol&rdquo; that
 is implicitly interned. (This is why they say symbols are &ldquo;faster&rdquo; in Ruby.)
 Java interns constant strings by default, and provides an API to let you
 explicitly intern any string you give it.</p>
+<p>不同语言在字符串驻留程度以及对用户的暴露方式上有所不同。Lua会驻留<em>所有</em>字符串，这也是clox要做的事情。Lisp、Scheme、Smalltalk、Ruby和其他语言都有一个单独的类似字符串的类型“symbol（符号）”，它是隐式驻留的。（这就是为什么他们说Ruby中的符号“更快”）Java默认会驻留常量字符串，并提供一个API让你显式地驻留传入的任何字符串。</p>
 </aside>
 <p>In this way, you know that each sequence of characters is represented by only
 one string in memory. This makes value equality trivial. If two strings point
@@ -1493,6 +1510,7 @@ things that way.
 <aside name="publish">
 <p>Well, at least that wasn&rsquo;t the <em>only</em> reason they were created. Whether that
 was the <em>main</em> reason is up for debate.</p>
+<p>至少，这不是它们诞生的唯一原因。至于这是否是 <em>主要</em> 原因，还有待商榷。</p>
 </aside></li>
 <li>
 <p>Benchmarking a hash table is notoriously difficult. A hash table

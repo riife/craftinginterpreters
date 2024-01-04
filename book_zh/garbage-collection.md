@@ -1,6 +1,9 @@
 > I wanna, I wanna,<br />
 > I wanna, I wanna,<br />
 > I wanna be trash.<br />
+> 我想，我想,<br />
+> 我想，我想,<br />
+> 我想成为垃圾.<br />
 >
 > <cite>The Whip, &ldquo;Trash&rdquo;</cite>
 

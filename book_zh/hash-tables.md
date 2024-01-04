@@ -1,4 +1,5 @@
 > Hash, x. There is no definition for this word -- nobody knows what hash is.
+> 哈希，x。这个词没有定义，没人知道哈希是什么。
 >
 > <cite>Ambrose Bierce, <em>The Unabridged Devil's Dictionary</em></cite>
 
@@ -34,6 +35,8 @@ More specifically, the *average-case* lookup time is constant. Worst-case
 performance can be, well, worse. In practice, it's easy to avoid degenerate
 behavior and stay on the happy path.
 
+更确切地说，平均查找时间是常数。最坏情况下，性能可能会更糟。在实践中，很容易可以避免退化行为并保持在快乐的道路上。
+
 </aside>
 
 That's pretty remarkable when you think about it. Imagine you've got a big stack
@@ -50,6 +53,8 @@ a million.
 Stuff all those cards in a Rolodex -- does anyone even remember those things
 anymore? -- with dividers for each letter, and you improve your speed
 dramatically. As we'll see, that's not too far from the trick a hash table uses.
+
+把所有这些卡片都塞进一个 Rolodex（现在还有人记得这种东西吗），每个字母都用分隔线隔开，你的速度就会大大提高。我们将会看到，这与哈希表使用的技巧相差无几。
 
 </aside>
 
@@ -72,6 +77,8 @@ their values?
 This limitation isn't *too* far-fetched. The initial versions of BASIC out of
 Dartmouth allowed variable names to be only a single letter followed by one
 optional digit.
+
+这种限制并不算*太*牵强。达特茅斯大学的初版BASIC只允许变量名是一个字母，后面可以跟一个数字。
 
 </aside>
 
@@ -126,6 +133,8 @@ that was ignored. If you've ever wondered why the C standard library is so
 enamored of abbreviation -- looking at you, `strncmp()` -- it turns out it
 wasn't entirely because of the small screens (or teletypes!) of the day.
 
+同样，这个限制也不是那么疯狂。早期的C语言链接器只将外部标识符的前6个字符视为有意义的。后面的一切都被忽略了。如果你曾好奇为什么C语言标准库对缩写如此着迷——比如，`strncmp()`——事实证明，这并不完全是因为当时的小屏幕（或小电视）。
+
 </aside>
 
 That's small enough that we can pack all eight characters into a 64-bit integer
@@ -159,6 +168,8 @@ Then we store the value there as usual.
 I'm using powers of two for the array sizes here, but they don't need to be.
 Some styles of hash tables work best with powers of two, including the one we'll
 build in this book. Others prefer prime number array sizes or have other rules.
+
+我这里使用了2的幂作为数组的大小，但其实不需要这样。有些类型的哈希表在使用2的幂时效果最好，包括我们将在本书中建立的哈希表。其它类型则更偏爱素数作为数组大小或者是其它规则。
 
 </aside>
 
@@ -198,6 +209,7 @@ hundred items in a hash table. To keep the chance of collision below a
 still-pretty-high 10%, we need an array with at least 47,015 elements. To get
 the chance below 1% requires an array with 492,555 elements, over 4,000 empty
 buckets for each one in use.
+即使负载因子很低，仍可能发生碰撞。[生日悖论][birthday]告诉我们，随着哈希表中条目数量的增加，碰撞的概率会很快增加。我们可以选择一个很大的数组规模来减少这种情况，但这是注定失败的。假设我们想在哈希表中存储100个条目，要想使碰撞几率保持在10%以下，我们需要一个至少有47,105个元素的数组。要想使碰撞几率低于1%，需要一个有492,555个元素的数组，每使用一个元素就需要超过4000个空桶。
 
 [birthday]: https://en.wikipedia.org/wiki/Birthday_problem
 
@@ -222,6 +234,8 @@ Put these two funny-named mathematical rules together and you get this
 observation: Take a birdhouse containing 365 pigeonholes, and use each pigeon's
 birthday to assign it to a pigeonhole. You'll need only about 26 randomly chosen
 pigeons before you get a greater than 50% chance of two pigeons in the same box.
+
+把这两个名字有趣的数学规则放在一起，就能得出这样的结论： 在一个装有 365 个鸽子笼的鸟笼里，用每只鸽子的生日来给它分配鸽子笼。你只需要随机选择大约 26 只鸽子，就会有超过 50% 的几率出现两只鸽子在同一个鸽子笼里的情况。
 
 <img src="image/hash-tables/pigeons.png" alt="Two pigeons in the same hole." />
 
@@ -259,6 +273,8 @@ entry right in the bucket so that in the common case where there's only one, no
 extra pointer indirection is needed. You can also make each linked list node
 store a few entries to reduce the pointer overhead.
 
+有一些技巧可以优化这一点。许多实现将第一个条目直接存储在桶中，因此在通常只有一个条目的情况下，不需要额外的间接指针。你也可以让每个链表节点存储几个条目以减少指针的开销。
+
 </aside>
 
 ### 开放地址法
@@ -274,6 +290,8 @@ same bucket, we find a different empty bucket to use instead.
 It's called "open" addressing because the entry may end up at an address
 (bucket) outside of its preferred one. It's called "closed" hashing because all
 of the entries stay inside the array of buckets.
+
+它被称为“开放”地址，是因为条目最终可能会出现在其首选地址（桶）之外的地方。它被称为“封闭”哈希，是因为所有的条目都存储在桶数组内。
 
 </aside>
 
@@ -298,6 +316,8 @@ across a range of hardware capabilities.
 If you'd like to learn more (and you should, because some of these are really
 cool), look into "double hashing", "cuckoo hashing", "Robin Hood hashing", and
 anything those lead you to.
+
+如果你想了解更多（你应该了解，因为其中一些真的很酷），可以看看“双重哈希(double hashing)”、“布谷鸟哈希(cuckoo hashing)”以及“罗宾汉哈希(Robin Hood hashing)”。
 
 </aside>
 
@@ -396,6 +416,8 @@ Hash functions are also used for cryptography. In that domain, "good" has a
 *much* more stringent definition to avoid exposing details about the data being
 hashed. We, thankfully, don't need to worry about those concerns for this book.
 
+哈希函数也被用于密码学。在该领域中，“好”有一个更严格的定义，以避免暴露有关被哈希的数据的细节。值得庆幸的是，我们在本书中不需要担心这些问题。
+
 </aside>
 
 *   **It must be *deterministic*.** The same input must always hash to the same
@@ -421,6 +443,8 @@ the entries and scatters them throughout the array. The word "hash" came from
 the idea that a hash function takes the input data, chops it up, and tosses it
 all together into a pile to come up with a single number from all of those bits.
 
+哈希表最初的名称之一是“散列表”，因为它会获取条目并将其分散到整个数组中。“哈希”这个词来自于这样的想法：哈希函数将输入数据分割开来，然后将其组合成一堆，从所有这些比特位中得出一个数字。
+
 </aside>
 
 There is a veritable pile of hash functions out there. Some are old and
@@ -441,6 +465,7 @@ a difference.
 <aside name="thing">
 
 Who knows, maybe hash functions could turn out to be your thing too?
+谁知道呢，也许哈希函数也会成为你的兴趣所在呢？
 
 </aside>
 
@@ -481,6 +506,8 @@ In clox, we only need to support keys that are strings. Handling other types of
 keys doesn't add much complexity. As long as you can compare two objects for
 equality and reduce them to sequences of bits, it's easy to use them as hash
 keys.
+
+在clox中，我们只需要支持字符串类型的键。处理其它类型的键不会增加太多复杂性。只要你能比较两个对象是否相等，并把它们简化为比特序列，就很容易将它们用作哈希键。
 
 </aside>
 
@@ -650,6 +677,8 @@ have "real world" data sets, it's hard to optimize this, and I picked 75%
 somewhat arbitrarily. When you build your own hash tables, benchmark and tune
 this.
 
+理想的最大负载因子根据哈希函数、冲突处理策略和你将会看到的典型键集而变化。由于像Lox这样的玩具语言没有“真实世界”的数据集，所以很难对其进行优化，所以我随意地选择了75%。当你构建自己的哈希表时，请对其进行基准测试和调整。
+
 </aside>
 
 We'll get to the implementation of `adjustCapacity()` soon. First, let's look
@@ -692,6 +721,8 @@ It looks like we're using `==` to see if two strings are equal. That doesn't
 work, does it? There could be two copies of the same string at different places
 in memory. Fear not, astute reader. We'll solve this further on. And, strangely
 enough, it's a hash table that provides the tool we need.
+
+看起来我们在用`==`判断两个字符串是否相等。这行不通，对吧？相同的字符串可能会在内存的不同地方有两个副本。不要害怕，聪明的读者。我们会进一步解决这个问题。而且，奇怪的是，是一个哈希表提供了我们需要的工具。
 
 </aside>
 
@@ -744,9 +775,6 @@ Those new buckets may have new collisions that we need to deal with. So the
 simplest way to get every entry where it belongs is to rebuild the table from
 scratch by re-inserting every entry into the new empty array.
 这些新的桶可能会出现新的冲突，我们需要处理这些冲突。因此，获取每个条目所属位置的最简单的方法是从头重新构建哈希表，将每个条目都重新插入到新的空数组中。
-*
-We walk through the old array front to back. Any time we find a non-empty bucket, we insert that entry into the new array. We use `findEntry()`, passing in the *new* array instead of the one currently stored in the Table. (This is why `findEntry()` takes a pointer directly to an Entry array and not the whole `Table` struct. That way, we can pass the new array and capacity before we’ve stored those in the struct.)
-我们从前到后遍历旧数组。只要发现一个非空的桶，我们就把这个条目插入到新的数组中。我们使用`findEntry()`，传入的是*新*数组，而不是当前存储在哈希表中的旧数组。（这就是为什么`findEntry()`接受一个直接指向Entry数组的指针，而不是整个`Table`结构体。这样，我们就可以在将新数组和容量存储到结构体之前传递这些数据）
 
 ^code re-hash (2 before, 2 after)
 
@@ -756,6 +784,7 @@ in the *new* array instead of the one currently stored in the Table. (This is
 why `findEntry()` takes a pointer directly to an Entry array and not the whole
 `Table` struct. That way, we can pass the new array and capacity before we've
 stored those in the struct.)
+我们从前到后遍历旧数组。只要发现一个非空的桶，我们就把这个条目插入到新的数组中。我们使用`findEntry()`，传入的是*新*数组，而不是当前存储在哈希表中的旧数组。（这就是为什么`findEntry()`接受一个直接指向Entry数组的指针，而不是整个`Table`结构体。这样，我们就可以在将新数组和容量存储到结构体之前传递这些数据）
 
 After that's done, we can release the memory for the old array.
 完成之后，我们就可以释放旧数组的内存。
@@ -833,6 +862,8 @@ their desire to overlook it. As we'll see, deleting from a hash table that uses
 
 With separate chaining, deleting is as easy as removing a node from a linked
 list.
+
+使用拉链法时，删除条目就像从链表中删除一个节点一样容易。
 
 </aside>
 
@@ -1041,6 +1072,8 @@ function if it didn't. But when the two hashes are the same, we still have to
 compare characters to make sure we didn't have a hash collision on different
 strings.
 
+在实践中，我们会首先比较两个字符串的哈希码。这样可以快速检测到几乎所有不同的字符串——如果不能，它就不是一个很好的哈希函数。但是，当两个哈希值相同时，我们仍然需要比较字符，以确保没有在不同的字符串上出现哈希冲突。
+
 </aside>
 
 Instead, we'll use a technique called **string interning**. The core problem is
@@ -1066,12 +1099,16 @@ other strings could be user created and floating around in memory. When you
 intern a string, you ask the runtime to add the string to that internal
 collection and return a pointer to it.
 
+我猜想“intern”是“internal（内部）”的缩写。我认为这个想法是，语言的运行时保留了这些字符串的“内部”集合，而其它字符串可以由用户创建并漂浮在内存中。当你要驻留一个字符串时，你要求运行时将该字符串添加到该内部集合，并返回一个指向该字符串的指针。
+
 Languages vary in how much string interning they do and how it's exposed to the
 user. Lua interns *all* strings, which is what clox will do too. Lisp, Scheme,
 Smalltalk, Ruby and others have a separate string-like type called "symbol" that
 is implicitly interned. (This is why they say symbols are "faster" in Ruby.)
 Java interns constant strings by default, and provides an API to let you
 explicitly intern any string you give it.
+
+不同语言在字符串驻留程度以及对用户的暴露方式上有所不同。Lua会驻留*所有*字符串，这也是clox要做的事情。Lisp、Scheme、Smalltalk、Ruby和其他语言都有一个单独的类似字符串的类型“symbol（符号）”，它是隐式驻留的。（这就是为什么他们说Ruby中的符号“更快”）Java默认会驻留常量字符串，并提供一个API让你显式地驻留传入的任何字符串。
 
 </aside>
 
@@ -1233,6 +1270,8 @@ then *everything* is slow.
 
     Well, at least that wasn't the *only* reason they were created. Whether that
     was the *main* reason is up for debate.
+
+    至少，这不是它们诞生的唯一原因。至于这是否是 *主要* 原因，还有待商榷。
 
     </aside>
 

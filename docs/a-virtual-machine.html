@@ -94,9 +94,9 @@
 <p>Magicians protect their secrets not because the secrets are large and
 important, but because they are so small and trivial. The wonderful effects
 created on stage are often the result of a secret so absurd that the magician
-would be embarrassed to admit that that was how it was done.</p>
-<p><cite>Christopher Priest, <em>The Prestige</em></cite>
+would be embarrassed to admit that that was how it was done.
 魔术师们之所以保护他们的秘密，并不是因为秘密很大、很重要，而是它们是如此小而微不足道。在舞台上创造出的奇妙效果往往源自于一个荒谬的小秘密，以至于魔术师都不好意思承认这是如何完成的。</p>
+<p><cite>Christopher Priest, <em>The Prestige</em></cite></p>
 </blockquote>
 <p>We&rsquo;ve spent a lot of time talking about how to represent a program as a sequence
 of bytecode instructions, but it feels like learning biology using only stuffed,
@@ -171,12 +171,15 @@ lighter on the page.
 necessarily a sound engineering choice for a real language implementation. If
 you&rsquo;re building a VM that&rsquo;s designed to be embedded in other host applications,
 it gives the host more flexibility if you <em>do</em> explicitly take a VM pointer
-and pass it around.</p>
+and pass it around.
+选择使用静态的VM实例是本书的一个让步，但对于真正的语言实现来说，不一定是合理的工程选择。如果你正在构建一个旨在嵌入其它主机应用程序中的虚拟机，那么如果你显式地获取一个VM指针并传递该指针，则会为主机提供更大的灵活性。</p>
 <p>That way, the host app can control when and where memory for the VM is
-allocated, run multiple VMs in parallel, etc.</p>
+allocated, run multiple VMs in parallel, etc.
+这样，主机应用程序就可以控制何时何地为虚拟机分配内存，并行地运行多个虚拟机，等等。</p>
 <p>What I&rsquo;m doing here is a global variable, and <a href="http://gameprogrammingpatterns.com/singleton.html">everything bad you&rsquo;ve heard about
 global variables</a> is still true when programming in the large. But when
-keeping things small for a book<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
+keeping things small for a book<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
+我在这里使用的是一个全局变量，你所听说过的<a href="http://gameprogrammingpatterns.com/singleton.html">关于全局变量的一切坏消息</a>在大型编程中仍然是正确的。但是，当你想在一本书中保持代码简洁时，就另当别论了。</p>
 </aside>
 <p>Before we start pumping fun code into our VM, let&rsquo;s go ahead and wire it up to
 the interpreter&rsquo;s main entrypoint.
@@ -283,7 +286,8 @@ other functions will need to access it. Instead, we store it as a field in VM.
 <aside name="local">
 <p>If we were trying to squeeze every ounce of speed out of our bytecode
 interpreter, we would store <code>ip</code> in a local variable. It gets modified so often
-during execution that we want the C compiler to keep it in a register.</p>
+during execution that we want the C compiler to keep it in a register.
+如果我们想要在字节码解释器中再压榨出一点性能，我们可以将<code>ip</code>保存到一个局部变量中。该值在运行过程中会被频繁修改，所以我们希望C编译器将其放在寄存器中。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">typedef struct {
   Chunk* chunk;
@@ -304,7 +308,8 @@ instruction set in the <span name="ip">world</span>, real and virtual, has a
 register or variable like this.</p>
 <aside name="ip">
 <p>x86, x64, and the CLR call it &ldquo;IP&rdquo;. 68k, PowerPC, ARM, p-code, and the JVM call
-it &ldquo;PC&rdquo;, for <strong>program counter</strong>.</p>
+it &ldquo;PC&rdquo;, for <strong>program counter</strong>.
+x86、x64和CLR称其为 &ldquo;IP&rdquo;。68k、PowerPC、ARM、p-code和JVM称它为 &ldquo;PC&rdquo;，意为程序计数器。</p>
 </aside>
 <p>We initialize <code>ip</code> by pointing it at the first byte of code in the chunk. We
 haven&rsquo;t executed that instruction yet, so <code>ip</code> points to the instruction <em>about
@@ -339,7 +344,8 @@ VM.
 到目前为止，这是clox中最重要的一个函数。当解释器执行用户的程序时，它有大约90%的时间是在<code>run()</code>中。它是虚拟机跳动的心脏。</p>
 <aside name="important">
 <p>Or, at least, it <em>will</em> be in a few chapters when it has enough content to be
-useful. Right now, it&rsquo;s not exactly a wonder of software wizardry.</p>
+useful. Right now, it&rsquo;s not exactly a wonder of software wizardry.
+或者说，至少在几章之后，当它的内容足够有用时，它就会有用了。现在，它还算不上软件奇才。</p>
 </aside>
 <p>Despite that dramatic intro, it&rsquo;s conceptually pretty simple. We have an outer
 loop that goes and goes. Each turn through that loop, we read and execute a
@@ -355,7 +361,8 @@ called <strong>decoding</strong> or <strong>dispatching</strong> the instruction
 <aside name="next">
 <p>Note that <code>ip</code> advances as soon as we read the opcode, before we&rsquo;ve actually
 started executing the instruction. So, again, <code>ip</code> points to the <em>next</em>
-byte of code to be used.</p>
+byte of code to be used.
+请注意，一旦我们读取了操作码，<code>ip</code>就会推进了。所以，再次说一下，<code>ip</code>指向的是将要使用的操作码的 <em>下一个</em> 字节。</p>
 </aside>
 <p>We do that process for every single instruction, every single time one is
 executed, so this is the most performance critical part of the entire virtual
@@ -365,7 +372,8 @@ going all the way back to the early days of computers.
 每一条指令，每一次执行时，我们都会进行这个过程，所以这是整个虚拟机性能最关键的部分。编程语言的传说中充满了高效进行字节码分派的各种奇技淫巧，一直可以追溯到计算机的早期。</p>
 <aside name="dispatch">
 <p>If you want to learn some of these techniques, look up &ldquo;direct threaded code&rdquo;,
-&ldquo;jump table&rdquo;, and &ldquo;computed goto&rdquo;.</p>
+&ldquo;jump table&rdquo;, and &ldquo;computed goto&rdquo;.
+如果你想学习其中的一些技术，可以搜索 &ldquo;direct threaded code&rdquo;、&ldquo;跳表&rdquo; 和 &ldquo;computed goto&rdquo;。</p>
 </aside>
 <p>Alas, the fastest solutions require either non-standard extensions to C, or
 handwritten assembly code. For clox, we&rsquo;ll keep it simple. Just like our
@@ -438,7 +446,8 @@ in <em>run</em>()</div>
 
 <aside name="macro">
 <p>Undefining these macros explicitly might seem needlessly fastidious, but C tends
-to punish sloppy users, and the C preprocessor doubly so.</p>
+to punish sloppy users, and the C preprocessor doubly so.
+显示地取消这些宏定义，可能会显得毫无必要，但C语言往往会惩罚粗心的用户，而C语言的预处理器更是如此。</p>
 </aside>
 <h3><a href="#执行跟踪" id="执行跟踪"><small>15&#8202;.&#8202;1&#8202;.&#8202;2</small>执行跟踪</a></h3>
 <p>If you run clox now, it executes the chunk we hand-authored in the last chapter
@@ -517,7 +526,8 @@ instruction know to print the result of that?
 <aside name="word">
 <p>Yes, I did have to look up &ldquo;subtrahend&rdquo; and &ldquo;minuend&rdquo; in a dictionary. But
 aren&rsquo;t they delightful words? &ldquo;Minuend&rdquo; sounds like a kind of Elizabethan dance
-and &ldquo;subtrahend&rdquo; might be some sort of underground Paleolithic monument.</p>
+and &ldquo;subtrahend&rdquo; might be some sort of underground Paleolithic monument.
+是的，我的确在字典里查过 &ldquo;subtrahend&rdquo; 和 &ldquo;minuend&rdquo;。但这两个词不是很有趣吗？&ldquo;minuend&rdquo; 听起来像是伊丽莎白时代的一种舞蹈，而 &ldquo;subtrahend&rdquo; 可能是旧石器时代的某种地下纪念碑。</p>
 </aside>
 <p>To put a finer point on it, look at this thing right here:
 为了说得更清楚一点，看看下面的代码：</p>
@@ -543,11 +553,13 @@ evaluated before the right.
 decide. That leaves the door open for optimizing compilers to reorder arithmetic
 expressions for efficiency, even in cases where the operands have visible side
 effects. C and Scheme leave evaluation order unspecified. Java specifies
-left-to-right evaluation like we do for Lox.</p>
+left-to-right evaluation like we do for Lox.
+我们可以不指定计算顺序，让每个语言实现自行决定。这就为优化编译器重新排列算术表达式以提高效率留下了余地，即使是在操作数有明显副作用的情况下也是如此。C和Scheme没有指定求值顺序。Java规定了从左到右进行求值，就跟我们在Lox中所做的一样。</p>
 <p>I think nailing down stuff like this is generally better for users. When
 expressions are not evaluated in the order users intuit<span class="em">&mdash;</span>possibly in different
 orders across different implementations!<span class="em">&mdash;</span>it can be a burning hellscape of
-pain to figure out what&rsquo;s going on.</p>
+pain to figure out what&rsquo;s going on.
+我认为指定这样的内容通常对用户更好。当表达式没有按照用户的直觉顺序进行求值时——可能在不同的实现中会有不同的顺序——要想弄清楚发生了什么，可能是非常痛苦的。</p>
 </aside>
 <p>Here is the syntax tree for the <code>print</code> statement:
 下面是<code>print</code>语句的语法树：</p>
@@ -583,7 +595,8 @@ granted, but we rarely learn <em>why</em> computers are architected this way.
 在clox中，我们的<code>run()</code>函数不是递归的——嵌套的表达式被展开成一系列线性指令。我们没有办法使用C语言的局部变量，那我们应该如何存储这些临时值呢？你可能已经猜到了，但我想真正深入研究这个问题，因为这是编程中我们习以为常的一个方面，但我们很少了解为什么计算机是这样架构的。</p>
 <aside name="guess">
 <p>Hint: it&rsquo;s in the name of this section, and it&rsquo;s how Java and C manage recursive
-calls to functions.</p>
+calls to functions.
+提示：这就是本节的名称，也是 Java 和 C 管理函数递归调用的方法。</p>
 </aside>
 <p>Let&rsquo;s do a weird exercise. We&rsquo;ll walk through the execution of the above program
 a step at a time:
@@ -615,7 +628,8 @@ to appear is the last to be consumed. Hmm<span class="ellipse">&thinsp;.&thinsp;
 <span name="pancakes">stack</span>!
 这里有一些有趣的事情发生了。当我们把所有数字都移动以后，每个数字在整个生命周期中仍然能保持在一列。此外，也没有留下任何空隙。换句话说，只要一个数字比另一个数字出现得早，那么它的寿命至少和第二个数字一样长。第一个出现的数字是最后一个消费掉的，嗯……后进先出……哎呀，这是一个栈！</p>
 <aside name="pancakes">
-<p>This is also a stack:</p><img src="image/a-virtual-machine/pancakes.png" alt="A stack... of pancakes." />
+<p>This is also a stack:
+这也是一个栈:</p><img src="image/a-virtual-machine/pancakes.png" alt="A stack... of pancakes." />
 </aside>
 <p>In the second diagram, each time we introduce a number, we push it onto the
 stack from the right. When numbers are consumed, they are always popped off from
@@ -637,7 +651,8 @@ of those.
 也许这看起来不像是什么新发现，但我喜欢基于栈的虚拟机。当你第一次看到一个魔术时，你会觉得它真的很神奇。但是当你了解到它是如何工作的——通常是一些机械式花招或误导——惊奇的感觉就消失了。在计算机科学中，有一些理念，即使我把它们拆开并了解了所有的来龙去脉之后，最初的闪光点仍然存在。基于堆栈的虚拟机就是其中之一。</p>
 <aside name="wonder">
 <p>Heaps<span class="em">&mdash;</span><a href="https://en.wikipedia.org/wiki/Heap_(data_structure)">the data structure</a>, not <a href="https://en.wikipedia.org/wiki/Memory_management#HEAP">the memory management thing</a><span class="em">&mdash;</span>are another. And Vaughan Pratt&rsquo;s top-down operator precedence parsing scheme,
-which we&rsquo;ll learn about <a href="compiling-expressions.html">in due time</a>.</p>
+which we&rsquo;ll learn about <a href="compiling-expressions.html">in due time</a>.
+堆是另一种<a href="https://en.wikipedia.org/wiki/Heap_(data_structure)">数据结构</a>，而不是<a href="https://en.wikipedia.org/wiki/Memory_management#HEAP">内存管理</a>。还有沃恩-普拉特（Vaughan Pratt）自上而下的运算符优先级解析方案，我们将在<a href="compiling-expressions.html">适当的时候</a>了解它。</p>
 </aside>
 <p>As you&rsquo;ll see in this chapter, executing instructions in a stack-based VM is
 dead <span name="cheat">simple</span>. In later chapters, you&rsquo;ll also discover
@@ -650,7 +665,8 @@ language game.
 <p>To take a bit of the sheen off: stack-based interpreters aren&rsquo;t a silver bullet.
 They&rsquo;re often <em>adequate</em>, but modern implementations of the JVM, the CLR, and
 JavaScript all use sophisticated <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">just-in-time compilation</a> pipelines to
-generate <em>much</em> faster native code on the fly.</p>
+generate <em>much</em> faster native code on the fly.
+稍微说明一下：基于堆栈的解释器并不是银弹。它们通常是够用的，但是JVM、CLR和JavaScript的现代化实现中都使用了复杂的<a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">即时编译</a>管道，在动态中生成 <em>更</em> 快的本地代码。</p>
 </aside>
 <p>Alrighty, it&rsquo;s codin&rsquo; time! Here&rsquo;s the stack:
 好了，编码时间到！下面是栈：</p>
@@ -692,7 +708,8 @@ onto the stack<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 <aside name="defined">
 <p>What about when the stack is <em>full</em>, you ask, Clever Reader? The C standard is
 one step ahead of you. It <em>is</em> allowed and well-specified to have an array
-pointer that points just past the end of an array.</p>
+pointer that points just past the end of an array.
+聪明的读者，你可能会问，那如果栈 <em>满</em> 了怎么办？C标准比您领先一步。C语言中允许数组指针正好指向数组末尾的下一个位置。</p>
 </aside>
 <p><img src="image/a-virtual-machine/stack-c.png" alt="An array with 'c' at element
 zero." /></p>
@@ -939,7 +956,8 @@ time.
 好吧，一元运算符并没有那么令人印象深刻。我们的栈中仍然只有一个值。要真正看到一些深度，我们需要二元运算符。Lox中有四个二进制算术运算符：加、减、乘、除。我们接下来会同时实现它们。</p>
 <aside name="ops">
 <p>Lox has some other binary operators<span class="em">&mdash;</span>comparison and equality<span class="em">&mdash;</span>but those
-don&rsquo;t produce numbers as a result, so we aren&rsquo;t ready for them yet.</p>
+don&rsquo;t produce numbers as a result, so we aren&rsquo;t ready for them yet.
+Lox 还有其他一些二进制运算符<span class="em">&mdash;</span>比较和相等，但这些运算符不会产生数字结果，所以我们还没准备好使用它们。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">  OP_CONSTANT,
 </pre><div class="source-file"><em>chunk.h</em><br>
@@ -994,8 +1012,10 @@ to walk you through the same code four times.
 <aside name="operator">
 <p>Did you even know you can pass an <em>operator</em> as an argument to a macro? Now you
 do. The preprocessor doesn&rsquo;t care that operators aren&rsquo;t first class in C. As far
-as it&rsquo;s concerned, it&rsquo;s all just text tokens.</p>
-<p>I know, you can just <em>feel</em> the temptation to abuse this, can&rsquo;t you?</p>
+as it&rsquo;s concerned, it&rsquo;s all just text tokens.
+你之前知道可以把操作符作为参数传递给宏吗？现在你知道了。预处理器并不关心操作符是不是C语言中的类，在它看来，这一切都只是文本符号。</p>
+<p>I know, you can just <em>feel</em> the temptation to abuse this, can&rsquo;t you?
+我知道，你已经 <em>感受</em> 到滥用预处理器的诱惑了，不是吗？</p>
 </aside>
 <p>If you aren&rsquo;t familiar with the trick already, that outer <code>do while</code> loop
 probably looks really weird. This macro needs to expand to a series of
@@ -1197,7 +1217,8 @@ effort <a href="https://en.wikipedia.org/wiki/Register_allocation">trying to use
 them</a>.</p>
 <aside name="x64">
 <p>Register-based bytecode is a little closer to the <a href="https://en.wikipedia.org/wiki/Register_window"><em>register windows</em></a>
-supported by SPARC chips.</p>
+supported by SPARC chips.
+基于寄存器的字节码更接近 SPARC 芯片支持的<a href="https://en.wikipedia.org/wiki/Register_window"><em>寄存器窗口</em></a>。</p>
 </aside>
 <p>In a register-based VM, you still have a stack. Temporary values still get
 pushed onto it and popped when no longer needed. The main difference is that
@@ -1242,7 +1263,8 @@ sophistication, but that should get your attention.</p>
 <aside name="lua">
 <p>The Lua dev team<span class="em">&mdash;</span>Roberto Ierusalimschy, Waldemar Celes, and Luiz Henrique de
 Figueiredo<span class="em">&mdash;</span>wrote a <em>fantastic</em> paper on this, one of my all time favorite
-computer science papers, &ldquo;<a href="https://www.lua.org/doc/jucs05.pdf">The Implementation of Lua 5.0</a>&rdquo; (PDF).</p>
+computer science papers, &ldquo;<a href="https://www.lua.org/doc/jucs05.pdf">The Implementation of Lua 5.0</a>&rdquo; (PDF).
+Lua 开发团队<span class="em">&mdash;</span>Roberto Ierusalimschy、Waldemar Celes 和 Luiz Henrique de Figueiredo<span class="em">&mdash;</span>就此撰写了一篇 <em>精彩</em> 的论文，这也是我一直以来最喜欢的计算机科学论文之一: <a href="https://www.lua.org/doc/jucs05.pdf">《Lua 5.0 的实现》</a>（PDF）。</p>
 </aside>
 <p>That raises the obvious question of why I&rsquo;m going to spend the rest of the book
 doing a stack-based bytecode. Register VMs are neat, but they are quite a bit

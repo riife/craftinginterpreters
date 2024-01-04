@@ -2,9 +2,9 @@
 > important, but because they are so small and trivial. The wonderful effects
 > created on stage are often the result of a secret so absurd that the magician
 > would be embarrassed to admit that that was how it was done.
+> 魔术师们之所以保护他们的秘密，并不是因为秘密很大、很重要，而是它们是如此小而微不足道。在舞台上创造出的奇妙效果往往源自于一个荒谬的小秘密，以至于魔术师都不好意思承认这是如何完成的。
 >
 > <cite>Christopher Priest, <em>The Prestige</em></cite>
-魔术师们之所以保护他们的秘密，并不是因为秘密很大、很重要，而是它们是如此小而微不足道。在舞台上创造出的奇妙效果往往源自于一个荒谬的小秘密，以至于魔术师都不好意思承认这是如何完成的。
 
 We've spent a lot of time talking about how to represent a program as a sequence
 of bytecode instructions, but it feels like learning biology using only stuffed,
@@ -60,13 +60,16 @@ necessarily a sound engineering choice for a real language implementation. If
 you're building a VM that's designed to be embedded in other host applications,
 it gives the host more flexibility if you *do* explicitly take a VM pointer
 and pass it around.
+选择使用静态的VM实例是本书的一个让步，但对于真正的语言实现来说，不一定是合理的工程选择。如果你正在构建一个旨在嵌入其它主机应用程序中的虚拟机，那么如果你显式地获取一个VM指针并传递该指针，则会为主机提供更大的灵活性。
 
 That way, the host app can control when and where memory for the VM is
 allocated, run multiple VMs in parallel, etc.
+这样，主机应用程序就可以控制何时何地为虚拟机分配内存，并行地运行多个虚拟机，等等。
 
 What I'm doing here is a global variable, and [everything bad you've heard about
 global variables][global] is still true when programming in the large. But when
 keeping things small for a book...
+我在这里使用的是一个全局变量，你所听说过的[关于全局变量的一切坏消息][global]在大型编程中仍然是正确的。但是，当你想在一本书中保持代码简洁时，就另当别论了。
 
 [global]: http://gameprogrammingpatterns.com/singleton.html
 
@@ -139,6 +142,7 @@ other functions will need to access it. Instead, we store it as a field in VM.
 If we were trying to squeeze every ounce of speed out of our bytecode
 interpreter, we would store `ip` in a local variable. It gets modified so often
 during execution that we want the C compiler to keep it in a register.
+如果我们想要在字节码解释器中再压榨出一点性能，我们可以将`ip`保存到一个局部变量中。该值在运行过程中会被频繁修改，所以我们希望C编译器将其放在寄存器中。
 
 </aside>
 
@@ -161,6 +165,7 @@ register or variable like this.
 
 x86, x64, and the CLR call it "IP". 68k, PowerPC, ARM, p-code, and the JVM call
 it "PC", for **program counter**.
+x86、x64和CLR称其为 "IP"。68k、PowerPC、ARM、p-code和JVM称它为 "PC"，意为程序计数器。
 
 </aside>
 
@@ -185,6 +190,7 @@ VM.
 
 Or, at least, it *will* be in a few chapters when it has enough content to be
 useful. Right now, it's not exactly a wonder of software wizardry.
+或者说，至少在几章之后，当它的内容足够有用时，它就会有用了。现在，它还算不上软件奇才。
 
 </aside>
 
@@ -206,6 +212,7 @@ called **decoding** or **dispatching** the instruction.
 Note that `ip` advances as soon as we read the opcode, before we've actually
 started executing the instruction. So, again, `ip` points to the *next*
 byte of code to be used.
+请注意，一旦我们读取了操作码，`ip`就会推进了。所以，再次说一下，`ip`指向的是将要使用的操作码的 *下一个* 字节。
 
 </aside>
 
@@ -220,6 +227,7 @@ going all the way back to the early days of computers.
 
 If you want to learn some of these techniques, look up "direct threaded code",
 "jump table", and "computed goto".
+如果你想学习其中的一些技术，可以搜索 "direct threaded code"、"跳表" 和 "computed goto"。
 
 </aside>
 
@@ -272,6 +280,7 @@ beginning and -- because we care -- undefine them at the end.
 
 Undefining these macros explicitly might seem needlessly fastidious, but C tends
 to punish sloppy users, and the C preprocessor doubly so.
+显示地取消这些宏定义，可能会显得毫无必要，但C语言往往会惩罚粗心的用户，而C语言的预处理器更是如此。
 
 </aside>
 
@@ -342,6 +351,7 @@ instruction know to print the result of that?
 Yes, I did have to look up "subtrahend" and "minuend" in a dictionary. But
 aren't they delightful words? "Minuend" sounds like a kind of Elizabethan dance
 and "subtrahend" might be some sort of underground Paleolithic monument.
+是的，我的确在字典里查过 "subtrahend" 和 "minuend"。但这两个词不是很有趣吗？"minuend" 听起来像是伊丽莎白时代的一种舞蹈，而 "subtrahend" 可能是旧石器时代的某种地下纪念碑。
 
 </aside>
 
@@ -376,11 +386,13 @@ decide. That leaves the door open for optimizing compilers to reorder arithmetic
 expressions for efficiency, even in cases where the operands have visible side
 effects. C and Scheme leave evaluation order unspecified. Java specifies
 left-to-right evaluation like we do for Lox.
+我们可以不指定计算顺序，让每个语言实现自行决定。这就为优化编译器重新排列算术表达式以提高效率留下了余地，即使是在操作数有明显副作用的情况下也是如此。C和Scheme没有指定求值顺序。Java规定了从左到右进行求值，就跟我们在Lox中所做的一样。
 
 I think nailing down stuff like this is generally better for users. When
 expressions are not evaluated in the order users intuit -- possibly in different
 orders across different implementations! -- it can be a burning hellscape of
 pain to figure out what's going on.
+我认为指定这样的内容通常对用户更好。当表达式没有按照用户的直觉顺序进行求值时——可能在不同的实现中会有不同的顺序——要想弄清楚发生了什么，可能是非常痛苦的。
 
 </aside>
 
@@ -428,6 +440,7 @@ granted, but we rarely learn *why* computers are architected this way.
 
 Hint: it's in the name of this section, and it's how Java and C manage recursive
 calls to functions.
+提示：这就是本节的名称，也是 Java 和 C 管理函数递归调用的方法。
 
 </aside>
 
@@ -471,6 +484,7 @@ to appear is the last to be consumed. Hmm... last-in, first-out... why, that's a
 <aside name="pancakes">
 
 This is also a stack:
+这也是一个栈:
 
 <img src="image/a-virtual-machine/pancakes.png" alt="A stack... of pancakes." />
 
@@ -503,6 +517,7 @@ of those.
 Heaps -- [the data structure][heap], not [the memory management thing][heap mem]
 -- are another. And Vaughan Pratt's top-down operator precedence parsing scheme,
 which we'll learn about [in due time][pratt].
+堆是另一种[数据结构][heap]，而不是[内存管理][heap mem]。还有沃恩-普拉特（Vaughan Pratt）自上而下的运算符优先级解析方案，我们将在[适当的时候][pratt]了解它。
 
 [heap]: https://en.wikipedia.org/wiki/Heap_(data_structure)
 [heap mem]: https://en.wikipedia.org/wiki/Memory_management#HEAP
@@ -524,6 +539,7 @@ To take a bit of the sheen off: stack-based interpreters aren't a silver bullet.
 They're often *adequate*, but modern implementations of the JVM, the CLR, and
 JavaScript all use sophisticated [just-in-time compilation][jit] pipelines to
 generate *much* faster native code on the fly.
+稍微说明一下：基于堆栈的解释器并不是银弹。它们通常是够用的，但是JVM、CLR和JavaScript的现代化实现中都使用了复杂的[即时编译][jit]管道，在动态中生成 *更* 快的本地代码。
 
 [jit]: https://en.wikipedia.org/wiki/Just-in-time_compilation
 
@@ -569,6 +585,7 @@ onto the stack...
 What about when the stack is *full*, you ask, Clever Reader? The C standard is
 one step ahead of you. It *is* allowed and well-specified to have an array
 pointer that points just past the end of an array.
+聪明的读者，你可能会问，那如果栈 *满* 了怎么办？C标准比您领先一步。C语言中允许数组指针正好指向数组末尾的下一个位置。
 
 </aside>
 
@@ -748,6 +765,7 @@ time.
 
 Lox has some other binary operators -- comparison and equality -- but those
 don't produce numbers as a result, so we aren't ready for them yet.
+Lox 还有其他一些二进制运算符 -- 比较和相等，但这些运算符不会产生数字结果，所以我们还没准备好使用它们。
 
 </aside>
 
@@ -778,8 +796,10 @@ to walk you through the same code four times.
 Did you even know you can pass an *operator* as an argument to a macro? Now you
 do. The preprocessor doesn't care that operators aren't first class in C. As far
 as it's concerned, it's all just text tokens.
+你之前知道可以把操作符作为参数传递给宏吗？现在你知道了。预处理器并不关心操作符是不是C语言中的类，在它看来，这一切都只是文本符号。
 
 I know, you can just *feel* the temptation to abuse this, can't you?
+我知道，你已经 *感受* 到滥用预处理器的诱惑了，不是吗？
 
 </aside>
 
@@ -984,6 +1004,7 @@ them][register allocation].
 
 Register-based bytecode is a little closer to the [*register windows*][window]
 supported by SPARC chips.
+基于寄存器的字节码更接近 SPARC 芯片支持的[*寄存器窗口*][window]。
 
 [window]: https://en.wikipedia.org/wiki/Register_window
 
@@ -1050,6 +1071,7 @@ sophistication, but that should get your attention.
 The Lua dev team -- Roberto Ierusalimschy, Waldemar Celes, and Luiz Henrique de
 Figueiredo -- wrote a *fantastic* paper on this, one of my all time favorite
 computer science papers, "[The Implementation of Lua 5.0][lua]" (PDF).
+Lua 开发团队 -- Roberto Ierusalimschy、Waldemar Celes 和 Luiz Henrique de Figueiredo -- 就此撰写了一篇 *精彩* 的论文，这也是我一直以来最喜欢的计算机科学论文之一: [《Lua 5.0 的实现》][lua]（PDF）。
 
 [lua]: https://www.lua.org/doc/jucs05.pdf
 

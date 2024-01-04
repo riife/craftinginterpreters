@@ -102,9 +102,9 @@
 <p>One has no right to love or hate anything if one has not acquired a thorough
 knowledge of its nature. Great love springs from great knowledge of the
 beloved object, and if you know it but little you will be able to love it only
-a little or not at all.</p>
-<p><cite>Leonardo da Vinci</cite>
-如果一个人没有完全了解任何事物的本质，他就没有权利去爱或恨它。伟大的爱来自于对所爱之物的深刻了解，如果你对它知之甚少，你就只能爱一点点，或者根本不爱它。（列奥纳多·达·芬奇）</p>
+a little or not at all.
+如果一个人没有完全了解任何事物的本质，他就没有权利去爱或恨它。伟大的爱来自于对所爱之物的深刻了解，如果你对它知之甚少，你就只能爱一点点，或者根本不爱它。</p>
+<p><cite>Leonardo da Vinci</cite></p>
 </blockquote>
 <p>We&rsquo;re eleven chapters in, and the interpreter sitting on your machine is nearly
 a complete scripting language. It could use a couple of built-in data structures
@@ -123,7 +123,8 @@ you understand how others design and build object systems.
 <p>If you <em>really</em> hate classes, though, you can skip these two chapters. They are
 fairly isolated from the rest of the book. Personally, I find it&rsquo;s good to learn
 more about the things I dislike. Things look simple at a distance, but as I get
-closer, details emerge and I gain a more nuanced perspective.</p>
+closer, details emerge and I gain a more nuanced perspective.
+但是，如果你 <em>真的</em> 讨厌类，也可以跳过这两章。它们与本书的其它部分是相当孤立的。就我个人而言，我觉得多了解自己不喜欢的对象是好事。有些事情乍一看很简单，但当我近距离观看时，细节出现了，我也获得了一个更细致入微的视角。</p>
 </aside>
 <h2><a href="#oop-与-classes" id="oop-与-classes"><small>12&#8202;.&#8202;1</small>OOP 与 Classes</a></h2>
 <p>There are three broad paths to object-oriented programming: classes,
@@ -137,7 +138,8 @@ approach.</p>
 to talk more about them<span class="em">&mdash;</span>I designed <a href="http://magpie-lang.org/">a hobby language</a> around them
 once and they are <em>super rad</em><span class="em">&mdash;</span>but there are only so many pages I can fit in.
 If you&rsquo;d like to learn more, take a look at <a href="https://en.wikipedia.org/wiki/Common_Lisp_Object_System">CLOS</a> (the object system in
-Common Lisp), <a href="https://opendylan.org/">Dylan</a>, <a href="https://julialang.org/">Julia</a>, or <a href="https://docs.raku.org/language/functions#Multi-dispatch">Raku</a>.</p>
+Common Lisp), <a href="https://opendylan.org/">Dylan</a>, <a href="https://julialang.org/">Julia</a>, or <a href="https://docs.raku.org/language/functions#Multi-dispatch">Raku</a>.
+Multimethods是你最不可能熟悉的方法。我很想多谈论一下它们——我曾经围绕它们设计了一个<a href="http://magpie-lang.org/">业余语言</a>，它们特别棒——但是我只能装下这么多页面了。如果你想了解更多，可以看看<a href="https://en.wikipedia.org/wiki/Common_Lisp_Object_System">CLOS</a> (Common Lisp中的对象系统), <a href="https://opendylan.org/">Dylan</a>, <a href="https://julialang.org/">Julia</a>, 或 <a href="https://docs.raku.org/language/functions#Multi-dispatch">Raku</a>。</p>
 </aside>
 <p>Since you&rsquo;ve written about a thousand lines of Java code with me already, I&rsquo;m
 assuming you don&rsquo;t need a detailed introduction to object orientation. The main
@@ -167,7 +169,8 @@ that in the <a href="inheritance.html">next chapter</a>. Even kicking that out, 
 lot to get through. This is a big chapter and everything doesn&rsquo;t quite come
 together until we have all of the above pieces, so gather your stamina.</p>
 <aside name="circle"><img src="image/classes/circle.png" alt="The relationships between classes, methods, instances, constructors, and fields." />
-<p>It&rsquo;s like the circle of life, <em>sans</em> Sir Elton John.</p>
+<p>It&rsquo;s like the circle of life, <em>sans</em> Sir Elton John.
+这就像生命的轮回，<em>除了</em> Elton John 爵士。</p>
 </aside>
 <h2><a href="#类声明" id="类声明"><small>12&#8202;.&#8202;2</small>类声明</a></h2>
 <p>Like we do, we&rsquo;re gonna start with syntax. A <code>class</code> statement introduces a new
@@ -193,7 +196,8 @@ name="fun"><code>fun</code></span> keyword. Each method is a name, parameter lis
 body. Here&rsquo;s an example:
 用简单的英语来说，类声明就是<code>class</code>关键字，后跟类的名称，然后是一对花括号包含的主体。在这个主体中，有一个方法声明的列表。与函数声明不同的是，方法没有前导的<code>fun</code>关键字。每个方法就是一个名称、参数列表和方法主体。下面是一个例子：</p>
 <aside name="fun">
-<p>Not that I&rsquo;m trying to say methods aren&rsquo;t fun or anything.</p>
+<p>Not that I&rsquo;m trying to say methods aren&rsquo;t fun or anything.
+我并不是想说方法不好玩什么的。</p>
 </aside>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Breakfast</span> {
   <span class="i">cook</span>() {
@@ -221,7 +225,8 @@ in <em>main</em>()</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>main</em>()</div>
 
 <aside name="class-ast">
-<p>The generated code for the new node is in <a href="appendix-ii.html#class-statement">Appendix II</a>.</p>
+<p>The generated code for the new node is in <a href="appendix-ii.html#class-statement">Appendix II</a>.
+新节点的生成代码见<a href="appendix-ii.html#class-statement">附录 II</a>。</p>
 </aside>
 <p>It stores the class&rsquo;s name and the methods inside its body. Methods are
 represented by the existing Stmt.Function class that we use for function
@@ -365,7 +370,8 @@ the class itself like a function. (JavaScript, ever weird, sort of does both.)
 <p>In Smalltalk, even <em>classes</em> are created by calling methods on an existing
 object, usually the desired superclass. It&rsquo;s sort of a turtles-all-the-way-down
 thing. It ultimately bottoms out on a few magical classes like Object and
-Metaclass that the runtime conjures into being <em>ex nihilo</em>.</p>
+Metaclass that the runtime conjures into being <em>ex nihilo</em>.
+在Smalltalk中，甚至连 <em>类</em> 也是通过现有对象（通常是所需的超类）的方法来创建的。有点像是一直向下龟缩。最后，它会在一些神奇的类上触底，比如Object和Metaclass，它们是运行时 <em>凭空创造</em> 出来的。</p>
 </aside>
 <p>I took a minimal approach with Lox. We already have class objects, and we
 already have function calls, so we&rsquo;ll use call expressions on class objects to
@@ -468,8 +474,10 @@ languages take a more principled stance. In Smalltalk, fields are accessed using
 simple identifiers<span class="em">&mdash;</span>essentially, variables that are only in scope inside a
 class&rsquo;s methods. Ruby uses <code>@</code> followed by a name to access a field in an
 object. That syntax is only meaningful inside a method and always accesses state
-on the current object.</p>
-<p>Lox, for better or worse, isn&rsquo;t quite so pious about its OOP faith.</p>
+on the current object.
+允许类之外的代码直接修改对象的字段，这违背了面向对象的原则，即类封装状态。有些语言采取了更有原则的立场。在SmallTalk中，字段实际上是使用简单的标识符访问的，这些标识符是类方法作用域内的变量。Ruby使用@后跟名字来访问对象中的字段。这种语法只有在方法中才有意义，并且总是访问当前对象的状态。</p>
+<p>Lox, for better or worse, isn&rsquo;t quite so pious about its OOP faith.
+不管怎样，Lox对OOP的信仰并不是那么虔诚。</p>
 </aside>
 <div class="codehilite"><pre><span class="i">someObject</span>.<span class="i">someProperty</span>
 </pre></div>
@@ -496,7 +504,8 @@ in <em>main</em>()</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>main</em>()</div>
 
 <aside name="get-ast">
-<p>The generated code for the new node is in <a href="appendix-ii.html#get-expression">Appendix II</a>.</p>
+<p>The generated code for the new node is in <a href="appendix-ii.html#get-expression">Appendix II</a>.
+新节点的生成代码见<a href="appendix-ii.html#get-expression">附录 II</a>。</p>
 </aside>
 <p>Following the grammar, the new parsing code goes in our existing <code>call()</code>
 method.
@@ -541,7 +550,8 @@ access happens in the interpreter.
 好吧，没什么好说的。因为属性是动态查找的，所以不会解析它们。在解析过程中，我们只递归到点符左边的表达式中。实际的属性访问发生在解释器中。</p>
 <aside name="dispatch">
 <p>You can literally see that property dispatch in Lox is dynamic since we don&rsquo;t
-process the property name during the static resolution pass.</p>
+process the property name during the static resolution pass.
+从字面上可以看出，Lox 中的属性分派是动态的，因为我们在静态解析传递过程中不处理属性名称。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
 add after <em>visitCallExpr</em>()</div>
@@ -595,10 +605,12 @@ add after <em>LoxInstance</em>()</div>
 <p>Doing a hash table lookup for every field access is fast enough for many
 language implementations, but not ideal. High performance VMs for languages like
 JavaScript use sophisticated optimizations like &ldquo;<a href="http://richardartoul.github.io/jekyll/update/2015/04/26/hidden-classes.html">hidden classes</a>&rdquo; to avoid
-that overhead.</p>
+that overhead.
+对于许多语言的实现来说，每次字段访问都进行哈希表查找已经足够快了，但这并不理想。JavaScript 等语言的高性能虚拟机使用 &ldquo;<a href="http://richardartoul.github.io/jekyll/update/2015/04/26/hidden-classes.html">隐藏类</a>&rdquo; 等复杂的优化方法来避免这种开销。</p>
 <p>Paradoxically, many of the optimizations invented to make dynamic languages fast
 rest on the observation that<span class="em">&mdash;</span>even in those languages<span class="em">&mdash;</span>most code is fairly
-static in terms of the types of objects it works with and their fields.</p>
+static in terms of the types of objects it works with and their fields.
+自相矛盾的是，许多为使动态语言快速而发明的优化方法都是基于这样一种观点，即: 即使在这些语言中，大多数代码在对象类型及其字段方面都是相当静态的。</p>
 </aside>
 <p>An interesting edge case we need to handle is what happens if the instance
 doesn&rsquo;t <em>have</em> a property with the given name. We could silently return some
@@ -616,7 +628,8 @@ expression may return. Every field is a property, but as we&rsquo;ll see <span
 name="foreshadowing">later</span>, not every property is a field.
 注意我是如何从讨论“属性”转换到讨论“字段”的。这两者之间有一个微妙的区别。字段是直接保存在实例中的命名状态。属性是get表达式可能返回的已命名的<em>东西</em>。每个字段都是一个属性，但是正如我们稍后将看到的，并非每个属性都是一个字段。</p>
 <aside name="foreshadowing">
-<p>Ooh, foreshadowing. Spooky!</p>
+<p>Ooh, foreshadowing. Spooky!
+哦，看吧。真诡异!</p>
 </aside>
 <p>In theory, we can now read properties on objects. But since there&rsquo;s no way to
 actually stuff any state into an instance, there are no fields to access. Before
@@ -654,7 +667,8 @@ in <em>main</em>()</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>main</em>()</div>
 
 <aside name="set-ast">
-<p>The generated code for the new node is in <a href="appendix-ii.html#set-expression">Appendix II</a>.</p>
+<p>The generated code for the new node is in <a href="appendix-ii.html#set-expression">Appendix II</a>.
+新节点的生成代码见<a href="appendix-ii.html#set-expression">附录 II</a>。</p>
 </aside>
 <p>In case you don&rsquo;t remember, the way we handle assignment in the parser is a
 little funny. We can&rsquo;t easily tell that a series of tokens is the left-hand side
@@ -740,6 +754,19 @@ LoxInstance.
 <p>The order that those are performed in could be user visible, which means we need
 to carefully specify it and ensure our implementations do these in the same
 order.</p>
+<p>这是另一种语义边缘情况。有三种不同的操作：</p>
+<ol>
+<li>
+<p>评估对象。</p>
+</li>
+<li>
+<p>如果不是类的实例，则引发运行时错误。</p>
+</li>
+<li>
+<p>评估值。</p>
+</li>
+</ol>
+<p>执行这些操作的顺序可能是用户可见的，这意味着我们需要仔细敲定，并确保我们的实现以相同的顺序执行这些操作。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/LoxInstance.java</em><br>
 add after <em>get</em>()</div>
@@ -820,14 +847,16 @@ like:
 <p>A motivating use for this is callbacks. Often, you want to pass a callback whose
 body simply invokes a method on some object. Being able to look up the method and
 pass it directly saves you the chore of manually declaring a function to wrap
-it. Compare this:</p>
+it. Compare this:
+它的经典用途之一就是回调。通常，你想要传递一个回调函数，其主体只是调用某个对象上的一个方法。既然能够找到该方法并直接传递它，就省去了手动声明一个函数对其进行包装的麻烦工作。比较一下下面两段代码：</p>
 <div class="codehilite"><pre><span class="k">fun</span> <span class="i">callback</span>(<span class="i">a</span>, <span class="i">b</span>, <span class="i">c</span>) {
   <span class="i">object</span>.<span class="i">method</span>(<span class="i">a</span>, <span class="i">b</span>, <span class="i">c</span>);
 }
 
 <span class="i">takeCallback</span>(<span class="i">callback</span>);
 </pre></div>
-<p>With this:</p>
+<p>With this:
+以及:</p>
 <div class="codehilite"><pre><span class="i">takeCallback</span>(<span class="i">object</span>.<span class="i">method</span>);
 </pre></div>
 </aside>
@@ -878,7 +907,8 @@ methods &ldquo;bind&rdquo; <code>this</code> to the original instance when the m
 Python calls <span name="bound">these</span> <strong>bound methods</strong>.
 不过，Lox有真正的类语法，所以我们确实知道哪些可调用的东西是方法，哪些是函数。因此，像Python、C#和其他语言一样，当方法第一次被获取时，我们会让方法与原始实例<code>this</code>进行 &ldquo;绑定&ldquo;。Python将这些绑定的方法称为<strong>bound methods</strong>（绑定方法）。</p>
 <aside name="bound">
-<p>I know, imaginative name, right?</p>
+<p>I know, imaginative name, right?
+我知道，富有想象力的名字，对吧？</p>
 </aside>
 <p>In practice, that&rsquo;s usually what you want. If you take a reference to a method
 on some object so you can use it as a callback later, you want to remember the
@@ -906,7 +936,8 @@ in <em>visitClassStmt</em>()</div>
 
 <aside name="local">
 <p>Storing the function type in a local variable is pointless right now, but we&rsquo;ll
-expand this code before too long and it will make more sense.</p>
+expand this code before too long and it will make more sense.
+现在将函数类型保存到一个局部变量中是没有意义的，但我们稍后会扩展这段代码，到时它就有意义了。</p>
 </aside>
 <p>We iterate through the methods in the class body and call the
 <code>resolveFunction()</code> method we wrote for handling function declarations already.
@@ -997,7 +1028,8 @@ hit a method defined on the instance&rsquo;s class.
 方法是通过下面的代码进行查找的：</p>
 <aside name="shadow">
 <p>Looking for a field first implies that fields shadow methods, a subtle but
-important semantic point.</p>
+important semantic point.
+首先寻找字段，意味着字段会遮蔽方法，这是一个微妙但重要的语义点。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>lox/LoxClass.java</em><br>
 add after <em>LoxClass</em>()</div>
@@ -1026,7 +1058,8 @@ started. Give it a try:
 </pre></div>
 <aside name="crunch">
 <p>Apologies if you prefer chewy bacon over crunchy. Feel free to adjust the script
-to your taste.</p>
+to your taste.
+如果您喜欢有嚼劲的培根而不是松脆的培根，请见谅。请根据自己的口味调整代码。</p>
 </aside>
 <h2><a href="#this" id="this"><small>12&#8202;.&#8202;6</small>This</a></h2>
 <p>We can define both behavior and state on objects, but they aren&rsquo;t tied together
@@ -1041,7 +1074,8 @@ uses &ldquo;self&rdquo; by convention, but you can technically call it whatever 
 <aside name="i">
 <p>&ldquo;I&rdquo; would have been a great choice, but using &ldquo;i&rdquo; for loop variables predates
 OOP and goes all the way back to Fortran. We are victims of the incidental
-choices of our forebears.</p>
+choices of our forebears.
+使用 &ldquo;I &ldquo;本来是个不错的选择，但使用 &ldquo;i&rdquo; 来表示循环变量早在 OOP 之前就有了，而且可以追溯到 Fortran。我们是前人偶然选择的牺牲品。</p>
 </aside>
 <p>For Lox, since we generally hew to Java-ish style, we&rsquo;ll go with &ldquo;this&rdquo;. Inside
 a method body, a <code>this</code> expression evaluates to the instance that the method was
@@ -1138,7 +1172,8 @@ in <em>main</em>()</div>
 <div class="source-file-narrow"><em>tool/GenerateAst.java</em>, in <em>main</em>()</div>
 
 <aside name="this-ast">
-<p>The generated code for the new node is in <a href="appendix-ii.html#this-expression">Appendix II</a>.</p>
+<p>The generated code for the new node is in <a href="appendix-ii.html#this-expression">Appendix II</a>.
+新节点的生成代码见<a href="appendix-ii.html#this-expression">附录 II</a>。</p>
 </aside>
 <p>Parsing is simple since it&rsquo;s a single token which our lexer already
 recognizes as a reserved word.
@@ -1368,7 +1403,8 @@ intrinsically messy about the moment of birth.
 <aside name="cracks">
 <p>A few examples: In Java, even though final fields must be initialized, it is
 still possible to read one <em>before</em> it has been. Exceptions<span class="em">&mdash;</span>a huge, complex
-feature<span class="em">&mdash;</span>were added to C++ mainly as a way to emit errors from constructors.</p>
+feature<span class="em">&mdash;</span>were added to C++ mainly as a way to emit errors from constructors.
+举几个例子：在Java中，尽管final字段必须被初始化，但仍有可能在被初始化之前被读取。异常（一个庞大而复杂的特性）被添加到C++中主要是作为一种从构造函数发出错误的方式。</p>
 </aside>
 <p>&ldquo;Constructing&rdquo; an object is actually a pair of operations:
 “构造”一个对象实际上是一对操作：</p>
@@ -1380,7 +1416,8 @@ level beneath what user code is able to access.
 运行时为一个新的实例<em>分配</em>所需的内存。在多数语言中，这个操作是在用户代码可以访问的层面之下的基础层完成的。</p>
 <aside name="allocate">
 <p>C++&rsquo;s &ldquo;<a href="https://en.wikipedia.org/wiki/Placement_syntax">placement new</a>&rdquo; is a rare example where the bowels of allocation
-are laid bare for the programmer to prod.</p>
+are laid bare for the programmer to prod.
+C++中的 &ldquo;<a href="https://en.wikipedia.org/wiki/Placement_syntax">placement new</a>&rdquo; 是一个罕见的例子，在这种情况下，分配的内存被暴露出来供程序员使用。</p>
 </aside></li>
 <li>
 <p>Then, a user-provided chunk of code is called which <em>initializes</em> the
@@ -1469,7 +1506,8 @@ and resources of your implementation affect the design of the language. There
 are only so many hours in the day, and if a cut corner here or there lets you get
 more features to users in less time, it may very well be a net win for their
 happiness and productivity. The trick is figuring out <em>which</em> corners to cut
-that won&rsquo;t cause your users and future self to curse your shortsightedness.</p>
+that won&rsquo;t cause your users and future self to curse your shortsightedness.
+也许“不喜欢”这个说法太过激了。让语言实现的约束和资源影响语言的设计是合理的。一天只有这么多时间，如果在这里或那里偷工减料可以让你在更短的时间内为用户提供更多的功能，这可能会大大提高用户的幸福感和工作效率。诀窍在于，要弄清楚哪些弯路不会导致你的用户和未来的自己不会咒骂你的短视行为。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">      return returnValue.value;
     }
@@ -1704,7 +1742,8 @@ name="words">words</span> have been written about prototypes in JavaScript.
 Whether that shows that prototypes are brilliant or confusing<span class="em">&mdash;</span>or both!<span class="em">&mdash;</span>is
 an open question.</p>
 <aside name="words">
-<p>Including <a href="http://gameprogrammingpatterns.com/prototype.html">more than a handful</a> by yours truly.</p>
+<p>Including <a href="http://gameprogrammingpatterns.com/prototype.html">more than a handful</a> by yours truly.
+其中<a href="http://gameprogrammingpatterns.com/prototype.html">不乏</a>你们的作品。</p>
 </aside>
 <p>I won&rsquo;t get into whether or not I think prototypes are a good idea for a
 language. I&rsquo;ve made languages that are <a href="http://finch.stuffwithstuff.com/">prototypal</a> and

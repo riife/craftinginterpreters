@@ -2,9 +2,9 @@
 > knowledge of its nature. Great love springs from great knowledge of the
 > beloved object, and if you know it but little you will be able to love it only
 > a little or not at all.
+> 如果一个人没有完全了解任何事物的本质，他就没有权利去爱或恨它。伟大的爱来自于对所爱之物的深刻了解，如果你对它知之甚少，你就只能爱一点点，或者根本不爱它。
 >
 > <cite>Leonardo da Vinci</cite>
-如果一个人没有完全了解任何事物的本质，他就没有权利去爱或恨它。伟大的爱来自于对所爱之物的深刻了解，如果你对它知之甚少，你就只能爱一点点，或者根本不爱它。（列奥纳多·达·芬奇）
 
 We're eleven chapters in, and the interpreter sitting on your machine is nearly
 a complete scripting language. It could use a couple of built-in data structures
@@ -29,6 +29,7 @@ If you *really* hate classes, though, you can skip these two chapters. They are
 fairly isolated from the rest of the book. Personally, I find it's good to learn
 more about the things I dislike. Things look simple at a distance, but as I get
 closer, details emerge and I gain a more nuanced perspective.
+但是，如果你 *真的* 讨厌类，也可以跳过这两章。它们与本书的其它部分是相当孤立的。就我个人而言，我觉得多了解自己不喜欢的对象是好事。有些事情乍一看很简单，但当我近距离观看时，细节出现了，我也获得了一个更细致入微的视角。
 
 </aside>
 
@@ -53,6 +54,7 @@ to talk more about them -- I designed [a hobby language][magpie] around them
 once and they are *super rad* -- but there are only so many pages I can fit in.
 If you'd like to learn more, take a look at [CLOS][] (the object system in
 Common Lisp), [Dylan][], [Julia][], or [Raku][].
+Multimethods是你最不可能熟悉的方法。我很想多谈论一下它们——我曾经围绕它们设计了一个[业余语言][magpie]，它们特别棒——但是我只能装下这么多页面了。如果你想了解更多，可以看看[CLOS][] (Common Lisp中的对象系统), [Dylan][], [Julia][], 或 [Raku][]。
 
 [clos]: https://en.wikipedia.org/wiki/Common_Lisp_Object_System
 [magpie]: http://magpie-lang.org/
@@ -92,6 +94,7 @@ together until we have all of the above pieces, so gather your stamina.
 <img src="image/classes/circle.png" alt="The relationships between classes, methods, instances, constructors, and fields." />
 
 It's like the circle of life, *sans* Sir Elton John.
+这就像生命的轮回，*除了* Elton John 爵士。
 
 </aside>
 
@@ -133,6 +136,7 @@ body. Here's an example:
 <aside name="fun">
 
 Not that I'm trying to say methods aren't fun or anything.
+我并不是想说方法不好玩什么的。
 
 </aside>
 
@@ -162,6 +166,7 @@ Over in our AST generator, the `classDecl` grammar rule gets its own statement
 <aside name="class-ast">
 
 The generated code for the new node is in [Appendix II][appendix-class].
+新节点的生成代码见[附录 II][appendix-class]。
 
 [appendix-class]: appendix-ii.html#class-statement
 
@@ -268,6 +273,7 @@ In Smalltalk, even *classes* are created by calling methods on an existing
 object, usually the desired superclass. It's sort of a turtles-all-the-way-down
 thing. It ultimately bottoms out on a few magical classes like Object and
 Metaclass that the runtime conjures into being *ex nihilo*.
+在Smalltalk中，甚至连 *类* 也是通过现有对象（通常是所需的超类）的方法来创建的。有点像是一直向下龟缩。最后，它会在一些神奇的类上触底，比如Object和Metaclass，它们是运行时 *凭空创造* 出来的。
 
 </aside>
 
@@ -349,8 +355,10 @@ simple identifiers -- essentially, variables that are only in scope inside a
 class's methods. Ruby uses `@` followed by a name to access a field in an
 object. That syntax is only meaningful inside a method and always accesses state
 on the current object.
+允许类之外的代码直接修改对象的字段，这违背了面向对象的原则，即类封装状态。有些语言采取了更有原则的立场。在SmallTalk中，字段实际上是使用简单的标识符访问的，这些标识符是类方法作用域内的变量。Ruby使用@后跟名字来访问对象中的字段。这种语法只有在方法中才有意义，并且总是访问当前对象的状态。
 
 Lox, for better or worse, isn't quite so pious about its OOP faith.
+不管怎样，Lox对OOP的信仰并不是那么虔诚。
 
 </aside>
 
@@ -383,6 +391,7 @@ The <span name="get-ast">syntax tree node</span> is:
 <aside name="get-ast">
 
 The generated code for the new node is in [Appendix II][appendix-get].
+新节点的生成代码见[附录 II][appendix-get]。
 
 [appendix-get]: appendix-ii.html#get-expression
 
@@ -417,6 +426,7 @@ access happens in the interpreter.
 
 You can literally see that property dispatch in Lox is dynamic since we don't
 process the property name during the static resolution pass.
+从字面上可以看出，Lox 中的属性分派是动态的，因为我们在静态解析传递过程中不处理属性名称。
 
 </aside>
 
@@ -445,10 +455,12 @@ Doing a hash table lookup for every field access is fast enough for many
 language implementations, but not ideal. High performance VMs for languages like
 JavaScript use sophisticated optimizations like "[hidden classes][]" to avoid
 that overhead.
+对于许多语言的实现来说，每次字段访问都进行哈希表查找已经足够快了，但这并不理想。JavaScript 等语言的高性能虚拟机使用 "[隐藏类][hidden classes]" 等复杂的优化方法来避免这种开销。
 
 Paradoxically, many of the optimizations invented to make dynamic languages fast
 rest on the observation that -- even in those languages -- most code is fairly
 static in terms of the types of objects it works with and their fields.
+自相矛盾的是，许多为使动态语言快速而发明的优化方法都是基于这样一种观点，即: 即使在这些语言中，大多数代码在对象类型及其字段方面都是相当静态的。
 
 [hidden classes]: http://richardartoul.github.io/jekyll/update/2015/04/26/hidden-classes.html
 
@@ -475,6 +487,7 @@ name="foreshadowing">later</span>, not every property is a field.
 <aside name="foreshadowing">
 
 Ooh, foreshadowing. Spooky!
+哦，看吧。真诡异!
 
 </aside>
 
@@ -523,6 +536,7 @@ complement our getter node.
 <aside name="set-ast">
 
 The generated code for the new node is in [Appendix II][appendix-set].
+新节点的生成代码见[附录 II][appendix-set]。
 
 [appendix-set]: appendix-ii.html#set-expression
 
@@ -583,6 +597,16 @@ This is another semantic edge case. There are three distinct operations:
 The order that those are performed in could be user visible, which means we need
 to carefully specify it and ensure our implementations do these in the same
 order.
+
+这是另一种语义边缘情况。有三种不同的操作：
+
+1. 评估对象。
+
+2. 如果不是类的实例，则引发运行时错误。
+
+3. 评估值。
+
+执行这些操作的顺序可能是用户可见的，这意味着我们需要仔细敲定，并确保我们的实现以相同的顺序执行这些操作。
 
 </aside>
 
@@ -685,6 +709,7 @@ A motivating use for this is callbacks. Often, you want to pass a callback whose
 body simply invokes a method on some object. Being able to look up the method and
 pass it directly saves you the chore of manually declaring a function to wrap
 it. Compare this:
+它的经典用途之一就是回调。通常，你想要传递一个回调函数，其主体只是调用某个对象上的一个方法。既然能够找到该方法并直接传递它，就省去了手动声明一个函数对其进行包装的麻烦工作。比较一下下面两段代码：
 
 ```lox
 fun callback(a, b, c) {
@@ -695,6 +720,7 @@ takeCallback(callback);
 ```
 
 With this:
+以及:
 
 ```lox
 takeCallback(object.method);
@@ -760,6 +786,7 @@ Python calls <span name="bound">these</span> **bound methods**.
 <aside name="bound">
 
 I know, imaginative name, right?
+我知道，富有想象力的名字，对吧？
 
 </aside>
 
@@ -781,6 +808,7 @@ the next step is to resolve them.
 
 Storing the function type in a local variable is pointless right now, but we'll
 expand this code before too long and it will make more sense.
+现在将函数类型保存到一个局部变量中是没有意义的，但我们稍后会扩展这段代码，到时它就有意义了。
 
 </aside>
 
@@ -831,6 +859,7 @@ The method is looked up using this:
 
 Looking for a field first implies that fields shadow methods, a subtle but
 important semantic point.
+首先寻找字段，意味着字段会遮蔽方法，这是一个微妙但重要的语义点。
 
 </aside>
 
@@ -857,6 +886,7 @@ Bacon().eat(); // Prints "Crunch crunch crunch!".
 
 Apologies if you prefer chewy bacon over crunchy. Feel free to adjust the script
 to your taste.
+如果您喜欢有嚼劲的培根而不是松脆的培根，请见谅。请根据自己的口味调整代码。
 
 </aside>
 
@@ -878,6 +908,7 @@ uses "self" by convention, but you can technically call it whatever you like.
 "I" would have been a great choice, but using "i" for loop variables predates
 OOP and goes all the way back to Fortran. We are victims of the incidental
 choices of our forebears.
+使用 "I "本来是个不错的选择，但使用 "i" 来表示循环变量早在 OOP 之前就有了，而且可以追溯到 Fortran。我们是前人偶然选择的牺牲品。
 
 </aside>
 
@@ -997,6 +1028,7 @@ syntax</span> for `this`.
 <aside name="this-ast">
 
 The generated code for the new node is in [Appendix II][appendix-this].
+新节点的生成代码见[附录 II][appendix-this]。
 
 [appendix-this]: appendix-ii.html#this-expression
 
@@ -1159,6 +1191,7 @@ intrinsically messy about the moment of birth.
 A few examples: In Java, even though final fields must be initialized, it is
 still possible to read one *before* it has been. Exceptions -- a huge, complex
 feature -- were added to C++ mainly as a way to emit errors from constructors.
+举几个例子：在Java中，尽管final字段必须被初始化，但仍有可能在被初始化之前被读取。异常（一个庞大而复杂的特性）被添加到C++中主要是作为一种从构造函数发出错误的方式。
 
 </aside>
 
@@ -1174,6 +1207,7 @@ feature -- were added to C++ mainly as a way to emit errors from constructors.
 
     C++'s "[placement new][]" is a rare example where the bowels of allocation
     are laid bare for the programmer to prod.
+    C++中的 "[placement new][]" 是一个罕见的例子，在这种情况下，分配的内存被暴露出来供程序员使用。
 
     </aside>
 
@@ -1259,6 +1293,7 @@ are only so many hours in the day, and if a cut corner here or there lets you ge
 more features to users in less time, it may very well be a net win for their
 happiness and productivity. The trick is figuring out *which* corners to cut
 that won't cause your users and future self to curse your shortsightedness.
+也许“不喜欢”这个说法太过激了。让语言实现的约束和资源影响语言的设计是合理的。一天只有这么多时间，如果在这里或那里偷工减料可以让你在更短的时间内为用户提供更多的功能，这可能会大大提高用户的幸福感和工作效率。诀窍在于，要弄清楚哪些弯路不会导致你的用户和未来的自己不会咒骂你的短视行为。
 
 </aside>
 
@@ -1449,6 +1484,7 @@ an open question.
 <aside name="words">
 
 Including [more than a handful][prototypes] by yours truly.
+其中[不乏][prototypes]你们的作品。
 
 </aside>
 

@@ -2,8 +2,9 @@
 > twenty-six phonetic symbols, ten Arabic numbers, and about eight punctuation
 > marks.
 >
+> 文学就是26个字母、10个阿拉伯数字和大概8个标点符号的水平排列。
+>
 > <cite>Kurt Vonnegut, <em>Like Shaking Hands With God: A Conversation about Writing</em></cite>
-文学就是26个字母、10个阿拉伯数字和大概8个标点符号的水平排列。（冯尼古特《像与上帝握手：关于写作的谈话》）
 
 Our second interpreter, clox, has three phases -- scanner, compiler, and virtual
 machine. A data structure joins each pair of phases. Tokens flow from scanner to
@@ -11,6 +12,7 @@ compiler, and chunks of bytecode from compiler to VM. We began our
 implementation near the end with [chunks][] and the [VM][]. Now, we're going to
 hop back to the beginning and build a scanner that makes tokens. In the
 [next chapter][], we'll tie the two ends together with our bytecode compiler.
+
 我们的第二个解释器clox分为三个阶段——扫描器、编译器和虚拟机。每两个阶段之间有一个数据结构进行衔接。词法标识从扫描器流入编译器，字节码块从编译器流向虚拟机。我们是从尾部开始先实现了字节码块和虚拟机。现在，我们要回到起点，构建一个生成词法标识的扫描器。在下一章中，我们将用字节码编译器将这两部分连接起来。
 
 [chunks]: chunks-of-bytecode.html
@@ -43,6 +45,8 @@ path to a script to run.
 
 The code tests for one and two arguments, not zero and one, because the first
 argument in `argv` is always the name of the executable being run.
+
+代码里面校验是一个参数还是两个参数，而不是0和1，因为argv中的第一个参数总是被运行的可执行文件的名称。
 
 </aside>
 
@@ -83,8 +87,12 @@ have to remember the ownership rules and hand-implement them throughout the
 program. Java just does it for us. C++ gives us tools to encode the policy
 directly so that the compiler validates it for us.
 
+C语言不仅要求我们显式地管理内存，而且要在精神上管理。我们程序员必须记住所有权规则，并在整个程序中手动实现。Java为我们做了这些。C++为我们提供了直接编码策略的工具，这样编译器就会为我们验证它。
+
 I like C's simplicity, but we pay a real price for it -- the language requires
 us to be more conscientious.
+
+我喜欢C语言的简洁，但是我们为此付出了真正的代价——这门语言要求我们更加认真。
 
 </aside>
 
@@ -108,6 +116,8 @@ single batch.
 
 Well, that size *plus one*. Always gotta remember to make room for the null
 byte.
+
+嗯，这个size要加1，永远记得为null字节留出空间。
 
 </aside>
 
@@ -158,6 +168,8 @@ go too far off in the weeds, shall we?
 
 Even good old `printf()` can fail. Yup. How many times have you handled *that*
 error?
+
+即使是老式的 `printf()` 也会失败。没错。你处理过多少次这样的错误？
 
 </aside>
 
@@ -233,6 +245,8 @@ being looked at.
 Here, we are in the middle of scanning the identifier `bacon`. The current
 character is `o` and the character we most recently consumed is `c`.
 
+这里，我们正在扫描标识符 `bacon`。当前的字符是 `o`，我们最近使用的字符是 `c`。
+
 </aside>
 
 We have a `line` field to track what line the current lexeme is on for error
@@ -283,6 +297,8 @@ that `printf()` call prints the first `token.length` characters of the string at
 `token.start`. We need to limit the length like that because the lexeme points
 into the original source string and doesn't have a terminator at the end.
 
+格式字符串中的`%.*s`是一个很好的特性。通常情况下，你需要在格式字符串中写入一个数字来设置输出精度——要显示的字符数。使用`*`则可以把精度作为一个参数来传递。因此，`printf()`调用将字符串从`token.start`开始的前`token.length`个字符。我们需要这样限制长度，因为词素指向原始的源码字符串，并且在末尾没有终止符。
+
 </aside>
 
 This loops indefinitely. Each turn through the loop, it scans one token and
@@ -315,6 +331,8 @@ empty lexeme on line 2 is the EOF token.
 
 Yeah, the raw index of the token type isn't exactly human readable, but it's all
 C gives us.
+
+是的，标记类型的原始索引并不完全适合人类阅读，但这是 C 语言为我们提供的全部内容
 
 </aside>
 
@@ -369,6 +387,8 @@ I don't mean to sound flippant. We really do need to think about and ensure that
 the source string, which is created far away over in the "main" module, has a
 long enough lifetime. That's why `runFile()` doesn't free the string until
 `interpret()` finishes executing the code and returns.
+
+我并不想让这个听起来太轻率。我们确实需要考虑并确保在“main”模块中创建的源字符串具有足够长的生命周期。这就是`runFile()`中会在`interpret()`执行完代码并返回后才释放字符串的原因。
 
 </aside>
 
@@ -425,6 +445,8 @@ a sister function for returning error tokens.
 <aside name="axolotl">
 
 This part of the chapter is pretty dry, so here's a picture of an axolotl.
+
+这一章的这部分内容很枯燥，所以这里有一张斧头龙的图片。
 
 <img src="image/scanning-on-demand/axolotl.png" alt="A drawing of an axolotl." />
 
@@ -603,6 +625,8 @@ required to convert a sequence of digit characters to a number value. But there
 isn't *that* much redundancy, it isn't in anything performance critical, and it
 keeps our scanner simpler.
 
+在编译器中进行词素到运行时值的转换确实会引入一些冗余。扫描一个数字字面量的工作与将一串数字字符转换为一个数值的工作非常相似。但是并没有那么多冗余，它并不是任何性能上的关键点，而且能使得我们的扫描器更加简单。
+
 </aside>
 
 Next up, numbers. Instead of adding a switch case for each of the ten digits
@@ -674,6 +698,8 @@ there.
 Don't worry if this is unfamiliar to you. When we get to [building our own hash
 table from scratch][hash], we'll learn all about it in exquisite detail.
 
+如果你对此不熟悉，请不要担心。当我们从头开始构建我们自己的哈希表时，将会学习关于它的所有细节。
+
 [hash]: hash-tables.html
 
 </aside>
@@ -703,6 +729,8 @@ Here's a visual representation of that branching character-inspection logic:
 
 Read down each chain of nodes and you'll see Lox's keywords emerge.
 
+从上向下阅读每个节点链，你将看到Lox的关键字。
+
 </aside>
 
 We start at the root node. If there is a child node whose letter matches the
@@ -731,6 +759,8 @@ the middle of the word "retrieval", which means it should be pronounced like
 "tree" *which tries are a special case of*, so unless you never speak of these
 things out loud, no one can tell which one you're talking about. Thus, people
 these days often pronounce it like "try" to avoid the headache.
+
+"Trie" 是CS中最令人困惑的名字之一。Edward Fredkin从 "检索（retrieval）" 中把这个词提取出来，这意味着它的读音应该像 "tree" 。但是，已经有一个非常重要的数据结构发音为 "tree" ，而trie只是一个特例。所以如果你谈论这些东西时，没人能分辨出你在说哪一个。因此，现在人们经常把它读作 "try" ，以免头痛。
 
 </aside>
 
@@ -775,10 +805,14 @@ This style of diagram is called a [**syntax diagram**][syntax diagram] or the
 more charming **railroad diagram**. The latter name is because it looks
 something like a switching yard for trains.
 
+这种风格的图被称为[语法图][syntax diagram]或**铁路图**。后者的名字是因为它看起来像火车的调度场。
+
 Back before Backus-Naur Form was a thing, this was one of the predominant ways
 of documenting a language's grammar. These days, we mostly use text, but there's
 something delightful about the official specification for a *textual language*
 relying on an *image*.
+
+在 Backus-Naur 范式出现之前，这是记录语言语法的主要方式之一。如今，我们大多使用文本，但一种*文本语言*的官方规范依赖于 *图像* ，这一点很令人高兴。
 
 [syntax diagram]: https://en.wikipedia.org/wiki/Syntax_diagram
 
@@ -809,8 +843,12 @@ This is also how most regular expression engines in programming languages and
 text editors work under the hood. They take your regex string and convert it to
 a DFA, which they then use to match strings.
 
+这也是大多数编程语言和文本编辑器中的正则表达式引擎的工作原理。它们获取你的正则表达式字符串并将其转换为DFA，然后使用DFA来匹配字符串。
+
 If you want to learn the algorithm to convert a regular expression into a DFA,
 [the dragon book][dragon] has you covered.
+
+<br>如果你想学习将正则表达式转换为DFA的算法，[龙书][dragon]中已经为你提供了答案。
 
 [dragon]: https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools
 
@@ -831,6 +869,8 @@ node and handle the easy keywords.
 Simple doesn't mean dumb. The same approach is [essentially what V8 does][v8],
 and that's currently one of the world's most sophisticated, fastest language
 implementations.
+
+简单并不意味着愚蠢。[v8][]也采用了同样的方法，而它是目前世界上最复杂、最快的语言实现之一。
 
 [v8]: https://github.com/v8/v8/blob/e77eebfe3b747fb315bd3baad09bec0953e53e68/src/parsing/scanner.cc#L1643
 
@@ -891,6 +931,8 @@ We sometimes fall into the trap of thinking that performance comes from
 complicated data structures, layers of caching, and other fancy optimizations.
 But, many times, all that's required is to do less work, and I often find that
 writing the simplest code I can is sufficient to accomplish that.
+
+我们有时会陷入这样的误区：任务性能来自于复杂的数据结构、多级缓存和其它花哨的优化。但是，很多时候所需要的就是做更少的工作，而我经常发现，编写最简单的代码就足以完成这些工作。
 
 </aside>
 

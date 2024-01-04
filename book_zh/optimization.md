@@ -1,8 +1,10 @@
 > The evening's the best part of the day. You've done your day's work. Now you
 > can put your feet up and enjoy it.
 >
+> 夜晚是一天中最美好的时光。你已经完成了一天的工作，现在你可以双腿搁平，享受一下。
+>
 > <cite>Kazuo Ishiguro, <em>The Remains of the Day</em></cite>
-夜晚是一天中最美好的时光。你已经完成了一天的工作，现在你可以双腿搁平，享受一下。（石黑一雄，《长日将尽》）
+> <cite>石黑一雄, <em>长日将尽</em></cite>
 
 If I still lived in New Orleans, I'd call this chapter a *lagniappe*, a little
 something extra given for free to a customer. You've got a whole book and a
