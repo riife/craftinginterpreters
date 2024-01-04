@@ -35,7 +35,7 @@ actually part of the call syntax. The thing being called -- the **callee** --
 can be any expression that evaluates to a function. (Well, it does have to be a
 pretty *high precedence* expression, but parentheses take care of that.) For
 example:
-但是被调用函数的名称实际上并不是调用语法的一部分。被调用者（ **callee**）可以是计算结果为一个函数的任何表达式。(好吧，它必须是一个非常高优先级的表达式，但是圆括号可以解决这个问题。)例如：
+但是被调用函数的名称实际上并不是调用语法的一部分。被调用者（**callee**）可以是计算结果为一个函数的任何表达式。(好吧，它必须是一个非常高优先级的表达式，但是圆括号可以解决这个问题。)例如：
 
 <aside name="pascal">
 
@@ -105,7 +105,7 @@ I admit, this seems more grammatically awkward than you'd expect for the
 incredibly common "zero or more comma-separated things" pattern. There are some
 sophisticated metasyntaxes that handle this better, but in our BNF and in many
 language specs I've seen, it is this cumbersome.
-我承认，对于极其常见的 "零或多个逗号分隔的事物 "模式来说，这在语法上似乎比你想象的更难处理。有一些复杂的元语法可以更好地处理这个问题，但在我们的BNF和我见过的许多语言规范中，它就是如此的麻烦。
+我承认，对于极其常见的 "零或多个逗号分隔的事物" 模式来说，这在语法上似乎比你想象的更难处理。有一些复杂的元语法可以更好地处理这个问题，但在我们的BNF和我见过的许多语言规范中，它就是如此的麻烦。
 
 Over in our syntax tree generator, we add a <span name="call-ast">new
 node</span>.
@@ -252,7 +252,7 @@ The Java representation of any Lox object that can be called like a function
 will implement this interface. That includes user-defined functions, naturally,
 but also class objects since classes are "called" to construct new instances.
 We'll also use it for one more purpose shortly.
-一旦我们准备好被调用者和参数，剩下的就是执行函数调用。我们将被调用者转换为LoxCallable，然后对其调用`call()`方法来实现。任何可以像函数一样被调用的Lox对象的Java表示都要实现这个接口。这自然包括用户定义的函数，但也包括类对象，因为类会被 "调用 "来创建新的实例。稍后我们还将把它用于另一个目的。
+一旦我们准备好被调用者和参数，剩下的就是执行函数调用。我们将被调用者转换为LoxCallable，然后对其调用`call()`方法来实现。任何可以像函数一样被调用的Lox对象的Java表示都要实现这个接口。这自然包括用户定义的函数，但也包括类对象，因为类会被 "调用"来创建新的实例。稍后我们还将把它用于另一个目的。
 
 <aside name="callable">
 
@@ -1118,7 +1118,7 @@ declared. Closures have been around since the early Lisp days, and language
 hackers have come up with all manner of ways to implement them. For jlox, we'll
 do the simplest thing that works. In LoxFunction, we add a field to store an
 environment.
-这种数据结构被称为**闭包**，因为它 "封闭 "并保留着函数声明的外围变量。闭包早在Lisp时代就已经存在了，语言黑客们想出了各种方法来实现闭包。在jlox中，我们将采用最简单的方式。在LoxFunction中，我们添加一个字段来存储环境。
+这种数据结构被称为**闭包**，因为它 "封闭" 并保留着函数声明的外围变量。闭包早在Lisp时代就已经存在了，语言黑客们想出了各种方法来实现闭包。在jlox中，我们将采用最简单的方式。在LoxFunction中，我们添加一个字段来存储环境。
 
 <aside name="closure">
 

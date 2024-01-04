@@ -345,14 +345,14 @@ Tracking the number of required trailing parts is beyond the capabilities of a
 regular grammar. Regular grammars can express <em>repetition</em>, but they can&rsquo;t <em>keep
 count</em> of how many repetitions there are, which is necessary to ensure that the
 string has the same number of <code>with</code> and <code>on the side</code> parts.
-想象一下，我们在这里递归扩展几次<code>breakfast</code>规则，比如 &ldquo;bacon with bacon with bacon with . . .&rdquo; ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 &ldquo;on the side &ldquo;词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达<em>重复</em>，但它们无法<em>统计</em>有多少重复，但是这（种跟踪）对于确保字符串的<code>with</code>和<code>on the side</code>部分的数量相同是必要的。</p>
+想象一下，我们在这里递归扩展几次<code>breakfast</code>规则，比如 &ldquo;bacon with bacon with bacon with . . .&rdquo; ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 &ldquo;on the side&rdquo; 词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达<em>重复</em>，但它们无法<em>统计</em>有多少重复，但是这（种跟踪）对于确保字符串的<code>with</code>和<code>on the side</code>部分的数量相同是必要的。</p>
 </aside>
 <p>We could keep picking the first production for <code>breakfast</code> over and over again
 yielding all manner of breakfasts like &ldquo;bacon with sausage with scrambled eggs
 with bacon<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo; We won&rsquo;t though. This time we&rsquo;ll pick <code>bread</code>. There are three
 rules for that, each of which contains only a terminal. We&rsquo;ll pick &ldquo;English
 muffin&rdquo;.
-我们可以不断选择<code>breakfast</code> 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon . . . ”，【存疑，按照规则设置，这里应该不会出现以bacon开头的字符串，原文可能有误】但我们不会这样做。这一次我们选择<code>bread</code>。有三个对应的规则，每个规则只包含一个终止符。我们选 &ldquo;English muffin&rdquo;。</p>
+我们可以不断选择<code>breakfast</code> 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon <span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>”，【存疑，按照规则设置，这里应该不会出现以bacon开头的字符串，原文可能有误】但我们不会这样做。这一次我们选择<code>bread</code>。有三个对应的规则，每个规则只包含一个终止符。我们选 &ldquo;English muffin&rdquo;。</p>
 <p>With that, every nonterminal in the string has been expanded until it finally
 contains only terminals and we&rsquo;re left with:
 这样一来，字符串中的每一个非终止符都被展开了，直到最后只包含终止符，我们就剩下：</p><img src="image/representing-code/breakfast.png" alt='"Playing" the grammar to generate a string.' />
@@ -782,7 +782,7 @@ expression in Lox behaves differently at runtime. That means the interpreter
 needs to select a different chunk of code to handle each expression type. With
 tokens, we can simply switch on the TokenType. But we don&rsquo;t have a &ldquo;type&rdquo; enum
 for the syntax trees, just a separate Java class for each one.
-先想象一下吧。尽管我们还没有到那一步，但请考虑一下解释器将如何处理语法树。Lox中的每种表达式在运行时的行为都不一样。这意味着解释器需要选择不同的代码块来处理每种表达式类型。对于词法标记，我们可以简单地根据<code>TokenType</code>进行转换。但是我们并没有为语法树设置一个 &ldquo;type &ldquo;枚举，只是为每个语法树单独设置一个Java类。</p>
+先想象一下吧。尽管我们还没有到那一步，但请考虑一下解释器将如何处理语法树。Lox中的每种表达式在运行时的行为都不一样。这意味着解释器需要选择不同的代码块来处理每种表达式类型。对于词法标记，我们可以简单地根据<code>TokenType</code>进行转换。但是我们并没有为语法树设置一个 &ldquo;type&rdquo; 枚举，只是为每个语法树单独设置一个Java类。</p>
 <p>We could write a long chain of type tests:
 我们可以编写一长串类型测试：</p>
 <div class="codehilite"><pre><span class="k">if</span> (<span class="i">expr</span> <span class="k">instanceof</span> <span class="t">Expr</span>.<span class="t">Binary</span>) {
@@ -1087,7 +1087,7 @@ with the classes or our generator script. Compile and run this generator script
 to output an updated &ldquo;Expr.java&rdquo; file. It contains a generated Visitor
 interface and a set of expression node classes that support the Visitor pattern
 using it.
-这下好了。现在我们可以在表达式上定义操作，而且无需对类或生成器脚本进行修改。编译并运行这个生成器脚本，输出一个更新后的 &ldquo;Expr.java &ldquo;文件。该文件中包含一个生成的Visitor接口和一组使用该接口支持Visitor模式的表达式节点类。</p>
+这下好了。现在我们可以在表达式上定义操作，而且无需对类或生成器脚本进行修改。编译并运行这个生成器脚本，输出一个更新后的 &ldquo;Expr.java&rdquo; 文件。该文件中包含一个生成的Visitor接口和一组使用该接口支持Visitor模式的表达式节点类。</p>
 <p>Before we end this rambling chapter, let&rsquo;s implement that Visitor interface and
 see the pattern in action.
 在结束这杂乱的一章之前，我们先实现一下这个Visitor接口，看看这个模式的运行情况。</p>

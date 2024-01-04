@@ -326,7 +326,7 @@ Tracking the number of required trailing parts is beyond the capabilities of a
 regular grammar. Regular grammars can express *repetition*, but they can't *keep
 count* of how many repetitions there are, which is necessary to ensure that the
 string has the same number of `with` and `on the side` parts.
-想象一下，我们在这里递归扩展几次`breakfast`规则，比如 "bacon with bacon with bacon with . . ." ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 "on the side "词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达*重复*，但它们无法*统计*有多少重复，但是这（种跟踪）对于确保字符串的`with`和`on the side`部分的数量相同是必要的。
+想象一下，我们在这里递归扩展几次`breakfast`规则，比如 "bacon with bacon with bacon with . . ." ，为了正确地完成这个字符串，我们需要在结尾处添加同等数量的 "on the side" 词组。跟踪所需尾部的数量超出了正则语法的能力范围。正则语法可以表达*重复*，但它们无法*统计*有多少重复，但是这（种跟踪）对于确保字符串的`with`和`on the side`部分的数量相同是必要的。
 
 </aside>
 
@@ -335,7 +335,7 @@ yielding all manner of breakfasts like "bacon with sausage with scrambled eggs
 with bacon..." We won't though. This time we'll pick `bread`. There are three
 rules for that, each of which contains only a terminal. We'll pick "English
 muffin".
-我们可以不断选择`breakfast` 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon . . . ”，【存疑，按照规则设置，这里应该不会出现以bacon开头的字符串，原文可能有误】但我们不会这样做。这一次我们选择`bread`。有三个对应的规则，每个规则只包含一个终止符。我们选 "English muffin"。
+我们可以不断选择`breakfast` 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon ...”，【存疑，按照规则设置，这里应该不会出现以bacon开头的字符串，原文可能有误】但我们不会这样做。这一次我们选择`bread`。有三个对应的规则，每个规则只包含一个终止符。我们选 "English muffin"。
 
 With that, every nonterminal in the string has been expanded until it finally
 contains only terminals and we're left with:
@@ -759,7 +759,7 @@ expression in Lox behaves differently at runtime. That means the interpreter
 needs to select a different chunk of code to handle each expression type. With
 tokens, we can simply switch on the TokenType. But we don't have a "type" enum
 for the syntax trees, just a separate Java class for each one.
-先想象一下吧。尽管我们还没有到那一步，但请考虑一下解释器将如何处理语法树。Lox中的每种表达式在运行时的行为都不一样。这意味着解释器需要选择不同的代码块来处理每种表达式类型。对于词法标记，我们可以简单地根据`TokenType`进行转换。但是我们并没有为语法树设置一个 "type "枚举，只是为每个语法树单独设置一个Java类。
+先想象一下吧。尽管我们还没有到那一步，但请考虑一下解释器将如何处理语法树。Lox中的每种表达式在运行时的行为都不一样。这意味着解释器需要选择不同的代码块来处理每种表达式类型。对于词法标记，我们可以简单地根据`TokenType`进行转换。但是我们并没有为语法树设置一个 "type" 枚举，只是为每个语法树单独设置一个Java类。
 
 We could write a long chain of type tests:
 我们可以编写一长串类型测试：
@@ -1061,7 +1061,7 @@ with the classes or our generator script. Compile and run this generator script
 to output an updated "Expr.java" file. It contains a generated Visitor
 interface and a set of expression node classes that support the Visitor pattern
 using it.
-这下好了。现在我们可以在表达式上定义操作，而且无需对类或生成器脚本进行修改。编译并运行这个生成器脚本，输出一个更新后的 "Expr.java "文件。该文件中包含一个生成的Visitor接口和一组使用该接口支持Visitor模式的表达式节点类。
+这下好了。现在我们可以在表达式上定义操作，而且无需对类或生成器脚本进行修改。编译并运行这个生成器脚本，输出一个更新后的 "Expr.java" 文件。该文件中包含一个生成的Visitor接口和一组使用该接口支持Visitor模式的表达式节点类。
 
 Before we end this rambling chapter, let's implement that Visitor interface and
 see the pattern in action.

@@ -7,7 +7,7 @@ name="lexing">scanning</span>. The scanner takes in raw source code as a series
 of characters and groups it into a series of chunks we call **tokens**. These
 are the meaningful "words" and "punctuation" that make up the language's
 grammar.
-任何编译器或解释器的第一步都是扫描。扫描器以一系列字符的形式接收原始源代码，并将其分组成一系列的块，我们称之为**标识**（词法单元）。这些是有意义的 "单词 "和 "标点"，它们构成了语言的语法。
+任何编译器或解释器的第一步都是扫描。扫描器以一系列字符的形式接收原始源代码，并将其分组成一系列的块，我们称之为**标识**（词法单元）。这些是有意义的 "单词" 和 "标点"，它们构成了语言的语法。
 
 <aside name="lexing">
 
@@ -17,7 +17,7 @@ had less memory than your watch, some people used "scanner" only to refer to the
 piece of code that dealt with reading raw source code characters from disk and
 buffering them in memory. Then "lexing" was the subsequent phase that did useful
 stuff with the characters.
-一直以来，这项工作被称为 "扫描(scanning) "和 "词法分析(lexing)"（ "词法分析(lexical analysis)"的简称）。早在计算机还像Winnebagos一样大，但内存比你的手表还小的时候，有些人就用 "扫描 "来指代从磁盘上读取原始源代码字符并在内存中缓冲的那段代码。然后，"lexing "是后续阶段，对字符做有用的操作。
+一直以来，这项工作被称为 "扫描(scanning)" 和 "词法分析(lexing)"（"lexical analysis" 的简称）。早在计算机还像Winnebagos一样大，但内存比你的手表还小的时候，有些人就用 "扫描" 来指代从磁盘上读取原始源代码字符并在内存中缓冲的那段代码。然后，"lexing" 是后续阶段，对字符做有用的操作。
 
 These days, reading a source file into memory is trivial, so it's rarely a
 distinct phase in the compiler. Because of that, the two terms are basically
@@ -94,7 +94,7 @@ input from the user on the command line and returns the result. To kill an
 interactive command-line app, you usually type Control-D. Doing so signals an
 "end-of-file" condition to the program. When that happens `readLine()` returns
 `null`, so we check for that to exit the loop.
-`readLine()`函数，顾名思义，读取用户在命令行上的一行输入，并返回结果。要终止交互式命令行应用程序，通常需要输入Control-D。这样做会向程序发出 "文件结束 "的信号。当这种情况发生时，readLine()就会返回null，所以我们检查一下是否存在null以退出循环。
+`readLine()`函数，顾名思义，读取用户在命令行上的一行输入，并返回结果。要终止交互式命令行应用程序，通常需要输入Control-D。这样做会向程序发出 "文件结束" 的信号。当这种情况发生时，readLine()就会返回null，所以我们检查一下是否存在null以退出循环。
 
 Both the prompt and the file runner are thin wrappers around this core function:
 交互式提示符和文件运行工具都是对这个核心函数的简单包装：
@@ -216,7 +216,7 @@ because it felt over-engineered for the minimal interpreter in this book.
 With some rudimentary error handling in place, our application shell is ready.
 Once we have a Scanner class with a `scanTokens()` method, we can start running
 it. Before we get to that, let's get more precise about what tokens are.
-有了一些基本的错误处理，我们的应用程序外壳已经准备好了。一旦我们有了一个带有 `scanTokens() `方法的 Scanner 类，我们就可以开始运行它了。在我们开始之前，让我们更精确地了解什么是标记（tokens）。
+有了一些基本的错误处理，我们的应用程序外壳已经准备好了。一旦我们有了一个带有 `scanTokens()` 方法的 Scanner 类，我们就可以开始运行它了。在我们开始之前，让我们更精确地了解什么是标记（tokens）。
 
 ## 词素和标记（词法单元）
 下面是一行lox代码：
@@ -343,7 +343,7 @@ which kind of lexeme it "matches" may sound familiar. If you know regular
 expressions, you might consider defining a regex for each kind of lexeme and
 using those to match characters. For example, Lox has the same rules as C for
 identifiers (variable names and the like). This regex matches one:
-在循环中，我们会查看一些字符，以确定它 "匹配 "的是哪种词素，这部分内容可能听起来很熟悉，但如果你知道正则表达式，你可以考虑为每一种词素定义一个regex，并使用这些regex来匹配字符。例如，Lox对标识符（变量名等）的规则与C语言相同。下面的regex可以匹配一个标识符：
+在循环中，我们会查看一些字符，以确定它 "匹配" 的是哪种词素，这部分内容可能听起来很熟悉，但如果你知道正则表达式，你可以考虑为每一种词素定义一个regex，并使用这些regex来匹配字符。例如，Lox对标识符（变量名等）的规则与C语言相同。下面的regex可以匹配一个标识符：
 
 ```text
 [a-zA-Z_][a-zA-Z_0-9]*
@@ -355,7 +355,7 @@ called its <span name="theory">**lexical grammar**</span>. In Lox, as in most
 programming languages, the rules of that grammar are simple enough for the
 language to be classified a **[regular language][]**. That's the same "regular"
 as in regular expressions.
-如果你确实想到了正则表达式，那么你的直觉还是很深刻的。决定一门语言如何将字符分组为词素的规则被称为它的**词法语法**。在Lox中，和大多数编程语言一样，该语法的规则非常简单，可以将其归为 **[正则语言](https://en.wikipedia.org/wiki/Regular_language)**。这里的正则和正则表达式中的 "正则 "是一样的含义。
+如果你确实想到了正则表达式，那么你的直觉还是很深刻的。决定一门语言如何将字符分组为词素的规则被称为它的**词法语法**。在Lox中，和大多数编程语言一样，该语法的规则非常简单，可以将其归为 **[正则语言](https://en.wikipedia.org/wiki/Regular_language)**。这里的正则和正则表达式中的 "正则" 是一样的含义。
 
 [regular language]: https://en.wikipedia.org/wiki/Regular_language
 
@@ -423,7 +423,7 @@ looks like this:
 The scanner works its way through the source code, adding tokens until it runs
 out of characters. Then it appends one final "end of file" token. That isn't
 strictly needed, but it makes our parser a little cleaner.
-扫描器通过自己的方式遍历源代码，添加标记，直到遍历完所有字符。然后，它在最后附加一个的 "end of file "标记。严格意义上来说，这并不是必须的，但它可以使我们的解析器更加干净。
+扫描器通过自己的方式遍历源代码，添加标记，直到遍历完所有字符。然后，它在最后附加一个的 "end of file" 标记。严格意义上来说，这并不是必须的，但它可以使我们的解析器更加干净。
 
 This loop depends on a couple of fields to keep track of where the scanner is in
 the source code.
@@ -1068,7 +1068,7 @@ don't do what JavaScript did.
 
 * Python将所有换行符都视为有效，除非在行末使用明确的反斜杠将其延续到下一行。但是，括号(`()`、`[]`或`{}`)内的任何换行都将被忽略。惯用的代码风格更倾向于后者。
 
-    这条规则对 Python 很有效，因为它是一种高度面向语句的语言。特别是，Python 的语法确保了语句永远不会出现在表达式内。C语言也是如此，但许多其他有 "lambda "或函数字面语法的语言则不然。
+    这条规则对 Python 很有效，因为它是一种高度面向语句的语言。特别是，Python 的语法确保了语句永远不会出现在表达式内。C语言也是如此，但许多其他有 "lambda" 或函数字面语法的语言则不然。
 
     举一个JavaScript中的例子：
 

@@ -18,7 +18,7 @@ it.
 means to take a text and map each word to the grammar of the language. We use it
 here in the same sense, except that our language is a little more modern than
 Old French.
-英语中的"Parse "来自古法语 "pars"，意为 "语言的一部分"。它的意思是取一篇文章，把每一个词都映射到语言的语法上。我们在这里使用它也是这个意思，只不过我们的语言比古法语更现代一些。
+英语中的"Parse" 来自古法语 "pars"，意为 "语言的一部分"。它的意思是取一篇文章，把每一个词都映射到语言的语法上。我们在这里使用它也是这个意思，只不过我们的语言比古法语更现代一些。
 
 <!-- </aside>
 
@@ -85,7 +85,7 @@ The "could have" part is interesting. It's entirely possible to create a grammar
 that is *ambiguous*, where different choices of productions can lead to the same
 string. When you're using the grammar to *generate* strings, that doesn't matter
 much. Once you have the string, who cares how you got to it?
-"可能产生 "这部分很有意思。我们完全有可能创建一个*模棱两可*的语法，在这个语法中，不同的生成式可能会得到同一个字符串。当你使用该语法来*生成*字符串时，这一点不太重要。一旦你有了字符串，谁还会在乎你是怎么得到它的呢？
+"可能产生" 这部分很有意思。我们完全有可能创建一个*模棱两可*的语法，在这个语法中，不同的生成式可能会得到同一个字符串。当你使用该语法来*生成*字符串时，这一点不太重要。一旦你有了字符串，谁还会在乎你是怎么得到它的呢？
 
 When parsing, ambiguity means the parser may misunderstand the user's code. As
 we parse, we aren't just determining if the string is valid Lox code, we're
@@ -1095,7 +1095,7 @@ precedence and associativity correctly? Not bad for less than 200 lines of code.
 2.  Likewise, add support for the C-style conditional or "ternary" operator
     `?:`. What precedence level is allowed between the `?` and `:`? Is the whole
     operator left-associative or right-associative?
-    同样，添加对C风格的条件操作符或 "三元 "操作符`?:`的支持。在`?`和`:`之间采用什么优先级顺序？整个操作符是左关联还是右关联？
+    同样，添加对C风格的条件操作符或 "三元" 操作符`?:`的支持。在`?`和`:`之间采用什么优先级顺序？整个操作符是左关联还是右关联？
 
 3.  Add error productions to handle each binary operator appearing without a
     left-hand operand. In other words, detect a binary operator appearing at the

@@ -142,7 +142,7 @@ represent that?
 在Lox中，值由字面量创建，由表达式计算，并存储在变量中。用户将其视作Lox对象，但它们是用编写解释器的底层语言实现的。这意味着要在Lox的动态类型和Java的静态类型之间架起桥梁。Lox中的变量可以存储任何（Lox）类型的值，甚至可以在不同时间存储不同类型的值。我们可以用什么Java类型来表示？</p>
 <aside name="value">
 <p>Here, I&rsquo;m using &ldquo;value&rdquo; and &ldquo;object&rdquo; pretty much interchangeably.
-在这里，我基本可以互换地使用 &ldquo;值 &ldquo;和 &ldquo;对象&ldquo;。</p>
+在这里，我基本可以互换地使用 &ldquo;值&rdquo; 和 &ldquo;对象&ldquo;。</p>
 <p>Later in the C interpreter we&rsquo;ll make a slight distinction between them, but
 that&rsquo;s mostly to have unique terms for two different corners of the
 implementation<span class="em">&mdash;</span>in-place versus heap-allocated data. From the user&rsquo;s
@@ -972,7 +972,7 @@ choices and compare them to other languages.</p>
 other is converted to a string and the results are then concatenated. For
 example, <code>"scone" + 4</code> would yield <code>scone4</code>. Extend the code in
 <code>visitBinaryExpr()</code> to support that.
-2、许多语言对<code>+</code>的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，<code>"scone "+4</code>的结果应该是<code>scone4</code>。扩展<code>visitBinaryExpr()</code>中的代码以支持该特性。</p>
+2、许多语言对<code>+</code>的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，<code>"scone" + 4</code>的结果应该是<code>scone4</code>。扩展<code>visitBinaryExpr()</code>中的代码以支持该特性。</p>
 </li>
 <li>
 <p>What happens right now if you divide a number by zero? What do you think

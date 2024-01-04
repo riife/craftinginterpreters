@@ -37,7 +37,7 @@ reassuringly similar, from Rear Admiral Grace Hopper's first COBOL compiler all
 the way to some hot, new, transpile-to-JavaScript language whose "documentation"
 consists entirely of a single, poorly edited README in a Git repository
 somewhere.
-尽管语言设计师所探索的领域辽阔，但他们往往都走到<span name="dead">相似的几条路上</span>。 并非每种语言都采用完全相同的路径（有些会采用一种或两种捷径），但除此之外，从海军少将Grace Hopper的第一个COBOL编译器，一直到一些热门的新移植到JavaScript的语言（JS的 "文档 "甚至完全是由Git仓库中一个编辑得很差的README组成的），都呈现出相似的特征，这令人十分欣慰。
+尽管语言设计师所探索的领域辽阔，但他们往往都走到<span name="dead">相似的几条路上</span>。 并非每种语言都采用完全相同的路径（有些会采用一种或两种捷径），但除此之外，从海军少将Grace Hopper的第一个COBOL编译器，一直到一些热门的新移植到JavaScript的语言（JS的 "文档" 甚至完全是由Git仓库中一个编辑得很差的README组成的），都呈现出相似的特征，这令人十分欣慰。
 
 <aside name="dead">
 
@@ -77,7 +77,7 @@ to impress someone) **lexical analysis**. They all mean pretty much the same
 thing. I like "lexing" because it sounds like something an evil supervillain
 would do, but I'll use "scanning" because it seems to be marginally more
 commonplace.
-第一步是**扫描**，也就是所谓的**词法分析** ( lexing 或者强调写法 lexical analysis )。扫描和词法分析的意思相近。我喜欢词法分析，因为这听起来像是一个邪恶的超级大坏蛋会做的事情，但我还是用扫描，因为它似乎更常见一些。
+第一步是**扫描**，也就是所谓的**词法分析** (lexing 或者强调写法 lexical analysis)。扫描和词法分析的意思相近。我喜欢词法分析，因为这听起来像是一个邪恶的超级大坏蛋会做的事情，但我还是用扫描，因为它似乎更常见一些。
 
 A **scanner** (or **lexer**) takes in the linear stream of characters and chunks
 them together into a series of something more akin to <span
@@ -85,12 +85,12 @@ name="word">"words"</span>. In programming languages, each of these words is
 called a **token**. Some tokens are single characters, like `(` and `,`. Others
 may be several characters long, like numbers (`123`), string literals (`"hi!"`),
 and identifiers (`min`).
-扫描器(或词法解析器)接收线性字符流，并将它们组合成一系列更类似于 "单词 "的东西。在编程语言中，这些词的每一个都被称为**词法单元**。有些词法单元是单个字符，比如`(`和 `,`。其他的可能是几个字符长的，比如数字（`123`）、字符串字元（`"hi!"`）和标识符（`min`）。
+扫描器(或词法解析器)接收线性字符流，并将它们组合成一系列更类似于 "单词" 的东西。在编程语言中，这些词的每一个都被称为**词法单元**。有些词法单元是单个字符，比如`(`和 `,`。其他的可能是几个字符长的，比如数字（`123`）、字符串字元（`"hi!"`）和标识符（`min`）。
 
 <aside name="word">
 
 "Lexical" comes from the Greek root "lex", meaning "word".
-"词法 "源于希腊词根 "lex"，意为 "词"。
+"词法" 源于希腊词根 "lex"，意为 "词"。
 
 </aside>
 
@@ -221,7 +221,7 @@ between these two languages.
 There are a few well-established styles of IRs out there. Hit your search engine
 of choice and look for "control flow graph", "static single-assignment",
 "continuation-passing style", and "three-address code".
-有几种成熟的IR风格。点击你熟悉的搜索引擎，搜索 "控制流图"、"静态单赋值形式"、"延续传递形式 "和 "三位址码"。
+有几种成熟的IR风格。点击你熟悉的搜索引擎，搜索 "控制流图"、"静态单赋值形式"、"延续传递形式" 和 "三位址码"。
 
 </aside>
 
@@ -426,7 +426,7 @@ example, if the language automatically manages memory, we need a garbage
 collector going in order to reclaim unused bits. If our language supports
 "instance of" tests so you can see what kind of object you have, then we need
 some representation to keep track of the type of each object during execution.
-在这两种情况下，除了最基本的底层语言外，我们通常需要我们的语言在程序运行时提供一些服务。例如，如果语言自动管理内存，我们需要一个垃圾收集器去回收未使用的比特位。如果我们的语言支持用 "instance of "测试我们拥有什么类型的对象，那么我们就需要一些表示方法来跟踪执行过程中每个对象的类型。
+在这两种情况下，除了最基本的底层语言外，我们通常需要我们的语言在程序运行时提供一些服务。例如，如果语言自动管理内存，我们需要一个垃圾收集器去回收未使用的比特位。如果我们的语言支持用 "instance of" 测试我们拥有什么类型的对象，那么我们就需要一些表示方法来跟踪执行过程中每个对象的类型。
 
 All of this stuff is going at runtime, so it's called, appropriately, the
 **runtime**. In a fully compiled language, the code implementing the runtime
@@ -563,7 +563,7 @@ Web browsers are the "machines" of today, and their "machine code" is
 JavaScript, so these days it seems [almost every language out there][js] has a
 compiler that targets JS since that's the <span name="js">main</span> way to get
 your code running in a browser.
-Web浏览器是今天的 "机器"，它们的 "机器代码 "是JavaScript，所以现在似乎[几乎所有的语言都有一个以JS为目标的编译器](https://github.com/jashkenas/coffeescript/wiki/list-of-languages-that-compile-to-js)，因为这是让你的代码在浏览器中运行的主要方式。
+Web浏览器是今天的 "机器"，它们的 "机器代码" 是JavaScript，所以现在似乎[几乎所有的语言都有一个以JS为目标的编译器](https://github.com/jashkenas/coffeescript/wiki/list-of-languages-that-compile-to-js)，因为这是让你的代码在浏览器中运行的主要方式。
 
 [js]: https://github.com/jashkenas/coffeescript/wiki/list-of-languages-that-compile-to-js
 
@@ -638,7 +638,7 @@ term and "vegetable" is *culinary*. One does not strictly imply the negation of
 the other. There are fruits that aren't vegetables (apples) and vegetables that
 aren't fruits (carrots), but also edible plants that are both fruits *and*
 vegetables, like tomatoes.
-事实证明，这就像问水果和蔬菜的区别一样。这看上去似乎是一个非此即彼的选择，但实际上 "水果 "是一个植物学术语，"蔬菜 "是烹饪学术语。严格来说，一个并不意味着对另一个的否定。有不是蔬菜的水果（苹果），也有不是水果的蔬菜（胡萝卜），也有既是水果又是蔬菜的可食用植物，比如西红柿。
+事实证明，这就像问水果和蔬菜的区别一样。这看上去似乎是一个非此即彼的选择，但实际上 "水果" 是一个植物学术语，"蔬菜" 是烹饪学术语。严格来说，一个并不意味着对另一个的否定。有不是蔬菜的水果（苹果），也有不是水果的蔬菜（胡萝卜），也有既是水果又是蔬菜的可食用植物，比如西红柿。
 
 <span name="veg"></span>
 

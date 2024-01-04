@@ -173,7 +173,7 @@ and Lua. Of those three, Lox looks most like JavaScript, mainly because most
 C-syntax languages do. As we&rsquo;ll learn later, Lox&rsquo;s approach to scoping hews
 closely to Scheme. The C flavor of Lox we&rsquo;ll build in <a href="a-bytecode-virtual-machine.html">Part III</a> is heavily
 indebted to Lua&rsquo;s clean, efficient implementation.
-当我想到那些小而有用的语言时，我脑海中浮现的是像JavaScript、Scheme和Lua这样的高级 &ldquo;脚本 &ldquo;语言。在这三种语言中，Lox看起来最像JavaScript，主要是因为大多数c语法语言都是这样的。稍后我们将了解到，Lox的范围界定方法与Scheme密切相关。 我们将在<a href="http://craftinginterpreters.com/a-bytecode-virtual-machine.html">第三部分</a>中构建的C风格的Lox很大程度上借鉴了Lua的干净、高效的实现。</p>
+当我想到那些小而有用的语言时，我脑海中浮现的是像JavaScript、Scheme和Lua这样的高级 &ldquo;脚本&rdquo; 语言。在这三种语言中，Lox看起来最像JavaScript，主要是因为大多数c语法语言都是这样的。稍后我们将了解到，Lox的范围界定方法与Scheme密切相关。 我们将在<a href="http://craftinginterpreters.com/a-bytecode-virtual-machine.html">第三部分</a>中构建的C风格的Lox很大程度上借鉴了Lua的干净、高效的实现。</p>
 <aside name="js">
 <p>Now that JavaScript has taken over the world and is used to build ginormous
 applications, it&rsquo;s hard to think of it as a &ldquo;little scripting language&rdquo;. But
@@ -293,7 +293,7 @@ name="char">characters</span>.
 <p>Even that word &ldquo;character&rdquo; is a trickster. Is it ASCII? Unicode? A
 code point or a &ldquo;grapheme cluster&rdquo;? How are characters encoded? Is each
 character a fixed size, or can they vary?
-就连那个 &ldquo;character &ldquo;一词也是个骗局。是ASCII码？是Unicode？一个码点，还是一个 &ldquo;字词群&ldquo;？字符是如何编码的？每个字符是固定的大小，还是可以变化的？</p>
+就连那个 &ldquo;character&rdquo; 一词也是个骗局。是ASCII码？是Unicode？一个码点，还是一个 &ldquo;字词群&ldquo;？字符是如何编码的？每个字符是固定的大小，还是可以变化的？</p>
 </aside></li>
 <li>
 <p><strong>Nil.</strong> There&rsquo;s one last built-in value who&rsquo;s never invited to the party
@@ -1029,8 +1029,8 @@ familiarity&rsquo;s sake, and trying to take the existing C statement syntax and
 interpret it like expressions gets weird pretty fast.</p>
 </div>
 <div class="design-note">
-<p>Lox既有表达式也有语句。有些语言省略了后者。相对地，它们将声明和控制流结构也视为表达式。这类 &ldquo;一切都是表达式 &ldquo;的语言往往具有函数式的血统，包括大多数Lisps、SML、Haskell、Ruby和CoffeeScript。</p>
-<p>要做到这一点，对于语言中的每一个 &ldquo;类似于语句 &ldquo;的构造，你需要决定它所计算的值是什么。其中有些很简单：</p>
+<p>Lox既有表达式也有语句。有些语言省略了后者。相对地，它们将声明和控制流结构也视为表达式。这类 &ldquo;一切都是表达式&rdquo; 的语言往往具有函数式的血统，包括大多数Lisps、SML、Haskell、Ruby和CoffeeScript。</p>
+<p>要做到这一点，对于语言中的每一个 &ldquo;类似于语句&rdquo; 的构造，你需要决定它所计算的值是什么。其中有些很简单：</p>
 <ul>
 <li><code>if</code>表达式的计算结果是所选分支的结果。同样，<code>switch</code>或其他多路分支的计算结果取决于所选择的情况。</li>
 <li>变量声明的计算结果是变量的值。</li>
@@ -1040,9 +1040,9 @@ interpret it like expressions gets weird pretty fast.</p>
 <p>您还必须决定这些类似语句的表达式如何与其他表达式组合，必须将它们放入语法的优先表中。例如，Ruby允许下面这种写法：</p>
 <div class="codehilite"><pre><span class="i">puts</span> <span class="n">1</span> + <span class="k">if</span> <span class="k">true</span> <span class="k">then</span> <span class="n">2</span> <span class="k">else</span> <span class="n">3</span> <span class="k">end</span> + <span class="n">4</span>
 </pre></div>
-<p>这是你所期望的吗？这是你的用户所期望的吗？这对你如何设计 &ldquo;语句 &ldquo;的语法有什么影响？请注意，Ruby有一个显式的<code>end</code>关键字来表明<code>if</code>表达式结束。如果没有它，<code>+4</code>很可能会被解析为<code>else</code>子句的一部分。</p>
+<p>这是你所期望的吗？这是你的用户所期望的吗？这对你如何设计 &ldquo;语句&rdquo; 的语法有什么影响？请注意，Ruby有一个显式的<code>end</code>关键字来表明<code>if</code>表达式结束。如果没有它，<code>+4</code>很可能会被解析为<code>else</code>子句的一部分。</p>
 <p>把每个语句都转换成表达式会迫使你回答一些类似这样的复杂问题。作为回报，您消除了一些冗余。C语言中既有用于排序语句的块，以及用于排序表达式的逗号操作符。它既有<code>if</code>语句，也有<code>?:</code>条件操作符。如果在C语言中所有东西都是表达式，你就可以把它们统一起来。</p>
-<p>取消了语句的语言通常还具有<strong>隐式返回</strong>的特点——函数自动返回其函数主体所计算得到的任何值，而不需要显式的<code>return</code>语法。对于小型函数和方法来说，这真的很方便。事实上，许多有语句的语言都添加了类似于 <code>=&gt;</code>的语法，以便能够定义函数体是计算单一表达式结果的函数。</p>
+<p>取消了语句的语言通常还具有<strong>隐式返回</strong>的特点——函数自动返回其函数主体所计算得到的任何值，而不需要显式的<code>return</code>语法。对于小型函数和方法来说，这真的很方便。事实上，许多有语句的语言都添加了类似于 <code>=&gt;</code> 的语法，以便能够定义函数体是计算单一表达式结果的函数。</p>
 <p>但是让所有的函数以这种方式工作可能有点奇怪。即使你只是想让函数产生副作用，如果不小心，函数也可能会泄露返回值。但实际上，这些语言的用户并不觉得这是一个问题。</p>
 <p>对于Lox，我在其中添加语句是出于朴素的原因。为了熟悉起见，我选择了一种类似于C的语法，而试图把现有的C语句语法像表达式一样解释，会很快变得奇怪。</p>
 </div>

@@ -109,7 +109,7 @@ another union like we did for Value since the sizes are all over the place.
 
 No, I don't know how to pronounce "objs" either. Feels like there should be a
 vowel in there somewhere.
-不，我也不知道 "objs "怎么发音。感觉里面应该有个元音。
+不，我也不知道 "objs" 怎么发音。感觉里面应该有个元音。
 
 </aside>
 

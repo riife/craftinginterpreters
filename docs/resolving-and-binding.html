@@ -239,7 +239,7 @@ it to print &ldquo;global&rdquo; twice. The first call to <code>showA()</code> s
 &ldquo;global&rdquo; since we haven&rsquo;t even reached the declaration of the inner <code>a</code> yet. And
 by our rule that a variable expression always resolves to the same variable,
 that implies the second call to <code>showA()</code> should print the same thing.
-好的……清楚了吗？如果你熟悉其它语言中的闭包，你可能期望会输出两次“global”。对 <code>showA()</code>的第一次调用肯定会打印 “global”，因为我们甚至还没有执行到内部变量 <code>a</code> 的声明。而根据我们的规则，一个变量表达式总是解析为同一个变量，这意味着对 <code>showA()</code>的第二次调用也应该打印出同样的内容。</p>
+好的……清楚了吗？如果你熟悉其它语言中的闭包，你可能期望会输出两次“global”。对 <code>showA()</code> 的第一次调用肯定会打印 “global”，因为我们甚至还没有执行到内部变量 <code>a</code> 的声明。而根据我们的规则，一个变量表达式总是解析为同一个变量，这意味着对 <code>showA()</code> 的第二次调用也应该打印出同样的内容。</p>
 <p>Alas, it prints:
 唉，它输出的是：</p>
 <div class="codehilite"><pre>global
@@ -340,7 +340,7 @@ imperative programming, a persistent data structure can never be directly
 modified. Instead, any &ldquo;modification&rdquo; to an existing structure produces a <span
 name="copy">brand</span> new object that contains all of the original data and
 the new modification. The original is left unchanged.
-有一种编程风格，使用所谓的<strong>持久性数据结构</strong>。与你在命令式编程中所熟悉的模糊的数据结构不同，持久化数据结构永远不能被直接修改。相应地，对现有结构的任何 &ldquo;修改 &ldquo;都会产生一个全新的对象，其中包含所有的原始数据和新的修改。而原有的对象则保持不变。</p>
+有一种编程风格，使用所谓的<strong>持久性数据结构</strong>。与你在命令式编程中所熟悉的模糊的数据结构不同，持久化数据结构永远不能被直接修改。相应地，对现有结构的任何 &ldquo;修改&rdquo; 都会产生一个全新的对象，其中包含所有的原始数据和新的修改。而原有的对象则保持不变。</p>
 <aside name="copy">
 <p>This sounds like it might waste tons of memory and time copying the structure
 for each operation. In practice, persistent data structures share most of their

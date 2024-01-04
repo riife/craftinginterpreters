@@ -908,7 +908,7 @@ uses "self" by convention, but you can technically call it whatever you like.
 "I" would have been a great choice, but using "i" for loop variables predates
 OOP and goes all the way back to Fortran. We are victims of the incidental
 choices of our forebears.
-使用 "I "本来是个不错的选择，但使用 "i" 来表示循环变量早在 OOP 之前就有了，而且可以追溯到 Fortran。我们是前人偶然选择的牺牲品。
+使用 "I" 本来是个不错的选择，但使用 "i" 来表示循环变量早在 OOP 之前就有了，而且可以追溯到 Fortran。我们是前人偶然选择的牺牲品。
 
 </aside>
 
@@ -1227,7 +1227,7 @@ We'll do the remaining part -- user-defined initialization -- now. Languages
 have a variety of notations for the chunk of code that sets up a new object for
 a class. C++, Java, and C# use a method whose name matches the class name. Ruby
 and Python call it `init()`. The latter is nice and short, so we'll do that.
-我们现在要做的是剩下的部分——用户自定义的初始化。对于为类建立新对象的这块代码，不同的语言有不同的说法。C++、Java和C#使用一个名字与类名相匹配的方法。Ruby 和 Python 称之为` init()`。后者又好又简短，所以我们采用它。
+我们现在要做的是剩下的部分——用户自定义的初始化。对于为类建立新对象的这块代码，不同的语言有不同的说法。C++、Java和C#使用一个名字与类名相匹配的方法。Ruby 和 Python 称之为 `init()`。后者又好又简短，所以我们采用它。
 
 In LoxClass's implementation of LoxCallable, we add a few more lines.
 在LoxClass的LoxCallable实现中，我们再增加几行。
@@ -1237,7 +1237,7 @@ In LoxClass's implementation of LoxCallable, we add a few more lines.
 When a class is called, after the LoxInstance is created, we look for an "init"
 method. If we find one, we immediately bind and invoke it just like a normal
 method call. The argument list is forwarded along.
-当一个类被调用时，在LoxInstance被创建后，我们会寻找一个 "init "方法。如果我们找到了，我们就会立即绑定并调用它，就像普通的方法调用一样。参数列表直接透传。
+当一个类被调用时，在LoxInstance被创建后，我们会寻找一个 "init" 方法。如果我们找到了，我们就会立即绑定并调用它，就像普通的方法调用一样。参数列表直接透传。
 
 That argument list means we also need to tweak how a class declares its arity.
 这个参数列表意味着我们也需要调整类声明其元数的方式。

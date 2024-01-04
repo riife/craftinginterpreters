@@ -1075,7 +1075,7 @@ uses &ldquo;self&rdquo; by convention, but you can technically call it whatever 
 <p>&ldquo;I&rdquo; would have been a great choice, but using &ldquo;i&rdquo; for loop variables predates
 OOP and goes all the way back to Fortran. We are victims of the incidental
 choices of our forebears.
-使用 &ldquo;I &ldquo;本来是个不错的选择，但使用 &ldquo;i&rdquo; 来表示循环变量早在 OOP 之前就有了，而且可以追溯到 Fortran。我们是前人偶然选择的牺牲品。</p>
+使用 &ldquo;I&rdquo; 本来是个不错的选择，但使用 &ldquo;i&rdquo; 来表示循环变量早在 OOP 之前就有了，而且可以追溯到 Fortran。我们是前人偶然选择的牺牲品。</p>
 </aside>
 <p>For Lox, since we generally hew to Java-ish style, we&rsquo;ll go with &ldquo;this&rdquo;. Inside
 a method body, a <code>this</code> expression evaluates to the instance that the method was
@@ -1434,7 +1434,7 @@ new LoxInstance object.
 have a variety of notations for the chunk of code that sets up a new object for
 a class. C++, Java, and C# use a method whose name matches the class name. Ruby
 and Python call it <code>init()</code>. The latter is nice and short, so we&rsquo;ll do that.
-我们现在要做的是剩下的部分——用户自定义的初始化。对于为类建立新对象的这块代码，不同的语言有不同的说法。C++、Java和C#使用一个名字与类名相匹配的方法。Ruby 和 Python 称之为<code>init()</code>。后者又好又简短，所以我们采用它。</p>
+我们现在要做的是剩下的部分——用户自定义的初始化。对于为类建立新对象的这块代码，不同的语言有不同的说法。C++、Java和C#使用一个名字与类名相匹配的方法。Ruby 和 Python 称之为 <code>init()</code>。后者又好又简短，所以我们采用它。</p>
 <p>In LoxClass&rsquo;s implementation of LoxCallable, we add a few more lines.
 在LoxClass的LoxCallable实现中，我们再增加几行。</p>
 <div class="codehilite"><pre class="insert-before">                     List&lt;Object&gt; arguments) {
@@ -1453,7 +1453,7 @@ in <em>call</em>()</div>
 <p>When a class is called, after the LoxInstance is created, we look for an &ldquo;init&rdquo;
 method. If we find one, we immediately bind and invoke it just like a normal
 method call. The argument list is forwarded along.
-当一个类被调用时，在LoxInstance被创建后，我们会寻找一个 &ldquo;init &ldquo;方法。如果我们找到了，我们就会立即绑定并调用它，就像普通的方法调用一样。参数列表直接透传。</p>
+当一个类被调用时，在LoxInstance被创建后，我们会寻找一个 &ldquo;init&rdquo; 方法。如果我们找到了，我们就会立即绑定并调用它，就像普通的方法调用一样。参数列表直接透传。</p>
 <p>That argument list means we also need to tweak how a class declares its arity.
 这个参数列表意味着我们也需要调整类声明其元数的方式。</p>
 <div class="codehilite"><pre class="insert-before">  public int arity() {

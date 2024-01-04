@@ -666,7 +666,7 @@ old-school program that takes a file containing human-readable mnemonic names
 for CPU instructions like "ADD" and "MULT" and translates them to their binary
 machine code equivalent. A *dis*assembler goes in the other direction -- given a
 blob of machine code, it spits out a textual listing of the instructions.
-为了解决这个问题，我们要创建一个**反汇编程序**。**汇编程序**是一个老式程序，它接收一个文件，该文件中包含CPU指令（如 "ADD "和 "MULT"）的可读助记符名称，并将它们翻译成等价的二进制机器代码。反汇编程序则相反——给定一串机器码，它会返回指令的文本列表。
+为了解决这个问题，我们要创建一个**反汇编程序**。**汇编程序**是一个老式程序，它接收一个文件，该文件中包含CPU指令（如 "ADD" 和 "MULT"）的可读助记符名称，并将它们翻译成等价的二进制机器代码。反汇编程序则相反——给定一串机器码，它会返回指令的文本列表。
 
 We'll implement something <span name="printer">similar</span>. Given a chunk, it
 will print out all of the instructions in it. A Lox *user* won't use this, but

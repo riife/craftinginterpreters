@@ -108,7 +108,7 @@ name="lexing">scanning</span>. The scanner takes in raw source code as a series
 of characters and groups it into a series of chunks we call <strong>tokens</strong>. These
 are the meaningful &ldquo;words&rdquo; and &ldquo;punctuation&rdquo; that make up the language&rsquo;s
 grammar.
-任何编译器或解释器的第一步都是扫描。扫描器以一系列字符的形式接收原始源代码，并将其分组成一系列的块，我们称之为<strong>标识</strong>（词法单元）。这些是有意义的 &ldquo;单词 &ldquo;和 &ldquo;标点&ldquo;，它们构成了语言的语法。</p>
+任何编译器或解释器的第一步都是扫描。扫描器以一系列字符的形式接收原始源代码，并将其分组成一系列的块，我们称之为<strong>标识</strong>（词法单元）。这些是有意义的 &ldquo;单词&rdquo; 和 &ldquo;标点&ldquo;，它们构成了语言的语法。</p>
 <aside name="lexing">
 <p>This task has been variously called &ldquo;scanning&rdquo; and &ldquo;lexing&rdquo; (short for &ldquo;lexical
 analysis&rdquo;) over the years. Way back when computers were as big as Winnebagos but
@@ -116,7 +116,7 @@ had less memory than your watch, some people used &ldquo;scanner&rdquo; only to 
 piece of code that dealt with reading raw source code characters from disk and
 buffering them in memory. Then &ldquo;lexing&rdquo; was the subsequent phase that did useful
 stuff with the characters.
-一直以来，这项工作被称为 &ldquo;扫描(scanning) &ldquo;和 &ldquo;词法分析(lexing)&ldquo;（ &ldquo;词法分析(lexical analysis)&ldquo;的简称）。早在计算机还像Winnebagos一样大，但内存比你的手表还小的时候，有些人就用 &ldquo;扫描 &ldquo;来指代从磁盘上读取原始源代码字符并在内存中缓冲的那段代码。然后，&ldquo;lexing &ldquo;是后续阶段，对字符做有用的操作。</p>
+一直以来，这项工作被称为 &ldquo;扫描(scanning)&rdquo; 和 &ldquo;词法分析(lexing)&ldquo;（&ldquo;lexical analysis&rdquo; 的简称）。早在计算机还像Winnebagos一样大，但内存比你的手表还小的时候，有些人就用 &ldquo;扫描&rdquo; 来指代从磁盘上读取原始源代码字符并在内存中缓冲的那段代码。然后，&ldquo;lexing&rdquo; 是后续阶段，对字符做有用的操作。</p>
 <p>These days, reading a source file into memory is trivial, so it&rsquo;s rarely a
 distinct phase in the compiler. Because of that, the two terms are basically
 interchangeable.
@@ -218,7 +218,7 @@ input from the user on the command line and returns the result. To kill an
 interactive command-line app, you usually type Control-D. Doing so signals an
 &ldquo;end-of-file&rdquo; condition to the program. When that happens <code>readLine()</code> returns
 <code>null</code>, so we check for that to exit the loop.
-<code>readLine()</code>函数，顾名思义，读取用户在命令行上的一行输入，并返回结果。要终止交互式命令行应用程序，通常需要输入Control-D。这样做会向程序发出 &ldquo;文件结束 &ldquo;的信号。当这种情况发生时，readLine()就会返回null，所以我们检查一下是否存在null以退出循环。</p>
+<code>readLine()</code>函数，顾名思义，读取用户在命令行上的一行输入，并返回结果。要终止交互式命令行应用程序，通常需要输入Control-D。这样做会向程序发出 &ldquo;文件结束&rdquo; 的信号。当这种情况发生时，readLine()就会返回null，所以我们检查一下是否存在null以退出循环。</p>
 <p>Both the prompt and the file runner are thin wrappers around this core function:
 交互式提示符和文件运行工具都是对这个核心函数的简单包装：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Lox.java</em><br>
@@ -359,7 +359,7 @@ because it felt over-engineered for the minimal interpreter in this book.
 <p>With some rudimentary error handling in place, our application shell is ready.
 Once we have a Scanner class with a <code>scanTokens()</code> method, we can start running
 it. Before we get to that, let&rsquo;s get more precise about what tokens are.
-有了一些基本的错误处理，我们的应用程序外壳已经准备好了。一旦我们有了一个带有 <code>scanTokens()</code>方法的 Scanner 类，我们就可以开始运行它了。在我们开始之前，让我们更精确地了解什么是标记（tokens）。</p>
+有了一些基本的错误处理，我们的应用程序外壳已经准备好了。一旦我们有了一个带有 <code>scanTokens()</code> 方法的 Scanner 类，我们就可以开始运行它了。在我们开始之前，让我们更精确地了解什么是标记（tokens）。</p>
 <h2><a href="#词素和标记（词法单元）" id="词素和标记（词法单元）"><small>4&#8202;.&#8202;2</small>词素和标记（词法单元）</a></h2>
 <p>下面是一行lox代码：</p>
 <p>Here&rsquo;s a line of Lox code:</p>
@@ -498,7 +498,7 @@ which kind of lexeme it &ldquo;matches&rdquo; may sound familiar. If you know re
 expressions, you might consider defining a regex for each kind of lexeme and
 using those to match characters. For example, Lox has the same rules as C for
 identifiers (variable names and the like). This regex matches one:
-在循环中，我们会查看一些字符，以确定它 &ldquo;匹配 &ldquo;的是哪种词素，这部分内容可能听起来很熟悉，但如果你知道正则表达式，你可以考虑为每一种词素定义一个regex，并使用这些regex来匹配字符。例如，Lox对标识符（变量名等）的规则与C语言相同。下面的regex可以匹配一个标识符：</p>
+在循环中，我们会查看一些字符，以确定它 &ldquo;匹配&rdquo; 的是哪种词素，这部分内容可能听起来很熟悉，但如果你知道正则表达式，你可以考虑为每一种词素定义一个regex，并使用这些regex来匹配字符。例如，Lox对标识符（变量名等）的规则与C语言相同。下面的regex可以匹配一个标识符：</p>
 <div class="codehilite"><pre>[a-zA-Z_][a-zA-Z_0-9]*
 </pre></div>
 <p>If you did think of regular expressions, your intuition is a deep one. The rules
@@ -507,7 +507,7 @@ called its <span name="theory"><strong>lexical grammar</strong></span>. In Lox, 
 programming languages, the rules of that grammar are simple enough for the
 language to be classified a <strong><a href="https://en.wikipedia.org/wiki/Regular_language">regular language</a></strong>. That&rsquo;s the same &ldquo;regular&rdquo;
 as in regular expressions.
-如果你确实想到了正则表达式，那么你的直觉还是很深刻的。决定一门语言如何将字符分组为词素的规则被称为它的<strong>词法语法</strong>。在Lox中，和大多数编程语言一样，该语法的规则非常简单，可以将其归为 <strong><a href="https://en.wikipedia.org/wiki/Regular_language">正则语言</a></strong>。这里的正则和正则表达式中的 &ldquo;正则 &ldquo;是一样的含义。</p>
+如果你确实想到了正则表达式，那么你的直觉还是很深刻的。决定一门语言如何将字符分组为词素的规则被称为它的<strong>词法语法</strong>。在Lox中，和大多数编程语言一样，该语法的规则非常简单，可以将其归为 <strong><a href="https://en.wikipedia.org/wiki/Regular_language">正则语言</a></strong>。这里的正则和正则表达式中的 &ldquo;正则&rdquo; 是一样的含义。</p>
 <aside name="theory">
 <p>It pains me to gloss over the theory so much, especially when it&rsquo;s as
 interesting as I think the <a href="https://en.wikipedia.org/wiki/Chomsky_hierarchy">Chomsky hierarchy</a> and <a href="https://en.wikipedia.org/wiki/Finite-state_machine">finite-state machines</a>
@@ -584,7 +584,7 @@ add after <em>Scanner</em>()</div>
 <p>The scanner works its way through the source code, adding tokens until it runs
 out of characters. Then it appends one final &ldquo;end of file&rdquo; token. That isn&rsquo;t
 strictly needed, but it makes our parser a little cleaner.
-扫描器通过自己的方式遍历源代码，添加标记，直到遍历完所有字符。然后，它在最后附加一个的 &ldquo;end of file &ldquo;标记。严格意义上来说，这并不是必须的，但它可以使我们的解析器更加干净。</p>
+扫描器通过自己的方式遍历源代码，添加标记，直到遍历完所有字符。然后，它在最后附加一个的 &ldquo;end of file&rdquo; 标记。严格意义上来说，这并不是必须的，但它可以使我们的解析器更加干净。</p>
 <p>This loop depends on a couple of fields to keep track of where the scanner is in
 the source code.
 这个循环依赖于几个字段来跟踪扫描器在源代码中的位置。</p>
@@ -1369,7 +1369,7 @@ don&rsquo;t do what JavaScript did.</p>
 </li>
 <li>
 <p>Python将所有换行符都视为有效，除非在行末使用明确的反斜杠将其延续到下一行。但是，括号(<code>()</code>、<code>[]</code>或<code>{}</code>)内的任何换行都将被忽略。惯用的代码风格更倾向于后者。</p>
-<p>这条规则对 Python 很有效，因为它是一种高度面向语句的语言。特别是，Python 的语法确保了语句永远不会出现在表达式内。C语言也是如此，但许多其他有 &ldquo;lambda &ldquo;或函数字面语法的语言则不然。</p>
+<p>这条规则对 Python 很有效，因为它是一种高度面向语句的语言。特别是，Python 的语法确保了语句永远不会出现在表达式内。C语言也是如此，但许多其他有 &ldquo;lambda&rdquo; 或函数字面语法的语言则不然。</p>
 <p>举一个JavaScript中的例子：</p>
 <div class="codehilite"><pre><span class="i">console</span>.<span class="i">log</span>(<span class="k">function</span>() {
 <span class="i">statement</span>();

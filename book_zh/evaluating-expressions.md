@@ -57,7 +57,7 @@ represent that?
 <aside name="value">
 
 Here, I'm using "value" and "object" pretty much interchangeably.
-在这里，我基本可以互换地使用 "值 "和 "对象"。
+在这里，我基本可以互换地使用 "值" 和 "对象"。
 
 Later in the C interpreter we'll make a slight distinction between them, but
 that's mostly to have unique terms for two different corners of the
@@ -778,7 +778,7 @@ interpreter doesn't do very much, but it's alive!
     other is converted to a string and the results are then concatenated. For
     example, `"scone" + 4` would yield `scone4`. Extend the code in
     `visitBinaryExpr()` to support that.
-2、许多语言对`+`的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，`"scone "+4`的结果应该是`scone4`。扩展`visitBinaryExpr()`中的代码以支持该特性。
+2、许多语言对`+`的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，`"scone" + 4`的结果应该是`scone4`。扩展`visitBinaryExpr()`中的代码以支持该特性。
 
 3.  What happens right now if you divide a number by zero? What do you think
     should happen? Justify your choice. How do other languages you know handle

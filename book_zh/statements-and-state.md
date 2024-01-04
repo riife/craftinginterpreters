@@ -7,7 +7,7 @@ more like punching buttons on a calculator. "Programming" to me means building
 up a system out of smaller pieces. We can't do that yet because we have no way
 to bind a name to some data or function. We can't compose software without a way
 to refer to the pieces.
-到目前为止，我们提供解释器的感觉不太像是在使用一种真正的语言进行编程，更像是在计算器上按按钮。对我来说，"编程 "意味着用较小的部分构建出一个系统。我们目前还不支持这样做，因为我们还无法将一个名称绑定到某个数据或函数。我们不能在无法引用小片段的情况下编写软件。
+到目前为止，我们提供解释器的感觉不太像是在使用一种真正的语言进行编程，更像是在计算器上按按钮。对我来说，"编程" 意味着用较小的部分构建出一个系统。我们目前还不支持这样做，因为我们还无法将一个名称绑定到某个数据或函数。我们不能在无法引用小片段的情况下编写软件。
 
 To support bindings, our interpreter needs internal state. When you define a
 variable at the beginning of the program and use it at the end, the interpreter
@@ -498,7 +498,7 @@ Then we add an expression node for accessing a variable.
 <span name="var-expr-ast">It's</span> simply a wrapper around the token for the
 variable name. That's it. As always, don't forget to run the AST generator
 script so that you get updated "Expr.java" and "Stmt.java" files.
-这只是对变量名称标记的简单包装，就是这样。像往常一样，别忘了运行AST生成器脚本，这样你就能得到更新的 "Expr.java "和 "Stmt.java "文件。
+这只是对变量名称标记的简单包装，就是这样。像往常一样，别忘了运行AST生成器脚本，这样你就能得到更新的 "Expr.java" 和 "Stmt.java" 文件。
 
 <aside name="var-expr-ast">
 
@@ -1185,7 +1185,7 @@ to until you execute the code. Lox doesn't have dynamically scoped *variables*,
 but methods and fields on objects are dynamically scoped.
 这与**动态作用域**形成了对比，在动态作用域中，直到执行代码时才知道名称指向的是什么。Lox没有动态作用域*变量*，但是对象上的方法和字段是动态作用域的。
 When `playIt()` calls `thing.play()`, we don’t know if we’re about to hear “Careless Whisper” or “Fore!” It depends on whether you pass a Saxophone or a GolfClub to the function, and we don’t know that until runtime.
-当`playIt()`调用`thing.play()`时，我们不知道我们将要听到的是 "Careless Whisper "还是 "Fore!" 。这取决于你向函数传递的是Saxophone还是GolfClub，而我们在运行时才知道这一点。
+当`playIt()`调用`thing.play()`时，我们不知道我们将要听到的是 "Careless Whisper" 还是 "Fore!" 。这取决于你向函数传递的是Saxophone还是GolfClub，而我们在运行时才知道这一点。
 
 ```lox
 class Saxophone {
@@ -1684,7 +1684,7 @@ Lox使用不同的语法来声明新变量和为已有变量赋值。有些语�
 
 随着时间的推移，我所知道的具有隐式变量声明的语言最后都增加了更多的功能和复杂性来处理这些问题。
 
-* 现在，普遍认为JavaScript中全局变量的隐式声明是一个错误。“Strict mode ”禁用了它，并将其成为一个编译错误。
+* 现在，普遍认为JavaScript中全局变量的隐式声明是一个错误。“Strict mode” 禁用了它，并将其成为一个编译错误。
 * Python添加了一个`global`语句，让用户可以在函数内部显式地赋值给一个全局变量。后来，随着函数式编程和嵌套函数越来越流行，他们添加了一个类似的`nonlocal`语句来赋值给外围函数中的变量。
 * Ruby扩展了它的块语法，允许在块中显式地声明某些变量，即使外部作用域中存在同名的变量。
 
