@@ -108,7 +108,7 @@ arguments      → expression ( "," expression )* ;
 The lexical grammar is used by the scanner to group characters into tokens.
 Where the syntax is [context free][], the lexical grammar is [regular][] -- note
 that there are no recursive rules.
-词法被扫描器用来将字符分组为词法标识（token）。语法是[上下文无关](https://en.wikipedia.org/wiki/Context-free_grammar)的，词法是[正则](https://en.wikipedia.org/wiki/Regular_grammar)的——注意这里没有递归规则。
+词法被扫描器用来将字符分组为词法标识（token）。语法是[上下文无关](https://en.wikipedia.org/wiki/Context-free_grammar)的，词法是[正则](https://en.wikipedia.org/wiki/Regular_grammar)的 -- 注意这里没有递归规则。
 
 [context free]: https://en.wikipedia.org/wiki/Context-free_grammar
 [regular]: https://en.wikipedia.org/wiki/Regular_grammar

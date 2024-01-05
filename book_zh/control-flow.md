@@ -105,7 +105,7 @@ Turing machines have better name recognition -- there's no Hollywood film about
 Alonzo Church yet -- but the two formalisms are [equivalent in power][thesis].
 In fact, any programming language with some minimal level of expressiveness is
 powerful enough to compute *any* computable function.
-图灵机的知名度更高——目前还没有关于阿隆佐·邱奇的好莱坞电影，但这两种形式[在能力上是等价的][thesis]。事实上，任何具有最低表达能力的编程语言都足以计算 *任何* 可计算函数。
+图灵机的知名度更高 -- 目前还没有关于阿隆佐·邱奇的好莱坞电影，但这两种形式[在能力上是等价的][thesis]。事实上，任何具有最低表达能力的编程语言都足以计算 *任何* 可计算函数。
 
 [thesis]: https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis
 
@@ -294,7 +294,7 @@ Instead, most languages and parsers avoid the problem in an ad hoc way. No
 matter what hack they use to get themselves out of the trouble, they always
 choose the same interpretation -- the `else` is bound to the nearest `if` that
 precedes it.
-相反，大多数语言和解析器都以一种特殊的方式避免了这个问题。不管他们用什么方法来解决这个问题，他们总是选择同样的解释——`else`与前面最近的`if`绑定在一起。
+相反，大多数语言和解析器都以一种特殊的方式避免了这个问题。不管他们用什么方法来解决这个问题，他们总是选择同样的解释 -- `else`与前面最近的`if`绑定在一起。
 
 Our parser conveniently does that already. Since `ifStatement()` eagerly looks
 for an `else` before returning, the innermost call to a nested series will claim
@@ -324,7 +324,7 @@ Since we don't have the conditional operator, you might think we're done with
 branching, but no. Even without the ternary operator, there are two other
 operators that are technically control flow constructs -- the logical operators
 `and` and `or`.
-由于我们没有条件运算符，你可能认为我们已经完成分支开发了，但其实还没有。虽然没有三元运算符，但是还有两个其它操作符在技术上是控制流结构——逻辑运算符`and`和`or`。
+由于我们没有条件运算符，你可能认为我们已经完成分支开发了，但其实还没有。虽然没有三元运算符，但是还有两个其它操作符在技术上是控制流结构 -- 逻辑运算符`and`和`or`。
 
 These aren't like other binary operators because they **short-circuit**. If,
 after evaluating the left operand, we know what the result of the logical
@@ -436,7 +436,7 @@ operator merely guarantees it will return a value with appropriate truthiness.
 
 Fortunately, we have values with proper truthiness right at hand -- the results
 of the operands themselves. So we use those. For example:
-幸运的是，我们手边就有具有适当真实性的值——即操作数本身的结果，所以我们可以直接使用它们。如：
+幸运的是，我们手边就有具有适当真实性的值 -- 即操作数本身的结果，所以我们可以直接使用它们。如：
 
 ```lox
 print "hi" or 2; // "hi".
@@ -566,7 +566,7 @@ Inside the parentheses, you have three clauses separated by semicolons:
     anything else. It's usually an expression, but for convenience, we also
     allow a variable declaration. In that case, the variable is scoped to the
     rest of the `for` loop -- the other two clauses and the body.
-    第一个子句是*初始化式*。它只会在任何其它操作之前执行一次。它通常是一个表达式，但是为了便利，我们也允许一个变量声明。在这种情况下，变量的作用域就是`for`循环的其它部分——其余两个子式和循环体。
+    第一个子句是*初始化式*。它只会在任何其它操作之前执行一次。它通常是一个表达式，但是为了便利，我们也允许一个变量声明。在这种情况下，变量的作用域就是`for`循环的其它部分 -- 其余两个子式和循环体。
 
 2.  Next is the *condition*. As in a `while` loop, this expression controls when
     to exit the loop. It's evaluated once at the beginning of each iteration,
@@ -859,7 +859,7 @@ language -- relies on your own sense of taste.
 
 同时，大多数成功的语言都有相当复杂的语法，至少在它们被广泛使用的时候是这样。程序员在他们所选择的语言上花费了大量的时间，一些随处可见的细节确实可以提高他们工作时的舒适度和效率。
 
-找到正确的平衡——为你的语言选择适当的甜度——取决于你自己的品味。
+找到正确的平衡 -- 为你的语言选择适当的甜度 -- 取决于你自己的品味。
 
 </div>
 

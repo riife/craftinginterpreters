@@ -12,14 +12,14 @@ dead animals. We know what instructions are in theory, but we've never seen them
 in action, so it's hard to really understand what they *do*. It would be hard to
 write a compiler that outputs bytecode when we don't have a good understanding
 of how that bytecode behaves.
-我们已经花了很多时间讨论如何将程序表示为字节码指令序列，但是这感觉像是只用填充的死动物来学习生物学。我们知道理论上的指令是什么，但我们在实际操作中从未见过，因此很难真正理解指令的*作用*。如果我们不能很好地理解字节码的行为方式，就很难编写输出字节码的编译器。
+我们已经花了很多时间讨论如何将程序表示为字节码指令序列，但是这感觉像是只用填充的死动物来学习生物学。我们知道理论上的指令是什么，但我们在实际操作中从未见过，因此很难真正理解指令的 *作用* 。如果我们不能很好地理解字节码的行为方式，就很难编写输出字节码的编译器。
 
 So, before we go and build the front end of our new interpreter, we will begin
 with the back end -- the virtual machine that executes instructions. It breathes
 life into the bytecode. Watching the instructions prance around gives us a
 clearer picture of how a compiler might translate the user's source code into a
 series of them.
-因此，在构建新解释器的前端之前，我们先从后端开始——执行指令的虚拟机。它为字节码注入了生命。通过观察这些指令的运行，我们可以更清楚地了解编译器如何将用户的源代码转换成一系列的指令。
+因此，在构建新解释器的前端之前，我们先从后端开始 -- 执行指令的虚拟机。它为字节码注入了生命。通过观察这些指令的运行，我们可以更清楚地了解编译器如何将用户的源代码转换成一系列的指令。
 
 ## 指令执行机器
 
@@ -135,7 +135,7 @@ As the VM works its way through the bytecode, it keeps track of where it is --
 the location of the instruction currently being executed. We don't use a <span
 name="local">local</span> variable inside `run()` for this because eventually
 other functions will need to access it. Instead, we store it as a field in VM.
-当虚拟机运行字节码时，它会记录它在哪里——即当前执行的指令所在的位置。我们没有在`run()`方法中使用局部变量来进行记录，因为最终其它函数也会访问该值。相对地，我们将其作为一个字段存储在VM中。
+当虚拟机运行字节码时，它会记录它在哪里 -- 即当前执行的指令所在的位置。我们没有在`run()`方法中使用局部变量来进行记录，因为最终其它函数也会访问该值。相对地，我们将其作为一个字段存储在VM中。
 
 <aside name="local">
 
@@ -174,7 +174,7 @@ We initialize `ip` by pointing it at the first byte of code in the chunk. We
 haven't executed that instruction yet, so `ip` points to the instruction *about
 to be executed*. This will be true during the entire time the VM is running: the
 IP always points to the next instruction, not the one currently being handled.
-我们通过将`ip`指向块中的第一个字节码来对其初始化。我们还没有执行该指令，所以`ip`指向*即将执行*的指令。在虚拟机执行的整个过程中都是如此：IP总是指向下一条指令，而不是当前正在处理的指令。
+我们通过将`ip`指向块中的第一个字节码来对其初始化。我们还没有执行该指令，所以`ip`指向 *即将执行* 的指令。在虚拟机执行的整个过程中都是如此：IP总是指向下一条指令，而不是当前正在处理的指令。
 
 The real fun happens in `run`().
 真正有趣的部分在`run()`中。
@@ -297,7 +297,7 @@ To help ourselves out, now is a good time to add some diagnostic logging to the
 VM like we did with chunks themselves. In fact, we'll even reuse the same code.
 We don't want this logging enabled all the time -- it's just for us VM hackers,
 not Lox users -- so first we create a flag to hide it behind.
-为了帮助我们自己解脱这种困境，现在是给虚拟机添加一些诊断性日志的好时机，就像我们对代码块本身所做的那样。事实上，我们甚至会重用相同的代码。我们不希望一直启用这个日志——它只针对我们这些虚拟机开发者，而不是Lox用户——所以我们首先创建一个标志来隐藏它。
+为了帮助我们自己解脱这种困境，现在是给虚拟机添加一些诊断性日志的好时机，就像我们对代码块本身所做的那样。事实上，我们甚至会重用相同的代码。我们不希望一直启用这个日志 -- 它只针对我们这些虚拟机开发者，而不是Lox用户 -- 所以我们首先创建一个标志来隐藏它。
 
 ^code define-debug-trace (1 before, 2 after)
 
@@ -326,7 +326,7 @@ major components of our VM. With this, we can imperatively execute instructions.
 Its simplicity is a virtue -- the less work it does, the faster it can do it.
 Contrast this with all of the complexity and overhead we had in jlox with the
 Visitor pattern for walking the AST.
-我知道这段代码到目前为止还不是很令人印象深刻——它实际上只是一个封装在`for`循环中的switch语句，但信不信由你，这就是我们虚拟机的两个主要组成部分之一。有了它，我们就可以命令式地执行指令。它的简单是一种优点——它做的工作越少，就能做得越快。作为对照，可以回想一下我们在jlox中使用Visitor模式遍历AST的复杂度和开销。
+我知道这段代码到目前为止还不是很令人印象深刻 -- 它实际上只是一个封装在`for`循环中的switch语句，但信不信由你，这就是我们虚拟机的两个主要组成部分之一。有了它，我们就可以命令式地执行指令。它的简单是一种优点 -- 它做的工作越少，就能做得越快。作为对照，可以回想一下我们在jlox中使用Visitor模式遍历AST的复杂度和开销。
 
 ## 一个值栈操作器
 
@@ -391,7 +391,7 @@ I think nailing down stuff like this is generally better for users. When
 expressions are not evaluated in the order users intuit -- possibly in different
 orders across different implementations! -- it can be a burning hellscape of
 pain to figure out what's going on.
-我认为指定这样的内容通常对用户更好。当表达式没有按照用户的直觉顺序进行求值时——可能在不同的实现中会有不同的顺序——要想弄清楚发生了什么，可能是非常痛苦的。
+我认为指定这样的内容通常对用户更好。当表达式没有按照用户的直觉顺序进行求值时 -- 可能在不同的实现中会有不同的顺序 -- 要想弄清楚发生了什么，可能是非常痛苦的。
 
 </aside>
 
@@ -403,7 +403,7 @@ statement, with numbers marking the order that the nodes are evaluated." />
 
 Given left-to-right evaluation, and the way the expressions are nested, any
 correct Lox implementation *must* print these numbers in this order:
-确定了从左到右的求值顺序，以及表达式嵌套方式，任何一个正确的Lox实现都*必须*按照下面的顺序打印这些数字：
+确定了从左到右的求值顺序，以及表达式嵌套方式，任何一个正确的Lox实现都 *必须* 按照下面的顺序打印这些数字：
 
 ```text
 1  // from echo(1)
@@ -433,7 +433,7 @@ using C local variables, so how and where should we store these temporary
 values? You can probably <span name="guess">guess</span> already, but I want to
 really drill into this because it's an aspect of programming that we take for
 granted, but we rarely learn *why* computers are architected this way.
-在clox中，我们的`run()`函数不是递归的——嵌套的表达式被展开成一系列线性指令。我们没有办法使用C语言的局部变量，那我们应该如何存储这些临时值呢？你可能已经猜到了，但我想真正深入研究这个问题，因为这是编程中我们习以为常的一个方面，但我们很少了解为什么计算机是这样架构的。
+在clox中，我们的`run()`函数不是递归的 -- 嵌套的表达式被展开成一系列线性指令。我们没有办法使用C语言的局部变量，那我们应该如何存储这些临时值呢？你可能已经猜到了，但我想真正深入研究这个问题，因为这是编程中我们习以为常的一个方面，但我们很少了解为什么计算机是这样架构的。
 
 <aside name="guess">
 
@@ -455,7 +455,7 @@ Each bar represents a number. It starts when the value is first produced --
 either a constant or the result of an addition. The length of the bar tracks
 when a previously produced value needs to be kept around, and it ends when that
 value finally gets consumed by an operation.
-左边是代码的执行步骤。右边是我们要追踪的值。每条杠代表一个数字。起点是数值产生时——要么是一个常数，要么是一个加法计算结果；杠的长度表示之前产生的值需要保留的时间；当该值最终被某个操作消费后，杠就到终点了。
+左边是代码的执行步骤。右边是我们要追踪的值。每条杠代表一个数字。起点是数值产生时 -- 要么是一个常数，要么是一个加法计算结果；杠的长度表示之前产生的值需要保留的时间；当该值最终被某个操作消费后，杠就到终点了。
 
 As you step through, you see values appear and then later get eaten. The
 longest-lived ones are the values produced from the left-hand side of an
@@ -509,7 +509,7 @@ the sense of wonder evaporates. There are a <span name="wonder">couple</span> of
 ideas in computer science where even after I pulled them apart and learned all
 the ins and outs, some of the initial sparkle remained. Stack-based VMs are one
 of those.
-也许这看起来不像是什么新发现，但我喜欢基于栈的虚拟机。当你第一次看到一个魔术时，你会觉得它真的很神奇。但是当你了解到它是如何工作的——通常是一些机械式花招或误导——惊奇的感觉就消失了。在计算机科学中，有一些理念，即使我把它们拆开并了解了所有的来龙去脉之后，最初的闪光点仍然存在。基于堆栈的虚拟机就是其中之一。
+也许这看起来不像是什么新发现，但我喜欢基于栈的虚拟机。当你第一次看到一个魔术时，你会觉得它真的很神奇。但是当你了解到它是如何工作的 -- 通常是一些机械式花招或误导 -- 惊奇的感觉就消失了。在计算机科学中，有一些理念，即使我把它们拆开并了解了所有的来龙去脉之后，最初的闪光点仍然存在。基于堆栈的虚拟机就是其中之一。
 
 <aside name="wonder">
 
@@ -554,7 +554,7 @@ of the stack -- the first value pushed and the last to be popped -- is at
 element zero in the array, and later pushed values follow it. If we push the
 letters of "crepe" -- my favorite stackable breakfast item -- onto the stack, in
 order, the resulting C array looks like this:
-我们在一个原生的C数组上自己实现了栈语义。栈的底部——第一个推入的值和最后一个被弹出的值——位于数组中的零号位置，后面推入的值跟在它后面。如果我们把“crepe”几个字母按顺序推入栈中，得到的C数组看起来像这样：
+我们在一个原生的C数组上自己实现了栈语义。栈的底部 -- 第一个推入的值和最后一个被弹出的值 -- 位于数组中的零号位置，后面推入的值跟在它后面。如果我们把“crepe”几个字母按顺序推入栈中，得到的C数组看起来像这样：
 
 <img src="image/a-virtual-machine/array.png" alt="An array containing the
 letters in 'crepe' in order starting at element 0." />
@@ -608,7 +608,7 @@ Giving our VM a fixed stack size means it's possible for some sequence of
 instructions to push too many values and run out of stack space -- the classic
 "stack overflow". We could grow the stack dynamically as needed, but for now
 we'll keep it simple. Since VM uses Value, we need to include its declaration.
-给我们的虚拟机一个固定的栈大小，意味着某些指令系列可能会压入太多的值并耗尽栈空间——典型的“堆栈溢出”。我们可以根据需要动态地增加栈，但是现在我们还是保持简单。因为VM中会使用Value，我们需要包含它的声明。
+给我们的虚拟机一个固定的栈大小，意味着某些指令系列可能会压入太多的值并耗尽栈空间 -- 典型的“堆栈溢出”。我们可以根据需要动态地增加栈，但是现在我们还是保持简单。因为VM中会使用Value，我们需要包含它的声明。
 
 ^code vm-include-value (1 before, 2 after)
 
@@ -627,7 +627,7 @@ need to allocate it. We don't even need to clear the unused cells in the
 array -- we simply won't access them until after values have been stored in
 them. The only initialization we need is to set `stackTop` to point to the
 beginning of the array to indicate that the stack is empty.
-因为栈数组是直接在VM结构体中内联声明的，所以我们不需要为其分配空间。我们甚至不需要清除数组中不使用的单元——我们只有在值存入之后才会访问它们。我们需要的唯一的初始化操作就是将`stackTop`指向数组的起始位置，以表明栈是空的。
+因为栈数组是直接在VM结构体中内联声明的，所以我们不需要为其分配空间。我们甚至不需要清除数组中不使用的单元 -- 我们只有在值存入之后才会访问它们。我们需要的唯一的初始化操作就是将`stackTop`指向数组的起始位置，以表明栈是空的。
 
 The stack protocol supports two operations:
 栈协议支持两种操作：
@@ -657,7 +657,7 @@ First, we move the stack pointer *back* to get to the most recent used slot in
 the array. Then we look up the value at that index and return it. We don't need
 to explicitly "remove" it from the array -- moving `stackTop` down is enough to
 mark that slot as no longer in use.
-首先，我们将栈指针回退到数组中最近使用的槽。然后，我们查找该索引处的值并将其返回。我们不需要显式地将其从数组中“移除”——将`stackTop`下移就足以将该槽标记为不再使用了。
+首先，我们将栈指针回退到数组中最近使用的槽。然后，我们查找该索引处的值并将其返回。我们不需要显式地将其从数组中“移除” -- 将`stackTop`下移就足以将该槽标记为不再使用了。
 
 ### 栈跟踪
 
@@ -884,7 +884,7 @@ Last is disassembler support.
 The arithmetic instruction formats are simple, like `OP_RETURN`. Even though the
 arithmetic *operators* take operands -- which are found on the stack -- the
 arithmetic *bytecode instructions* do not.
-算术指令的格式很简单，类似于`OP_RETURN`。即使算术运算符需要操作数（从堆栈中获取），算术的*字节码指令*也不需要。
+算术指令的格式很简单，类似于`OP_RETURN`。即使算术运算符需要操作数（从堆栈中获取），算术的 *字节码指令* 也不需要。
 
 Let's put some of our new instructions through their paces by evaluating a
 larger expression:
@@ -931,7 +931,7 @@ generate it for us.
 
 1.  What bytecode instruction sequences would you generate for the following
     expressions:
-    你会为以下表达式生成什么样的*字节码*指令序列：
+    你会为以下表达式生成什么样的 *字节码* 指令序列：
 
     ```lox
     1 * 2 + 3
@@ -1002,7 +1002,7 @@ them][register allocation].
 
 Register-based bytecode is a little closer to the [*register windows*][window]
 supported by SPARC chips.
-基于寄存器的字节码更接近 SPARC 芯片支持的[*寄存器窗口*][window]。
+基于寄存器的字节码更接近 SPARC 芯片支持的 [*寄存器窗口*][window]。
 
 [window]: https://en.wikipedia.org/wiki/Register_window
 
@@ -1089,11 +1089,11 @@ share with the rest of your language hacker peers.
 
 <div class="design-note">
 
-在本书的其余部分，我们将围绕基于堆栈的字节码指令集精心实现一个解释器。此外还有另一种字节码架构——基于寄存器。尽管名称如此，但这些字节码指令并不像 <span name="x64_zh">x64</span> 这样的真实芯片中的寄存器那样难以操作。对于真正的硬件寄存器，整个程序通常只用少数几个，所以你[要花很多精力来有效地使用它们，并把数据存入或取出](https://en.wikipedia.org/wiki/Register_allocation)。（基于寄存器的字节码更接近于SPARC芯片支持的寄存器窗口）
+在本书的其余部分，我们将围绕基于堆栈的字节码指令集精心实现一个解释器。此外还有另一种字节码架构 -- 基于寄存器。尽管名称如此，但这些字节码指令并不像 <span name="x64_zh">x64</span> 这样的真实芯片中的寄存器那样难以操作。对于真正的硬件寄存器，整个程序通常只用少数几个，所以你[要花很多精力来有效地使用它们，并把数据存入或取出](https://en.wikipedia.org/wiki/Register_allocation)。（基于寄存器的字节码更接近于SPARC芯片支持的寄存器窗口）
 
 <aside name="x64_zh">
 
-基于寄存器的字节码更接近 SPARC 芯片支持的[*寄存器窗口*][window]。
+基于寄存器的字节码更接近 SPARC 芯片支持的 [*寄存器窗口*][window]。
 
 </aside>
 
@@ -1116,7 +1116,7 @@ add       // 弹出两个值，相加，将结果压入栈
 store <c> // 弹出值，并存入局部变量c
 ```
 
-（如果你还没有完全理解加载load和存储store指令，也不用担心。我们会在实现变量时详细地讨论它们）我们有四条独立的指令，这意味着会有四次字节码解释循环，四条指令需要解码和调度。这至少包含7个字节的代码——四个字节是操作码，另外三个是操作数，用于标识要加载和存储哪些局部变量。三次入栈，三次出栈，工作量很大！
+（如果你还没有完全理解加载load和存储store指令，也不用担心。我们会在实现变量时详细地讨论它们）我们有四条独立的指令，这意味着会有四次字节码解释循环，四条指令需要解码和调度。这至少包含7个字节的代码 -- 四个字节是操作码，另外三个是操作数，用于标识要加载和存储哪些局部变量。三次入栈，三次出栈，工作量很大！
 
 在基于寄存器的指令集中，指令可以直接对局部变量进行读取和存储。上面最后一条语句的字节码如下所示：
 
@@ -1124,7 +1124,7 @@ store <c> // 弹出值，并存入局部变量c
 add <a> <b> <c> // 从a和b中读取值，相加，并存储到c中
 ```
 
-add指令比之前更大——有三个指令操作数，定义了从堆栈的哪个位置读取输入，并将结果写入哪个位置。但由于局部变量在堆栈中，它可以直接从`a`和`b`中读取数据，如何将结果存入`c`中。
+add指令比之前更大 -- 有三个指令操作数，定义了从堆栈的哪个位置读取输入，并将结果写入哪个位置。但由于局部变量在堆栈中，它可以直接从`a`和`b`中读取数据，如何将结果存入`c`中。
 
 只有一条指令需要解码和调度，整个程序只需要四个字节。由于有了额外的操作数，解码变得更加复杂，但相比之下它仍然是更优秀的。没有压入和弹出或其它堆栈操作。
 

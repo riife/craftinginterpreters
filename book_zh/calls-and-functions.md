@@ -84,7 +84,7 @@ object's header so that the VM knows what type of object it is. Instead of
 passing in arguments to initialize the function like we did with ObjString, we
 set the function up in a sort of blank state -- zero arity, no name, and no
 code. That will get filled in later after the function is created.
-我们使用好朋友`ALLOCATE_OBJ()`来分配内存并初始化对象的头信息，以便虚拟机知道它是什么类型的对象。我们没有像对ObjString那样传入参数来初始化函数，而是将函数设置为一种空白状态——零参数、无名称、无代码。这里会在稍后创建函数后被填入数据。
+我们使用好朋友`ALLOCATE_OBJ()`来分配内存并初始化对象的头信息，以便虚拟机知道它是什么类型的对象。我们没有像对ObjString那样传入参数来初始化函数，而是将函数设置为一种空白状态 -- 零参数、无名称、无代码。这里会在稍后创建函数后被填入数据。
 
 Since we have a new kind of object, we need a new object type in the enum.
 因为有了一个新类型的对象，我们需要在枚举中添加一个新的对象类型。
@@ -129,7 +129,7 @@ Since a function knows its name, it may as well say it.
 
 Finally, we have a couple of macros for converting values to functions. First,
 make sure your value actually *is* a function.
-最后，我们有几个宏用于将值转换为函数。首先，确保你的值实际上*是*一个函数。
+最后，我们有几个宏用于将值转换为函数。首先，确保你的值实际上 *是* 一个函数。
 
 ^code is-function (2 before, 1 after)
 
@@ -182,7 +182,7 @@ We also have a little FunctionType enum. This lets the compiler tell when it's
 compiling top-level code versus the body of a function. Most of the compiler
 doesn't care about this -- that's why it's a useful abstraction -- but in one or
 two places the distinction is meaningful. We'll get to one later.
-我们也有一个小小的FunctionType枚举。这让编译器可以区分它在编译顶层代码还是函数主体。大多数编译器并不关心这一点——这就是为什么它是一个有用的抽象——但是在一两个地方，这种区分是有意义的。我们稍后会讲到其中一个。
+我们也有一个小小的FunctionType枚举。这让编译器可以区分它在编译顶层代码还是函数主体。大多数编译器并不关心这一点 -- 这就是为什么它是一个有用的抽象 -- 但是在一两个地方，这种区分是有意义的。我们稍后会讲到其中一个。
 
 ^code function-type-enum
 
@@ -209,7 +209,7 @@ of compiling. Next, we need to actually create that function. Previously, the VM
 passed a Chunk to the compiler which filled it with code. Instead, the compiler
 will create and return a function that contains the compiled top-level code --
 which is all we support right now -- of the user's program.
-当前的字节码块一定是我们正在编译的函数所拥有的块。接下来，我们需要实际创建该函数。之前，虚拟机将一个Chunk传递给编译器，编译器会将代码填入其中。现在取而代之的是，编译器创建并返回一个包含已编译顶层代码的函数——这就是我们目前所支持的。
+当前的字节码块一定是我们正在编译的函数所拥有的块。接下来，我们需要实际创建该函数。之前，虚拟机将一个Chunk传递给编译器，编译器会将代码填入其中。现在取而代之的是，编译器创建并返回一个包含已编译顶层代码的函数 -- 这就是我们目前所支持的。
 
 ### 编译时创建函数
 
@@ -248,7 +248,7 @@ worlds. When we get to function *declarations*, those really *are* literals
 -- they are a notation that produces values of a built-in type. So the <span
 name="closure">compiler</span> creates function objects during compilation.
 Then, at runtime, they are simply invoked.
-在编译器中创建ObjFunction可能看起来有点奇怪。函数对象是一个函数的运行时表示，但这里我们是在编译时创建它。我们可以这样想：函数类似于一个字符串或数字字面量。它在编译时和运行时之间形成了一座桥梁。当我们碰到函数*声明*时，它们确实*是*字面量——它们是一种生成内置类型值的符号。因此，编译器在编译期间创建函数对象。然后，在运行时，它们被简单地调用。
+在编译器中创建ObjFunction可能看起来有点奇怪。函数对象是一个函数的运行时表示，但这里我们是在编译时创建它。我们可以这样想：函数类似于一个字符串或数字字面量。它在编译时和运行时之间形成了一座桥梁。当我们碰到函数 *声明* 时，它们确实 *是* 字面量 -- 它们是一种生成内置类型值的符号。因此，编译器在编译期间创建函数对象。然后，在运行时，它们被简单地调用。
 
 <aside name="closure">
 
@@ -297,7 +297,7 @@ some diagnostic code to have the VM dump the disassembled bytecode so we could
 debug the compiler. We should fix that to keep working now that the generated
 chunk is wrapped in a function.
 现在是对该函数进行另一个调整的好时机。之前，我们添加了一些诊断性代码，让虚拟机转储反汇编的字节码，以便我们可以调试编译器。现在生成的字节码块包含在一个函数中，我们要修复这些代码，使其继续工作。
-*compiler.c*，在*endCompiler*()方法中替换1行：
+*compiler.c*，在 *endCompiler* ()方法中替换1行：
 
 ^code disassemble-end (2 before, 2 after)
 
@@ -515,7 +515,7 @@ the `ip` field. The only interesting behavior is around control flow
 instructions which offset the `ip` by larger amounts. *Calling* a function is
 pretty straightforward -- simply set `ip` to point to the first instruction in
 that function's chunk. But what about when the function is done?
-现在，虚拟机通过递增`ip`字段的方式在指令流中工作。唯一有趣的行为是关于控制流指令的，这些指令会以较大的数值对`ip`进行偏移。调用函数非常直接——将`ip`简单地设置为指向函数块中的第一条指令。但是等函数完成后怎么办？
+现在，虚拟机通过递增`ip`字段的方式在指令流中工作。唯一有趣的行为是关于控制流指令的，这些指令会以较大的数值对`ip`进行偏移。调用函数非常直接 -- 将`ip`简单地设置为指向函数块中的第一条指令。但是等函数完成后怎么办？
 
 The VM needs to <span name="return">return</span> back to the chunk where the
 function was called from and resume execution at the instruction immediately
@@ -601,7 +601,7 @@ The new `frameCount` field in the VM stores the current height of the CallFrame
 stack -- the number of ongoing function calls. To keep clox simple, the array's
 capacity is fixed. This means, as in many language implementations, there is a
 maximum call depth we can handle. For clox, it's defined here:
-VM中新的`frameCount`字段存储了CallFrame栈的当前高度——正在进行的函数调用的数量。为了使clox简单，数组的容量是固定的。这意味着，和许多语言的实现一样，存在一个我们可以处理的最大调用深度。对于clox，在这里定义它：
+VM中新的`frameCount`字段存储了CallFrame栈的当前高度 -- 正在进行的函数调用的数量。为了使clox简单，数组的容量是固定的。这意味着，和许多语言的实现一样，存在一个我们可以处理的最大调用深度。对于clox，在这里定义它：
 
 ^code frame-max (2 before, 2 after)
 
@@ -717,7 +717,7 @@ to execute its code. Now you can see why the compiler sets aside stack slot zero
 function, initialize its `ip` to point to the beginning of the function's
 bytecode, and set up its stack window to start at the very bottom of the VM's
 value stack.
-否则，我们将函数存储在堆栈中，并准备一个初始CallFrame来执行其代码。现在你可以看到为什么编译器将栈槽0留出来——其中存储着正在被调用的函数。在新的CallFrame中，我们指向该函数，将`ip`初始化为函数字节码的起始位置，并将堆栈窗口设置为从VM值栈的最底部开始。
+否则，我们将函数存储在堆栈中，并准备一个初始CallFrame来执行其代码。现在你可以看到为什么编译器将栈槽0留出来 -- 其中存储着正在被调用的函数。在新的CallFrame中，我们指向该函数，将`ip`初始化为函数字节码的起始位置，并将堆栈窗口设置为从VM值栈的最底部开始。
 
 This gets the interpreter ready to start executing code. After finishing, the VM
 used to free the hardcoded chunk. Now that the ObjFunction owns that code, we
@@ -801,14 +801,14 @@ Before, we called `markInitialized()` only when we already knew we were in a
 local scope. Now, a top-level function declaration will also call this function.
 When that happens, there is no local variable to mark initialized -- the
 function is bound to a global variable.
-以前，只有在已经知道当前处于局部作用域中时，我们才会调用`markInitialized()`。现在，顶层的函数声明也会调用这个函数。当这种情况发生时，没有局部变量需要标记为已初始化——函数被绑定到了一个全局变量。
+以前，只有在已经知道当前处于局部作用域中时，我们才会调用`markInitialized()`。现在，顶层的函数声明也会调用这个函数。当这种情况发生时，没有局部变量需要标记为已初始化 -- 函数被绑定到了一个全局变量。
 
 Next, we compile the function itself -- its parameter list and block body. For
 that, we use a separate helper function. That helper generates code that
 leaves the resulting function object on top of the stack. After that, we call
 `defineVariable()` to store that function back into the variable we declared for
 it.
-接下来，我们编译函数本身——它的参数列表和代码块主体。为此，我们使用一个单独的辅助函数。该函数生成的代码会将生成的函数对象留在栈顶。之后，我们调用`defineVariable()`，将该函数存储到我们为其声明的变量中。
+接下来，我们编译函数本身 -- 它的参数列表和代码块主体。为此，我们使用一个单独的辅助函数。该函数生成的代码会将生成的函数对象留在栈顶。之后，我们调用`defineVariable()`，将该函数存储到我们为其声明的变量中。
 
 I split out the code to compile the parameters and body because we'll reuse it
 later for parsing method declarations inside classes. Let's build it
@@ -862,7 +862,7 @@ That yields the newly compiled function object, which we store as a constant in
 the *surrounding* function's constant table. But, wait, how do we get back to
 the surrounding function? We lost it when `initCompiler()` overwrote the current
 compiler pointer.
-在我们到达函数主体块的末尾时，会调用`endCompiler()`。这就得到了新编译的函数对象，我们将其作为常量存储在*外围*函数的常量表中。但是，等等。我们怎样才能回到外围的函数中呢？在`initCompiler()`覆盖当前编译器指针时，我们把它丢了。
+在我们到达函数主体块的末尾时，会调用`endCompiler()`。这就得到了新编译的函数对象，我们将其作为常量存储在 *外围* 函数的常量表中。但是，等等。我们怎样才能回到外围的函数中呢？在`initCompiler()`覆盖当前编译器指针时，我们把它丢了。
 
 We fix that by treating the series of nested Compiler structs as a stack. Unlike
 the Value and CallFrame stacks in the VM, we won't use an array. Instead, we use
@@ -895,7 +895,7 @@ allocate the Compiler structs. Each is stored as a local variable in the C stack
 through the C stack. The reason we can get an unbounded number of them is
 because our compiler uses recursive descent, so `function()` ends up calling
 itself recursively when you have nested function declarations.
-请注意，我们甚至不需要动态地分配Compiler结构体。每个结构体都作为局部变量存储在C语言栈中——不是`compile()`就是`function()`。编译器链表在C语言栈中存在。我们之所以能得到无限多的编译器，是因为我们的编译器使用了递归下降，所以当有嵌套的函数声明时，`function()`最终会递归地调用自己。
+请注意，我们甚至不需要动态地分配Compiler结构体。每个结构体都作为局部变量存储在C语言栈中 -- 不是`compile()`就是`function()`。编译器链表在C语言栈中存在。我们之所以能得到无限多的编译器，是因为我们的编译器使用了递归下降，所以当有嵌套的函数声明时，`function()`最终会递归地调用自己。
 
 <aside name="compiler">
 
@@ -970,7 +970,7 @@ function call expression is kind of an infix `(` operator. You have a
 high-precedence expression on the left for the thing being called -- usually
 just a single identifier. Then the `(` in the middle, followed by the argument
 expressions separated by commas, and a final `)` to wrap it up at the end.
-在本小节结束时，我们将开始看到一些有趣的行为。下一步是调用函数。我们通常不会这样想，但是函数调用表达式有点像是一个中缀`(`操作符。在左边有一个高优先级的表达式，表示被调用的内容——通常只是一个标识符。然后是中间的`(`，后跟由逗号分隔的参数表达式，最后是一个`)`把它包起来。
+在本小节结束时，我们将开始看到一些有趣的行为。下一步是调用函数。我们通常不会这样想，但是函数调用表达式有点像是一个中缀`(`操作符。在左边有一个高优先级的表达式，表示被调用的内容 -- 通常只是一个标识符。然后是中间的`(`，后跟由逗号分隔的参数表达式，最后是一个`)`把它包起来。
 
 That odd grammatical perspective explains how to hook the syntax into our
 parsing table.
@@ -1006,7 +1006,7 @@ more than 255 arguments to a call. At the time, I said that was because clox
 would need a similar limit. Now you can see why -- since we stuff the argument
 count into the bytecode as a single-byte operand, we can only go up to 255. We
 need to verify that in this compiler too.
-嗯，大概就这样。在jlox中，我们添加了一个编译时检查，即你不能向一次调用传递的参数不超过255个。当时，我说这是因为clox需要类似的限制。现在你可以明白为什么了——因为我们把参数数量作为单字节操作数填充到字节码中，所以最多只能达到255。我们也需要在这个编译器中验证。
+嗯，大概就这样。在jlox中，我们添加了一个编译时检查，即你不能向一次调用传递的参数不超过255个。当时，我说这是因为clox需要类似的限制。现在你可以明白为什么了 -- 因为我们把参数数量作为单字节操作数填充到字节码中，所以最多只能达到255。我们也需要在这个编译器中验证。
 
 ^code arg-limit (1 before, 1 after)
 
@@ -1084,7 +1084,7 @@ This means that we don't need to do *any* work to "bind an argument to a
 parameter". There's no copying values between slots or across environments. The
 arguments are already exactly where they need to be. It's hard to beat that for
 performance.
-这意味着我们不需要做*任何*工作来“将形参绑定到实参”。不用在槽之间或跨环境复制值。这些实参已经在它们需要在的位置了。很难有比这更好的性能了。
+这意味着我们不需要做 *任何* 工作来“将形参绑定到实参”。不用在槽之间或跨环境复制值。这些实参已经在它们需要在的位置了。很难有比这更好的性能了。
 
 Time to implement the call instruction.
 是时候来实现调用指令了。
@@ -1208,7 +1208,7 @@ where the execution was at the point that it died. Now that we have a call stack
 and we've conveniently stored each function's name, we can show that entire
 stack when a runtime error disrupts the harmony of the user's existence. It
 looks like this:
-帮助调试运行时故障的经典工具是**堆栈跟踪**——打印出程序死亡时仍在执行的每个函数，以及程序死亡时执行的位置。现在我们有了一个调度栈，并且方便地存储了每个函数的名称。当运行时错误破坏了用户的和谐时，我们可以显示整个堆栈。它看起来像这样：
+帮助调试运行时故障的经典工具是**堆栈跟踪** -- 打印出程序死亡时仍在执行的每个函数，以及程序死亡时执行的位置。现在我们有了一个调度栈，并且方便地存储了每个函数的名称。当运行时错误破坏了用户的和谐时，我们可以显示整个堆栈。它看起来像这样：
 
 ^code runtime-error-stack (2 before, 2 after)
 
@@ -1362,7 +1362,7 @@ to use exceptions to unwind the stack when a `return` statement was executed.
 That was because you could return from deep inside some nested blocks. Since
 jlox recursively walks the AST, that meant there were a bunch of Java method
 calls we needed to escape out of.
-这与我们已经实现的`OP_RETURN`指令相同——我们不需要任何新的运行时代码。这与jlox有很大的不同。在jlox中，当执行`return`语句时，我们必须使用异常来跳出堆栈。这是因为你可以从某些嵌套的代码块深处返回。因为jlox递归地遍历AST。这意味着我们需要从一堆Java方法调用中退出。
+这与我们已经实现的`OP_RETURN`指令相同 -- 我们不需要任何新的运行时代码。这与jlox有很大的不同。在jlox中，当执行`return`语句时，我们必须使用异常来跳出堆栈。这是因为你可以从某些嵌套的代码块深处返回。因为jlox递归地遍历AST。这意味着我们需要从一堆Java方法调用中退出。
 
 Our bytecode compiler flattens that all out. We do recursive descent during
 parsing, but at runtime, the VM's bytecode dispatch loop is completely flat.
@@ -1413,13 +1413,13 @@ through **native functions**. If you want to be able to write programs that
 check the time, read user input, or access the file system, we need to add
 native functions -- callable from Lox but implemented in C -- that expose those
 capabilities.
-编程语言的实现通过**本地函数**向外延伸并接触物质世界。如果你想编写检查时间、读取用户输入或访问文件系统的程序，则需要添加本地函数——可以从Lox调用，但是使用C语言实现——来暴露这些能力。
+编程语言的实现通过**本地函数**向外延伸并接触物质世界。如果你想编写检查时间、读取用户输入或访问文件系统的程序，则需要添加本地函数 -- 可以从Lox调用，但是使用C语言实现 -- 来暴露这些能力。
 
 At the language level, Lox is fairly complete -- it's got closures, classes,
 inheritance, and other fun stuff. One reason it feels like a toy language is
 because it has almost no native capabilities. We could turn it into a real
 language by adding a long list of them.
-在语言层面，Lox是相当完整的——它支持闭包、类、继承和其它有趣的东西。它之所以给人一种玩具语言的感觉，是因为它几乎没有原生功能。我们可以通过添加一系列功能将其变成一种真正的语言。
+在语言层面，Lox是相当完整的 -- 它支持闭包、类、继承和其它有趣的东西。它之所以给人一种玩具语言的感觉，是因为它几乎没有原生功能。我们可以通过添加一系列功能将其变成一种真正的语言。
 
 However, grinding through a pile of OS operations isn't actually very
 educational. Once you've seen how to bind one piece of C code to Lox, you get
@@ -1447,7 +1447,7 @@ pointer to the C function that implements the native behavior. The native
 function takes the argument count and a pointer to the first argument on the
 stack. It accesses the arguments through that pointer. Once it's done, it
 returns the result value.
-其表示形式比ObjFunction更简单——仅仅是一个Obj头和一个指向实现本地行为的C函数的指针。该本地函数接受参数数量和指向栈中第一个参数的指针。它通过该指针访问参数。一旦执行完成，它就返回结果值。
+其表示形式比ObjFunction更简单 -- 仅仅是一个Obj头和一个指向实现本地行为的C函数的指针。该本地函数接受参数数量和指向栈中第一个参数的指针。它通过该指针访问参数。一旦执行完成，它就返回结果值。
 
 As always, a new object type carries some accoutrements with it. To create an
 ObjNative, we declare a constructor-like function.
@@ -1494,7 +1494,7 @@ All of this baggage lets the VM treat native functions like any other object.
 You can store them in variables, pass them around, throw them birthday parties,
 etc. Of course, the operation we actually care about is *calling* them -- using
 one as the left-hand operand in a call expression.
-所有这些使得虚拟机可以像对待其它对象一样对待本地函数。你可以将它们存储在变量中，传递它们，给它们举办生日派对，等等。当然，我们真正关心的是*调用*它们——将一个本地函数作为调用表达式的左操作数。
+所有这些使得虚拟机可以像对待其它对象一样对待本地函数。你可以将它们存储在变量中，传递它们，给它们举办生日派对，等等。当然，我们真正关心的是*调用*它们 -- 将一个本地函数作为调用表达式的左操作数。
 
 Over in `callValue()` we add another type case.
 在 `callValue()`中，我们添加另一个类型的case分支。

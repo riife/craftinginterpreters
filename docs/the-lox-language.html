@@ -161,7 +161,7 @@ Lox 没有静态类型，因此我们要避免这种情况。</p>
 in a language: <em>familiarity</em>. I know you are already comfortable with that style
 because the two languages we&rsquo;ll be using to <em>implement</em> Lox<span class="em">&mdash;</span>Java and C<span class="em">&mdash;</span>also inherit it. Using a similar syntax for Lox gives you one less thing to
 learn.
-但是，类C的语法所具有的反而是一些在语言中更有价值的东西：<em>熟悉度</em>。我知道你已经对这种风格很熟悉了，因为我们将用来实现Lox的两种语言——Java和C——也继承了这种风格。让Lox使用类似的语法，你就少了一件需要学习的事情。</p>
+但是，类C的语法所具有的反而是一些在语言中更有价值的东西：<em>熟悉度</em>。我知道你已经对这种风格很熟悉了，因为我们将用来实现Lox的两种语言<span class="em">&mdash;</span>Java和C<span class="em">&mdash;</span>也继承了这种风格。让Lox使用类似的语法，你就少了一件需要学习的事情。</p>
 <h2><a href="#高级语言" id="高级语言"><small>3&#8202;.&#8202;2</small>高级语言</a></h2>
 <p>While this book ended up bigger than I was hoping, it&rsquo;s still not big enough to
 fit a huge language like Java in it. In order to fit two complete
@@ -221,7 +221,7 @@ today!&rdquo;
 time, the limitations of ref counting become too troublesome. All of those
 languages eventually ended up adding a full tracing GC, or at least enough of
 one to clean up object cycles.
-有两种主要的内存管理技术：<strong>引用计数</strong>和<strong>跟踪垃圾收集</strong>（通常仅称为“<strong>垃圾收集</strong>”或“ <strong>GC</strong>”）。 引用计数器的实现要简单得多——我想这就是为什么Perl、PHP和Python一开始都使用该方式的原因。但是，随着时间的流逝，引用计数的限制变得太麻烦了。 所有这些语言最终都添加了完整的跟踪GC或至少一种足以清除对象循环引用的管理方式。</p>
+有两种主要的内存管理技术：<strong>引用计数</strong>和<strong>跟踪垃圾收集</strong>（通常仅称为 “<strong>垃圾收集</strong>” 或 “<strong>GC</strong>”）。 引用计数器的实现要简单得多<span class="em">&mdash;</span>我想这就是为什么Perl、PHP和Python一开始都使用该方式的原因。但是，随着时间的流逝，引用计数的限制变得太麻烦了。 所有这些语言最终都添加了完整的跟踪GC或至少一种足以清除对象循环引用的管理方式。</p>
 <aside name="gc">
 <p>In practice, ref counting and tracing are more ends of a continuum than
 opposing sides. Most ref counting systems end up doing some tracing to handle
@@ -248,7 +248,7 @@ can&rsquo;t logic without Boolean values. &ldquo;True&rdquo; and &ldquo;false&rd
 software. Unlike some ancient languages that repurpose an existing type to
 represent truth and falsehood, Lox has a dedicated Boolean type. We may
 be roughing it on this expedition, but we aren&rsquo;t <em>savages</em>.
-<strong>Booleans</strong>——没有逻辑就不能编码，没有布尔值也就没有逻辑。 “真”和“假”，就是软件的阴与阳。 与某些古老的语言重新利用已有类型来表示真假不同，Lox具有专用的布尔类型。在这次探险中，我们可能会有些粗暴，但我们不是野蛮人。
+<strong>Booleans</strong><span class="em">&mdash;</span>没有逻辑就不能编码，没有布尔值也就没有逻辑。 “真”和“假”，就是软件的阴与阳。 与某些古老的语言重新利用已有类型来表示真假不同，Lox具有专用的布尔类型。在这次探险中，我们可能会有些粗暴，但我们不是野蛮人。
 显然，有两个布尔值，每个值都有一个字面量：</p>
 <aside name="bool">
 <p>Boolean variables are the only data type in Lox named after a person, George
@@ -268,7 +268,7 @@ code.
 <p><strong>Numbers.</strong> Lox has only one kind of number: double-precision floating
 point. Since floating-point numbers can also represent a wide range of
 integers, that covers a lot of territory, while keeping things simple.
-<strong>Numbers</strong>——Lox只有一种数字：双精度浮点数。 由于浮点数还可以表示各种各样的整数，因此可以覆盖很多领域，同时保持简单。</p>
+<strong>Numbers</strong><span class="em">&mdash;</span>Lox只有一种数字：双精度浮点数。 由于浮点数还可以表示各种各样的整数，因此可以覆盖很多领域，同时保持简单。</p>
 <p>Full-featured languages have lots of syntax for numbers<span class="em">&mdash;</span>hexadecimal,
 scientific notation, octal, all sorts of fun stuff. We&rsquo;ll settle for basic
 integer and decimal literals.
@@ -280,7 +280,7 @@ integer and decimal literals.
 <li>
 <p><strong>Strings.</strong> We&rsquo;ve already seen one string literal in the first example.
 Like most languages, they are enclosed in double quotes.
-<strong>Strings</strong>——在第一个示例中，我们已经看到一个字符串字面量。 与大多数语言一样，它们用双引号引起来：</p>
+<strong>Strings</strong><span class="em">&mdash;</span>在第一个示例中，我们已经看到一个字符串字面量。 与大多数语言一样，它们用双引号引起来：</p>
 <div class="codehilite"><pre><span class="s">&quot;I am a string&quot;</span>;
 <span class="s">&quot;&quot;</span>;    <span class="c">// The empty string.</span>
 <span class="s">&quot;123&quot;</span>; <span class="c">// This is a string, not a number.</span>
@@ -301,7 +301,7 @@ but always seems to show up. It represents &ldquo;no value&rdquo;. It&rsquo;s ca
 many other languages. In Lox we spell it <code>nil</code>. (When we get to implementing
 it, that will help distinguish when we&rsquo;re talking about Lox&rsquo;s <code>nil</code> versus
 Java or C&rsquo;s <code>null</code>.)
-<strong>Nil</strong>——还有最后一个内置数据，它从未被邀请参加聚会，但似乎总是会出现。 它代表“没有价值”。 在许多其他语言中称为“null”。 在Lox中，我们将其拼写为<code>nil</code>。 （当我们实现它时，这将有助于区分Lox的<code>nil</code>与Java或C的<code>null</code>）</p>
+<strong>Nil</strong><span class="em">&mdash;</span>还有最后一个内置数据，它从未被邀请参加聚会，但似乎总是会出现。 它代表“没有价值”。 在许多其他语言中称为“null”。 在Lox中，我们将其拼写为<code>nil</code>。 （当我们实现它时，这将有助于区分Lox的<code>nil</code>与Java或C的<code>null</code>）</p>
 <p>There are good arguments for not having a null value in a language since
 null pointer errors are the scourge of our industry. If we were doing a
 statically typed language, it would be worth trying to ban it. In a
@@ -339,7 +339,7 @@ interleaved between them. The only one in wide usage is the &ldquo;conditional&r
 </pre></div>
 <p>Some call these <strong>mixfix</strong> operators. A few languages let you define your own
 operators and control how they are positioned<span class="em">&mdash;</span>their &ldquo;fixity&rdquo;.
-有些人称这些为<strong>mixfix</strong>操作符。有一些语言允许您定义自己的操作符，并控制它们的定位方式——它们的 &ldquo;固定性&ldquo;。</p>
+有些人称这些为<strong>mixfix</strong>操作符。有一些语言允许您定义自己的操作符，并控制它们的定位方式<span class="em">&mdash;</span>它们的 &ldquo;固定性&ldquo;。</p>
 </aside>
 <p>One arithmetic operator is actually <em>both</em> an infix and a prefix one. The <code>-</code>
 operator can also be used to negate a number.
@@ -349,7 +349,7 @@ operator can also be used to negate a number.
 <p>All of these operators work on numbers, and it&rsquo;s an error to pass any other
 types to them. The exception is the <code>+</code> operator<span class="em">&mdash;</span>you can also pass it two
 strings to concatenate them.
-所有这些操作符都是针对数字的，将任何其他类型操作数传递给它们都是错误的。唯一的例外是<code>+</code>运算符——你也可以传给它两个字符串将它们串接起来。</p>
+所有这些操作符都是针对数字的，将任何其他类型操作数传递给它们都是错误的。唯一的例外是<code>+</code>运算符<span class="em">&mdash;</span>你也可以传给它两个字符串将它们串接起来。</p>
 <h3><a href="#比较与相等" id="比较与相等"><small>3&#8202;.&#8202;4&#8202;.&#8202;2</small>比较与相等</a></h3>
 <p>Moving along, we have a few more operators that always return a Boolean result.
 We can compare numbers (and only numbers), using Ye Olde Comparison Operators.
@@ -757,7 +757,7 @@ languages and all methods in a dynamically typed language like Lox work.
 There are only objects<span class="em">&mdash;</span>no classes<span class="em">&mdash;</span>and each individual object may contain
 state and methods. Objects can directly inherit from each other (or &ldquo;delegate
 to&rdquo; in prototypal lingo):
-基于原型的语言融合了这两个概念。这里只有对象——没有类，而且每个对象都可以包含状态和方法。对象之间可以直接继承（或者用原型语言的术语说是 “委托”）：</p>
+基于原型的语言融合了这两个概念。这里只有对象<span class="em">&mdash;</span>没有类，而且每个对象都可以包含状态和方法。对象之间可以直接继承（或者用原型语言的术语说是 “委托”）：</p>
 <aside name="blurry">
 <p>In practice the line between class-based and prototype-based languages blurs.
 JavaScript&rsquo;s &ldquo;constructor function&rdquo; notion <a href="http://gameprogrammingpatterns.com/prototype.html#what-about-javascript">pushes you pretty hard</a>
@@ -773,7 +773,7 @@ they can express lots of unusual patterns that classes steer you away from.
 <a href="http://finch.stuffwithstuff.com/">some of my own devising</a>. Do you know what people generally do with all
 of the power and flexibility of prototypes? <span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>They use them to reinvent
 classes.
-但是我看过很多用原型语言写的代码——包括<a href="http://finch.stuffwithstuff.com/">我自己设计的一些代码</a>。你知道人们一般会怎么使用原型的强大功能和灵活性吗？<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>他们用它来重新发明类。</p>
+但是我看过很多用原型语言写的代码<span class="em">&mdash;</span>包括<a href="http://finch.stuffwithstuff.com/">我自己设计的一些代码</a>。你知道人们一般会怎么使用原型的强大功能和灵活性吗？<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>他们用它来重新发明类。</p>
 <p>I don&rsquo;t know <em>why</em> that is, but people naturally seem to prefer a class-based
 (Classic? Classy?) style. Prototypes <em>are</em> simpler in the language, but they
 seem to accomplish that only by <span name="waterbed">pushing</span> the
@@ -937,7 +937,7 @@ would fix that.
 <p>We&rsquo;re almost done. That&rsquo;s the whole language, so all that&rsquo;s left is the &ldquo;core&rdquo;
 or &ldquo;standard&rdquo; library<span class="em">&mdash;</span>the set of functionality that is implemented directly
 in the interpreter and that all user-defined behavior is built on top of.
-我们快结束了，这就是整个语言，所剩下的就是“核心”或“标准”库——这是一组直接在解释器中实现的功能集，所有用户定义的行为都是建立在此之上。</p>
+我们快结束了，这就是整个语言，所剩下的就是“核心”或“标准”库<span class="em">&mdash;</span>这是一组直接在解释器中实现的功能集，所有用户定义的行为都是建立在此之上。</p>
 <p>This is the saddest part of Lox. Its standard library goes beyond minimalism and
 veers close to outright nihilism. For the sample code in the book, we only need
 to demonstrate that code is running and doing what it&rsquo;s supposed to do. For
@@ -1048,7 +1048,7 @@ interpret it like expressions gets weird pretty fast.</p>
 </pre></div>
 <p>这是你所期望的吗？这是你的用户所期望的吗？这对你如何设计 &ldquo;语句&rdquo; 的语法有什么影响？请注意，Ruby有一个显式的<code>end</code>关键字来表明<code>if</code>表达式结束。如果没有它，<code>+4</code>很可能会被解析为<code>else</code>子句的一部分。</p>
 <p>把每个语句都转换成表达式会迫使你回答一些类似这样的复杂问题。作为回报，您消除了一些冗余。C语言中既有用于排序语句的块，以及用于排序表达式的逗号操作符。它既有<code>if</code>语句，也有<code>?:</code>条件操作符。如果在C语言中所有东西都是表达式，你就可以把它们统一起来。</p>
-<p>取消了语句的语言通常还具有<strong>隐式返回</strong>的特点——函数自动返回其函数主体所计算得到的任何值，而不需要显式的<code>return</code>语法。对于小型函数和方法来说，这真的很方便。事实上，许多有语句的语言都添加了类似于 <code>=&gt;</code> 的语法，以便能够定义函数体是计算单一表达式结果的函数。</p>
+<p>取消了语句的语言通常还具有<strong>隐式返回</strong>的特点<span class="em">&mdash;</span>函数自动返回其函数主体所计算得到的任何值，而不需要显式的<code>return</code>语法。对于小型函数和方法来说，这真的很方便。事实上，许多有语句的语言都添加了类似于 <code>=&gt;</code> 的语法，以便能够定义函数体是计算单一表达式结果的函数。</p>
 <p>但是让所有的函数以这种方式工作可能有点奇怪。即使你只是想让函数产生副作用，如果不小心，函数也可能会泄露返回值。但实际上，这些语言的用户并不觉得这是一个问题。</p>
 <p>对于Lox，我在其中添加语句是出于朴素的原因。为了熟悉起见，我选择了一种类似于C的语法，而试图把现有的C语句语法像表达式一样解释，会很快变得奇怪。</p>
 </div>

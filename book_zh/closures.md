@@ -33,7 +33,7 @@ This problem is harder in clox than it was in jlox because our bytecode VM
 stores locals on a stack. We used a stack because I claimed locals have stack
 semantics -- variables are discarded in the reverse order that they are created.
 But with closures, that's only *mostly* true.
-这个问题在clox中比在jlox中更难解决，因为我们的字节码虚拟机将局部变量存储在栈中。我们使用堆栈是因为，我声称局部变量具有栈语义——变量被丢弃的顺序与创建的顺序正好相反。但对于闭包来说，这只在大部分情况下是正确的。
+这个问题在clox中比在jlox中更难解决，因为我们的字节码虚拟机将局部变量存储在栈中。我们使用堆栈是因为，我声称局部变量具有栈语义 -- 变量被丢弃的顺序与创建的顺序正好相反。但对于闭包来说，这只在大部分情况下是正确的。
 
 ```lox
 fun makeClosure() {
@@ -124,7 +124,7 @@ compile time.
 
 In other words, a function declaration in Lox *is* a kind of literal -- a piece
 of syntax that defines a constant value of a built-in type.
-换句话说，Lox中的函数声明是一种字面量——定义某个内置类型的常量值的一段语法。
+换句话说，Lox中的函数声明是一种字面量 -- 定义某个内置类型的常量值的一段语法。
 
 </aside>
 
@@ -217,7 +217,7 @@ it. We can't free the ObjFunction until *all* objects referencing it are gone --
 including even the surrounding function whose constant table contains it.
 Tracking that sounds tricky, and it is! That's why we'll write a garbage
 collector soon to manage it for us.
-我们只释放ObjClosure本身，而不释放ObjFunction。这是因为闭包不*拥有*函数。可能会有多个闭包都引用了同一个函数，但没有一个闭包声称对该函数有任何特殊的权限。我们不能释放某个ObjFunction，直到引用它的*所有*对象全部消失——甚至包括那些常量表中包含该函数的外围函数。要跟踪这个信息听起来很棘手，事实也的确如此！这就是我们很快就会写一个垃圾收集器来管理它们的原因。
+我们只释放ObjClosure本身，而不释放ObjFunction。这是因为闭包不*拥有*函数。可能会有多个闭包都引用了同一个函数，但没有一个闭包声称对该函数有任何特殊的权限。我们不能释放某个ObjFunction，直到引用它的*所有*对象全部消失 -- 甚至包括那些常量表中包含该函数的外围函数。要跟踪这个信息听起来很棘手，事实也的确如此！这就是我们很快就会写一个垃圾收集器来管理它们的原因。
 
 We also have the usual <span name="macro">macros</span> for checking a value's
 type.
@@ -281,7 +281,7 @@ There's more going on here than we usually have in the disassembler. By the end
 of the chapter, you'll discover that `OP_CLOSURE` is quite an unusual
 instruction. It's straightforward right now -- just a single byte operand -- but
 we'll be adding to it. This code here anticipates that future.
-这里做的事情比我们通常在反汇编程序中看到的要多。在本章结束时，你会发现`OP_CLOSURE`是一个相当不寻常的指令。它现在很简单——只有一个单字节的操作数——但我们会增加它的内容。这里的代码预示了未来。
+这里做的事情比我们通常在反汇编程序中看到的要多。在本章结束时，你会发现`OP_CLOSURE`是一个相当不寻常的指令。它现在很简单 -- 只有一个单字节的操作数 -- 但我们会增加它的内容。这里的代码预示了未来。
 
 ### 解释函数声明
 
@@ -289,7 +289,7 @@ Most of the work we need to do is in the runtime. We have to handle the new
 instruction, naturally. But we also need to touch every piece of code in the VM
 that works with ObjFunction and change it to use ObjClosure instead -- function
 calls, call frames, etc. We'll start with the instruction, though.
-我们需要做的大部分工作是在运行时。我们必须处理新的指令，这是自然的。但是我们也需要触及虚拟机中每一段使用ObjFunction的代码，并将其改为使用ObjClosure——函数调用、调用帧，等等。不过，我们会从指令开始。
+我们需要做的大部分工作是在运行时。我们必须处理新的指令，这是自然的。但是我们也需要触及虚拟机中每一段使用ObjFunction的代码，并将其改为使用ObjClosure -- 函数调用、调用帧，等等。不过，我们会从指令开始。
 
 ^code interpret-closure (1 before, 1 after)
 
@@ -495,7 +495,7 @@ variable in that function, we assume the variable must be a global. We don't
 consider the local scopes of enclosing functions -- they get skipped right over.
 The first change, then, is inserting a resolution step for those outer local
 scopes.
-目前，当编译器解析一个标识符时，它会从最内层到最外层遍历当前函数的块作用域。如果我们没有在函数中找到该变量，我们就假定该变量一定是一个全局变量。我们不考虑封闭函数的局部作用域——它们会被直接跳过。那么，第一个变化就是为这些外围局部作用域插入一个解析步骤。
+目前，当编译器解析一个标识符时，它会从最内层到最外层遍历当前函数的块作用域。如果我们没有在函数中找到该变量，我们就假定该变量一定是一个全局变量。我们不考虑封闭函数的局部作用域 -- 它们会被直接跳过。那么，第一个变化就是为这些外围局部作用域插入一个解析步骤。
 
 ^code named-variable-upvalue (3 before, 1 after)
 
@@ -784,7 +784,7 @@ function. We do that by recursively calling `resolveUpvalue()` on the
 calls works its way along the chain of nested compilers until it hits one of
 the base cases -- either it finds an actual local variable to capture or it
 runs out of compilers.
-否则，我们会在紧邻的函数之外寻找局部变量。我们通过递归地对外层编译器（而不是当前编译器）调用`resolveUpvalue()`来实现这一点。这一系列的`resolveUpvalue()`调用沿着嵌套的编译器链运行，直到遇见基本情况——要么找到一个事件的局部变量来捕获，要么是遍历完了所有编译器。
+否则，我们会在紧邻的函数之外寻找局部变量。我们通过递归地对外层编译器（而不是当前编译器）调用`resolveUpvalue()`来实现这一点。这一系列的`resolveUpvalue()`调用沿着嵌套的编译器链运行，直到遇见基本情况 -- 要么找到一个事件的局部变量来捕获，要么是遍历完了所有编译器。
 
 When a local variable is found, the most deeply <span name="outer">nested</span>
 call to `resolveUpvalue()` captures it and returns the upvalue index. That
@@ -982,7 +982,7 @@ upvalues, so we need a dynamic array. The upvalues themselves are dynamically
 allocated too, so we end up with a double pointer -- a pointer to a dynamically
 allocated array of pointers to upvalues. We also store the number of elements in
 the array.
-不同的闭包可能会有不同数量的上值，所以我们需要一个动态数组。上值本身也是动态分配的，因此我们最终需要一个二级指针——一个指向动态分配的上值指针数组的指针。我们还会存储数组中的元素数量。
+不同的闭包可能会有不同数量的上值，所以我们需要一个动态数组。上值本身也是动态分配的，因此我们最终需要一个二级指针 -- 一个指向动态分配的上值指针数组的指针。我们还会存储数组中的元素数量。
 
 <aside name="count">
 
@@ -1255,7 +1255,7 @@ have reported an error if any code tried to use it.
 
 By "after" here, I mean in the lexical or textual sense -- code past the `}`
 for the block containing the declaration of the closed-over variable.
-这里 的“之后”，指的是词法或文本意义上的——在包含关闭变量的声明语句的代码块的`}`之后的代码。
+这里 的“之后”，指的是词法或文本意义上的 -- 在包含关闭变量的声明语句的代码块的`}`之后的代码。
 
 </aside>
 
@@ -1582,7 +1582,7 @@ But there is already a level of indirection in play -- those instructions
 dereference the `location` pointer to get to the variable's value. When the
 variable moves from the stack to the `closed` field, we simply update that
 `location` to the address of the ObjUpvalue's *own* `closed` field.
-但是已经有一个中间层在起作用了——这些指令对`location`指针解引用以获取变量的值。当变量从栈移动到`closed`字段时，我们只需将`location`更新为ObjUpvalue*自己的*`closed`字段。
+但是已经有一个中间层在起作用了 -- 这些指令对`location`指针解引用以获取变量的值。当变量从栈移动到`closed`字段时，我们只需将`location`更新为ObjUpvalue*自己的*`closed`字段。
 
 <aside name="cool">
 
@@ -1641,7 +1641,7 @@ This was a lot of work! In jlox, closures fell out naturally from our
 environment representation. In clox, we had to add a lot of code -- new bytecode
 instructions, more data structures in the compiler, and new runtime objects. The
 VM very much treats variables in closures as different from other variables.
-这是一项艰巨的工作！在jlox中，闭包很自然地从我们的环境表示形式中分离出来。在clox中，我们必须添加大量的代码——新的字节码指令、编译器中的更多数据结构和新的运行时对象。VM在很大程度上将闭包中的变量与其它变量进行区别对待。
+这是一项艰巨的工作！在jlox中，闭包很自然地从我们的环境表示形式中分离出来。在clox中，我们必须添加大量的代码 -- 新的字节码指令、编译器中的更多数据结构和新的运行时对象。VM在很大程度上将闭包中的变量与其它变量进行区别对待。
 
 There is a rationale for that. In terms of implementation complexity, jlox gave
 us closures "for free". But in terms of *performance*, jlox's closures are

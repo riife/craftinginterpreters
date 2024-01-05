@@ -13,7 +13,7 @@ on clox. This time, we're going for pure performance. We'll apply two very
 different optimizations to our virtual machine.  In the process, you'll get a
 feel for measuring and improving the performance of a language implementation --
 or any program, really.
-如果我还住在新奥尔良，我会把这一章称为*lagniappe*（小赠品），即免费送给顾客的一点额外的东西。你已经有了一整本书和一个完整的虚拟机，但我希望你能在clox上获得更多的乐趣。这一次，我们要追求的是纯粹的性能。我们将对虚拟机应用两种截然不同的优化。在这个过程中，你将了解如何测量和提高语言实现的性能——或者说任何程序的性能，真的。
+如果我还住在新奥尔良，我会把这一章称为*lagniappe*（小赠品），即免费送给顾客的一点额外的东西。你已经有了一整本书和一个完整的虚拟机，但我希望你能在clox上获得更多的乐趣。这一次，我们要追求的是纯粹的性能。我们将对虚拟机应用两种截然不同的优化。在这个过程中，你将了解如何测量和提高语言实现的性能 -- 或者说任何程序的性能，真的。
 
 ## 测量性能
 
@@ -24,7 +24,7 @@ speed, but it can also be important to reduce memory usage, startup time,
 persistent storage size, or network bandwidth. All physical resources have some
 cost -- even if the cost is mostly in wasted human time -- so optimization work
 often pays off.
-**优化**是指拿到一个基本可用的应用程序并提高其性能。一个优化后的程序能做到同样的事情，只是需要更少的资源。我们在优化时通常考虑的资源是运行时速度，但减少内存使用、启动时间、持久化存储大小或网络带宽也很重要。所有的物理资源都有一定的成本——即使成本主要是浪费人力时间，所以优化工作通常都能得到回报。
+**优化**是指拿到一个基本可用的应用程序并提高其性能。一个优化后的程序能做到同样的事情，只是需要更少的资源。我们在优化时通常考虑的资源是运行时速度，但减少内存使用、启动时间、持久化存储大小或网络带宽也很重要。所有的物理资源都有一定的成本 -- 即使成本主要是浪费人力时间，所以优化工作通常都能得到回报。
 
 There was a time in the early days of computing that a skilled programmer could
 hold the entire hardware architecture and compiler pipeline in their head and
@@ -60,7 +60,7 @@ When we add new functionality, we validate correctness by writing tests -- Lox
 programs that use a feature and validate the VM's behavior. Tests pin down
 semantics and ensure we don't break existing features when we add new ones. We
 have similar needs when it comes to performance:
-当我们添加新功能时，我们通过编写测试来验证正确性——使用某个特性并验证虚拟机行为的Lox程序。测试可以约束语义，并确保在添加新功能时，不会破坏现有的特性。在性能方面，我们也有类似的需求：
+当我们添加新功能时，我们通过编写测试来验证正确性 -- 使用某个特性并验证虚拟机行为的Lox程序。测试可以约束语义，并确保在添加新功能时，不会破坏现有的特性。在性能方面，我们也有类似的需求：
 
 1.  How do we validate that an optimization *does* improve performance, and by
     how much?
@@ -121,7 +121,7 @@ benchmarks penalize complex just-in-time compilers that start off slower but get
 code paths. This put VM hackers in the unfortunate position of having to choose
 between making the SunSpider numbers get better, or actually optimizing the
 kinds of programs real users ran.
-不幸的是，SunSpider程序往往与真实世界的JavaScript不匹配。它们大多是微基准测试——快速结束的小玩具程序。这些基准测试对复杂的即时编译器不利，因为它们一开始速度比较慢，但一旦JIT有足够的时间来优化并重新编译热点代码，就会变得快 *很* 多。这将虚拟机专家们置于一个不幸的境地：要么让SubSpider的数字变得更好，要么实际优化真实用户运行的程序类型。
+不幸的是，SunSpider程序往往与真实世界的JavaScript不匹配。它们大多是微基准测试 -- 快速结束的小玩具程序。这些基准测试对复杂的即时编译器不利，因为它们一开始速度比较慢，但一旦JIT有足够的时间来优化并重新编译热点代码，就会变得快 *很* 多。这将虚拟机专家们置于一个不幸的境地：要么让SubSpider的数字变得更好，要么实际优化真实用户运行的程序类型。
 
 Google's V8 team responded by sharing their Octane benchmark suite, which was
 closer to real-world code at the time. Years later, as JavaScript use patterns
@@ -151,7 +151,7 @@ using the right algorithms and data structures -- or, at least, you aren't using
 ones that are aggressively wrong. I don't consider using a hash table instead of
 a linear search through a huge unsorted array "optimization" so much as "good
 software engineering".
-好的，现在你已经有了一些基准测试。你想让它们走得更快，现在怎么办呢？首先，我们假设你已经完成了所有明显的、简单的工作。你使用了正确的算法和数据结构——或者，至少你没有使用那些严重错误的算法和数据结构。我认为使用哈希表代替巨大的无序数组进行线性搜索不是“优化”，而是“良好的软件工程实现”。
+好的，现在你已经有了一些基准测试。你想让它们走得更快，现在怎么办呢？首先，我们假设你已经完成了所有明显的、简单的工作。你使用了正确的算法和数据结构 -- 或者，至少你没有使用那些严重错误的算法和数据结构。我认为使用哈希表代替巨大的无序数组进行线性搜索不是“优化”，而是“良好的软件工程实现”。
 
 Since the hardware is too complex to reason about our program's performance from
 first principles, we have to go out into the field. That means *profiling*. A
@@ -281,7 +281,7 @@ Here's what I found: Naturally, the function with the greatest inclusive time is
 other functions it calls -- the total time between when you enter the function
 and when it returns.) Since `run()` is the main bytecode execution loop, it
 drives everything.
-下面是我的发现：自然，非独占时间最大的函数是`run()`。（ **非独占时间(Inclusive time)** 是指在某个函数及其调用的所有其它函数中所花费的总时间——即从你进入函数到函数返回之间的总时间。）因为`run()`是主要的字节码执行循环，它驱动着一切。
+下面是我的发现：自然，非独占时间最大的函数是`run()`。（ **非独占时间(Inclusive time)** 是指在某个函数及其调用的所有其它函数中所花费的总时间 -- 即从你进入函数到函数返回之间的总时间。）因为`run()`是主要的字节码执行循环，它驱动着一切。
 
 Inside `run()`, there are small chunks of time sprinkled in various cases in the
 bytecode switch for common instructions like `OP_POP`, `OP_RETURN`, and
@@ -296,7 +296,7 @@ function: `tableGet()`. That function claims a whole 72% of the execution time
 (again, inclusive). Now, in a dynamically typed language, we expect to spend a
 fair bit of time looking stuff up in hash tables -- it's sort of the price of
 dynamism. But, still, *wow.*
-所以我们有三个热点需要优化？事实上，并不是。因为事实证明，这三条指令几乎所有的时间都花在了调用同一个函数上：`tableGet()`。这个函数占用了整整72%的执行时间（同样的，非独占时间）。现在，在一个动态类型语言中，我们预想到会花费相当多的时间在哈希表中查找内容——这算是动态的代价，但是，仍旧让人惊叹。
+所以我们有三个热点需要优化？事实上，并不是。因为事实证明，这三条指令几乎所有的时间都花在了调用同一个函数上：`tableGet()`。这个函数占用了整整72%的执行时间（同样的，非独占时间）。现在，在一个动态类型语言中，我们预想到会花费相当多的时间在哈希表中查找内容 -- 这算是动态的代价，但是，仍旧让人惊叹。
 
 ### 缓慢的键包装
 
@@ -334,7 +334,7 @@ static Entry* findEntry(Entry* entries, int capacity,
 When running that previous benchmark -- on my machine, at least -- the VM spends
 70% of the total execution time on *one line* in this function. Any guesses as
 to which one? No? It's this:
-在运行之前的基准测试时——至少在我的机器上是这样——虚拟机将总执行时间的70%花费在这个函数的*一行*代码上。能猜到是哪一行吗？猜不到？是这一行：
+在运行之前的基准测试时 -- 至少在我的机器上是这样 -- 虚拟机将总执行时间的70%花费在这个函数的*一行*代码上。能猜到是哪一行吗？猜不到？是这一行：
 
 ```c
   uint32_t index = key->hash % capacity;
@@ -723,7 +723,7 @@ style. The few pieces of code that care about the details of the value
 representation -- mainly the handful of macros for wrapping and unwrapping
 Values -- vary based on whether this flag is set. The rest of the VM can
 continue along its merry way.
-如果定义了这个值，虚拟机就会使用新的形式。否则，它就会恢复旧的风格。少数关心值表示形式细节的几段代码——主要是用于包装和解包Value的少数几个宏——会根据这个标志是否被设置而有所不同。虚拟机的其它部分可以继续快乐的旅程。
+如果定义了这个值，虚拟机就会使用新的形式。否则，它就会恢复旧的风格。少数关心值表示形式细节的几段代码 -- 主要是用于包装和解包Value的少数几个宏 -- 会根据这个标志是否被设置而有所不同。虚拟机的其它部分可以继续快乐的旅程。
 
 Most of the work happens in the "value" module where we add a section for the
 new type.
@@ -756,7 +756,7 @@ NaN boxing. To "convert" a C double to a NaN-boxed clox Value, we don't need to
 touch a single bit -- the representation is exactly the same. But we do need to
 convince our C compiler of that fact, which we made harder by defining Value to
 be uint64_t.
-我们会从数字开始，因为它们在NaN装箱方式中有最直接的表示形式。要将C语言中的double“转换”为一个NaN装箱后的clox Value，我们不需要改动任何一个比特——其表示方式是完全相同的。但我们确实需要说服我们的C编译器相信这一事实，我们将Value定义为uint64_t使之变得更加困难。
+我们会从数字开始，因为它们在NaN装箱方式中有最直接的表示形式。要将C语言中的double“转换”为一个NaN装箱后的clox Value，我们不需要改动任何一个比特 -- 其表示方式是完全相同的。但我们确实需要说服我们的C编译器相信这一事实，我们将Value定义为uint64_t使之变得更加困难。
 
 We need to get the compiler to take a set of bits that it thinks are a double
 and use those same bits as a uint64_t, or vice versa. This is called **type
@@ -784,7 +784,7 @@ drastically limits the amount of code the compiler is free to rearrange.
 To avoid that, compilers want to assume **strict aliasing** -- pointers of
 incompatible types cannot point to the same value. Type punning, by nature,
 breaks that assumption.
-为了避免这种情况，编译器希望采用 **严格别名** ——不兼容类型的指针不能指向相同的值。类型双关，从本质上来说，打破了这种假设。
+为了避免这种情况，编译器希望采用 **严格别名** -- 不兼容类型的指针不能指向相同的值。类型双关，从本质上来说，打破了这种假设。
 
 </aside>
 
@@ -961,7 +961,7 @@ Since we know there are exactly two Boolean bit representations in Lox -- unlike
 in C where any non-zero value can be considered "true" -- if it ain't `true`, it
 must be `false`. This macro does assume you call it only on a Value that you
 know *is* a Lox Boolean. To check that, there's one more macro.
-因为我们知道在Lox中正好有两个Boolean的位表示形式——不像C语言中，任何非零值都可以被认为是“true”——如果它不是`true`，就一定是`false`。这个宏假设你只会在明知是Lox布尔值类型的Value上调用该方法。为了检查这一点，还有一个宏。
+因为我们知道在Lox中正好有两个Boolean的位表示形式 -- 不像C语言中，任何非零值都可以被认为是“true” -- 如果它不是`true`，就一定是`false`。这个宏假设你只会在明知是Lox布尔值类型的Value上调用该方法。为了检查这一点，还有一个宏。
 
 ^code is-bool (2 before, 1 after)
 
@@ -1011,7 +1011,7 @@ numbers -- it's right there in the name -- the sign bit isn't used for anything.
 We'll go ahead and use that as the type tag for objects. If one of our quiet
 NaNs has its sign bit set, then it's an Obj pointer. Otherwise, it must be one
 of the previous singleton values.
-我们用于单例值的标签比特位处于我决定存储指针本身的区域，所以我们不能轻易地在那里使用不同的位来表明该值是一个对象引用。不过，还有一个位我们没有用到。因为所有的NaN值都不是数字——正如其名——符号位没有任何用途。我们会继续使用它来作为对象的类型标签。如果某个静默NaN的符号位被置为1，那么它就是一个Obj指针。否则，它一定是前面的单例值之一。
+我们用于单例值的标签比特位处于我决定存储指针本身的区域，所以我们不能轻易地在那里使用不同的位来表明该值是一个对象引用。不过，还有一个位我们没有用到。因为所有的NaN值都不是数字 -- 正如其名 -- 符号位没有任何用途。我们会继续使用它来作为对象的类型标签。如果某个静默NaN的符号位被置为1，那么它就是一个Obj指针。否则，它一定是前面的单例值之一。
 
 <aside name="ptr">
 
@@ -1126,7 +1126,7 @@ values since each has a unique bit representation and they are only equal to
 themselves. It also does the right thing for Obj pointers, since objects use
 identity for equality -- two Obj references are equal only if they point to the
 exact same object.
-没有比这更简单的了！如果两个比特表示形式是相同的，则值就是相等的。这对于单例值来说是正确的，因为每个单例值都有唯一的位表示形式，而且它们只等于自己。对于Obj指针，它也做了正确的事情，因为对象使用本体来判断相等——只有当两个Obj指向完全相同的对象时，它们才相等。
+没有比这更简单的了！如果两个比特表示形式是相同的，则值就是相等的。这对于单例值来说是正确的，因为每个单例值都有唯一的位表示形式，而且它们只等于自己。对于Obj指针，它也做了正确的事情，因为对象使用本体来判断相等 -- 只有当两个Obj指向完全相同的对象时，它们才相等。
 
 It's *mostly* correct for numbers too. Most floating-point numbers with
 different bit representations are distinct numeric values. Alas, IEEE 754
@@ -1160,7 +1160,7 @@ every time we check two Lox values for equality. If we are willing to sacrifice
 a little <span name="java">compatibility</span> -- who *really* cares if NaN is
 not equal to itself? -- we could leave this off. I'll leave it up to you to
 decide how pedantic you want to be.
-我知道，这很奇怪。而且每次我们检查两个Lox值是否相等时，都要进行这种类型测试，这是有性能代价的。如果我们愿意牺牲一点兼容性——谁会*真正*关心NaN是否等于其本身呢？——我们可以忽略它。我把这个问题留给你，看看你想要有多“迂腐”。
+我知道，这很奇怪。而且每次我们检查两个Lox值是否相等时，都要进行这种类型测试，这是有性能代价的。如果我们愿意牺牲一点兼容性 -- 谁会*真正*关心NaN是否等于其本身呢？ -- 我们可以忽略它。我把这个问题留给你，看看你想要有多“迂腐”。
 
 <aside name="java">
 
@@ -1234,7 +1234,7 @@ for a toy language like Lox. Then we can measure the aggregate performance
 changes across all of those. I did my best to cobble together a handful of
 larger Lox programs. On my machine, the new value representation seems to make
 everything roughly 10% faster across the board.
-相反，我们真正需要的是一套更大的基准测试。理想情况下，这些基准测试应该是从真实世界的应用程序中提炼出来的——对于Lox这样的玩具语言来说，不存在这样的东西。然后我们可以测量所有这些测试的总体性能变化。我尽力拼凑了几个较大的Lox程序。在我的机器是，新的值表示形式似乎使所有的代码都全面提高了大约10%。
+相反，我们真正需要的是一套更大的基准测试。理想情况下，这些基准测试应该是从真实世界的应用程序中提炼出来的 -- 对于Lox这样的玩具语言来说，不存在这样的东西。然后我们可以测量所有这些测试的总体性能变化。我尽力拼凑了几个较大的Lox程序。在我的机器是，新的值表示形式似乎使所有的代码都全面提高了大约10%。
 
 That's not a huge improvement, especially compared to the profound effect of
 making hash table lookups faster. I added this optimization in large part
@@ -1289,7 +1289,7 @@ This goes for other domains too. I don't think there's a single topic I've
 learned in programming -- or even outside of programming -- that I haven't ended
 up finding useful in other areas. One of my favorite aspects of software
 engineering is how much it rewards those with eclectic interests.
-这也适用于其它领域。我认为我在编程中所学到的任何一个主题——甚至在编程之外——最终都发现在其它领域中是有用的。我最喜欢软件工程的一个方面正是它对那些兴趣广泛的人的助益。
+这也适用于其它领域。我认为我在编程中所学到的任何一个主题 -- 甚至在编程之外 -- 最终都发现在其它领域中是有用的。我最喜欢软件工程的一个方面正是它对那些兴趣广泛的人的助益。
 
 </aside>
 

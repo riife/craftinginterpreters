@@ -129,7 +129,7 @@ Instead of a union with cases for each type, each type is its own separate
 struct. The tricky part is how to treat these structs uniformly since C has no
 concept of inheritance or polymorphism. I'll explain that soon, but first lets
 get the preliminary stuff out of the way.
-与带标签的联合体一样，每个Obj开头都是一个标签字段，用于识别它是什么类型的对象——字符串、实例，等等。接下来是有效载荷字段。每种类型都有自己单独的结构，而不是各类型结构的联合体。棘手的部分是如何统一处理这些结构，因为C没有继承或多态的概念。我很快就会对此进行解释，但是首先让我们先弄清楚一些基本的东西。
+与带标签的联合体一样，每个Obj开头都是一个标签字段，用于识别它是什么类型的对象 -- 字符串、实例，等等。接下来是有效载荷字段。每种类型都有自己单独的结构，而不是各类型结构的联合体。棘手的部分是如何统一处理这些结构，因为C没有继承或多态的概念。我很快就会对此进行解释，但是首先让我们先弄清楚一些基本的东西。
 
 The name "Obj" itself refers to a struct that contains the state shared across
 all object types. It's sort of like the "base class" for objects. Because of
@@ -192,7 +192,7 @@ Note how the first bytes of ObjString exactly line up with Obj. This is not a
 coincidence -- C <span name="spec">mandates</span> it. This is designed to
 enable a clever pattern: You can take a pointer to a struct and safely convert
 it to a pointer to its first field and back.
-注意ObjString的第一个字节是如何与Obj精确对齐的。这并非巧合——是C语言强制要求的。这是为实现一个巧妙的模式而设计的：你可以接受一个指向结构体的指针，并安全地将其转换为指向其第一个字段的指针，反之亦可。
+注意ObjString的第一个字节是如何与Obj精确对齐的。这并非巧合 -- 是C语言强制要求的。这是为实现一个巧妙的模式而设计的：你可以接受一个指向结构体的指针，并安全地将其转换为指向其第一个字段的指针，反之亦可。
 
 <aside name="spec">
 
@@ -389,7 +389,7 @@ Then it initializes the Obj state -- right now, that's just the type tag. This
 function returns to `allocateString()`, which finishes initializing the ObjString
 fields. <span name="viola">*Voilà*</span>, we can compile and execute string
 literals.
-然后它初始化Obj状态——现在这只是个类型标签。这个函数会返回到 `allocateString()`，它来完成对ObjString字段的初始化。就是这样，我们可以编译和执行字符串字面量了。
+然后它初始化Obj状态 -- 现在这只是个类型标签。这个函数会返回到 `allocateString()`，它来完成对ObjString字段的初始化。就是这样，我们可以编译和执行字符串字面量了。
 
 <aside name="viola">
 
@@ -475,7 +475,7 @@ Full-grown languages provide lots of operations for working with strings --
 access to individual characters, the string's length, changing case, splitting,
 joining, searching, etc. When you implement your language, you'll likely want
 all that. But for this book, we keep things *very* minimal.
-成熟的语言都提供了很多处理字符串的操作——访问单个字符、字符串长度、改变大小写、分割、连接、搜索等。当你实现自己的语言时，你可能会想要所有这些。但是在本书中，我们还是让事情保持简单。
+成熟的语言都提供了很多处理字符串的操作 -- 访问单个字符、字符串长度、改变大小写、分割、连接、搜索等。当你实现自己的语言时，你可能会想要所有这些。但是在本书中，我们还是让事情保持简单。
 
 The only interesting operation we support on strings is `+`. If you use that
 operator on two string objects, it produces a new string that's a concatenation
@@ -649,7 +649,7 @@ We could define a separate linked list node struct but then we'd have to
 allocate those too. Instead, we'll use an **intrusive list** -- the Obj struct
 itself will be the linked list node. Each Obj gets a pointer to the next Obj in
 the chain.
-我们可以定义一个单独的链表节点结构体，但那样我们也必须分配这些节点。相反，我们会使用**侵入式列表**——Obj结构体本身将作为链表节点。每个Obj都有一个指向链中下一个Obj的指针。
+我们可以定义一个单独的链表节点结构体，但那样我们也必须分配这些节点。相反，我们会使用**侵入式列表** -- Obj结构体本身将作为链表节点。每个Obj都有一个指向链中下一个Obj的指针。
 
 ^code next-field (2 before, 1 after)
 
@@ -769,7 +769,7 @@ languages: the venerable [hash table][]. But that's for the next chapter...
     performance. A more efficient solution relies on a technique called
     **[flexible array members][]**. Use that to store the ObjString and its
     character array in a single contiguous allocation.
-    每个字符串都需要两次单独的动态分配——一个是ObjString，另一个是字符数组。从一个值中访问字符需要两个指针间接访问，这对性能是不利的。一个更有效的解决方案是依靠一种名为[**灵活数组成员**](https://en.wikipedia.org/wiki/Flexible_array_member)的技术。用该方法将ObjString和它的字符数据存储在一个连续分配的内存中。
+    每个字符串都需要两次单独的动态分配 -- 一个是ObjString，另一个是字符数组。从一个值中访问字符需要两个指针间接访问，这对性能是不利的。一个更有效的解决方案是依靠一种名为[**灵活数组成员**](https://en.wikipedia.org/wiki/Flexible_array_member)的技术。用该方法将ObjString和它的字符数据存储在一个连续分配的内存中。
 
 2.  When we create the ObjString for each string literal, we copy the characters
     onto the heap. That way, when the string is later freed, we know it is safe
@@ -919,7 +919,7 @@ scripting language [Wren][], I went with UTF-8 and code points.
 
 <div class="design-note">
 
-在本书中，我尽量不回避你在真正的语言实现中会遇到的棘手问题。我们也许并不总是使用最复杂的解决方案——毕竟这只是一本入门书——但我认为假装问题根本不存在是不诚实的。但是，我们确实绕过了一个非常棘手的难题：决定如何表示字符串。
+在本书中，我尽量不回避你在真正的语言实现中会遇到的棘手问题。我们也许并不总是使用最复杂的解决方案 -- 毕竟这只是一本入门书 -- 但我认为假装问题根本不存在是不诚实的。但是，我们确实绕过了一个非常棘手的难题：决定如何表示字符串。
 
 字符串编码有两个方面：
 
@@ -935,7 +935,7 @@ scripting language [Wren][], I went with UTF-8 and code points.
 
   即使是这么长的码点列表，也不足以表示一种语言可能支持的每个可见字形。为了处理这个问题，Unicode还有一些组合字符，可以修改前面的码点。例如，“a”后面跟组合字符“¨”，就可以得到“ä”。（为了使事情更混乱，Unicode也有一个看起来像“ä”的单一码点）
 
-  如果用户访问“naïve”中的第四个“字符”，他们希望得到的是“v”还是“¨”？前者意味着他们把每个码点及其组合符看着一个单元——Unicode称之为扩展的字母簇，后者意味着它们以单独的码点来思考。你的用户期望的是哪一种？
+  如果用户访问“naïve”中的第四个“字符”，他们希望得到的是“v”还是“¨”？前者意味着他们把每个码点及其组合符看着一个单元 -- Unicode称之为扩展的字母簇，后者意味着它们以单独的码点来思考。你的用户期望的是哪一种？
 
 * 单一单元在内存中是如何表示的？大多数使用ASCII的系统给每个字符分配一个字节，高位不使用。Unicode有几种常见的编码方式。UTF-16将大多数码点打包成16比特。当每个码点都在这个范围内时，是很好的。当码点溢出时，它们增加了*代理对*，使用多个16比特码来表示一个码点。UTF-32是UTF-16的进一步演变，它为每个码点都提供了完整的32比特。
 
@@ -954,9 +954,9 @@ name="python_zh">完美</span>的解决方案：
 * ASCII内存效率高，速度快，但它把非拉丁语系的语言踢到了一边。
 * UTF-32速度快，并且支持整个Unicode范围，但考虑到大多数码点往往都位于较低的值范围内，不需要完整的32比特，所以浪费了大量的内存。
 * UTF-8的内存效率高，支持整个Unicode范围，但是它的可变长度编码使得在访问任意码点时速度很慢。
-* UTF-16比所有这些都糟糕——这是Unicode超出其早期16比特范围的丑陋后果。它的内存效率低于UTF-8，但由于代理对的存在，它仍然是一种可变长度的编码。尽量避免使用它。唉，如果你的语言需要在浏览器、JVM或CLR上运行或与之交互，你也许就只能用它了，因为这些系统的字符串都使用UTF-16，而你并不想每次向底层系统传递字符串时都进行转换。
+* UTF-16比所有这些都糟糕 -- 这是Unicode超出其早期16比特范围的丑陋后果。它的内存效率低于UTF-8，但由于代理对的存在，它仍然是一种可变长度的编码。尽量避免使用它。唉，如果你的语言需要在浏览器、JVM或CLR上运行或与之交互，你也许就只能用它了，因为这些系统的字符串都使用UTF-16，而你并不想每次向底层系统传递字符串时都进行转换。
 
-一种选择是采取最大限度的方法，做“最正确”的事情。支持所有的Unicode码点。在内部，根据每个字符串的内容选择编码——如果每个码点都在一个字节内，就使用ASCII；如果没有代理对，就使用UTF-16，等等。提供API，让用户对码点和扩展字母簇进行遍历。
+一种选择是采取最大限度的方法，做“最正确”的事情。支持所有的Unicode码点。在内部，根据每个字符串的内容选择编码 -- 如果每个码点都在一个字节内，就使用ASCII；如果没有代理对，就使用UTF-16，等等。提供API，让用户对码点和扩展字母簇进行遍历。
 
 这涵盖了所有的基础，但真的很复杂。需要实现、调试和优化的东西很多。当序列化字符串或与其它系统进行交互时，你必须处理所有的编码。用户需要理解这两种索引API，并知道何时使用哪一种。这是较新的大型语言倾向于采取的方法，比如Raku和Swift。
 

@@ -121,7 +121,7 @@ functions when resolving a variable.
 stores locals on a stack. We used a stack because I claimed locals have stack
 semantics<span class="em">&mdash;</span>variables are discarded in the reverse order that they are created.
 But with closures, that&rsquo;s only <em>mostly</em> true.
-这个问题在clox中比在jlox中更难解决，因为我们的字节码虚拟机将局部变量存储在栈中。我们使用堆栈是因为，我声称局部变量具有栈语义——变量被丢弃的顺序与创建的顺序正好相反。但对于闭包来说，这只在大部分情况下是正确的。</p>
+这个问题在clox中比在jlox中更难解决，因为我们的字节码虚拟机将局部变量存储在栈中。我们使用堆栈是因为，我声称局部变量具有栈语义<span class="em">&mdash;</span>变量被丢弃的顺序与创建的顺序正好相反。但对于闭包来说，这只在大部分情况下是正确的。</p>
 <div class="codehilite"><pre><span class="k">fun</span> <span class="i">makeClosure</span>() {
   <span class="k">var</span> <span class="i">local</span> = <span class="s">&quot;local&quot;</span>;
   <span class="k">fun</span> <span class="i">closure</span>() {
@@ -190,7 +190,7 @@ compile time.
 <aside name="literal">
 <p>In other words, a function declaration in Lox <em>is</em> a kind of literal<span class="em">&mdash;</span>a piece
 of syntax that defines a constant value of a built-in type.
-换句话说，Lox中的函数声明是一种字面量——定义某个内置类型的常量值的一段语法。</p>
+换句话说，Lox中的函数声明是一种字面量<span class="em">&mdash;</span>定义某个内置类型的常量值的一段语法。</p>
 </aside>
 <p>That made sense because all of the data that composes a function is known at
 compile time: the chunk of bytecode compiled from the function&rsquo;s body, and the
@@ -300,7 +300,7 @@ reference the same function, and none of them claims any special privilege over
 it. We can&rsquo;t free the ObjFunction until <em>all</em> objects referencing it are gone<span class="em">&mdash;</span>including even the surrounding function whose constant table contains it.
 Tracking that sounds tricky, and it is! That&rsquo;s why we&rsquo;ll write a garbage
 collector soon to manage it for us.
-我们只释放ObjClosure本身，而不释放ObjFunction。这是因为闭包不<em>拥有</em>函数。可能会有多个闭包都引用了同一个函数，但没有一个闭包声称对该函数有任何特殊的权限。我们不能释放某个ObjFunction，直到引用它的<em>所有</em>对象全部消失——甚至包括那些常量表中包含该函数的外围函数。要跟踪这个信息听起来很棘手，事实也的确如此！这就是我们很快就会写一个垃圾收集器来管理它们的原因。</p>
+我们只释放ObjClosure本身，而不释放ObjFunction。这是因为闭包不<em>拥有</em>函数。可能会有多个闭包都引用了同一个函数，但没有一个闭包声称对该函数有任何特殊的权限。我们不能释放某个ObjFunction，直到引用它的<em>所有</em>对象全部消失<span class="em">&mdash;</span>甚至包括那些常量表中包含该函数的外围函数。要跟踪这个信息听起来很棘手，事实也的确如此！这就是我们很快就会写一个垃圾收集器来管理它们的原因。</p>
 <p>We also have the usual <span name="macro">macros</span> for checking a value&rsquo;s
 type.
 我们还有用于检查值类型的常用宏。</p>
@@ -398,13 +398,13 @@ in <em>disassembleInstruction</em>()</div>
 of the chapter, you&rsquo;ll discover that <code>OP_CLOSURE</code> is quite an unusual
 instruction. It&rsquo;s straightforward right now<span class="em">&mdash;</span>just a single byte operand<span class="em">&mdash;</span>but
 we&rsquo;ll be adding to it. This code here anticipates that future.
-这里做的事情比我们通常在反汇编程序中看到的要多。在本章结束时，你会发现<code>OP_CLOSURE</code>是一个相当不寻常的指令。它现在很简单——只有一个单字节的操作数——但我们会增加它的内容。这里的代码预示了未来。</p>
+这里做的事情比我们通常在反汇编程序中看到的要多。在本章结束时，你会发现<code>OP_CLOSURE</code>是一个相当不寻常的指令。它现在很简单<span class="em">&mdash;</span>只有一个单字节的操作数<span class="em">&mdash;</span>但我们会增加它的内容。这里的代码预示了未来。</p>
 <h3><a href="#解释函数声明" id="解释函数声明"><small>25&#8202;.&#8202;1&#8202;.&#8202;2</small>解释函数声明</a></h3>
 <p>Most of the work we need to do is in the runtime. We have to handle the new
 instruction, naturally. But we also need to touch every piece of code in the VM
 that works with ObjFunction and change it to use ObjClosure instead<span class="em">&mdash;</span>function
 calls, call frames, etc. We&rsquo;ll start with the instruction, though.
-我们需要做的大部分工作是在运行时。我们必须处理新的指令，这是自然的。但是我们也需要触及虚拟机中每一段使用ObjFunction的代码，并将其改为使用ObjClosure——函数调用、调用帧，等等。不过，我们会从指令开始。</p>
+我们需要做的大部分工作是在运行时。我们必须处理新的指令，这是自然的。但是我们也需要触及虚拟机中每一段使用ObjFunction的代码，并将其改为使用ObjClosure<span class="em">&mdash;</span>函数调用、调用帧，等等。不过，我们会从指令开始。</p>
 <div class="codehilite"><pre class="insert-before">      }
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -655,7 +655,7 @@ variable in that function, we assume the variable must be a global. We don&rsquo
 consider the local scopes of enclosing functions<span class="em">&mdash;</span>they get skipped right over.
 The first change, then, is inserting a resolution step for those outer local
 scopes.
-目前，当编译器解析一个标识符时，它会从最内层到最外层遍历当前函数的块作用域。如果我们没有在函数中找到该变量，我们就假定该变量一定是一个全局变量。我们不考虑封闭函数的局部作用域——它们会被直接跳过。那么，第一个变化就是为这些外围局部作用域插入一个解析步骤。</p>
+目前，当编译器解析一个标识符时，它会从最内层到最外层遍历当前函数的块作用域。如果我们没有在函数中找到该变量，我们就假定该变量一定是一个全局变量。我们不考虑封闭函数的局部作用域<span class="em">&mdash;</span>它们会被直接跳过。那么，第一个变化就是为这些外围局部作用域插入一个解析步骤。</p>
 <div class="codehilite"><pre class="insert-before">  if (arg != -1) {
     getOp = OP_GET_LOCAL;
     setOp = OP_SET_LOCAL;
@@ -996,7 +996,7 @@ function. We do that by recursively calling <code>resolveUpvalue()</code> on the
 calls works its way along the chain of nested compilers until it hits one of
 the base cases<span class="em">&mdash;</span>either it finds an actual local variable to capture or it
 runs out of compilers.
-否则，我们会在紧邻的函数之外寻找局部变量。我们通过递归地对外层编译器（而不是当前编译器）调用<code>resolveUpvalue()</code>来实现这一点。这一系列的<code>resolveUpvalue()</code>调用沿着嵌套的编译器链运行，直到遇见基本情况——要么找到一个事件的局部变量来捕获，要么是遍历完了所有编译器。</p>
+否则，我们会在紧邻的函数之外寻找局部变量。我们通过递归地对外层编译器（而不是当前编译器）调用<code>resolveUpvalue()</code>来实现这一点。这一系列的<code>resolveUpvalue()</code>调用沿着嵌套的编译器链运行，直到遇见基本情况<span class="em">&mdash;</span>要么找到一个事件的局部变量来捕获，要么是遍历完了所有编译器。</p>
 <p>When a local variable is found, the most deeply <span name="outer">nested</span>
 call to <code>resolveUpvalue()</code> captures it and returns the upvalue index. That
 returns to the next call for the inner function declaration. That call captures
@@ -1251,7 +1251,7 @@ upvalues, so we need a dynamic array. The upvalues themselves are dynamically
 allocated too, so we end up with a double pointer<span class="em">&mdash;</span>a pointer to a dynamically
 allocated array of pointers to upvalues. We also store the number of elements in
 the array.
-不同的闭包可能会有不同数量的上值，所以我们需要一个动态数组。上值本身也是动态分配的，因此我们最终需要一个二级指针——一个指向动态分配的上值指针数组的指针。我们还会存储数组中的元素数量。</p>
+不同的闭包可能会有不同数量的上值，所以我们需要一个动态数组。上值本身也是动态分配的，因此我们最终需要一个二级指针<span class="em">&mdash;</span>一个指向动态分配的上值指针数组的指针。我们还会存储数组中的元素数量。</p>
 <aside name="count">
 <p>Storing the upvalue count in the closure is redundant because the ObjFunction
 that the ObjClosure references also keeps that count. As usual, this weird code
@@ -1542,7 +1542,7 @@ have reported an error if any code tried to use it.
 <aside name="after">
 <p>By &ldquo;after&rdquo; here, I mean in the lexical or textual sense<span class="em">&mdash;</span>code past the <code>}</code>
 for the block containing the declaration of the closed-over variable.
-这里 的“之后”，指的是词法或文本意义上的——在包含关闭变量的声明语句的代码块的<code>}</code>之后的代码。</p>
+这里 的“之后”，指的是词法或文本意义上的<span class="em">&mdash;</span>在包含关闭变量的声明语句的代码块的<code>}</code>之后的代码。</p>
 </aside>
 <p>The compiler already emits an <code>OP_POP</code> instruction when a local variable goes
 out of scope. If a variable is captured by a closure, we will instead emit a
@@ -1935,7 +1935,7 @@ those instructions to check some flag for whether the upvalue is open or closed.
 dereference the <code>location</code> pointer to get to the variable&rsquo;s value. When the
 variable moves from the stack to the <code>closed</code> field, we simply update that
 <code>location</code> to the address of the ObjUpvalue&rsquo;s <em>own</em> <code>closed</code> field.
-但是已经有一个中间层在起作用了——这些指令对<code>location</code>指针解引用以获取变量的值。当变量从栈移动到<code>closed</code>字段时，我们只需将<code>location</code>更新为ObjUpvalue<em>自己的</em><code>closed</code>字段。</p>
+但是已经有一个中间层在起作用了<span class="em">&mdash;</span>这些指令对<code>location</code>指针解引用以获取变量的值。当变量从栈移动到<code>closed</code>字段时，我们只需将<code>location</code>更新为ObjUpvalue<em>自己的</em><code>closed</code>字段。</p>
 <aside name="cool">
 <p>I&rsquo;m not praising myself here. This is all the Lua dev team&rsquo;s innovation.
 我并不是在自夸。这都是Lua开发团队的创新。</p>
@@ -1998,7 +1998,7 @@ long as they are needed by the functions that capture them.
 environment representation. In clox, we had to add a lot of code<span class="em">&mdash;</span>new bytecode
 instructions, more data structures in the compiler, and new runtime objects. The
 VM very much treats variables in closures as different from other variables.
-这是一项艰巨的工作！在jlox中，闭包很自然地从我们的环境表示形式中分离出来。在clox中，我们必须添加大量的代码——新的字节码指令、编译器中的更多数据结构和新的运行时对象。VM在很大程度上将闭包中的变量与其它变量进行区别对待。</p>
+这是一项艰巨的工作！在jlox中，闭包很自然地从我们的环境表示形式中分离出来。在clox中，我们必须添加大量的代码<span class="em">&mdash;</span>新的字节码指令、编译器中的更多数据结构和新的运行时对象。VM在很大程度上将闭包中的变量与其它变量进行区别对待。</p>
 <p>There is a rationale for that. In terms of implementation complexity, jlox gave
 us closures &ldquo;for free&rdquo;. But in terms of <em>performance</em>, jlox&rsquo;s closures are
 anything but. By allocating <em>all</em> environments on the heap, jlox pays a

@@ -134,7 +134,7 @@ inheritance tree like a family tree with the root at the top<span class="em">&md
 below their superclasses on the diagram. More generally, &ldquo;sub-&rdquo; refers to things
 that refine or are contained by some more general concept. In zoology, a
 subclass is a finer categorization of a larger class of living things.
-&ldquo;Super-&rdquo; 和 &ldquo;sub-&rdquo; 在拉丁语中表示 &ldquo;上面&rdquo; 和 &ldquo;下面&rdquo; 。把继承树想象成一个根在顶部的家族树——在这个图上，子类就在超类的下面。更一般地说，&ldquo;sub-&rdquo; 指的是细化或被更一般的概念所包含的事物。在动物学中，子类指的是对更大的生物类的一个精细分类。在集合论中，子集被一个更大的超集包含，该超集中包含子集的所有元素，可能还有更多元素。集合论和编程语言在类型论中相遇，就产生了 &ldquo;超类&rdquo; 和 &ldquo;子类&rdquo; 。在静态类型的面向对象语言中，一个子类通常也是其超类的一个子类。</p>
+&ldquo;Super-&rdquo; 和 &ldquo;sub-&rdquo; 在拉丁语中表示 &ldquo;上面&rdquo; 和 &ldquo;下面&rdquo; 。把继承树想象成一个根在顶部的家族树<span class="em">&mdash;</span>在这个图上，子类就在超类的下面。更一般地说，&ldquo;sub-&rdquo; 指的是细化或被更一般的概念所包含的事物。在动物学中，子类指的是对更大的生物类的一个精细分类。在集合论中，子集被一个更大的超集包含，该超集中包含子集的所有元素，可能还有更多元素。集合论和编程语言在类型论中相遇，就产生了 &ldquo;超类&rdquo; 和 &ldquo;子类&rdquo; 。在静态类型的面向对象语言中，一个子类通常也是其超类的一个子类。</p>
 <p>In set theory, a subset is contained by a larger superset which has all of the
 elements of the subset and possibly more. Set theory and programming languages
 meet each other in type theory. There, you have &ldquo;supertypes&rdquo; and &ldquo;subtypes&rdquo;.
@@ -370,7 +370,7 @@ Lox是一种动态类型的语言，所以我们的要求要简单得多。基�
 <p>This lines up with one of the goals of inheritance<span class="em">&mdash;</span>to give users a way to
 reuse code across classes. Implementing this in our interpreter is
 astonishingly easy.
-这符合继承的目标之一——为用户提供一种跨类重用代码的方式。在我们的解释器中实现这一点是非常容易的。</p>
+这符合继承的目标之一<span class="em">&mdash;</span>为用户提供一种跨类重用代码的方式。在我们的解释器中实现这一点是非常容易的。</p>
 <div class="codehilite"><pre class="insert-before">      return methods.get(name);
     }
 
@@ -683,7 +683,7 @@ LoxClass object for the superclass which we have now that we are in the runtime.
 Then we create the LoxFunctions for each method. Those will capture the current
 environment<span class="em">&mdash;</span>the one where we just bound &ldquo;super&rdquo;<span class="em">&mdash;</span>as their closure, holding
 on to the superclass like we need. Once that&rsquo;s done, we pop the environment.
-在这个环境中，我们保存指向超类的引用——即我们在运行时现在拥有的超类的实际LoxClass对象。然后我们为每个方法创建LoxFunction。这些函数将捕获当前环境（也就是我们刚刚绑定“super”的那个）作为其闭包，像我们需要的那样维系着超类。一旦这些完成，我们就弹出环境。</p>
+在这个环境中，我们保存指向超类的引用<span class="em">&mdash;</span>即我们在运行时现在拥有的超类的实际LoxClass对象。然后我们为每个方法创建LoxFunction。这些函数将捕获当前环境（也就是我们刚刚绑定“super”的那个）作为其闭包，像我们需要的那样维系着超类。一旦这些完成，我们就弹出环境。</p>
 <div class="codehilite"><pre class="insert-before">    LoxClass klass = new LoxClass(stmt.name.lexeme,
         (LoxClass)superclass, methods);
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
@@ -915,7 +915,7 @@ superclass and that&rsquo;s the only way to reuse methods across classes. Other
 languages have explored a variety of ways to more freely reuse and share
 capabilities across classes: mixins, traits, multiple inheritance, virtual
 inheritance, extension methods, etc.
-Lox只支持<em>单继承</em>——一个类可以有一个超类，这是唯一跨类复用方法的方式。其它语言中已经探索出了各种方法来更自由地跨类重用和共享功能：mixins, traits, multiple inheritance, virtual inheritance, extension methods, 等等。</p>
+Lox只支持<em>单继承</em><span class="em">&mdash;</span>一个类可以有一个超类，这是唯一跨类复用方法的方式。其它语言中已经探索出了各种方法来更自由地跨类重用和共享功能：mixins, traits, multiple inheritance, virtual inheritance, extension methods, 等等。</p>
 <p>If you were to add some feature along these lines to Lox, which would you
 pick and why? If you&rsquo;re feeling courageous (and you should be at this
 point), go ahead and add it.
@@ -925,7 +925,7 @@ point), go ahead and add it.
 <p>In Lox, as in most other object-oriented languages, when looking up a
 method, we start at the bottom of the class hierarchy and work our way up<span class="em">&mdash;</span>a subclass&rsquo;s method is preferred over a superclass&rsquo;s. In order to get to the
 superclass method from within an overriding method, you use <code>super</code>.
-在Lox中，与其它大多数面向对象语言一样，当查找一个方法时，我们从类的底层开始向上查找——子类的方法优先于超类的方法。为了在覆盖方法中访问超类方法，你可以使用<code>super</code>。</p>
+在Lox中，与其它大多数面向对象语言一样，当查找一个方法时，我们从类的底层开始向上查找<span class="em">&mdash;</span>子类的方法优先于超类的方法。为了在覆盖方法中访问超类方法，你可以使用<code>super</code>。</p>
 <p>The language <a href="https://beta.cs.au.dk/">BETA</a> takes the <a href="http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/">opposite approach</a>. When you call a
 method, it starts at the <em>top</em> of the class hierarchy and works <em>down</em>. A
 superclass method wins over a subclass method. In order to get to the

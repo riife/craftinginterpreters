@@ -135,7 +135,7 @@ that produce the same semantics. Many languages split those two roles into two
 separate <span name="passes">passes</span> in the implementation. A parser
 produces an AST -- just like jlox does -- and then a code generator traverses
 the AST and outputs target code.
-一个编译器大约有两项工作。它会解析用户的源代码以理解其含义。然后，它利用这些知识并输出产生相同语义的低级指令。许多语言在实现中将这两个角色分成两遍独立的执行部分。一个解析器生成AST——就像jlox那样——还有一个代码生成器遍历AST并输出目标代码。
+一个编译器大约有两项工作。它会解析用户的源代码以理解其含义。然后，它利用这些知识并输出产生相同语义的低级指令。许多语言在实现中将这两个角色分成两遍独立的执行部分。一个解析器生成AST -- 就像jlox那样 -- 还有一个代码生成器遍历AST并输出目标代码。
 
 <aside name="passes">
 
@@ -145,7 +145,7 @@ order them to squeeze the most performance out of the compiler -- since the
 optimizations often interact in complex ways -- is somewhere between an "open
 area of research" and a "dark art".
 
-事实上，大多数复杂的优化编译器都不止两遍执行过程。不仅要确定需要进行哪些优化，还要确定如何安排它们的顺序——因为优化往往以复杂的方式相互作用——这是介于“开放的研究领域”和“黑暗的艺术”之间的问题。
+事实上，大多数复杂的优化编译器都不止两遍执行过程。不仅要确定需要进行哪些优化，还要确定如何安排它们的顺序 -- 因为优化往往以复杂的方式相互作用 -- 这是介于“开放的研究领域”和“黑暗的艺术”之间的问题。
 
 </aside>
 
@@ -179,7 +179,7 @@ matching expected token types, etc. And it also has functions for code gen --
 emitting bytecode and adding constants to the destination chunk. (And it means
 I'll use "parsing" and "compiling" interchangeably throughout this and later
 chapters.)
-在实践中，这意味着我们的“编译器”C模块具有你在jlox中认识到的解析功能——消费标识，匹配期望的标识类型，等等。而且它还具有代码生成的功能——生成字节码和向目标块中添加常量。（这也意味着我会在本章和后面的章节中交替使用“解析”和“编译”。）
+在实践中，这意味着我们的“编译器”C模块具有你在jlox中认识到的解析功能 -- 消费标识，匹配期望的标识类型，等等。而且它还具有代码生成的功能 -- 生成字节码和向目标块中添加常量。（这也意味着我会在本章和后面的章节中交替使用“解析”和“编译”。）
 
 We'll build the parsing and code generation halves first. Then we'll stitch them
 together with the code in the middle that uses Pratt's technique to parse Lox's
@@ -513,7 +513,7 @@ lower-precedence expression where a higher precedence is expected. Thus, it has
 no runtime semantics on its own and therefore doesn't emit any bytecode. The
 inner call to `expression()` takes care of generating bytecode for the
 expression inside the parentheses.
-就后端而言，分组表达式实际上没有任何意义。它的唯一功能是语法上的——它允许你在需要高优先级的地方插入一个低优先级的表达式。因此，它本身没有运行时语法，也就不会发出任何字节码。对`expression()`的内部调用负责为括号内的表达式生成字节码。
+就后端而言，分组表达式实际上没有任何意义。它的唯一功能是语法上的 -- 它允许你在需要高优先级的地方插入一个低优先级的表达式。因此，它本身没有运行时语法，也就不会发出任何字节码。对`expression()`的内部调用负责为括号内的表达式生成字节码。
 
 ### 一元取负
 
@@ -547,7 +547,7 @@ So the `OP_NEGATE` instruction should be emitted <span name="line">last</span>.
 This is part of the compiler's job -- parsing the program in the order it
 appears in the source code and rearranging it into the order that execution
 happens.
-所以`OP_NEGATE`指令应该是最后发出的。这也是编译器工作的一部分——按照源代码中的顺序对程序进行解析，并按照执行的顺序对其重新排序。
+所以`OP_NEGATE`指令应该是最后发出的。这也是编译器工作的一部分 -- 按照源代码中的顺序对程序进行解析，并按照执行的顺序对其重新排序。
 
 <aside name="line">
 
@@ -715,7 +715,7 @@ When a prefix parser function is called, the leading token has already been
 consumed. An infix parser function is even more *in medias res* -- the entire
 left-hand operand expression has already been compiled and the subsequent infix
 operator consumed.
-当前缀解析函数被调用时，前缀标识已经被消耗了。中缀解析函数被调用时，情况更进一步——整个左操作数已经被编译，而随后的中缀操作符也已经被消耗掉。
+当前缀解析函数被调用时，前缀标识已经被消耗了。中缀解析函数被调用时，情况更进一步 -- 整个左操作数已经被编译，而随后的中缀操作符也已经被消耗掉。
 
 The fact that the left operand gets compiled first works out fine. It means at
 runtime, that code gets executed first. When it runs, the value it produces will
@@ -842,7 +842,7 @@ C's syntax for function pointer types is so bad that I always hide it behind a
 typedef. I understand the intent behind the syntax -- the whole "declaration
 reflects use" thing -- but I think it was a failed syntactic experiment.
 
-C语言中函数指针类型的语法非常糟糕，所以我总是把它隐藏在类型定义之后。我理解这种语法背后的意图——整个“声明反映使用”之类的——但我认为这是一个失败的语法实验。
+C语言中函数指针类型的语法非常糟糕，所以我总是把它隐藏在类型定义之后。我理解这种语法背后的意图 -- 整个“声明反映使用”之类的 -- 但我认为这是一个失败的语法实验。
 
 </aside>
 
@@ -1050,7 +1050,7 @@ but the foundation is in place.
 1.  To really understand the parser, you need to see how execution threads
     through the interesting parsing functions -- `parsePrecedence()` and the
     parser functions stored in the table. Take this (strange) expression:
-    要真正理解解析器，你需要查看执行线程如何通过有趣的解析函数——`parsePrecedence()`和表格中的解析器函数。以这个（奇怪的）表达式为例：
+    要真正理解解析器，你需要查看执行线程如何通过有趣的解析函数 -- `parsePrecedence()`和表格中的解析器函数。以这个（奇怪的）表达式为例：
 
     ```lox
     (-1 + 2) * 3 - -4

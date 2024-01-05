@@ -12,7 +12,7 @@ compiler, and chunks of bytecode from compiler to VM. We began our
 implementation near the end with [chunks][] and the [VM][]. Now, we're going to
 hop back to the beginning and build a scanner that makes tokens. In the
 [next chapter][], we'll tie the two ends together with our bytecode compiler.
-我们的第二个解释器clox分为三个阶段——扫描器、编译器和虚拟机。每两个阶段之间有一个数据结构进行衔接。词法标识从扫描器流入编译器，字节码块从编译器流向虚拟机。我们是从尾部开始先实现了字节码块和虚拟机。现在，我们要回到起点，构建一个生成词法标识的扫描器。在下一章中，我们将用字节码编译器将这两部分连接起来。
+我们的第二个解释器clox分为三个阶段 -- 扫描器、编译器和虚拟机。每两个阶段之间有一个数据结构进行衔接。词法标识从扫描器流入编译器，字节码块从编译器流向虚拟机。我们是从尾部开始先实现了字节码块和虚拟机。现在，我们要回到起点，构建一个生成词法标识的扫描器。在下一章中，我们将用字节码编译器将这两部分连接起来。
 
 [chunks]: chunks-of-bytecode.html
 [vm]: a-virtual-machine.html
@@ -91,7 +91,7 @@ C语言不仅要求我们显式地管理内存，而且要在精神上管理。�
 I like C's simplicity, but we pay a real price for it -- the language requires
 us to be more conscientious.
 
-我喜欢C语言的简洁，但是我们为此付出了真正的代价——这门语言要求我们更加认真。
+我喜欢C语言的简洁，但是我们为此付出了真正的代价 -- 这门语言要求我们更加认真。
 
 </aside>
 
@@ -141,7 +141,7 @@ to open the file.
 
 This can happen if the file doesn't exist or the user doesn't have access to it.
 It's pretty common -- people mistype paths all the time.
-如果文件不存在或用户没有访问权限，就会发生这种情况。这是很常见的——人们经常会输入错误的路径。
+如果文件不存在或用户没有访问权限，就会发生这种情况。这是很常见的 -- 人们经常会输入错误的路径。
 
 This failure is much rarer:
 下面这种错误要少见得多：
@@ -204,7 +204,7 @@ That signature will change, but it gets us going.
 
 The first phase of compilation is scanning -- the thing we're doing in this
 chapter -- so right now all the compiler does is set that up.
-编译的第一阶段是扫描——即我们在本章中要做的事情——所以现在编译器所做的就是设置扫描。
+编译的第一阶段是扫描 -- 即我们在本章中要做的事情 -- 所以现在编译器所做的就是设置扫描。
 
 ^code compiler-c
 
@@ -278,7 +278,7 @@ them *all* around at the same time. Instead, the simplest solution is to not
 scan a token until the compiler needs one. When the scanner provides one, it
 returns the token by value. It doesn't need to dynamically allocate anything --
 it can just pass tokens around on the C stack.
-在任何时间点，编译器只需要一个或两个词法标识——记住我们的语法只需要前瞻一个词法标识——所以我们不需要同时保留它们。相反，最简单的解决方案是在编译器需要标识的时候再去扫描。当扫描器提供一个标识时，它按值返回标识。它不需要动态分配任何东西——只需要在C栈上传递词法标识即可。
+在任何时间点，编译器只需要一个或两个词法标识 -- 记住我们的语法只需要前瞻一个词法标识 -- 所以我们不需要同时保留它们。相反，最简单的解决方案是在编译器需要标识的时候再去扫描。当扫描器提供一个标识时，它按值返回标识。它不需要动态分配任何东西 -- 只需要在C栈上传递词法标识即可。
 
 Unfortunately, we don't have a compiler yet that can ask the scanner for tokens,
 so the scanner will just sit there doing nothing. To kick it into action, we'll
@@ -296,7 +296,7 @@ that `printf()` call prints the first `token.length` characters of the string at
 `token.start`. We need to limit the length like that because the lexeme points
 into the original source string and doesn't have a terminator at the end.
 
-格式字符串中的`%.*s`是一个很好的特性。通常情况下，你需要在格式字符串中写入一个数字来设置输出精度——要显示的字符数。使用`*`则可以把精度作为一个参数来传递。因此，`printf()`调用将字符串从`token.start`开始的前`token.length`个字符。我们需要这样限制长度，因为词素指向原始的源码字符串，并且在末尾没有终止符。
+格式字符串中的`%.*s`是一个很好的特性。通常情况下，你需要在格式字符串中写入一个数字来设置输出精度 -- 要显示的字符数。使用`*`则可以把精度作为一个参数来传递。因此，`printf()`调用将字符串从`token.start`开始的前`token.length`个字符。我们需要这样限制长度，因为词素指向原始的源码字符串，并且在末尾没有终止符。
 
 </aside>
 
@@ -350,7 +350,7 @@ like this:
 It's pretty similar to jlox's Token class. We have an enum identifying what type
 of token it is -- number, identifier, `+` operator, etc. The enum is virtually
 identical to the one in jlox, so let's just hammer out the whole thing.
-它和jlox中的Token类很相似。我们用一个枚举来标记它是什么类型的词法标识——数字、标识符、`+`运算符等等。这个枚举与jlox中的枚举几乎完全相同，所以我们直接来敲定整个事情。
+它和jlox中的Token类很相似。我们用一个枚举来标记它是什么类型的词法标识 -- 数字、标识符、`+`运算符等等。这个枚举与jlox中的枚举几乎完全相同，所以我们直接来敲定整个事情。
 
 ^code token-type (2 before, 2 after)
 
@@ -371,7 +371,7 @@ each Token stored the lexeme as its own separate little Java string. If we did
 that for clox, we'd have to figure out how to manage the memory for those
 strings. That's especially hard since we pass tokens by value
 -- multiple tokens could point to the same lexeme string. Ownership gets weird.
-在clox的Token类型中，新颖之处在于它如何表示一个词素。在jlox中，每个Token将词素保存到其单独的Java字符串中。如果我们在clox中也这样做，我们就必须想办法管理这些字符串的内存。这非常困难，因为我们是通过值传递词法标识的——多个标识可能指向相同的词素字符串。所有权会变得混乱。
+在clox的Token类型中，新颖之处在于它如何表示一个词素。在jlox中，每个Token将词素保存到其单独的Java字符串中。如果我们在clox中也这样做，我们就必须想办法管理这些字符串的内存。这非常困难，因为我们是通过值传递词法标识的 -- 多个标识可能指向相同的词素字符串。所有权会变得混乱。
 
 Instead, we use the original source string as our character store. We represent
 a lexeme by a pointer to its first character and the number of characters it
@@ -582,7 +582,7 @@ newline will be the current character on the next turn of the outer loop in
 Number and string tokens are special because they have a runtime value
 associated with them. We'll start with strings because they are easy to
 recognize -- they always begin with a double quote.
-数字和字符串标识比较特殊，因为它们有一个与之关联的运行时值。我们会从字符串开始，因为它们很容易识别——总是以双引号开始。
+数字和字符串标识比较特殊，因为它们有一个与之关联的运行时值。我们会从字符串开始，因为它们很容易识别 -- 总是以双引号开始。
 
 ^code scan-string (1 before, 1 after)
 
@@ -614,7 +614,7 @@ later. In clox, tokens only store the lexeme -- the character sequence exactly
 as it appears in the user's source code. Later in the compiler, we'll convert
 that lexeme to a runtime value right when we are ready to store it in the
 chunk's constant table.
-我们没有给扫描器增加这种复杂性，我们把字面量词素转换为运行值的工作推迟到以后。在clox中，词法标识只存储词素——即用户源代码中出现的字符序列。稍后在编译器中，当我们准备将其存储在字节码块中的常量表中时，我们会将词素转换为运行时值。
+我们没有给扫描器增加这种复杂性，我们把字面量词素转换为运行值的工作推迟到以后。在clox中，词法标识只存储词素 -- 即用户源代码中出现的字符序列。稍后在编译器中，当我们准备将其存储在字节码块中的常量表中时，我们会将词素转换为运行时值。
 
 <aside name="convert">
 
@@ -654,7 +654,7 @@ The last batch of tokens are identifiers, both user-defined and reserved. This
 section should be fun -- the way we recognize keywords in clox is quite
 different from how we did it in jlox, and touches on some important data
 structures.
-最后一批词法是标识符，包括用户定义的和保留字。这一部分应该很有趣——我们在clox中识别关键字的方式与我们在jlox中的方式完全不同，而且涉及到一些重要的数据结构。
+最后一批词法是标识符，包括用户定义的和保留字。这一部分应该很有趣 -- 我们在clox中识别关键字的方式与我们在jlox中的方式完全不同，而且涉及到一些重要的数据结构。
 
 First, though, we have to scan the lexeme. Names start with a letter or
 underscore.
@@ -770,7 +770,7 @@ character in a string have a special marker -- the double lined boxes in the
 illustration. That way, if your trie contains, say, "banquet" and "ban", you are
 able to tell that it does *not* contain "banque" -- the "e" node won't have that
 marker, while the "n" and "t" nodes will.
-相应地，字典树中“包含”的每个字符串被表示为通过字符树中节点的路径，就像上面的遍历一样。用于匹配字符串中最后一个字符的节点中有一个特殊的标记——插图中的双线框。这样一来，假定你的字典树中包含“banquet”和“ban”，你就能知道它不包括“banque”——“e”节点没有这个标记，而“n”和“t”节点中有。
+相应地，字典树中“包含”的每个字符串被表示为通过字符树中节点的路径，就像上面的遍历一样。用于匹配字符串中最后一个字符的节点中有一个特殊的标记 -- 插图中的双线框。这样一来，假定你的字典树中包含“banquet”和“ban”，你就能知道它不包括“banque” -- “e”节点没有这个标记，而“n”和“t”节点中有。
 
 Tries are a special case of an even more fundamental data structure: a
 [**deterministic finite automaton**][dfa] (**DFA**). You might also know these
@@ -824,14 +824,14 @@ nodes whenever you consume a corresponding character in the lexeme. If we were
 so inclined, we could construct one big giant DFA that does *all* of the lexical
 analysis for Lox, a single state machine that recognizes and spits out all of
 the tokens we need.
-我把十个数位的节点折叠在一起，以使其更易于阅读，但是基本的过程是相同的——遍历路径，每当你消费词素中的一个字符，就进入对应节点。如果我们愿意的话，可以构建一个巨大的DFA来完成Lox的所有词法分析，用一个状态机来识别并输出我们需要的所有词法标识。
+我把十个数位的节点折叠在一起，以使其更易于阅读，但是基本的过程是相同的 -- 遍历路径，每当你消费词素中的一个字符，就进入对应节点。如果我们愿意的话，可以构建一个巨大的DFA来完成Lox的所有词法分析，用一个状态机来识别并输出我们需要的所有词法标识。
 
 However, crafting that mega-DFA by <span name="regex">hand</span> would be
 challenging. That's why [Lex][] was created. You give it a simple textual
 description of your lexical grammar -- a bunch of regular expressions -- and it
 automatically generates a DFA for you and produces a pile of C code that
 implements it.
-然而，手工完成这种巨型DFA是一个巨大的挑战。这就是[Lex](https://en.wikipedia.org/wiki/Lex_(software))诞生的原因。你给它一个关于语法的简单文本描述——一堆正则表达式——它就会自动为你生成一个DFA，并生成一堆实现它的C代码。
+然而，手工完成这种巨型DFA是一个巨大的挑战。这就是[Lex](https://en.wikipedia.org/wiki/Lex_(software))诞生的原因。你给它一个关于语法的简单文本描述 -- 一堆正则表达式 -- 它就会自动为你生成一个DFA，并生成一堆实现它的C代码。
 
 [lex]: https://en.wikipedia.org/wiki/Lex_(software)
 
@@ -893,7 +893,7 @@ prefix that could only be one possible reserved word, we need to verify two
 things. The lexeme must be exactly as long as the keyword. If the first letter
 is "s", the lexeme could still be "sup" or "superb". And the remaining
 characters must match exactly -- "supar" isn't good enough.
-我们将此用于树中的所有无分支路径。一旦我们发现一个前缀，其只有可能是一种保留字，我们需要验证两件事。词素必须与关键字一样长。如果第一个字母是“s”，词素仍然可以是“sup”或“superb”。剩下的字符必须完全匹配——“supar”就不够好。
+我们将此用于树中的所有无分支路径。一旦我们发现一个前缀，其只有可能是一种保留字，我们需要验证两件事。词素必须与关键字一样长。如果第一个字母是“s”，词素仍然可以是“sup”或“superb”。剩下的字符必须完全匹配 -- “supar”就不够好。
 
 If we do have the right number of characters, and they're the ones we want, then
 it's a keyword, and we return the associated token type. Otherwise, it must be a
@@ -944,7 +944,7 @@ writing the simplest code I can is sufficient to accomplish that.
     expression can appear. When the string literal is executed, the inner
     expression is evaluated, converted to a string, and then merged with the
     surrounding string literal.
-    许多较新的语言都支持[字符串插值][interp]。在字符串字面量中，有一些特殊的分隔符——最常见的是以`${`开头以`}`结尾。在这些分隔符之间，可以出现任何表达式。当字符串字面量被执行时，内部表达式也会求值，转换为字符串，然后与周围的字符串字面量合并。
+    许多较新的语言都支持[字符串插值][interp]。在字符串字面量中，有一些特殊的分隔符 -- 最常见的是以`${`开头以`}`结尾。在这些分隔符之间，可以出现任何表达式。当字符串字面量被执行时，内部表达式也会求值，转换为字符串，然后与周围的字符串字面量合并。
 
     For example, if Lox supported string interpolation, then this...
     举例来说，如果Lox支持字符串插值，那么下面的代码……

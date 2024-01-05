@@ -32,7 +32,7 @@ warm up before we tackle some of the more interesting material later. By the end
 of this chapter, we'll have a full-featured, fast scanner that can take any
 string of Lox source code and produce the tokens that we'll feed into the parser
 in the next chapter.
-对于我们来说，扫描也是一个很好的起点，因为代码不是很难——相当于有很多分支的`switch`语句。这可以帮助我们在学习更后面有趣的部分之前进行热身。在本章结束时，我们将拥有一个功能齐全、速度快的扫描器，它可以接收任何一串Lox源代码，并产生标记，我们将在下一章把这些标记输入到解析器中。
+对于我们来说，扫描也是一个很好的起点，因为代码不是很难 -- 相当于有很多分支的`switch`语句。这可以帮助我们在学习更后面有趣的部分之前进行热身。在本章结束时，我们将拥有一个功能齐全、速度快的扫描器，它可以接收任何一串Lox源代码，并产生标记，我们将在下一章把这些标记输入到解析器中。
 
 ## 解释器框架
 
@@ -118,7 +118,7 @@ The tools our language provides for dealing with errors make up a large portion
 of its user interface. When the user's code is working, they aren't thinking
 about our language at all -- their headspace is all about *their program*. It's
 usually only when things go wrong that they notice our implementation.
-我们的语言提供的处理错误的工具构成了其用户界面的很大一部分。当用户的代码在工作时，他们根本不会考虑我们的语言——他们的脑子里都是他们的程序。通常只有当程序出现问题时，他们才会注意到我们的实现。
+我们的语言提供的处理错误的工具构成了其用户界面的很大一部分。当用户的代码在工作时，他们根本不会考虑我们的语言 -- 他们的脑子里都是他们的程序。通常只有当程序出现问题时，他们才会注意到我们的实现。
 
 <span name="errors">When</span> that happens, it's up to us to give the user all
 the information they need to understand what went wrong and guide them gently
@@ -277,7 +277,7 @@ There are lexemes for literal values -- numbers and strings and the like. Since
 the scanner has to walk each character in the literal to correctly identify it,
 it can also convert that textual representation of a value to the living runtime
 object that will be used by the interpreter later.
-字面量有对应词素——数字和字符串等。由于扫描器必须遍历文字中的每个字符才能正确识别，所以它还可以将值的文本表示转换为运行时对象，解释器后续将使用该对象。
+字面量有对应词素 -- 数字和字符串等。由于扫描器必须遍历文字中的每个字符才能正确识别，所以它还可以将值的文本表示转换为运行时对象，解释器后续将使用该对象。
 
 ### 位置信息
 
@@ -379,7 +379,7 @@ regexes if you want to, and there's a pile of interesting theory underlying why
 that is and what it means. Tools like [Lex][] or
 [Flex][] are designed expressly to let you do this -- throw a handful of regexes
 at them, and they give you a complete scanner <span name="lex">back</span>.
-如果你愿意，你可以非常精确地使用正则表达式来识别Lox的所有不同词组，而且还有一堆有趣的理论来支撑着为什么会这样以及它的意义。像[Lex][]或[Flex][]这样的工具就是专门为实现这一功能而设计的——向其中传入一些正则表达式，它可以为您提供完整的扫描器。
+如果你愿意，你可以非常精确地使用正则表达式来识别Lox的所有不同词组，而且还有一堆有趣的理论来支撑着为什么会这样以及它的意义。像[Lex][]或[Flex][]这样的工具就是专门为实现这一功能而设计的 -- 向其中传入一些正则表达式，它可以为您提供完整的扫描器。
 
 <aside name="lex">
 
@@ -482,7 +482,7 @@ characters Lox doesn't use, like `@#^`, at our interpreter? Right now, those
 characters get silently discarded. They aren't used by the Lox language, but
 that doesn't mean the interpreter can pretend they aren't there. Instead, we
 report an error.
-在我们深入探讨之前，我们先花一点时间考虑一下词法层面的错误。如果用户抛入解释器的源文件中包含一些Lox中不使用的字符——如`@#^`，会发生什么？现在，这些字符被默默抛弃了。它们没有被Lox语言使用，但是不意味着解释器可以假装它们不存在。相反，我们应该报告一个错误：
+在我们深入探讨之前，我们先花一点时间考虑一下词法层面的错误。如果用户抛入解释器的源文件中包含一些Lox中不使用的字符 -- 如`@#^`，会发生什么？现在，这些字符被默默抛弃了。它们没有被Lox语言使用，但是不意味着解释器可以假装它们不存在。相反，我们应该报告一个错误：
 
 ^code char-error (1 before, 1 after)
 
@@ -763,7 +763,7 @@ Our scanner is almost done. The only remaining pieces of the lexical grammar to
 implement are identifiers and their close cousins, the reserved words. You might
 think we could match keywords like `or` in the same way we handle
 multiple-character operators like `<=`.
-我们的扫描器基本完成了，词法语法中还需要实现的部分仅剩标识符及其近亲——保留字。你也许会想，我们可以采用与处理`<=`等多字符操作符时相同的方法来匹配关键字，如`or`。
+我们的扫描器基本完成了，词法语法中还需要实现的部分仅剩标识符及其近亲 -- 保留字。你也许会想，我们可以采用与处理`<=`等多字符操作符时相同的方法来匹配关键字，如`or`。
 
 ```java
 case 'o':
@@ -876,7 +876,7 @@ and see if it handles them as it should.
     dark corners, a space *does* affect how code is parsed in CoffeeScript,
     Ruby, and the C preprocessor. Where and what effect does it have in each of
     those languages?
-    除了分隔标记——区分`print foo`和`printfoo`——空格在大多数语言中并没有什么用处。在CoffeeScript、Ruby和C预处理器中的一些隐秘的地方，空格确实会影响代码解析方式。在这些语言中，空格在什么地方，会有什么影响？
+    除了分隔标记 -- 区分`print foo`和`printfoo` -- 空格在大多数语言中并没有什么用处。在CoffeeScript、Ruby和C预处理器中的一些隐秘的地方，空格确实会影响代码解析方式。在这些语言中，空格在什么地方，会有什么影响？
 
 1.  Our scanner here, like most, discards comments and whitespace since those
     aren't needed by the parser. Why might you want to write a scanner that does
@@ -1051,7 +1051,7 @@ don't do what JavaScript did.
     -second
     ```
 
-    这是一个中缀表达式——`first - second`，还是两个表达式语句，一个是`first`，另一个是对`second`取负？
+    这是一个中缀表达式 -- `first - second`，还是两个表达式语句，一个是`first`，另一个是对`second`取负？
 
 在所有这些情况下，无论是否将换行符作为分隔符，都会产生有效的代码，但可能不是用户想要的代码。在不同的语言中，有各种不同的规则来决定哪些换行符是分隔符。下面是几个例子：
 

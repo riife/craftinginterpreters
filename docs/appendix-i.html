@@ -169,7 +169,7 @@ split out into a few reused helper rules.
 <p>The lexical grammar is used by the scanner to group characters into tokens.
 Where the syntax is <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context free</a>, the lexical grammar is <a href="https://en.wikipedia.org/wiki/Regular_grammar">regular</a><span class="em">&mdash;</span>note
 that there are no recursive rules.
-词法被扫描器用来将字符分组为词法标识（token）。语法是<a href="https://en.wikipedia.org/wiki/Context-free_grammar">上下文无关</a>的，词法是<a href="https://en.wikipedia.org/wiki/Regular_grammar">正则</a>的——注意这里没有递归规则。</p>
+词法被扫描器用来将字符分组为词法标识（token）。语法是<a href="https://en.wikipedia.org/wiki/Context-free_grammar">上下文无关</a>的，词法是<a href="https://en.wikipedia.org/wiki/Regular_grammar">正则</a>的<span class="em">&mdash;</span>注意这里没有递归规则。</p>
 <div class="codehilite"><pre><span class="t">NUMBER</span>         → <span class="t">DIGIT</span>+ ( <span class="s">&quot;.&quot;</span> <span class="t">DIGIT</span>+ )? ;
 <span class="t">STRING</span>         → <span class="s">&quot;</span><span class="e">\&quot;</span><span class="s">&quot;</span> &lt;<span class="i">any</span> <span class="i">char</span> <span class="i">except</span> <span class="s">&quot;</span><span class="e">\&quot;</span><span class="s">&quot;</span>&gt;* <span class="s">&quot;</span><span class="e">\&quot;</span><span class="s">&quot;</span> ;
 <span class="t">IDENTIFIER</span>     → <span class="t">ALPHA</span> ( <span class="t">ALPHA</span> | <span class="t">DIGIT</span> )* ;

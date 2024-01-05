@@ -112,7 +112,7 @@ Right now, `statement` only has two cases for the two kinds of statements we've
 described. We'll fill in more later in this chapter and in the following ones.
 The next step is turning this grammar into something we can store in memory --
 syntax trees.
-目前，`statement`只有两种情况，分别对应于我们描述的两类语句。我们将在本章后面和接下来的章节中补充更多内容。接下来就是将这个语法转化为我们可以存储在内存中的东西——语法树。。
+目前，`statement`只有两种情况，分别对应于我们描述的两类语句。我们将在本章后面和接下来的章节中补充更多内容。接下来就是将这个语法转化为我们可以存储在内存中的东西 -- 语法树。。
 
 ### 语法树
 
@@ -280,7 +280,7 @@ stdout.
 Our interpreter is able to visit statements now, but we have some work to do to
 feed them to it. First, modify the old `interpret()` method in the Interpreter
 class to accept a list of statements -- in other words, a program.
-我们的解释器现在可以处理语句了，但是我们还需要做一些工作将语句输入到解释器中。首先，修改Interpreter类中原有的`interpret()` 方法，让其能够接受一组语句——即一段程序。
+我们的解释器现在可以处理语句了，但是我们还需要做一些工作将语句输入到解释器中。首先，修改Interpreter类中原有的`interpret()` 方法，让其能够接受一组语句 -- 即一段程序。
 
 ^code interpret
 
@@ -381,7 +381,7 @@ are allowed.
 The clauses in control flow statements -- think the then and else branches of
 an `if` statement or the body of a `while` -- are each a single statement. But
 that statement is not allowed to be one that declares a name. This is OK:
-控制流语句中的子句——比如，`if`或`while`语句体中的`then`和`else`分支——都是一个语句。但是这个语句不应该是一个声明名称的语句。下面的代码是OK的：
+控制流语句中的子句 -- 比如，`if`或`while`语句体中的`then`和`else`分支 -- 都是一个语句。但是这个语句不应该是一个声明名称的语句。下面的代码是OK的：
 
 ```lox
 if (monday) print "Ugh, already?";
@@ -405,7 +405,7 @@ there are two levels of <span name="brace">"precedence"</span> for statements.
 Some places where a statement is allowed -- like inside a block or at the top
 level -- allow any kind of statement, including declarations. Others allow only
 the "higher" precedence statements that don't declare names.
-这样的代码有点奇怪，所以C、Java及类似语言中都不允许这种写法。语句就好像有两个“优先级”。有些允许语句的地方——比如在代码块内或程序顶层——可以允许任何类型的语句，包括变量声明。而其他地方只允许那些不声明名称的、优先级更高的语句。
+这样的代码有点奇怪，所以C、Java及类似语言中都不允许这种写法。语句就好像有两个“优先级”。有些允许语句的地方 -- 比如在代码块内或程序顶层 -- 可以允许任何类型的语句，包括变量声明。而其他地方只允许那些不声明名称的、优先级更高的语句。
 
 <aside name="brace">
 
@@ -660,7 +660,7 @@ The Scheme folks have probably spent more time thinking about variable scope
 than we ever will -- one of the main goals of Scheme was to introduce lexical
 scoping to the world -- so it's hard to go wrong if you follow in their
 footsteps.
-我关于变量和作用域的原则是，“如果有疑问，参考Scheme的做法”。Scheme的开发人员可能比我们花了更多的时间来考虑变量范围的问题——Scheme的主要目标之一就是向世界介绍词法作用域，所以如果你跟随他们的脚步，就很难出错。
+我关于变量和作用域的原则是，“如果有疑问，参考Scheme的做法”。Scheme的开发人员可能比我们花了更多的时间来考虑变量范围的问题 -- Scheme的主要目标之一就是向世界介绍词法作用域，所以如果你跟随他们的脚步，就很难出错。
 
 Scheme allows redefining variables at the top level.
 Scheme允许在顶层重新定义变量。
@@ -669,7 +669,7 @@ Scheme允许在顶层重新定义变量。
 
 So, to keep the two modes consistent, we'll allow it -- at least for global
 variables. Once a variable exists, we need a way to look it up.
-所以，为了保证两种模式的统一，我们选择允许重定义——至少对于全局变量如此。一旦一个变量存在，我们就需要可以查找该变量的方法。
+所以，为了保证两种模式的统一，我们选择允许重定义 -- 至少对于全局变量如此。一旦一个变量存在，我们就需要可以查找该变量的方法。
 
 ^code environment-get (2 before, 1 after)
 
@@ -700,7 +700,7 @@ recursive functions.
 We could accommodate single recursion -- a function that calls itself -- by
 declaring the function's own name before we examine its body. But that doesn't
 help with mutually recursive procedures that call each other. Consider:
-通过在检查函数体之前先声明函数名称，我们可以支持单一递归——调用自身的函数。但是，这无法处理互相调用的递归程序。考虑以下代码：
+通过在检查函数体之前先声明函数名称，我们可以支持单一递归 -- 调用自身的函数。但是，这无法处理互相调用的递归程序。考虑以下代码：
 
 <span name="contrived"></span>
 
@@ -832,14 +832,14 @@ It's possible to create a language that has variables but does not let you
 reassign -- or **mutate** -- them. Haskell is one example. SML supports only
 mutable references and arrays -- variables cannot be reassigned. Rust steers you
 away from mutation by requiring a `mut` modifier to enable assignment.
-你可以创建一种语言，其中有变量，但是不支持对该变量重新赋值（或更改）。Haskell就是一个例子。SML只支持可变引用和数组——变量不能被重新赋值。Rust则通过要求`mut`标识符开启赋值，从而引导用户远离可更改变量。
+你可以创建一种语言，其中有变量，但是不支持对该变量重新赋值（或更改）。Haskell就是一个例子。SML只支持可变引用和数组 -- 变量不能被重新赋值。Rust则通过要求`mut`标识符开启赋值，从而引导用户远离可更改变量。
 
 Mutating a variable is a side effect and, as the name suggests, some language
 folks think side effects are <span name="pure">dirty</span> or inelegant. Code
 should be pure math that produces values -- crystalline, unchanging ones -- like
 an act of divine creation. Not some grubby automaton that beats blobs of data
 into shape, one imperative grunt at a time.
-更改变量是一种副作用，顾名思义，一些语言专家认为副作用是肮脏或不优雅的。代码应该是纯粹的数学，它会产生值——纯净的、不变的值——就像上帝造物一样。而不是一些肮脏的自动机器，将数据块转换成各种形式，一次执行一条命令。
+更改变量是一种副作用，顾名思义，一些语言专家认为副作用是肮脏或不优雅的。代码应该是纯粹的数学，它会产生值 -- 纯净的、不变的值 -- 就像上帝造物一样。而不是一些肮脏的自动机器，将数据块转换成各种形式，一次执行一条命令。
 
 <aside name="pure">
 
@@ -1240,7 +1240,7 @@ A first cut at implementing block scope might work like this:
 That would work for the previous example. But remember, one motivation for
 local scope is encapsulation -- a block of code in one corner of the program
 shouldn't interfere with some other block. Check this out:
-这对前面的例子是可行的。但是请记住，局部作用域的一个目的是封装——程序中一个块内的代码，不应该干扰其他代码块。看看下面的例子：
+这对前面的例子是可行的。但是请记住，局部作用域的一个目的是封装 -- 程序中一个块内的代码，不应该干扰其他代码块。看看下面的例子：
 
 ```lox
 // How loud?
@@ -1267,7 +1267,7 @@ shouldn't get touched.
 When a local variable has the same name as a variable in an enclosing scope, it
 **shadows** the outer one. Code inside the block can't see it any more -- it is
 hidden in the "shadow" cast by the inner one -- but it's still there.
-当局部变量与外围作用域中的变量具有相同的名称时，内部变量会遮蔽外部变量。代码块内部不能再看到外部变量——它被遮蔽在内部变量的阴影中——但它仍然是存在的。
+当局部变量与外围作用域中的变量具有相同的名称时，内部变量会遮蔽外部变量。代码块内部不能再看到外部变量 -- 它被遮蔽在内部变量的阴影中 -- 但它仍然是存在的。
 
 When we enter a new block scope, we need to preserve variables defined in outer
 scopes so they are still around when we exit the inner block. We do that by
@@ -1342,7 +1342,7 @@ We don't have to touch the `define()` method -- a new variable is always
 declared in the current innermost scope. But variable lookup and assignment work
 with existing variables and they need to walk the chain to find them. First,
 lookup:
-我们不必修改`define()`方法——因为新变量总是在当前最内层的作用域中声明。但是变量的查找和赋值是结合已有的变量一起处理的，需要遍历环境链以找到它们。首先是查找操作：
+我们不必修改`define()`方法 -- 因为新变量总是在当前最内层的作用域中声明。但是变量的查找和赋值是结合已有的变量一起处理的，需要遍历环境链以找到它们。首先是查找操作：
 
 ^code environment-get-enclosing (2 before, 3 after)
 
@@ -1453,7 +1453,7 @@ name="param">environment</span>. Up until now, the `environment` field in
 Interpreter always pointed to the same environment -- the global one. Now, that
 field represents the *current* environment. That's the environment that
 corresponds to the innermost scope containing the code to be executed.
-这个新方法会在给定的环境上下文中执行一系列语句。在此之前，解释器中的 `environment` 字段总是指向相同的环境——全局环境。现在，这个字段会指向*当前*环境，也就是与要执行的代码的最内层作用域相对应的环境。
+这个新方法会在给定的环境上下文中执行一系列语句。在此之前，解释器中的 `environment` 字段总是指向相同的环境 -- 全局环境。现在，这个字段会指向*当前*环境，也就是与要执行的代码的最内层作用域相对应的环境。
 
 To execute code within a given scope, this method updates the interpreter's
 `environment` field, visits all of the statements, and then restores the
@@ -1674,7 +1674,7 @@ Lox使用不同的语法来声明新变量和为已有变量赋值。有些语�
 但这是就个好主意吗？隐式声明还存在一些问题。
 
 * 用户可能打算为现有变量赋值，但是出现拼写错误。解释器不知道这一点，所以它悄悄地创建了一些新变量，而用户想要赋值的变量仍然是原来的值。这在JavaScript中尤其令人讨厌，因为一个拼写错误会创建一个全局变量，这反过来又可能会干扰其它代码。
-* JS、Ruby和CoffeeScript通过判断是否存在同名变量——包括外部作用域——来确定赋值是创建新变量还是赋值给现有变量。这意味着在外围作用域中添加一个新变量可能会改变现有代码的含义，原先的局部变量可能会默默地变成对新的外部变量的赋值。
+* JS、Ruby和CoffeeScript通过判断是否存在同名变量 -- 包括外部作用域 -- 来确定赋值是创建新变量还是赋值给现有变量。这意味着在外围作用域中添加一个新变量可能会改变现有代码的含义，原先的局部变量可能会默默地变成对新的外部变量的赋值。
 * 在Python中，你可能想要赋值给当前函数之外的某个变量，而不是在当前函数中创建一个新变量，但是你做不到。
 
 随着时间的推移，我所知道的具有隐式变量声明的语言最后都增加了更多的功能和复杂性来处理这些问题。

@@ -81,7 +81,7 @@ splits statements into two categories. "Declarations" are those statements that
 bind a new name to a value. The other kinds of statements -- control flow,
 print, etc. -- are just called "statements". We disallow declarations directly
 inside control flow statements, like this:
-变量是通过变量声明产生的，这意味着现在是时候向编译器中添加对语句的支持了。如果你还记得的话，Lox将语句分为两类。“声明”是那些将一个新名称与值绑定的语句。其它类型的语句——控制流、打印等——只被称为“语句”。我们不允许在控制流语句中直接使用声明，像这样：
+变量是通过变量声明产生的，这意味着现在是时候向编译器中添加对语句的支持了。如果你还记得的话，Lox将语句分为两类。“声明”是那些将一个新名称与值绑定的语句。其它类型的语句 -- 控制流、打印等 -- 只被称为“语句”。我们不允许在控制流语句中直接使用声明，像这样：
 
 ```lox
 if (monday) var croissant = "yes"; // Error.
@@ -535,7 +535,7 @@ into the chunk's constant table and returns the string at that index. It doesn't
 check that the value *is* a string -- it just indiscriminately casts it. That's
 safe because the compiler never emits an instruction that refers to a non-string
 constant.
-它从字节码块中读取一个1字节的操作数。它将其视为字节码块的常量表的索引，并返回该索引处的字符串。它不检查该值是否是字符串——它只是不加区分地进行类型转换。这是安全的，因为编译器永远不会发出引用非字符串常量的指令。
+它从字节码块中读取一个1字节的操作数。它将其视为字节码块的常量表的索引，并返回该索引处的字符串。它不检查该值是否是字符串 -- 它只是不加区分地进行类型转换。这是安全的，因为编译器永远不会发出引用非字符串常量的指令。
 
 Because we care about lexical hygiene, we also undefine this macro at the end of
 the interpret function.
@@ -849,7 +849,7 @@ so all of the parse functions need to have the same type. Even though most parse
 functions don't support being used as an assignment target -- setters are the
 <span name="index">only</span> other one -- our friendly C compiler requires
 them *all* to accept the parameter.
-这样，前面的错误程序在编译时就会正确地得到一个错误。好了，现在我们完成了吗？也不尽然。看，我们正向一个解析函数传递参数。但是这些函数是存储在一个函数指令表格中的，所以所有的解析函数需要具有相同的类型。尽管大多数解析函数都不支持被用作赋值目标——setter是唯一的一个——但我们这个友好的C编译器要求它们*都*接受相同的参数。
+这样，前面的错误程序在编译时就会正确地得到一个错误。好了，现在我们完成了吗？也不尽然。看，我们正向一个解析函数传递参数。但是这些函数是存储在一个函数指令表格中的，所以所有的解析函数需要具有相同的类型。尽管大多数解析函数都不支持被用作赋值目标 -- setter是唯一的一个 -- 但我们这个友好的C编译器要求它们*都*接受相同的参数。
 
 <aside name="index">
 

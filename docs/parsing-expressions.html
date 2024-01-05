@@ -104,7 +104,7 @@ probably riddled with bugs and a beast to maintain. Writing a <em>real</em> pars
 to robustly chew through a sophisticated syntax<span class="em">&mdash;</span>is considered a rare,
 impressive skill. In this chapter, you will <span name="attain">attain</span>
 it.
-本章是本书的第一个重要里程碑。我们中的许多人都曾将正则表达式和字符串操作糅合在一起，以便从一堆文本中提取一些信息。这些代码可能充满了错误，而且很难维护。编写一个真正的解析器——具有良好的错误处理、一致的内部结构和能够健壮地分析复杂语法的能力——被认为是一种罕见的、令人印象深刻的技能。在这一章中，你将获得这种技能。</p>
+本章是本书的第一个重要里程碑。我们中的许多人都曾将正则表达式和字符串操作糅合在一起，以便从一堆文本中提取一些信息。这些代码可能充满了错误，而且很难维护。编写一个真正的解析器<span class="em">&mdash;</span>具有良好的错误处理、一致的内部结构和能够健壮地分析复杂语法的能力<span class="em">&mdash;</span>被认为是一种罕见的、令人印象深刻的技能。在这一章中，你将获得这种技能。</p>
 <aside name="parse">
 <p>&ldquo;Parse&rdquo; comes to English from the Old French &ldquo;pars&rdquo; for &ldquo;part of speech&rdquo;. It
 means to take a text and map each word to the grammar of the language. We use it
@@ -123,12 +123,12 @@ work in the <a href="representing-code.html">last chapter</a>. You already know 
 You&rsquo;re familiar with syntax trees, and we have some Java classes to represent
 them. The only remaining piece is parsing<span class="em">&mdash;</span>transmogrifying a sequence of
 tokens into one of those syntax trees.
-这比想象中要简单，部分是因为我们在<a href="representing-code.html">上一章</a>中提前完成了很多困难的工作。你已经对形式化语法了如指掌，也熟悉了语法树，而且我们有一些Java类来表示它们。唯一剩下的部分是解析——将一个标记序列转换成这些语法树中的一个。</p>
+这比想象中要简单，部分是因为我们在<a href="representing-code.html">上一章</a>中提前完成了很多困难的工作。你已经对形式化语法了如指掌，也熟悉了语法树，而且我们有一些Java类来表示它们。唯一剩下的部分是解析<span class="em">&mdash;</span>将一个标记序列转换成这些语法树中的一个。</p>
 <p>Some CS textbooks make a big deal out of parsers. In the &rsquo;60s, computer
 scientists<span class="em">&mdash;</span>understandably tired of programming in assembly language<span class="em">&mdash;</span>started designing more sophisticated, <span name="human">human</span>-friendly
 languages like Fortran and ALGOL. Alas, they weren&rsquo;t very <em>machine</em>-friendly
 for the primitive computers of the time.
-一些CS教科书在解析器上大做文章。在60年代，计算机科学家——他们理所当然地厌倦了用汇编语言编程——开始设计更复杂的、对人类友好的语言，比如Fortran和ALGOL。唉，对于当时原始的计算机来说，这些语言对机器并不友好。</p>
+一些CS教科书在解析器上大做文章。在60年代，计算机科学家<span class="em">&mdash;</span>他们理所当然地厌倦了用汇编语言编程<span class="em">&mdash;</span>开始设计更复杂的、对人类友好的语言，比如Fortran和ALGOL。唉，对于当时原始的计算机来说，这些语言对机器并不友好。</p>
 <aside name="human">
 <p>Imagine how harrowing assembly programming on those old machines must have been
 that they considered <em>Fortran</em> to be an improvement.
@@ -263,7 +263,7 @@ operator isn&rsquo;t associative, so <code>a .. b</code> is OK, but <code>a .. b
 multiple operators is ambiguous<span class="em">&mdash;</span>it can be parsed into different syntax trees,
 which could in turn evaluate to different results. We&rsquo;ll fix that in Lox by
 applying the same precedence rules as C, going from lowest to highest.
-如果没有明确定义的优先级和结合性，使用多个运算符的表达式可能就会变得有歧义——它可以被解析为不同的语法树，而这些语法树又可能会计算出不同的结果。我们在Lox中会解决这个问题，使用与C语言相同的优先级规则，从低到高分别是：</p><table>
+如果没有明确定义的优先级和结合性，使用多个运算符的表达式可能就会变得有歧义<span class="em">&mdash;</span>它可以被解析为不同的语法树，而这些语法树又可能会计算出不同的结果。我们在Lox中会解决这个问题，使用与C语言相同的优先级规则，从低到高分别是：</p><table>
 <thead>
 <tr>
   <td>Name</td>
@@ -367,7 +367,7 @@ example, <code>unary</code> matches a unary expression like <code>!negated</code
 expression like <code>1234</code>. And <code>term</code> can match <code>1 + 2</code> but also <code>3 * 4 / 5</code>. The
 final <code>primary</code> rule covers the highest-precedence forms<span class="em">&mdash;</span>literals and
 parenthesized expressions.
-此处的每个规则仅匹配其当前优先级或更高优先级的表达式。 例如，<code>unary</code> 匹配一元表达式（如 <code>!negated</code>）或主表达式（如<code>1234</code>）。<code>term</code>可以匹配<code>1 + 2</code>，但也可以匹配<code>3 * 4 /5</code>。最后的<code>primary</code> 规则涵盖优先级最高的形式——字面量和括号表达式。</p>
+此处的每个规则仅匹配其当前优先级或更高优先级的表达式。 例如，<code>unary</code> 匹配一元表达式（如 <code>!negated</code>）或主表达式（如<code>1234</code>）。<code>term</code>可以匹配<code>1 + 2</code>，但也可以匹配<code>3 * 4 /5</code>。最后的<code>primary</code> 规则涵盖优先级最高的形式<span class="em">&mdash;</span>字面量和括号表达式。</p>
 <p>We just need to fill in the productions for each of those rules. We&rsquo;ll do the
 easy ones first. The top <code>expression</code> rule matches any expression at any
 precedence level. Since <span name="equality"><code>equality</code></span> has the lowest
@@ -394,7 +394,7 @@ all the literals and grouping expressions.
 <p>A unary expression starts with a unary operator followed by the operand. Since
 unary operators can nest<span class="em">&mdash;</span><code>!!true</code> is a valid if weird expression<span class="em">&mdash;</span>the
 operand can itself be a unary operator. A recursive rule handles that nicely.
-一元表达式以一元操作符开头，后跟操作数。因为一元操作符可以嵌套——<code>!!true</code>虽奇怪也是可用的表达式——这个操作数本身可以是一个一元表达式。递归规则可以很好地解决这个问题。</p>
+一元表达式以一元操作符开头，后跟操作数。因为一元操作符可以嵌套<span class="em">&mdash;</span><code>!!true</code>虽奇怪也是可用的表达式<span class="em">&mdash;</span>这个操作数本身可以是一个一元表达式。递归规则可以很好地解决这个问题。</p>
 <div class="codehilite"><pre><span class="i">unary</span>          → ( <span class="s">&quot;!&quot;</span> | <span class="s">&quot;-&quot;</span> ) <span class="i">unary</span> ;
 </pre></div>
 <p>But this rule has a problem. It never terminates.
@@ -423,7 +423,7 @@ recursive production on the left side and <code>unary</code> on the right makes 
 right-associative<span class="em">&mdash;</span>you get the same result either way. Alas, in the real world
 with limited precision, roundoff and overflow mean that associativity can affect
 the result of a sequence of multiplications. Consider:
-原则上，你把乘法当作左关联还是右关联都没有关系——无论你使用哪种方式都可以得到相同的结果。但是，在精度有限的情况下，舍入和溢出意味着关联性会影响乘法序列的计算结果。如:</p>
+原则上，你把乘法当作左关联还是右关联都没有关系<span class="em">&mdash;</span>无论你使用哪种方式都可以得到相同的结果。但是，在精度有限的情况下，舍入和溢出意味着关联性会影响乘法序列的计算结果。如:</p>
 <div class="codehilite"><pre><span class="k">print</span> <span class="n">0.1</span> * (<span class="n">0.2</span> * <span class="n">0.3</span>);
 <span class="k">print</span> (<span class="n">0.1</span> * <span class="n">0.2</span>) * <span class="n">0.3</span>;
 </pre></div>
@@ -472,7 +472,7 @@ of &ldquo;L&rdquo; and &ldquo;R&rdquo;<span class="em">&mdash;</span><a href="ht
 beasts like <a href="https://en.wikipedia.org/wiki/Parser_combinator">parser combinators</a>, <a href="https://en.wikipedia.org/wiki/Earley_parser">Earley parsers</a>, <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">the shunting yard
 algorithm</a>, and <a href="https://en.wikipedia.org/wiki/Parsing_expression_grammar">packrat parsing</a>. For our first interpreter, one
 technique is more than sufficient: <strong>recursive descent</strong>.
-现在有一大堆解析技术，它们的名字大多是 &ldquo;L&rdquo; 和 &ldquo;R&rdquo; 的组合——<a href="https://en.wikipedia.org/wiki/LL_parser">LL(k)</a>, <a href="https://en.wikipedia.org/wiki/LR_parser">LR(1)</a>, <a href="https://en.wikipedia.org/wiki/LALR_parser">LALR</a>——还有更多的异类，比如<a href="https://en.wikipedia.org/wiki/Parser_combinator">解析器组合子</a>、<a href="https://en.wikipedia.org/wiki/Earley_parser">Earley parsers</a>、<a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">分流码算法</a>和<a href="https://en.wikipedia.org/wiki/Parsing_expression_grammar">packrat解析</a>。对于我们的第一个解释器来说，一种技术已经足够了：<strong>递归下降</strong>。</p>
+现在有一大堆解析技术，它们的名字大多是 &ldquo;L&rdquo; 和 &ldquo;R&rdquo; 的组合<span class="em">&mdash;</span><a href="https://en.wikipedia.org/wiki/LL_parser">LL(k)</a>, <a href="https://en.wikipedia.org/wiki/LR_parser">LR(1)</a>, <a href="https://en.wikipedia.org/wiki/LALR_parser">LALR</a><span class="em">&mdash;</span>还有更多的异类，比如<a href="https://en.wikipedia.org/wiki/Parser_combinator">解析器组合子</a>、<a href="https://en.wikipedia.org/wiki/Earley_parser">Earley parsers</a>、<a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">分流码算法</a>和<a href="https://en.wikipedia.org/wiki/Parsing_expression_grammar">packrat解析</a>。对于我们的第一个解释器来说，一种技术已经足够了：<strong>递归下降</strong>。</p>
 <p>Recursive descent is the simplest way to build a parser, and doesn&rsquo;t require
 using complex parser generator tools like Yacc, Bison or ANTLR. All you need is
 straightforward handwritten code. Don&rsquo;t be fooled by its simplicity, though.
@@ -581,7 +581,7 @@ add after <em>Parser</em>()</div>
 returns it to the caller. When the body of the rule contains a nonterminal<span class="em">&mdash;</span>a
 reference to another rule<span class="em">&mdash;</span>we <span name="left">call</span> that other rule&rsquo;s
 method.
-每个解析语法规则的方法都会生成该规则对应的语法树，并将其返回给调用者。当规则主体中包含一个非终止符——对另一条规则的引用时，我们就会调用另一条规则对应的方法。</p>
+每个解析语法规则的方法都会生成该规则对应的语法树，并将其返回给调用者。当规则主体中包含一个非终止符<span class="em">&mdash;</span>对另一条规则的引用时，我们就会调用另一条规则对应的方法。</p>
 <aside name="left">
 <p>This is why left recursion is problematic for recursive descent. The function
 for a left-recursive rule immediately calls itself, which calls itself again,
@@ -1094,7 +1094,7 @@ we picked it. <em>After</em> a semicolon, we&rsquo;re <span name="semicolon">pro
 finished with a statement. Most statements start with a keyword<span class="em">&mdash;</span><code>for</code>, <code>if</code>,
 <code>return</code>, <code>var</code>, etc. When the <em>next</em> token is any of those, we&rsquo;re probably
 about to start a statement.
-我们想要丢弃标记，直至达到下一条语句的开头。这个边界很容易发现——这也是我们选其作为边界的原因。在<em>分号</em>之后，我们可能就结束了一条语句。大多数语句都通过一个关键字开头——<code>for</code>、 <code>if</code>、 <code>return</code>、 <code>var</code>等等。当下一个标记是其中之一时，我们可能就要开始一条新语句了。</p>
+我们想要丢弃标记，直至达到下一条语句的开头。这个边界很容易发现<span class="em">&mdash;</span>这也是我们选其作为边界的原因。在<em>分号</em>之后，我们可能就结束了一条语句。大多数语句都通过一个关键字开头<span class="em">&mdash;</span><code>for</code>、 <code>if</code>、 <code>return</code>、 <code>var</code>等等。当下一个标记是其中之一时，我们可能就要开始一条新语句了。</p>
 <aside name="semicolon">
 <p>I say &ldquo;probably&rdquo; because we could hit a semicolon separating clauses in a <code>for</code>
 loop. Our synchronization isn&rsquo;t perfect, but that&rsquo;s OK. We&rsquo;ve already reported
@@ -1316,7 +1316,7 @@ compelling to give people a <em>reason</em> to jump over.</p>
 <p>我们是否应该在 Lox 中修正这个问题，为位运算符赋予比 C 中更高的优先级？我们可以采取两种策略。</p>
 <p>几乎可以肯定你不会想把<code>==</code>表达式的计算结果当作位运算的操作数。将位运算操作绑定更紧密，用户就不需要像以前那样经常使用括号。所以如果我们这样做，并且用户认为优先级的选择是合乎逻辑的，是为了尽量减少小括号，他们很可能会正确地推断出来。</p>
 <p>这种内部一致性使语言更容易学习，因为用户需要纠正的边界情况和异常变少了。这很好，因为用户在使用我们的语言之前，需要先理解所有的语法和语义。一个更简单、更合理的语言是<em>有意义的</em>。</p>
-<p>但是，对于许多用户来说，有一个更快的捷径，可以将我们语言的思想融入他们的湿件中——<em>使用他们已经知道的概念</em>。许多我们语言的新用户都使用过其它一门或多门语言。如果我们的语言使用了与那些语言相同的一些语法或语义，那么用户需要学习（和<em>忘掉</em>）的东西就会少很多。</p>
+<p>但是，对于许多用户来说，有一个更快的捷径，可以将我们语言的思想融入他们的湿件中<span class="em">&mdash;</span><em>使用他们已经知道的概念</em>。许多我们语言的新用户都使用过其它一门或多门语言。如果我们的语言使用了与那些语言相同的一些语法或语义，那么用户需要学习（和<em>忘掉</em>）的东西就会少很多。</p>
 <p>这对词法语法特别有帮助。您现在可能不太记得了，但是回想一下您学习第一门编程语言时，代码看起来似乎很陌生且难以理解。 只有通过艰苦的努力，您才学会阅读和接受它。 如果你为你的新语言设计了一种新颖的语法，你就会迫使用户重新开始这个过程。</p>
 <p>利用用户已经知道的知识，是你可以用来简化语言采用的最强大的工具之一。这一点的价值怎么估计都不过分。但它也给你带来了一个棘手的问题：如果用户都知道的东西<em>有点糟糕</em>时，会发生什么？C语言的位运算操作符优先是一个没有意义的错误。但这是一个数以百万计的人已经习惯并学会忍受的熟悉错误。</p>
 <p>你是否忠于语言的内在逻辑而忽略历史？你是从一张白纸和基本原则开始的吗？还是把你的语言编织到丰富的编程历史中去，从用户已经知道的东西开始，使您的用户受益？</p>

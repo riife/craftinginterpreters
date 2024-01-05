@@ -1,7 +1,7 @@
 > Caring too much for objects can destroy you. Only -- if you care for a thing
 > enough, it takes on a life of its own, doesn't it? And isn’t the whole point
 > of things -- beautiful things -- that they connect you to some larger beauty?
-> 对物品过于关心会毁了你。只是，如果你对一件事物足够关心，它就有了自己的生命，不是吗？而事物——美丽的事物——的全部意义不就是把你和一些更大的美联系起来吗？
+> 对物品过于关心会毁了你。只是，如果你对一件事物足够关心，它就有了自己的生命，不是吗？而事物 -- 美丽的事物 -- 的全部意义不就是把你和一些更大的美联系起来吗？
 >
 > <cite>Donna Tartt, <em>The Goldfinch</em></cite>
 
@@ -22,13 +22,13 @@ People who have strong opinions about object-oriented programming -- read
 "everyone" -- tend to assume OOP means some very specific list of language
 features, but really there's a whole space to explore, and each language has its
 own ingredients and recipes.
-那些对面向对象编程有强烈看法的人——读作“每个人”——往往认为OOP意味着一些非常具体的语言特性清单，但实际上有一个完整的空间可以探索，而每种语言都有自己的成分和配方。
+那些对面向对象编程有强烈看法的人 -- 读作“每个人” -- 往往认为OOP意味着一些非常具体的语言特性清单，但实际上有一个完整的空间可以探索，而每种语言都有自己的成分和配方。
 
 Self has objects but no classes. CLOS has methods but doesn't attach them to
 specific classes. C++ initially had no runtime polymorphism -- no virtual
 methods. Python has multiple inheritance, but Java does not. Ruby attaches
 methods to classes, but you can also define methods on a single object.
-Self有对象但没有类。CLOS有方法，当没有把它们附加到特定的类中。C++最初没有运行时多态——没有虚方法。Python有多重继承，但Java没有。Ruby把方法附加在类上，但你也可以在单个对象上定义方法。
+Self有对象但没有类。CLOS有方法，当没有把它们附加到特定的类中。C++最初没有运行时多态 -- 没有虚方法。Python有多重继承，但Java没有。Ruby把方法附加在类上，但你也可以在单个对象上定义方法。
 
 </aside>
 
@@ -163,7 +163,7 @@ identifier right after consuming its token.
 We could have made class declarations be *expressions* instead of statements --
 they are essentially a literal that produces a value after all. Then users would
 have to explicitly bind the class to a variable themselves like:
-我们可以让类声明成为表达式而不是语句——比较它们本质上是一个产生值的字面量。然后用户必须自己显式地将类绑定到一个变量，比如：
+我们可以让类声明成为表达式而不是语句 -- 比较它们本质上是一个产生值的字面量。然后用户必须自己显式地将类绑定到一个变量，比如：
 
 ```lox
 var Pie = class {}
@@ -226,7 +226,7 @@ dynamically typed scripting language, it treats the top level of a program and
 the bodies of functions and blocks uniformly. Classes are just another kind of
 declaration, and since you can declare variables and functions inside blocks,
 you can declare classes in there too.
-“局部（Local）”类——在函数或块主体中声明的类，是一个不寻常的概念。许多语言根本不允许这一特性。但由于Lox是一种动态类型脚本语言，它会对程序的顶层代码和函数以及块的主体进行统一处理。类只是另一种声明，既然你可以在块中声明变量和函数，那你也可以在块中声明类。
+“局部（Local）”类 -- 在函数或块主体中声明的类，是一个不寻常的概念。许多语言根本不允许这一特性。但由于Lox是一种动态类型脚本语言，它会对程序的顶层代码和函数以及块的主体进行统一处理。类只是另一种声明，既然你可以在块中声明变量和函数，那你也可以在块中声明类。
 
 </aside>
 
@@ -267,7 +267,7 @@ representation for them.
 Instances know their class -- each instance has a pointer to the class that it
 is an instance of.  We won't use this much in this chapter, but it will become
 critical when we add methods.
-实例知道它们的类——每个实例都有一个指向它所属类的指针。在本章中我们不会过多地使用它，但是等我们添加方法时，它将会变得非常重要。
+实例知道它们的类 -- 每个实例都有一个指向它所属类的指针。在本章中我们不会过多地使用它，但是等我们添加方法时，它将会变得非常重要。
 
 More important to this chapter is how instances store their state. Lox lets
 users freely add fields to an instance at runtime. This means we need a storage
@@ -276,7 +276,7 @@ up fields by name as quickly as possible. There's a data structure that's just
 perfect for quickly accessing a set of values by name and
 -- even more conveniently -- we've already implemented it. Each instance stores
 its fields using a hash table.
-对本章来说，更重要的是实例如何存储它们的状态。Lox允许用户在运行时自由地向实例中添加字段。这意味着我们需要一种可以增长的存储机制。我们可以使用动态数组，但我们也希望尽可能快地按名称查找字段。有一种数据结构非常适合于按名称快速访问一组值——甚至更方便的是——我们已经实现了它。每个实例都使用哈希表来存储其字段。
+对本章来说，更重要的是实例如何存储它们的状态。Lox允许用户在运行时自由地向实例中添加字段。这意味着我们需要一种可以增长的存储机制。我们可以使用动态数组，但我们也希望尽可能快地按名称查找字段。有一种数据结构非常适合于按名称快速访问一组值 -- 甚至更方便的是 -- 我们已经实现了它。每个实例都使用哈希表来存储其字段。
 
 <aside name="fields">
 
@@ -310,7 +310,7 @@ the VM *implementation's* notion of "type" brush against each other in ways that
 can be confusing. Inside the C code that makes clox, there are a number of
 different types of Obj -- ObjString, ObjClosure, etc. Each has its own internal
 representation and semantics.
-这里我想放慢一点速度，因为Lox*语言*中的“type”概念和*虚拟机实现*中的“type”概念是相互抵触的，可能会造成混淆。在生成clox 的C语言代码中，有许多不同类型的Obj——ObjString、ObjClosure等等。每个都有自己的内部表示和语义。
+这里我想放慢一点速度，因为Lox*语言*中的“type”概念和*虚拟机实现*中的“type”概念是相互抵触的，可能会造成混淆。在生成clox 的C语言代码中，有许多不同类型的Obj -- ObjString、ObjClosure等等。每个都有自己的内部表示和语义。
 
 In the Lox *language*, users can define their own classes -- say Cake and Pie --
 and then create instances of those classes. From the user's perspective, an
@@ -319,7 +319,7 @@ from the VM's perspective, every class the user defines is simply another value
 of type ObjClass. Likewise, each instance in the user's program, no matter what
 class it is an instance of, is an ObjInstance. That one VM object type covers
 instances of all classes. The two worlds map to each other something like this:
-在Lox*语言*中，用户可以定义自己的类——比如Cake和Pie——然后创建这些类的实例。从用户的角度来看，Cake实例与Pie实例是不同类型的对象。但是，从虚拟机的角度来看，用户定义的每个类都只是另一个ObjClass类型的值。同样，用户程序中的每个实例，无论它是什么类的实例，都是一个ObjInstance。这一虚拟机对象类型涵盖了所有类的实例。这两个世界之间的映射是这样的：
+在Lox*语言*中，用户可以定义自己的类 -- 比如Cake和Pie -- 然后创建这些类的实例。从用户的角度来看，Cake实例与Pie实例是不同类型的对象。但是，从虚拟机的角度来看，用户定义的每个类都只是另一个ObjClass类型的值。同样，用户程序中的每个实例，无论它是什么类的实例，都是一个ObjInstance。这一虚拟机对象类型涵盖了所有类的实例。这两个世界之间的映射是这样的：
 
 <img src="image/classes-and-instances/lox-clox.png" alt="A set of class declarations and instances, and the runtime representations each maps to."/>
 
@@ -449,7 +449,7 @@ name="sort">sort</span> of like an infix operator. There is an expression to the
 left that is evaluated first and produces an instance. After that is the `.`
 followed by a field name. Since there is a preceding operand, we hook this into
 the parse table as an infix expression.
-句号——对英国朋友来说是句号——其作用有点像一个中缀运算符。左边有一个表达式，首先被求值并产生一个实例。之后是`.`后跟一个字段名称。由于前面有一个操作数，我们将其作为中缀表达式放到解析表中。
+句号 -- 对英国朋友来说是句号 -- 其作用有点像一个中缀运算符。左边有一个表达式，首先被求值并产生一个实例。之后是`.`后跟一个字段名称。由于前面有一个操作数，我们将其作为中缀表达式放到解析表中。
 
 <aside name="sort">
 
@@ -488,7 +488,7 @@ We have two new expression forms -- getters and setters -- that this one
 function handles. If we see an equals sign after the field name, it must be a
 set expression that is assigning to a field. But we don't *always* allow an
 equals sign after the field to be compiled. Consider:
-我们将两种新的表达式形式——getter和setter——都交由这一个函数处理。如果我们看到字段名称后有一个等号，那么它一定是一个赋值给字段的set表达式。但我们并不总是允许编译字段后面的等号。考虑一下：
+我们将两种新的表达式形式 -- getter和setter -- 都交由这一个函数处理。如果我们看到字段名称后有一个等号，那么它一定是一个赋值给字段的set表达式。但我们并不总是允许编译字段后面的等号。考虑一下：
 
 ```lox
 a + b.c = 3
@@ -589,7 +589,7 @@ Lox *could* support adding fields to values of other types. It's our language
 and we can do what we want. But it's likely a bad idea. It significantly
 complicates the implementation in ways that hurt performance -- for example,
 string interning gets a lot harder.
-Lox*可以*支持向其它类型的值中添加字段。这是我们的语言，我们可以做我们想做的。但这可能是个坏主意。它大大增加了实现的复杂性，从而损害了性能——例如，字符串驻留变得更加困难。<BR>
+Lox*可以*支持向其它类型的值中添加字段。这是我们的语言，我们可以做我们想做的。但这可能是个坏主意。它大大增加了实现的复杂性，从而损害了性能 -- 例如，字符串驻留变得更加困难。<BR>
 
 Also, it raises gnarly semantic questions around the equality and identity of
 values. If I attach a field to the number `3`, does the result of `1 + 2` have

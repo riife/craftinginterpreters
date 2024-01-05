@@ -140,7 +140,7 @@ to talk more about them<span class="em">&mdash;</span>I designed <a href="http:/
 once and they are <em>super rad</em><span class="em">&mdash;</span>but there are only so many pages I can fit in.
 If you&rsquo;d like to learn more, take a look at <a href="https://en.wikipedia.org/wiki/Common_Lisp_Object_System">CLOS</a> (the object system in
 Common Lisp), <a href="https://opendylan.org/">Dylan</a>, <a href="https://julialang.org/">Julia</a>, or <a href="https://docs.raku.org/language/functions#Multi-dispatch">Raku</a>.
-Multimethods是你最不可能熟悉的方法。我很想多谈论一下它们——我曾经围绕它们设计了一个<a href="http://magpie-lang.org/">业余语言</a>，它们特别棒——但是我只能装下这么多页面了。如果你想了解更多，可以看看<a href="https://en.wikipedia.org/wiki/Common_Lisp_Object_System">CLOS</a> (Common Lisp中的对象系统), <a href="https://opendylan.org/">Dylan</a>, <a href="https://julialang.org/">Julia</a>, 或 <a href="https://docs.raku.org/language/functions#Multi-dispatch">Raku</a>。</p>
+Multimethods是你最不可能熟悉的方法。我很想多谈论一下它们<span class="em">&mdash;</span>我曾经围绕它们设计了一个<a href="http://magpie-lang.org/">业余语言</a>，它们特别棒<span class="em">&mdash;</span>但是我只能装下这么多页面了。如果你想了解更多，可以看看<a href="https://en.wikipedia.org/wiki/Common_Lisp_Object_System">CLOS</a> (Common Lisp中的对象系统), <a href="https://opendylan.org/">Dylan</a>, <a href="https://julialang.org/">Julia</a>, 或 <a href="https://docs.raku.org/language/functions#Multi-dispatch">Raku</a>。</p>
 </aside>
 <p>Since you&rsquo;ve written about a thousand lines of Java code with me already, I&rsquo;m
 assuming you don&rsquo;t need a detailed introduction to object orientation. The main
@@ -789,7 +789,7 @@ to see if the key is already present.
 itself doesn&rsquo;t really <em>do</em> anything. Instances are just maps and all instances
 are more or less the same. To make them feel like instances <em>of classes</em>, we
 need behavior<span class="em">&mdash;</span>methods.
-你可以创建类的实例并将数据填入其中，但是类本身实际上并不能做任何事。实例只是一个map，而且所有的实例都是大同小异的。为了让它们更像是<em>类</em>的实例，我们需要行为——方法。</p>
+你可以创建类的实例并将数据填入其中，但是类本身实际上并不能做任何事。实例只是一个map，而且所有的实例都是大同小异的。为了让它们更像是<em>类</em>的实例，我们需要行为<span class="em">&mdash;</span>方法。</p>
 <p>Our helpful parser already parses method declarations, so we&rsquo;re good there. We
 also don&rsquo;t need to add any new parser support for method <em>calls</em>. We already
 have <code>.</code> (getters) and <code>()</code> (function calls). A &ldquo;method call&rdquo; simply chains
@@ -827,7 +827,7 @@ treatise on it. For Lox, we&rsquo;ll say the answer to both of these is yes, it 
 work. We have a couple of reasons to justify that. For the second example<span class="em">&mdash;</span>calling a function stored in a field<span class="em">&mdash;</span>we want to support that because
 first-class functions are useful and storing them in fields is a perfectly
 normal thing to do.
-不同的语言对这些问题有不同的答案。人们可以就此写一篇论文。对于Lox来说，这两个问题的答案都是肯定的，它确实有效。我们有几个理由来证明这一点。对于第二个例子——调用存储在字段中的函数——我们想要支持它，是因为头等函数是有用的，而且将它们存储在字段中是一件很正常的事情。</p>
+不同的语言对这些问题有不同的答案。人们可以就此写一篇论文。对于Lox来说，这两个问题的答案都是肯定的，它确实有效。我们有几个理由来证明这一点。对于第二个例子<span class="em">&mdash;</span>调用存储在字段中的函数<span class="em">&mdash;</span>我们想要支持它，是因为头等函数是有用的，而且将它们存储在字段中是一件很正常的事情。</p>
 <p>The first example is more obscure. One motivation is that users generally expect
 to be able to hoist a subexpression out into a local variable without changing
 the meaning of the program. You can take this:
@@ -1437,7 +1437,7 @@ new LoxInstance object.
 have a variety of notations for the chunk of code that sets up a new object for
 a class. C++, Java, and C# use a method whose name matches the class name. Ruby
 and Python call it <code>init()</code>. The latter is nice and short, so we&rsquo;ll do that.
-我们现在要做的是剩下的部分——用户自定义的初始化。对于为类建立新对象的这块代码，不同的语言有不同的说法。C++、Java和C#使用一个名字与类名相匹配的方法。Ruby 和 Python 称之为 <code>init()</code>。后者又好又简短，所以我们采用它。</p>
+我们现在要做的是剩下的部分<span class="em">&mdash;</span>用户自定义的初始化。对于为类建立新对象的这块代码，不同的语言有不同的说法。C++、Java和C#使用一个名字与类名相匹配的方法。Ruby 和 Python 称之为 <code>init()</code>。后者又好又简短，所以我们采用它。</p>
 <p>In LoxClass&rsquo;s implementation of LoxCallable, we add a few more lines.
 在LoxClass的LoxCallable实现中，我们再增加几行。</p>
 <div class="codehilite"><pre class="insert-before">                     List&lt;Object&gt; arguments) {
@@ -1691,7 +1691,7 @@ that look like field reads and writes but that actually execute user-defined
 code. Extend Lox to support getter methods. These are declared without a
 parameter list. The body of the getter is executed when a property with that
 name is accessed.
-大多数现代语言都支持“getters”和“setters”——类中的成员，看起来像是字段的读写，但实际上执行的用户自定义的代码。扩展Lox以支持getter方法。这些方法在声明时没有参数列表。当访问具有该名称的属性时，会执行getter的主体。</p>
+大多数现代语言都支持“getters”和“setters”<span class="em">&mdash;</span>类中的成员，看起来像是字段的读写，但实际上执行的用户自定义的代码。扩展Lox以支持getter方法。这些方法在声明时没有参数列表。当访问具有该名称的属性时，会执行getter的主体。</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Circle</span> {
   <span class="i">init</span>(<span class="i">radius</span>) {
     <span class="k">this</span>.<span class="i">radius</span> = <span class="i">radius</span>;
@@ -1808,13 +1808,13 @@ name="words_zh">文字</span>。这是否能够表明原型是出色的还是令
 <p>其中<a href="http://gameprogrammingpatterns.com/prototype.html">不乏</a>你们的作品。</p>
 </aside>
 <p>我不会去讨论原型对于一门语言来说是不是一个好主意。基于原型和基于类的语言我都做过，我对两者的看法很复杂。我想讨论的是<em>简单性</em>在一门语言中的作用。</p>
-<p>原型比类更简单——语言实现者要编写的代码更少，语言用户要学习和理解的概念更少。这是否意味着它让语言变得更好呢？我们这些语言书呆子有一种迷恋极简主义的倾向。就我个人而言，我认为简单性只是一部分。我们真正想给用户的是功率，我将其定义为：</p>
+<p>原型比类更简单<span class="em">&mdash;</span>语言实现者要编写的代码更少，语言用户要学习和理解的概念更少。这是否意味着它让语言变得更好呢？我们这些语言书呆子有一种迷恋极简主义的倾向。就我个人而言，我认为简单性只是一部分。我们真正想给用户的是功率，我将其定义为：</p>
 <div class="codehilite"><pre>power = breadth × ease ÷ complexity
 功率 = 广度 × 易用性 ÷ 复杂性
 </pre></div>
 <p>这些都不是精确的数字度量。我这里用数学作比喻，而不是实际的量化。</p>
 <ul>
-<li><strong>广度</strong>是语言可以表达的不同事物的范围。C语言具有很大的广度——从操作系统到用户应用程序再到游戏，它被广泛使用。像AppleScript和Matlab这样的特定领域语言的广度相对较小。</li>
+<li><strong>广度</strong>是语言可以表达的不同事物的范围。C语言具有很大的广度<span class="em">&mdash;</span>从操作系统到用户应用程序再到游戏，它被广泛使用。像AppleScript和Matlab这样的特定领域语言的广度相对较小。</li>
 <li>易用性是指用户付出多少努力就可以用语言做想做的事。“可用性Usability”是另一个概念，它包含的内容比我想要表达的更多。“高级”语言往往比“低级”语言更容易使用。大多数语言都有一个核心，对它们来说，有些东西比其它的更容易表达。</li>
 <li>复杂性是指语言的规模（包括其运行时、核心库、工具、生态等）有多大。人们谈论一种语言的规范有多少页，或者它有多少个关键词。这是指用户在使用系统之前，必须在先学习多少东西，才能产生效益。它是简单性的反义词。</li>
 </ul>

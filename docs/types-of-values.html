@@ -177,7 +177,7 @@ instance of a class is the same type: &ldquo;instance&rdquo;.</p>
 functions, and classes to clox. In addition to the type, we also need to store
 the data for the value<span class="em">&mdash;</span>the <code>double</code> for a number, <code>true</code> or <code>false</code> for a
 Boolean. We could define a struct with fields for each possible type.
-现在，我们只有这几种情况，但随着我们向clox中添加字符串、函数和类，这里也会越来越多。除了类型之外，我们还需要存储值的数据——数字是<code>double</code>值，Boolean是<code>true</code>或<code>false</code>。我们可以定义一个结构体，其中包含每种可能的类型所对应的字段。</p><img src="image/types-of-values/struct.png" alt="A struct with two fields laid next to each other in memory." />
+现在，我们只有这几种情况，但随着我们向clox中添加字符串、函数和类，这里也会越来越多。除了类型之外，我们还需要存储值的数据<span class="em">&mdash;</span>数字是<code>double</code>值，Boolean是<code>true</code>或<code>false</code>。我们可以定义一个结构体，其中包含每种可能的类型所对应的字段。</p><img src="image/types-of-values/struct.png" alt="A struct with two fields laid next to each other in memory." />
 <p>But this is a waste of memory. A value can&rsquo;t simultaneously be both a number and
 a Boolean. So at any point in time, only one of those fields will be used. C
 lets you optimize this by defining a <span name="sum">union</span>. A union
@@ -466,7 +466,7 @@ skim over it here, but basically the <code>...</code> and <code>va_list</code> s
 arbitrary number of arguments to <code>runtimeError()</code>. It forwards those on to
 <code>vfprintf()</code>, which is the flavor of <code>printf()</code> that takes an explicit
 <code>va_list</code>.
-你以前肯定在C语言中调用过变参函数——接受不同数量参数的函数：<code>printf()</code>就是其中之一。但你可能还没<em>定义</em>过自己的变参函数。这本书不是C语言教程，所以我在这里略过了，但是基本上是<code>...</code>和<code>va_list</code>让我们可以向<code>runtimeError()</code>传递任意数量的参数。它将这些参数转发给<code>vfprintf()</code>，这是<code>printf()</code>的一个变体，需要一个显式地<code>va_list</code>。</p>
+你以前肯定在C语言中调用过变参函数<span class="em">&mdash;</span>接受不同数量参数的函数：<code>printf()</code>就是其中之一。但你可能还没<em>定义</em>过自己的变参函数。这本书不是C语言教程，所以我在这里略过了，但是基本上是<code>...</code>和<code>va_list</code>让我们可以向<code>runtimeError()</code>传递任意数量的参数。它将这些参数转发给<code>vfprintf()</code>，这是<code>printf()</code>的一个变体，需要一个显式地<code>va_list</code>。</p>
 <aside name="tutorial">
 <p>If you are looking for a C tutorial, I love <em><a href="https://www.cs.princeton.edu/~bwk/cbook.html">The C Programming Language</a></em>,
 usually called &ldquo;K&amp;R&rdquo; in honor of its authors. It&rsquo;s not entirely up to date, but
@@ -595,7 +595,7 @@ worry about with these new types, it&rsquo;s gratuitous<span class="em">&mdash;<
 name="small">slow!</span><span class="em">&mdash;</span>to waste a two-byte instruction and a constant
 table entry on them. Instead, we&rsquo;ll define three dedicated instructions to push
 each of these literals on the stack.
-但是考虑到这些新类型实际上只有三种可能的值，这样做是没有必要的——而且速度很慢！——浪费了一个两字节的指令和常量表中的一个项。相反，我们会定义三个专用指令来将这些字面量压入栈中。</p>
+但是考虑到这些新类型实际上只有三种可能的值，这样做是没有必要的<span class="em">&mdash;</span>而且速度很慢！<span class="em">&mdash;</span>浪费了一个两字节的指令和常量表中的一个项。相反，我们会定义三个专用指令来将这些字面量压入栈中。</p>
 <aside name="small" class="bottom">
 <p>I&rsquo;m not kidding about dedicated operations for certain constant values being
 faster. A bytecode VM spends much of its execution time reading and decoding

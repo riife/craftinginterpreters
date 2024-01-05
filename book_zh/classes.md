@@ -55,7 +55,7 @@ to talk more about them -- I designed [a hobby language][magpie] around them
 once and they are *super rad* -- but there are only so many pages I can fit in.
 If you'd like to learn more, take a look at [CLOS][] (the object system in
 Common Lisp), [Dylan][], [Julia][], or [Raku][].
-Multimethods是你最不可能熟悉的方法。我很想多谈论一下它们——我曾经围绕它们设计了一个[业余语言][magpie]，它们特别棒——但是我只能装下这么多页面了。如果你想了解更多，可以看看[CLOS][] (Common Lisp中的对象系统), [Dylan][], [Julia][], 或 [Raku][]。
+Multimethods是你最不可能熟悉的方法。我很想多谈论一下它们 -- 我曾经围绕它们设计了一个[业余语言][magpie]，它们特别棒 -- 但是我只能装下这么多页面了。如果你想了解更多，可以看看[CLOS][] (Common Lisp中的对象系统), [Dylan][], [Julia][], 或 [Raku][]。
 
 [clos]: https://en.wikipedia.org/wiki/Common_Lisp_Object_System
 [magpie]: http://magpie-lang.org/
@@ -630,7 +630,7 @@ You can create instances of classes and stuff data into them, but the class
 itself doesn't really *do* anything. Instances are just maps and all instances
 are more or less the same. To make them feel like instances *of classes*, we
 need behavior -- methods.
-你可以创建类的实例并将数据填入其中，但是类本身实际上并不能做任何事。实例只是一个map，而且所有的实例都是大同小异的。为了让它们更像是*类*的实例，我们需要行为——方法。
+你可以创建类的实例并将数据填入其中，但是类本身实际上并不能做任何事。实例只是一个map，而且所有的实例都是大同小异的。为了让它们更像是*类*的实例，我们需要行为 -- 方法。
 
 Our helpful parser already parses method declarations, so we're good there. We
 also don't need to add any new parser support for method *calls*. We already
@@ -682,7 +682,7 @@ work. We have a couple of reasons to justify that. For the second example --
 calling a function stored in a field -- we want to support that because
 first-class functions are useful and storing them in fields is a perfectly
 normal thing to do.
-不同的语言对这些问题有不同的答案。人们可以就此写一篇论文。对于Lox来说，这两个问题的答案都是肯定的，它确实有效。我们有几个理由来证明这一点。对于第二个例子——调用存储在字段中的函数——我们想要支持它，是因为头等函数是有用的，而且将它们存储在字段中是一件很正常的事情。
+不同的语言对这些问题有不同的答案。人们可以就此写一篇论文。对于Lox来说，这两个问题的答案都是肯定的，它确实有效。我们有几个理由来证明这一点。对于第二个例子 -- 调用存储在字段中的函数 -- 我们想要支持它，是因为头等函数是有用的，而且将它们存储在字段中是一件很正常的事情。
 
 The first example is more obscure. One motivation is that users generally expect
 to be able to hoist a subexpression out into a local variable without changing
@@ -1233,7 +1233,7 @@ We'll do the remaining part -- user-defined initialization -- now. Languages
 have a variety of notations for the chunk of code that sets up a new object for
 a class. C++, Java, and C# use a method whose name matches the class name. Ruby
 and Python call it `init()`. The latter is nice and short, so we'll do that.
-我们现在要做的是剩下的部分——用户自定义的初始化。对于为类建立新对象的这块代码，不同的语言有不同的说法。C++、Java和C#使用一个名字与类名相匹配的方法。Ruby 和 Python 称之为 `init()`。后者又好又简短，所以我们采用它。
+我们现在要做的是剩下的部分 -- 用户自定义的初始化。对于为类建立新对象的这块代码，不同的语言有不同的说法。C++、Java和C#使用一个名字与类名相匹配的方法。Ruby 和 Python 称之为 `init()`。后者又好又简短，所以我们采用它。
 
 In LoxClass's implementation of LoxCallable, we add a few more lines.
 在LoxClass的LoxCallable实现中，我们再增加几行。
@@ -1423,7 +1423,7 @@ interpreter has grown an entire programming paradigm. Classes, methods, fields,
     code. Extend Lox to support getter methods. These are declared without a
     parameter list. The body of the getter is executed when a property with that
     name is accessed.
-    大多数现代语言都支持“getters”和“setters”——类中的成员，看起来像是字段的读写，但实际上执行的用户自定义的代码。扩展Lox以支持getter方法。这些方法在声明时没有参数列表。当访问具有该名称的属性时，会执行getter的主体。
+    大多数现代语言都支持“getters”和“setters” -- 类中的成员，看起来像是字段的读写，但实际上执行的用户自定义的代码。扩展Lox以支持getter方法。这些方法在声明时没有参数列表。当访问具有该名称的属性时，会执行getter的主体。
 
     ```lox
     class Circle {
@@ -1572,7 +1572,7 @@ name="words_zh">文字</span>。这是否能够表明原型是出色的还是令
 
 我不会去讨论原型对于一门语言来说是不是一个好主意。基于原型和基于类的语言我都做过，我对两者的看法很复杂。我想讨论的是*简单性*在一门语言中的作用。
 
-原型比类更简单——语言实现者要编写的代码更少，语言用户要学习和理解的概念更少。这是否意味着它让语言变得更好呢？我们这些语言书呆子有一种迷恋极简主义的倾向。就我个人而言，我认为简单性只是一部分。我们真正想给用户的是功率，我将其定义为：
+原型比类更简单 -- 语言实现者要编写的代码更少，语言用户要学习和理解的概念更少。这是否意味着它让语言变得更好呢？我们这些语言书呆子有一种迷恋极简主义的倾向。就我个人而言，我认为简单性只是一部分。我们真正想给用户的是功率，我将其定义为：
 
 ```text
 power = breadth × ease ÷ complexity
@@ -1581,7 +1581,7 @@ power = breadth × ease ÷ complexity
 
 这些都不是精确的数字度量。我这里用数学作比喻，而不是实际的量化。
 
-* **广度**是语言可以表达的不同事物的范围。C语言具有很大的广度——从操作系统到用户应用程序再到游戏，它被广泛使用。像AppleScript和Matlab这样的特定领域语言的广度相对较小。
+* **广度**是语言可以表达的不同事物的范围。C语言具有很大的广度 -- 从操作系统到用户应用程序再到游戏，它被广泛使用。像AppleScript和Matlab这样的特定领域语言的广度相对较小。
 * 易用性是指用户付出多少努力就可以用语言做想做的事。“可用性Usability”是另一个概念，它包含的内容比我想要表达的更多。“高级”语言往往比“低级”语言更容易使用。大多数语言都有一个核心，对它们来说，有些东西比其它的更容易表达。
 * 复杂性是指语言的规模（包括其运行时、核心库、工具、生态等）有多大。人们谈论一种语言的规范有多少页，或者它有多少个关键词。这是指用户在使用系统之前，必须在先学习多少东西，才能产生效益。它是简单性的反义词。
 

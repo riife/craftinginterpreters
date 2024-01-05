@@ -2,7 +2,7 @@
 > ideas into new structures that become new ideas that can themselves be used in
 > compounds, and round and round endlessly, growing ever more remote from the
 > basic earthbound imagery that is each language's soil.
-> 这也是人类思维的运作方式——将旧的想法复合成为新结构，成为新的想法，而这些想法本身又可以被用于复合，循环往复，无休无止，越来越远离每一种语言赖以生存的基本的土壤。
+> 这也是人类思维的运作方式 -- 将旧的想法复合成为新结构，成为新的想法，而这些想法本身又可以被用于复合，循环往复，无休无止，越来越远离每一种语言赖以生存的基本的土壤。
 > 
 > <cite>Douglas R. Hofstadter, <em>I Am a Strange Loop</em></cite>
 
@@ -12,7 +12,7 @@ add useful functionality in their own right, but each also supplies a piece of a
 statements, variables, control flow, and lexical scope -- add a couple more, and
 assemble them all into support for real user-defined functions and function
 calls.
-这一章标志着很多艰苦工作的一个高潮。在前面的章节中，各自添加了一些有用的功能，但是每一章也都提供了一个拼图的碎片。我们整理这些碎片——表达式、语句、变量、控制流和词法作用域，再加上其它功能，并把他们组合起来，以支持真正的用户定义函数和函数调用。
+这一章标志着很多艰苦工作的一个高潮。在前面的章节中，各自添加了一些有用的功能，但是每一章也都提供了一个拼图的碎片。我们整理这些碎片 -- 表达式、语句、变量、控制流和词法作用域，再加上其它功能，并把他们组合起来，以支持真正的用户定义函数和函数调用。
 
 <aside name="lambda">
 
@@ -145,7 +145,7 @@ First, we parse a primary expression, the "left operand" to the call. Then, each
 time we see a `(`, we call `finishCall()` to parse the call expression using the
 previously parsed expression as the callee. The returned expression becomes the
 new `expr` and we loop to see if the result is itself called.
-这里的代码与语法规则并非完全一致。为了保持代码简洁，我调整了一些东西——这是我们手写解析器的优点之一。但它与我们解析中缀运算符的方式类似。首先，我们解析一个基本表达式，即调用的左操作数。然后，每次看到`(`，我们就调用`finishCall()`解析调用表达式，并使用之前解析出的表达式作为被调用者。返回的表达式成为新的`expr`，我们循环检查其结果是否被调用。
+这里的代码与语法规则并非完全一致。为了保持代码简洁，我调整了一些东西 -- 这是我们手写解析器的优点之一。但它与我们解析中缀运算符的方式类似。首先，我们解析一个基本表达式，即调用的左操作数。然后，每次看到`(`，我们就调用`finishCall()`解析调用表达式，并使用之前解析出的表达式作为被调用者。返回的表达式成为新的`expr`，我们循环检查其结果是否被调用。
 
 <aside name="while-true">
 
@@ -356,7 +356,7 @@ but often overlooked facet of language implementations -- <span
 name="native">**native functions**</span>. These are functions that the
 interpreter exposes to user code but that are implemented in the host language
 (in our case Java), not the language being implemented (Lox).
-理论上我们可以调用函数了，但是我们还没有可供调用的函数。在我们实现用户自定义函数之前，现在正好可以介绍语言实现中一个重要但经常被忽视的方面——**原生函数（本地函数）**。这些函数是解释器向用户代码公开的，但它们是用宿主语言(在我们的例子中是Java)实现的，而不是正在实现的语言(Lox)。
+理论上我们可以调用函数了，但是我们还没有可供调用的函数。在我们实现用户自定义函数之前，现在正好可以介绍语言实现中一个重要但经常被忽视的方面 -- **原生函数（本地函数）**。这些函数是解释器向用户代码公开的，但它们是用宿主语言(在我们的例子中是Java)实现的，而不是正在实现的语言(Lox)。
 
 Sometimes these are called **primitives**, **external functions**, or **foreign
 functions**. Since these functions can be called while the user's program is
@@ -434,13 +434,13 @@ benchmark, and exit, but that adds a lot of overhead -- JVM startup time, OS
 shenanigans, etc. That stuff does matter, of course, but if you're just trying
 to validate an optimization to some piece of the interpreter, you don't want
 that overhead obscuring your results.
-我们可以测量启动解释器、运行基准测试代码并退出所消耗的时间，但是这其中包括很多时间开销——JVM启动时间，操作系统欺诈等等。当然，这些东西确实很重要，但如果您只是试图验证对解释器某个部分的优化，你肯定不希望这些多余的时间开销掩盖你的结果。
+我们可以测量启动解释器、运行基准测试代码并退出所消耗的时间，但是这其中包括很多时间开销 -- JVM启动时间，操作系统欺诈等等。当然，这些东西确实很重要，但如果您只是试图验证对解释器某个部分的优化，你肯定不希望这些多余的时间开销掩盖你的结果。
 
 A nicer solution is to have the benchmark script itself measure the time elapsed
 between two points in the code. To do that, a Lox program needs to be able to
 tell time. There's no way to do that now -- you can't implement a useful clock
 "from scratch" without access to the underlying clock on the computer.
-一个更好的解决方案是让基准脚本本身度量代码中两个点之间的时间间隔。要做到这一点，Lox程序需要能够报时。现在没有办法做到这一点——如果不访问计算机上的底层时钟，就无法从头实现一个可用的时钟。
+一个更好的解决方案是让基准脚本本身度量代码中两个点之间的时间间隔。要做到这一点，Lox程序需要能够报时。现在没有办法做到这一点 -- 如果不访问计算机上的底层时钟，就无法从头实现一个可用的时钟。
 
 So we'll add `clock()`, a native function that returns the number of seconds
 that have passed since some fixed point in time. The difference between two
@@ -489,7 +489,7 @@ Richard P. Gabriel 和 Kent Pitman 创造了 "Lisp-1" 这个术语，用来指�
 If we wanted to add other native functions -- reading input from the user,
 working with files, etc. -- we could add them each as their own anonymous class
 that implements LoxCallable. But for the book, this one is really all we need.
-如果我们想要添加其它本地函数——读取用户输入，处理文件等等——我们可以依次为它们提供实现LoxCallable接口的匿名类。但是在本书中，这个函数足以满足需要。
+如果我们想要添加其它本地函数 -- 读取用户输入，处理文件等等 -- 我们可以依次为它们提供实现LoxCallable接口的匿名类。但是在本书中，这个函数足以满足需要。
 
 Let's get ourselves out of the function-defining business and let our users
 take over...
@@ -671,7 +671,7 @@ Parameters are core to functions, especially the fact that a function
 *encapsulates* its parameters -- no other code outside of the function can see
 them. This means each function gets its own environment where it stores those
 variables.
-参数是函数的核心，尤其是考虑到函数*封装*了其参数——函数之外的代码看不到这些参数。这意味着每个函数都会维护自己的环境，其中存储着那些变量。
+参数是函数的核心，尤其是考虑到函数*封装*了其参数 -- 函数之外的代码看不到这些参数。这意味着每个函数都会维护自己的环境，其中存储着那些变量。
 
 Further, this environment must be created dynamically. Each function *call* gets
 its own environment. Otherwise, recursion would break. If there are multiple
@@ -785,7 +785,7 @@ This is similar to how we interpret other literal expressions. We take a
 function *syntax node* -- a compile-time representation of the function -- and
 convert it to its runtime representation. Here, that's a LoxFunction that wraps
 the syntax node.
-这类似于我们介绍其它文本表达式的方式。我们会接收一个函数*语法*节点——函数的编译时表示形式——然后将其转换为运行时表示形式。在这里就是一个封装了语法节点的LoxFunction实例。
+这类似于我们介绍其它文本表达式的方式。我们会接收一个函数*语法*节点 -- 函数的编译时表示形式 -- 然后将其转换为运行时表示形式。在这里就是一个封装了语法节点的LoxFunction实例。
 
 Function declarations are different from other literal nodes in that the
 declaration *also* binds the resulting object to a new variable. So, after
@@ -994,7 +994,7 @@ it implicitly returns `nil`.
 
 Let's try it out. We finally have enough power to support this classic
 example -- a recursive function to calculate Fibonacci numbers:
-我们来试一下。我们终于有能力支持这个经典的例子——递归函数计算Fibonacci数：
+我们来试一下。我们终于有能力支持这个经典的例子 -- 递归函数计算Fibonacci数：
 
 <span name="slow"></span>
 
@@ -1044,7 +1044,7 @@ if an identifier isn't defined inside the function body itself, the interpreter
 can look outside the function in the global scope to find it. In the Fibonacci
 example, that's how the interpreter is able to look up the recursive call to
 `fib` inside the function's own body -- `fib` is a global variable.
-目前，它始终是`globals`，即顶级的全局环境。这样，如果一个标识符不是在函数体内部定义的，解释器可以在函数外部的全局作用域中查找它。在Fibonacci的例子中，这就是解释器如何能够在函数体中实现对`fib`的递归调用——`fib`是一个全局变量。
+目前，它始终是`globals`，即顶级的全局环境。这样，如果一个标识符不是在函数体内部定义的，解释器可以在函数外部的全局作用域中查找它。在Fibonacci的例子中，这就是解释器如何能够在函数体中实现对`fib`的递归调用 -- `fib`是一个全局变量。
 
 But recall that in Lox, function declarations are allowed *anywhere* a name can
 be bound. That includes the top level of a Lox script, but also the inside of

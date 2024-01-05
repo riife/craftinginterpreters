@@ -78,7 +78,7 @@ in a language: *familiarity*. I know you are already comfortable with that style
 because the two languages we'll be using to *implement* Lox -- Java and C --
 also inherit it. Using a similar syntax for Lox gives you one less thing to
 learn.
-但是，类C的语法所具有的反而是一些在语言中更有价值的东西：*熟悉度*。我知道你已经对这种风格很熟悉了，因为我们将用来实现Lox的两种语言——Java和C——也继承了这种风格。让Lox使用类似的语法，你就少了一件需要学习的事情。
+但是，类C的语法所具有的反而是一些在语言中更有价值的东西：*熟悉度*。我知道你已经对这种风格很熟悉了，因为我们将用来实现Lox的两种语言 -- Java和C -- 也继承了这种风格。让Lox使用类似的语法，你就少了一件需要学习的事情。
 
 ## 高级语言
 
@@ -159,7 +159,7 @@ I think that's why Perl, PHP, and Python all started out using them. But, over
 time, the limitations of ref counting become too troublesome. All of those
 languages eventually ended up adding a full tracing GC, or at least enough of
 one to clean up object cycles.
-有两种主要的内存管理技术：**引用计数**和**跟踪垃圾收集**（通常仅称为“**垃圾收集**”或“ **GC**”）。 引用计数器的实现要简单得多——我想这就是为什么Perl、PHP和Python一开始都使用该方式的原因。但是，随着时间的流逝，引用计数的限制变得太麻烦了。 所有这些语言最终都添加了完整的跟踪GC或至少一种足以清除对象循环引用的管理方式。
+有两种主要的内存管理技术：**引用计数**和**跟踪垃圾收集**（通常仅称为 “**垃圾收集**” 或 “**GC**”）。 引用计数器的实现要简单得多 -- 我想这就是为什么Perl、PHP和Python一开始都使用该方式的原因。但是，随着时间的流逝，引用计数的限制变得太麻烦了。 所有这些语言最终都添加了完整的跟踪GC或至少一种足以清除对象循环引用的管理方式。
 
 <aside name="gc">
 
@@ -194,7 +194,7 @@ In Lox’s little universe, the atoms that make up all matter are the built-in d
     software. Unlike some ancient languages that repurpose an existing type to
     represent truth and falsehood, Lox has a dedicated Boolean type. We may
     be roughing it on this expedition, but we aren't *savages*.
-**Booleans**——没有逻辑就不能编码，没有布尔值也就没有逻辑。 “真”和“假”，就是软件的阴与阳。 与某些古老的语言重新利用已有类型来表示真假不同，Lox具有专用的布尔类型。在这次探险中，我们可能会有些粗暴，但我们不是野蛮人。
+**Booleans** -- 没有逻辑就不能编码，没有布尔值也就没有逻辑。 “真”和“假”，就是软件的阴与阳。 与某些古老的语言重新利用已有类型来表示真假不同，Lox具有专用的布尔类型。在这次探险中，我们可能会有些粗暴，但我们不是野蛮人。
 显然，有两个布尔值，每个值都有一个字面量：
 
     <aside name="bool">
@@ -219,7 +219,7 @@ In Lox’s little universe, the atoms that make up all matter are the built-in d
 *   **Numbers.** Lox has only one kind of number: double-precision floating
     point. Since floating-point numbers can also represent a wide range of
     integers, that covers a lot of territory, while keeping things simple.
-    **Numbers**——Lox只有一种数字：双精度浮点数。 由于浮点数还可以表示各种各样的整数，因此可以覆盖很多领域，同时保持简单。
+    **Numbers** -- Lox只有一种数字：双精度浮点数。 由于浮点数还可以表示各种各样的整数，因此可以覆盖很多领域，同时保持简单。
 
     Full-featured languages have lots of syntax for numbers -- hexadecimal,
     scientific notation, octal, all sorts of fun stuff. We'll settle for basic
@@ -233,7 +233,7 @@ In Lox’s little universe, the atoms that make up all matter are the built-in d
 
 *   **Strings.** We've already seen one string literal in the first example.
     Like most languages, they are enclosed in double quotes.
-    **Strings**——在第一个示例中，我们已经看到一个字符串字面量。 与大多数语言一样，它们用双引号引起来：
+    **Strings** -- 在第一个示例中，我们已经看到一个字符串字面量。 与大多数语言一样，它们用双引号引起来：
 
     ```lox
     "I am a string";
@@ -260,7 +260,7 @@ In Lox’s little universe, the atoms that make up all matter are the built-in d
     many other languages. In Lox we spell it `nil`. (When we get to implementing
     it, that will help distinguish when we're talking about Lox's `nil` versus
     Java or C's `null`.)
-    **Nil**——还有最后一个内置数据，它从未被邀请参加聚会，但似乎总是会出现。 它代表“没有价值”。 在许多其他语言中称为“null”。 在Lox中，我们将其拼写为`nil`。 （当我们实现它时，这将有助于区分Lox的`nil`与Java或C的`null`）
+    **Nil** -- 还有最后一个内置数据，它从未被邀请参加聚会，但似乎总是会出现。 它代表“没有价值”。 在许多其他语言中称为“null”。 在Lox中，我们将其拼写为`nil`。 （当我们实现它时，这将有助于区分Lox的`nil`与Java或C的`null`）
 
     There are good arguments for not having a null value in a language since
     null pointer errors are the scourge of our industry. If we were doing a
@@ -309,7 +309,7 @@ condition ? thenArm : elseArm;
 
 Some call these **mixfix** operators. A few languages let you define your own
 operators and control how they are positioned -- their "fixity".
-有些人称这些为**mixfix**操作符。有一些语言允许您定义自己的操作符，并控制它们的定位方式——它们的 "固定性"。
+有些人称这些为**mixfix**操作符。有一些语言允许您定义自己的操作符，并控制它们的定位方式 -- 它们的 "固定性"。
 
 </aside>
 
@@ -324,7 +324,7 @@ operator can also be used to negate a number.
 All of these operators work on numbers, and it's an error to pass any other
 types to them. The exception is the `+` operator -- you can also pass it two
 strings to concatenate them.
-所有这些操作符都是针对数字的，将任何其他类型操作数传递给它们都是错误的。唯一的例外是`+`运算符——你也可以传给它两个字符串将它们串接起来。
+所有这些操作符都是针对数字的，将任何其他类型操作数传递给它们都是错误的。唯一的例外是`+`运算符 -- 你也可以传给它两个字符串将它们串接起来。
 
 ### 比较与相等
 
@@ -884,7 +884,7 @@ Prototype-based languages <span name="blurry">merge</span> these two concepts.
 There are only objects -- no classes -- and each individual object may contain
 state and methods. Objects can directly inherit from each other (or "delegate
 to" in prototypal lingo):
-基于原型的语言融合了这两个概念。这里只有对象——没有类，而且每个对象都可以包含状态和方法。对象之间可以直接继承（或者用原型语言的术语说是 “委托”）：
+基于原型的语言融合了这两个概念。这里只有对象 -- 没有类，而且每个对象都可以包含状态和方法。对象之间可以直接继承（或者用原型语言的术语说是 “委托”）：
 
 <aside name="blurry">
 
@@ -909,7 +909,7 @@ But I've looked at a *lot* of code written in prototypal languages -- including
 [some of my own devising][finch]. Do you know what people generally do with all
 of the power and flexibility of prototypes? ...They use them to reinvent
 classes.
-但是我看过很多用原型语言写的代码——包括[我自己设计的一些代码](http://finch.stuffwithstuff.com/)。你知道人们一般会怎么使用原型的强大功能和灵活性吗？...他们用它来重新发明类。
+但是我看过很多用原型语言写的代码 -- 包括[我自己设计的一些代码](http://finch.stuffwithstuff.com/)。你知道人们一般会怎么使用原型的强大功能和灵活性吗？...他们用它来重新发明类。
 
 [finch]: http://finch.stuffwithstuff.com/
 
@@ -1130,7 +1130,7 @@ would fix that.
 We're almost done. That's the whole language, so all that's left is the "core"
 or "standard" library -- the set of functionality that is implemented directly
 in the interpreter and that all user-defined behavior is built on top of.
-我们快结束了，这就是整个语言，所剩下的就是“核心”或“标准”库——这是一组直接在解释器中实现的功能集，所有用户定义的行为都是建立在此之上。
+我们快结束了，这就是整个语言，所剩下的就是“核心”或“标准”库 -- 这是一组直接在解释器中实现的功能集，所有用户定义的行为都是建立在此之上。
 
 This is the saddest part of Lox. Its standard library goes beyond minimalism and
 veers close to outright nihilism. For the sample code in the book, we only need
@@ -1263,7 +1263,7 @@ puts 1 + if true then 2 else 3 end + 4
 
 把每个语句都转换成表达式会迫使你回答一些类似这样的复杂问题。作为回报，您消除了一些冗余。C语言中既有用于排序语句的块，以及用于排序表达式的逗号操作符。它既有`if`语句，也有`?:`条件操作符。如果在C语言中所有东西都是表达式，你就可以把它们统一起来。
 
-取消了语句的语言通常还具有**隐式返回**的特点——函数自动返回其函数主体所计算得到的任何值，而不需要显式的`return`语法。对于小型函数和方法来说，这真的很方便。事实上，许多有语句的语言都添加了类似于 `=>` 的语法，以便能够定义函数体是计算单一表达式结果的函数。
+取消了语句的语言通常还具有**隐式返回**的特点 -- 函数自动返回其函数主体所计算得到的任何值，而不需要显式的`return`语法。对于小型函数和方法来说，这真的很方便。事实上，许多有语句的语言都添加了类似于 `=>` 的语法，以便能够定义函数体是计算单一表达式结果的函数。
 
 但是让所有的函数以这种方式工作可能有点奇怪。即使你只是想让函数产生副作用，如果不小心，函数也可能会泄露返回值。但实际上，这些语言的用户并不觉得这是一个问题。
 

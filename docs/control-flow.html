@@ -171,7 +171,7 @@ that for him. That&rsquo;s how you get famous while still retaining some modesty
 Alonzo Church yet<span class="em">&mdash;</span>but the two formalisms are <a href="https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis">equivalent in power</a>.
 In fact, any programming language with some minimal level of expressiveness is
 powerful enough to compute <em>any</em> computable function.
-图灵机的知名度更高——目前还没有关于阿隆佐·邱奇的好莱坞电影，但这两种形式<a href="https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis">在能力上是等价的</a>。事实上，任何具有最低表达能力的编程语言都足以计算 <em>任何</em> 可计算函数。</p>
+图灵机的知名度更高<span class="em">&mdash;</span>目前还没有关于阿隆佐·邱奇的好莱坞电影，但这两种形式<a href="https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis">在能力上是等价的</a>。事实上，任何具有最低表达能力的编程语言都足以计算 <em>任何</em> 可计算函数。</p>
 <p>You can prove that by writing a simulator for a Turing machine in your language.
 Since Turing proved his machine can compute any computable function, by
 extension, that means your language can too. All you need to do is translate the
@@ -346,7 +346,7 @@ that allows an <code>if</code> with an <code>else</code> and one that doesn&rsqu
 matter what hack they use to get themselves out of the trouble, they always
 choose the same interpretation<span class="em">&mdash;</span>the <code>else</code> is bound to the nearest <code>if</code> that
 precedes it.
-相反，大多数语言和解析器都以一种特殊的方式避免了这个问题。不管他们用什么方法来解决这个问题，他们总是选择同样的解释——<code>else</code>与前面最近的<code>if</code>绑定在一起。</p>
+相反，大多数语言和解析器都以一种特殊的方式避免了这个问题。不管他们用什么方法来解决这个问题，他们总是选择同样的解释<span class="em">&mdash;</span><code>else</code>与前面最近的<code>if</code>绑定在一起。</p>
 <p>Our parser conveniently does that already. Since <code>ifStatement()</code> eagerly looks
 for an <code>else</code> before returning, the innermost call to a nested series will claim
 the else clause for itself before returning to the outer <code>if</code> statements.
@@ -382,7 +382,7 @@ the choice not to evaluate it becomes user visible.
 branching, but no. Even without the ternary operator, there are two other
 operators that are technically control flow constructs<span class="em">&mdash;</span>the logical operators
 <code>and</code> and <code>or</code>.
-由于我们没有条件运算符，你可能认为我们已经完成分支开发了，但其实还没有。虽然没有三元运算符，但是还有两个其它操作符在技术上是控制流结构——逻辑运算符<code>and</code>和<code>or</code>。</p>
+由于我们没有条件运算符，你可能认为我们已经完成分支开发了，但其实还没有。虽然没有三元运算符，但是还有两个其它操作符在技术上是控制流结构<span class="em">&mdash;</span>逻辑运算符<code>and</code>和<code>or</code>。</p>
 <p>These aren&rsquo;t like other binary operators because they <strong>short-circuit</strong>. If,
 after evaluating the left operand, we know what the result of the logical
 expression must be, we don&rsquo;t evaluate the right operand. For example:
@@ -523,7 +523,7 @@ operator merely guarantees it will return a value with appropriate truthiness.
 另一个有趣的部分是决定返回什么实际值。由于Lox是动态类型的，我们允许任何类型的操作数，并使用真实性来确定每个操作数代表什么。我们对结果采用类似的推理。逻辑运算符并不承诺会真正返回<code>true</code>或<code>false</code>，而只是保证它将返回一个具有适当真实性的值。</p>
 <p>Fortunately, we have values with proper truthiness right at hand<span class="em">&mdash;</span>the results
 of the operands themselves. So we use those. For example:
-幸运的是，我们手边就有具有适当真实性的值——即操作数本身的结果，所以我们可以直接使用它们。如：</p>
+幸运的是，我们手边就有具有适当真实性的值<span class="em">&mdash;</span>即操作数本身的结果，所以我们可以直接使用它们。如：</p>
 <div class="codehilite"><pre><span class="k">print</span> <span class="s">&quot;hi&quot;</span> <span class="k">or</span> <span class="n">2</span>; <span class="c">// &quot;hi&quot;.</span>
 <span class="k">print</span> <span class="k">nil</span> <span class="k">or</span> <span class="s">&quot;yes&quot;</span>; <span class="c">// &quot;yes&quot;.</span>
 </pre></div>
@@ -658,7 +658,7 @@ flow statements.
 anything else. It&rsquo;s usually an expression, but for convenience, we also
 allow a variable declaration. In that case, the variable is scoped to the
 rest of the <code>for</code> loop<span class="em">&mdash;</span>the other two clauses and the body.
-第一个子句是<em>初始化式</em>。它只会在任何其它操作之前执行一次。它通常是一个表达式，但是为了便利，我们也允许一个变量声明。在这种情况下，变量的作用域就是<code>for</code>循环的其它部分——其余两个子式和循环体。</p>
+第一个子句是<em>初始化式</em>。它只会在任何其它操作之前执行一次。它通常是一个表达式，但是为了便利，我们也允许一个变量声明。在这种情况下，变量的作用域就是<code>for</code>循环的其它部分<span class="em">&mdash;</span>其余两个子式和循环体。</p>
 </li>
 <li>
 <p>Next is the <em>condition</em>. As in a <code>while</code> loop, this expression controls when
@@ -995,7 +995,7 @@ language<span class="em">&mdash;</span>relies on your own sense of taste.</p>
 <p>在某种程度上，频谱上的位置与年龄相关。在后续的版本中增加一些语法糖是比较容易的。新的语法很容易让人喜欢，而且与修改语义相比，它更不可能破坏现有的程序。一旦加进去，你就再也不能把它去掉了，所以随着时间的推移，语言会变得越来越甜。从头开始创建一门新语言的主要好处之一是，它给了你一个机会去刮掉那些累积的糖霜并重新开始。</p>
 <p>语法糖在PL知识分子中名声不佳。那群人对极简主义有一种真正的迷恋。这是有一定道理的。设计不良的、不必要的语法增加了认知负荷，却没有增加相匹配的表达能力。因为一直会有向语言中添加新特性的压力，所以需要自律并专注于简单，以避免臃肿。一旦你添加了一些语法，你就会被它困住，所以明智的做法是要精简。</p>
 <p>同时，大多数成功的语言都有相当复杂的语法，至少在它们被广泛使用的时候是这样。程序员在他们所选择的语言上花费了大量的时间，一些随处可见的细节确实可以提高他们工作时的舒适度和效率。</p>
-<p>找到正确的平衡——为你的语言选择适当的甜度——取决于你自己的品味。</p>
+<p>找到正确的平衡<span class="em">&mdash;</span>为你的语言选择适当的甜度<span class="em">&mdash;</span>取决于你自己的品味。</p>
 </div>
 
     <footer>

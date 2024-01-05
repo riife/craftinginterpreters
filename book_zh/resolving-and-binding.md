@@ -22,7 +22,7 @@ patching it up. In the process, we will gain a more rigorous understanding of
 lexical scoping as used by Lox and other languages in the C tradition. We'll
 also get a chance to learn about *semantic analysis* -- a powerful technique for
 extracting meaning from the user's source code without having to run it.
-我们将用整整一章的时间来探索这个漏洞，然后小心翼翼地把它补上。在这个过程中，我们将对Lox和其他C语言传统中使用的词法范围有一个更严格的理解。我们还将有机会学习语义分析——这是一种强大的技术，用于从用户的源代码中提取语义而无需运行它。
+我们将用整整一章的时间来探索这个漏洞，然后小心翼翼地把它补上。在这个过程中，我们将对Lox和其他C语言传统中使用的词法范围有一个更严格的理解。我们还将有机会学习语义分析 -- 这是一种强大的技术，用于从用户的源代码中提取语义而无需运行它。
 
 ## 静态作用域
 
@@ -125,13 +125,13 @@ There's a lot to unpack in that:
     That means that in some cases you can read a variable before its initializer
     has run -- an annoying source of bugs. The alternate `let` syntax for
     declaring variables was added later to address this problem.
-    这意味着在某些情况下，您可以在其初始化程序运行之前读取一个变量——一个令人讨厌的错误源。后来添加了用于声明变量的备用`let`语法来解决这个问题。
+    这意味着在某些情况下，您可以在其初始化程序运行之前读取一个变量 -- 一个令人讨厌的错误源。后来添加了用于声明变量的备用`let`语法来解决这个问题。
 
     </aside>
 
 *   "Innermost" is there because of our good friend shadowing. There may be more
     than one variable with the given name in enclosing scopes, as in:
-    “最内层”之所以存在，是因为我们的好朋友——变量遮蔽的缘故。在外围作用域中可能存在多个具有给定名称的变量。如：
+    “最内层”之所以存在，是因为我们的好朋友 -- 变量遮蔽的缘故。在外围作用域中可能存在多个具有给定名称的变量。如：
 
     ```lox
     var a = "outer";
@@ -205,7 +205,7 @@ The two mostly stay in sync with each other -- we create a new environment when
 we enter a new scope, and discard it when we leave the scope. There is one other
 operation we perform on environments: binding a variable in one. This is where
 our bug lies.
-在我们的解释器中，环境是静态作用域的动态表现。这两者大多情况下保持同步——当我们进入一个新的作用域时，我们会创建一个新的环境，当我们离开这个作用域时，我们会丢弃它。在环境中还有一个可执行的操作：在环境中绑定一个变量。这就是我们的问题所在。
+在我们的解释器中，环境是静态作用域的动态表现。这两者大多情况下保持同步 -- 当我们进入一个新的作用域时，我们会创建一个新的环境，当我们离开这个作用域时，我们会丢弃它。在环境中还有一个可执行的操作：在环境中绑定一个变量。这就是我们的问题所在。
 
 Let's walk through that problematic example and see what the environments look
 like at each step. First, we declare `a` in the global scope.
@@ -235,7 +235,7 @@ The interpreter dynamically creates a new environment for the function body of
 `showA()`. It's empty since that function doesn't declare any variables. The
 parent of that environment is the function's closure -- the outer block
 environment.
-解释器为showA()的函数体动态地创建了一个新环境。它是空的，因为该函数没有声明任何变量。该环境的父环境是该函数的闭包——外部的代码块环境。
+解释器为showA()的函数体动态地创建了一个新环境。它是空的，因为该函数没有声明任何变量。该环境的父环境是该函数的闭包 -- 外部的代码块环境。
 
 Inside the body of `showA()`, we print the value of `a`. The interpreter looks
 up this value by walking the chain of environments. It gets all the way
@@ -251,7 +251,7 @@ Next, we declare the second `a`, this time inside the block.
 It's in the same block -- the same scope -- as `showA()`, so it goes into the
 same environment, which is also the same environment `showA()`'s closure refers
 to. This is where it gets interesting. We call `showA()` again.
-它和`showA()`在同一个代码块中——同一个作用域，所以它进入了同一个环境，也就是`showA()`的闭包所指向的环境。这就是有趣的地方了。我们再次调用`showA()`。
+它和`showA()`在同一个代码块中 -- 同一个作用域，所以它进入了同一个环境，也就是`showA()`的闭包所指向的环境。这就是有趣的地方了。我们再次调用`showA()`。
 
 <img src="image/resolving-and-binding/environment-5.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
 
@@ -288,7 +288,7 @@ clearly not the same scope -- they don't contain the same declarations. It's
 like each `var` statement <span name="split">splits</span> the block into two
 separate scopes, the scope before the variable is declared and the one after,
 which includes the new variable.
-在标记的第一行，作用域中只有`a`。在第二行时，`a`和`b`都在其中。如果将作用域定义为一组声明，那么它们显然不是相同的作用域——它们不包含相同的声明。这就好像是`var`语句将代码块分割成了两个独立的作用域，变量声明前的作用域和包含新变量的作用域。
+在标记的第一行，作用域中只有`a`。在第二行时，`a`和`b`都在其中。如果将作用域定义为一组声明，那么它们显然不是相同的作用域 -- 它们不包含相同的声明。这就好像是`var`语句将代码块分割成了两个独立的作用域，变量声明前的作用域和包含新变量的作用域。
 
 <aside name="split">
 
@@ -359,7 +359,7 @@ Our interpreter **resolves** a variable -- tracks down which declaration it
 refers to -- each and every time the variable expression is evaluated. If that
 variable is swaddled inside a loop that runs a thousand times, that variable
 gets re-resolved a thousand times.
-我们的解释器每次对变量表达式求值时，都会**解析**变量——追踪它所指向的声明。如果这个变量被包在一个运行1000次的循环中，那么该变量就会被重复解析1000次。
+我们的解释器每次对变量表达式求值时，都会**解析**变量 -- 追踪它所指向的声明。如果这个变量被包在一个运行1000次的循环中，那么该变量就会被重复解析1000次。
 
 We know static scope means that a variable usage always resolves to the same
 declaration, which can be determined just by looking at the text. Given that,
@@ -409,7 +409,7 @@ To "resolve" a variable usage, we only need to calculate how many "hops" away
 the declared variable will be in the environment chain. The interesting question
 is *when* to do this calculation -- or, put differently, where in our
 interpreter's implementation do we stuff the code for it?
-要“解析”一个变量使用，我们只需要计算声明的变量在环境链中有多少“跳”。有趣的问题是在什么时候进行这个计算——或者换句话说，在解释器的实现中，这段代码要添加到什么地方？
+要“解析”一个变量使用，我们只需要计算声明的变量在环境链中有多少“跳”。有趣的问题是在什么时候进行这个计算 -- 或者换句话说，在解释器的实现中，这段代码要添加到什么地方？
 
 Since we're calculating a static property based on the structure of the source
 code, the obvious answer is in the parser. That is the traditional home, and is
@@ -490,7 +490,7 @@ operands might.
 
 We start with blocks since they create the local scopes where all the magic
 happens.
-我们从块语法开始，因为它们创建了局部作用域——魔法出现的地方。
+我们从块语法开始，因为它们创建了局部作用域 -- 魔法出现的地方。
 
 ^code visit-block-stmt
 
@@ -515,7 +515,7 @@ resolving an expression.
 These methods are similar to the `evaluate()` and `execute()` methods in
 Interpreter -- they turn around and apply the Visitor pattern to the given
 syntax tree node.
-这些方法与解释器中的 `evaluate()`和`execute()`方法类似——它们会反过来将访问者模式应用到语法树节点。
+这些方法与解释器中的 `evaluate()`和`execute()`方法类似 -- 它们会反过来将访问者模式应用到语法树节点。
 
 The real interesting behavior is around scopes. A new block scope is created
 like so:
@@ -646,7 +646,7 @@ initialized and available for use. It's alive!
 
 Variable declarations -- and function declarations, which we'll get to -- write
 to the scope maps. Those maps are read when we resolve variable expressions.
-变量声明——以及我们即将讨论的函数声明——会向作用域map中写数据。在我们解析变量表达式时，需要读取这些map。
+变量声明 -- 以及我们即将讨论的函数声明 -- 会向作用域map中写数据。在我们解析变量表达式时，需要读取这些map。
 
 ^code visit-variable-expr
 
@@ -755,7 +755,7 @@ Here, we see how resolution is different from interpretation. When we resolve an
 branches. Where a dynamic execution steps only into the branch that *is* run, a
 static analysis is conservative -- it analyzes any branch that *could* be run.
 Since either one could be reached at runtime, we resolve both.
-在这里，我们可以看到解析与解释是不同的。当我们解析`if`语句时，没有控制流。我们会解析条件表达式和两个分支表达式。动态执行则只会进入*正在执行*的分支，而静态分析是保守的——它会分析所有*可能执行*的分支。因为任何一个分支在运行时都可能被触及，所以我们要对两者都进行解析。
+在这里，我们可以看到解析与解释是不同的。当我们解析`if`语句时，没有控制流。我们会解析条件表达式和两个分支表达式。动态执行则只会进入*正在执行*的分支，而静态分析是保守的 -- 它会分析所有*可能执行*的分支。因为任何一个分支在运行时都可能被触及，所以我们要对两者都进行解析。
 
 Like expression statements, a `print` statement contains a single subexpression.
 与表达式语句类似，`print`语句也包含一个子表达式。
@@ -785,7 +785,7 @@ operands.
 Calls are similar -- we walk the argument list and resolve them all. The thing
 being called is also an expression (usually a variable expression), so that gets
 resolved too.
-调用也是类似的——我们遍历参数列表并解析它们。被调用的对象也是一个表达式（通常是一个变量表达式），所以它也会被解析。
+调用也是类似的 -- 我们遍历参数列表并解析它们。被调用的对象也是一个表达式（通常是一个变量表达式），所以它也会被解析。
 
 ^code visit-call-expr
 
@@ -857,7 +857,7 @@ the user's program. It may be hard to find all of the bits of state that need
 recalculating when they're hiding in the foliage of the syntax tree. A benefit
 of storing this data outside of the nodes is that it makes it easy to *discard*
 it -- simply clear the map.
-像IDE这种的交互式工具经常会增量地对用户的部分代码进行重新分析和解析。当这些状态隐藏在语法树的枝叶中时，可能很难找到所有需要重新计算的状态。将这些数据存储在节点之外的好处之一就是，可以很容易地丢弃这部分数据——只需要清除map即可。
+像IDE这种的交互式工具经常会增量地对用户的部分代码进行重新分析和解析。当这些状态隐藏在语法树的枝叶中时，可能很难找到所有需要重新计算的状态。将这些数据存储在节点之外的好处之一就是，可以很容易地丢弃这部分数据 -- 只需要清除map即可。
 
 ^code locals-field (1 before, 2 after)
 
@@ -918,7 +918,7 @@ environment there. Once we have that, `getAt()` simply returns the value of the
 variable in that environment's map. It doesn't even have to check to see if the
 variable is there -- we know it will be because the resolver already found it
 before.
-该方法在环境链中经过确定的跳数之后，返回对应的环境。一旦我们有了环境，`getAt()`方法就可以直接返回对应环境map中的变量值。甚至不需要检查变量是否存在——我们知道它是存在的，因为解析器之前已经确认过了。
+该方法在环境链中经过确定的跳数之后，返回对应的环境。一旦我们有了环境，`getAt()`方法就可以直接返回对应环境map中的变量值。甚至不需要检查变量是否存在 -- 我们知道它是存在的，因为解析器之前已经确认过了。
 
 <aside name="coupled">
 
@@ -935,7 +935,7 @@ slightly out of sync. Tracking those down was difficult. One tool to make that
 easier is to have the interpreter explicitly assert -- using Java's assert
 statements or some other validation tool -- the contract it expects the resolver
 to have already upheld.
-我对这种耦合有切身体会，因为当我在为本书写代码时，我遇到了几个微妙的错误，即解析器代码和解释器代码有点不同步。跟踪这些问题是很困难的。一个行之有效的方法就是，在解释器中使用显式的断言——通过Java的assert或其它验证工具——确认解析器已经具备它所期望的值。
+我对这种耦合有切身体会，因为当我在为本书写代码时，我遇到了几个微妙的错误，即解析器代码和解释器代码有点不同步。跟踪这些问题是很困难的。一个行之有效的方法就是，在解释器中使用显式的断言 -- 通过Java的assert或其它验证工具 -- 确认解析器已经具备它所期望的值。
 
 </aside>
 

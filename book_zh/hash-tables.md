@@ -101,13 +101,13 @@ Memory usage is great -- just a single, reasonably sized <span
 name="bucket">array</span>. There's some waste from the empty buckets, but it's
 not huge. There's no overhead for node pointers, padding, or other stuff you'd
 get with something like a linked list or tree.
-这个方案的内存占用情况很好——只是一个大小合理的数组。空桶会有一些浪费，但不是很大。没有节点指针、填充以及其它类似于链表或树的开销。
+这个方案的内存占用情况很好 -- 只是一个大小合理的数组。空桶会有一些浪费，但不是很大。没有节点指针、填充以及其它类似于链表或树的开销。
 
 Performance is even better. Given a variable name -- its character -- you can
 subtract the ASCII value of `a` and use the result to index directly into the
 array. Then you can either look up the existing value or store a new value
 directly into that slot. It doesn't get much faster than that.
-性能就更好了。给定一个变量名——它的字符——你可以减去`a`的ASCII值，并使用结果直接在数组中进行索引。然后，你可以查找已有的值或将新值存储到对应的槽中。没有比这更快的了。
+性能就更好了。给定一个变量名 -- 它的字符 -- 你可以减去`a`的ASCII值，并使用结果直接在数组中进行索引。然后，你可以查找已有的值或将新值存储到对应的槽中。没有比这更快的了。
 
 This is sort of our Platonic ideal data structure. Lightning fast, dead simple,
 and compact in memory. As we add support for more complex keys, we'll have to
@@ -115,7 +115,7 @@ make some concessions, but this is what we're aiming for. Even once you add in
 hash functions, dynamic resizing, and collision resolution, this is still the
 core of every hash table out there -- a contiguous array of buckets that you
 index directly into.
-这是一种柏拉图式的理想数据结构。快如闪电，非常简单，而且内存紧凑。当我们进一步支持更复杂的键时，就必须作出一些让步，但这仍是我们的目标所在。即使加入了哈希函数、动态调整大小和冲突解决，这仍然是每个哈希表的核心——一个可以直接索引到的连续桶数组。
+这是一种柏拉图式的理想数据结构。快如闪电，非常简单，而且内存紧凑。当我们进一步支持更复杂的键时，就必须作出一些让步，但这仍是我们的目标所在。即使加入了哈希函数、动态调整大小和冲突解决，这仍然是每个哈希表的核心 -- 一个可以直接索引到的连续桶数组。
 
 ### 负载因子和封装键
 
@@ -133,7 +133,7 @@ that was ignored. If you've ever wondered why the C standard library is so
 enamored of abbreviation -- looking at you, `strncmp()` -- it turns out it
 wasn't entirely because of the small screens (or teletypes!) of the day.
 
-同样，这个限制也不是那么疯狂。早期的C语言链接器只将外部标识符的前6个字符视为有意义的。后面的一切都被忽略了。如果你曾好奇为什么C语言标准库对缩写如此着迷——比如，`strncmp()`——事实证明，这并不完全是因为当时的小屏幕（或小电视）。
+同样，这个限制也不是那么疯狂。早期的C语言链接器只将外部标识符的前6个字符视为有意义的。后面的一切都被忽略了。如果你曾好奇为什么C语言标准库对缩写如此着迷 -- 比如，`strncmp()` -- 事实证明，这并不完全是因为当时的小屏幕（或小电视）。
 
 </aside>
 
@@ -264,7 +264,7 @@ lists. Most operations are straightforward to implement, even deletion which, as
 we'll see, can be a pain. But it's not a great fit for modern CPUs. It has a lot
 of overhead from pointers and tends to scatter little linked list <span
 name="node">nodes</span> around in memory which isn't great for cache usage.
-拉链法在概念上很简单——它实际上就是一个链表数组。大多数操作实现都可以直接实现，甚至是删除（正如我们将看到的，这可能会很麻烦）。但它并不适合现代的CPU。它有很多指针带来的开销，并且倾向于在内存中分散的小的链表节点，这对缓存的使用不是很好。
+拉链法在概念上很简单 -- 它实际上就是一个链表数组。大多数操作实现都可以直接实现，甚至是删除（正如我们将看到的，这可能会很麻烦）。但它并不适合现代的CPU。它有很多指针带来的开销，并且倾向于在内存中分散的小的链表节点，这对缓存的使用不是很好。
 
 <aside name="node">
 
@@ -617,7 +617,7 @@ What it means to "mix" and "scramble" can get pretty sophisticated. Ultimately,
 though, the basic goal is *uniformity* -- we want the resulting hash values to
 be as widely scattered around the numeric range as possible to avoid collisions
 and clustering.
-“混合”和“扰乱”的含义可以变得相当复杂。不过，最终的基本目标是均匀——我们希望得到的哈希值尽可能广泛地分散在数组范围内，以避免碰撞和聚集。
+“混合”和“扰乱”的含义可以变得相当复杂。不过，最终的基本目标是均匀 -- 我们希望得到的哈希值尽可能广泛地分散在数组范围内，以避免碰撞和聚集。
 
 ### 插入条目
 
@@ -638,7 +638,7 @@ Most of the interesting logic is in `findEntry()` which we'll get to soon. That
 function's job is to take a key and figure out which bucket in the array it
 should go in. It returns a pointer to that bucket -- the address of the Entry in
 the array.
-大部分有趣的逻辑都在`findEntry()`中，我们很快就会讲到。该函数的作用是接受一个键，并找到它应该放在数组中的哪个桶里。它会返回一个指向该桶的指针——数组中Entry的地址。
+大部分有趣的逻辑都在`findEntry()`中，我们很快就会讲到。该函数的作用是接受一个键，并找到它应该放在数组中的哪个桶里。它会返回一个指向该桶的指针 -- 数组中Entry的地址。
 
 Once we have a bucket, inserting is straightforward. We update the hash table's
 size, taking care to not increase the count if we overwrote the value for an
@@ -714,7 +714,7 @@ There are a few cases to check for:
     lookup, that's good -- we've found the key we seek. If we're doing an insert,
     this means we'll be replacing the value for that key instead of adding a new
     entry.
-    如果桶中的键等于我们要找的键，那么这个键已经存在于表中了。如果我们在做查找，这很好——我们已经找到了要查找的键。如果我们在做插入，这意味着我们要替换该键的值，而不是添加一个新条目。
+    如果桶中的键等于我们要找的键，那么这个键已经存在于表中了。如果我们在做查找，这很好 -- 我们已经找到了要查找的键。如果我们在做插入，这意味着我们要替换该键的值，而不是添加一个新条目。
 
 <aside name="equal">
 
@@ -734,7 +734,7 @@ enough, it's a hash table that provides the tool we need.
     the next element -- this is the *linear* part of "linear probing" -- and
     check there. If we go past the end of the array, that second modulo operator
     wraps us back around to the beginning.
-    否则，就是桶中有一个条目，但具有不同的键。这就是一个冲突。在这种情况下，我们要开始探测。这也就是`for`循环所做的。我们从条目理想的存放位置开始。如果这个桶是空的或者有相同的键，我们就完成了。否则，我们就前进到下一个元素——这就是“线性探测”的*线性*部分——并进行检查。如果我们超过了数组的末端，第二个模运算符就会把我们重新带回起点。
+    否则，就是桶中有一个条目，但具有不同的键。这就是一个冲突。在这种情况下，我们要开始探测。这也就是`for`循环所做的。我们从条目理想的存放位置开始。如果这个桶是空的或者有相同的键，我们就完成了。否则，我们就前进到下一个元素 -- 这就是“线性探测”的*线性*部分 -- 并进行检查。如果我们超过了数组的末端，第二个模运算符就会把我们重新带回起点。
 
 We exit the loop when we find either an empty bucket or a bucket with the same
 key as the one we're looking for. You might be wondering about an infinite loop.
@@ -747,7 +747,7 @@ We return directly from within the loop, yielding a pointer to the found Entry
 so the caller can either insert something into it or read from it. Way back in
 `tableSet()`, the function that first kicked this off, we store the new entry in
 that returned bucket and we're done.
-我们会从循环中直接返回，得到一个指向找到的Entry的指针，这样调用方就可以向其中插入内容或从中读取内容。回到`tableSet()`——最先调用它的函数，我们将新条目存储到返回的桶中，然后就完成了。
+我们会从循环中直接返回，得到一个指向找到的Entry的指针，这样调用方就可以向其中插入内容或从中读取内容。回到`tableSet()` -- 最先调用它的函数，我们将新条目存储到返回的桶中，然后就完成了。
 
 ### 分配和调整
 
@@ -842,7 +842,7 @@ is empty, which we detect by seeing if the key is `NULL`, then we didn't find an
 Entry with our key. If `findEntry()` does return a non-empty Entry, then that's
 our match. We take the Entry's value and copy it to the output parameter so the
 caller can get it. Piece of cake.
-如果表完全是空的，我们肯定找不到这个条目，所以我们先检查一下。这不仅仅是一种优化——它还确保当数组为`NULL`时，我们不会试图访问桶数组。其它情况下，我们就让`findEntry()`发挥它的魔力。这将返回一个指向桶的指针。如果桶是空的（我们通过查看键是否为`NULL`来检测），那么我们就没有找到包含对应键的Entry。如果`findEntry()`确实返回了一个非空的Entry，那么它就是我们的匹配项。我们获取Entry的值并将其复制到输出参数中，这样调用方就可以得到该值。小菜一碟。
+如果表完全是空的，我们肯定找不到这个条目，所以我们先检查一下。这不仅仅是一种优化 -- 它还确保当数组为`NULL`时，我们不会试图访问桶数组。其它情况下，我们就让`findEntry()`发挥它的魔力。这将返回一个指向桶的指针。如果桶是空的（我们通过查看键是否为`NULL`来检测），那么我们就没有找到包含对应键的Entry。如果`findEntry()`确实返回了一个非空的Entry，那么它就是我们的匹配项。我们获取Entry的值并将其复制到输出参数中，这样调用方就可以得到该值。小菜一碟。
 
 ### 删除条目
 
@@ -1073,7 +1073,7 @@ function if it didn't. But when the two hashes are the same, we still have to
 compare characters to make sure we didn't have a hash collision on different
 strings.
 
-在实践中，我们会首先比较两个字符串的哈希码。这样可以快速检测到几乎所有不同的字符串——如果不能，它就不是一个很好的哈希函数。但是，当两个哈希值相同时，我们仍然需要比较字符，以确保没有在不同的字符串上出现哈希冲突。
+在实践中，我们会首先比较两个字符串的哈希码。这样可以快速检测到几乎所有不同的字符串 -- 如果不能，它就不是一个很好的哈希函数。但是，当两个哈希值相同时，我们仍然需要比较字符，以确保没有在不同的字符串上出现哈希冲突。
 
 </aside>
 

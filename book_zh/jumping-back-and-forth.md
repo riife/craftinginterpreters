@@ -120,7 +120,7 @@ determine whether to execute the then branch or skip it.
 Then we emit a new `OP_JUMP_IF_FALSE` instruction. It has an operand for how
 much to offset the `ip` -- how many bytes of code to skip. If the condition is
 falsey, it adjusts the `ip` by that amount. Something like this:
-然后我们生成一个新的`OP_JUMP_IF_ELSE`指令。这条指令有一个操作数，用来表示`ip`的偏移量——要跳过多少字节的代码。如果条件是假，它就按这个值调整`ip`，就像这样：
+然后我们生成一个新的`OP_JUMP_IF_ELSE`指令。这条指令有一个操作数，用来表示`ip`的偏移量 -- 要跳过多少字节的代码。如果条件是假，它就按这个值调整`ip`，就像这样：
 
 <aside name="legend">
 
@@ -300,13 +300,13 @@ We interpret it like so:
 
 Nothing too surprising here -- the only difference is that it doesn't check a
 condition and always applies the offset.
-这里没有什么特别出人意料的——唯一的区别就是它不检查条件，并且一定会应用偏移量。
+这里没有什么特别出人意料的 -- 唯一的区别就是它不检查条件，并且一定会应用偏移量。
 
 We have then and else branches working now, so we're close. The last bit is to
 clean up that condition value we left on the stack. Remember, each statement is
 required to have zero stack effect -- after the statement is finished executing,
 the stack should be as tall as it was before.
-我们现在有了then和else分支，所以已经接近完成了。最后一点是清理我们遗留在栈上的条件值。请记住，每个语句都要求是0堆栈效应——在语句执行完毕后，堆栈应该与之前一样高。
+我们现在有了then和else分支，所以已经接近完成了。最后一点是清理我们遗留在栈上的条件值。请记住，每个语句都要求是0堆栈效应 -- 在语句执行完毕后，堆栈应该与之前一样高。
 
 We could have the `OP_JUMP_IF_FALSE` instruction pop the condition itself, but
 soon we'll use that same instruction for the logical operators where we don't
@@ -470,7 +470,7 @@ When we reach a `while` token, we call:
 Most of this mirrors `if` statements -- we compile the condition expression,
 surrounded by mandatory parentheses. That's followed by a jump instruction that
 skips over the subsequent body statement if the condition is falsey.
-大部分跟`if`语句相似——我们编译条件表达式（强制用括号括起来）。之后是一个跳转指令，如果条件为假，会跳过后续的主体语句。
+大部分跟`if`语句相似 -- 我们编译条件表达式（强制用括号括起来）。之后是一个跳转指令，如果条件为假，会跳过后续的主体语句。
 
 We patch the jump after compiling the body and take care to <span
 name="pop">pop</span> the condition value from the stack on either path. The
@@ -493,7 +493,7 @@ emit the instruction in two stages since we didn't know how far we were going to
 jump until after we emitted the jump instruction. We don't have that problem
 now. We've already compiled the point in code that we want to jump back to --
 it's right before the condition expression.
-在主体之后，我们调用这个函数来生成一个“循环”指令。该指令需要知道往回跳多远。当向前跳时，我们必须分两个阶段发出指令，因为在发出跳跃指令前，我们不知道要跳多远。现在我们没有这个问题了。我们已经编译了要跳回去的代码位置——就在条件表达式之前。
+在主体之后，我们调用这个函数来生成一个“循环”指令。该指令需要知道往回跳多远。当向前跳时，我们必须分两个阶段发出指令，因为在发出跳跃指令前，我们不知道要跳多远。现在我们没有这个问题了。我们已经编译了要跳回去的代码位置 -- 就在条件表达式之前。
 
 All we need to do is capture that location as we compile it.
 我们所需要做的就是在编译时捕获这个位置。
@@ -544,7 +544,7 @@ Disassembly is similar too.
 That's our `while` statement. It contains two jumps -- a conditional forward one
 to escape the loop when the condition is not met, and an unconditional loop
 backward after we have executed the body. The flow looks like this:
-这就是我们的`while`语句。它包含两个跳转——一个是有条件的前向跳转，用于在不满足条件的时候退出循环；另一个是在执行完主体代码后的无条件跳转。流程看起来如下：
+这就是我们的`while`语句。它包含两个跳转 -- 一个是有条件的前向跳转，用于在不满足条件的时候退出循环；另一个是在执行完主体代码后的无条件跳转。流程看起来如下：
 
 <img src="image/jumping-back-and-forth/while.png" alt="Flowchart of the compiled bytecode of a while statement." />
 
@@ -700,7 +700,7 @@ The last part is a little tricky. First, we emit a loop instruction. This is the
 main loop that takes us back to the top of the `for` loop -- right before the
 condition expression if there is one. That loop happens right after the
 increment, since the increment executes at the end of each loop iteration.
-最后一部分有点棘手。首先，我们生成一个循环指令。这是主循环，会将我们带到`for`循环的顶部——如果有条件表达式的话，就回在它前面。这个循环发生在增量语句之后，因此增量语句是在每次循环迭代结束时执行的。
+最后一部分有点棘手。首先，我们生成一个循环指令。这是主循环，会将我们带到`for`循环的顶部 -- 如果有条件表达式的话，就回在它前面。这个循环发生在增量语句之后，因此增量语句是在每次循环迭代结束时执行的。
 
 Then we change `loopStart` to point to the offset where the increment expression
 begins. Later, when we emit the loop instruction after the body statement, this
@@ -722,7 +722,7 @@ forward -- clox is now Turing complete. We've also covered quite a bit of new
 syntax: three statements and two expression forms. Even so, it only took three
 new simple instructions. That's a pretty good effort-to-reward ratio for the
 architecture of our VM.
-与jlox中实现`for`循环一样，我们不需要接触运行时。所有这些都被编译到虚拟机已经支持的原始控制流中。在这一章中，我们向前迈出了一大步——clox现在图灵完整了。我们还讨论了相当多的新语法：三种语句和两种表达式形式。即便如此，我们也只用了三个简单的新指令。对于我们的虚拟机架构来说，这是一个相当不错的努力-回报比。
+与jlox中实现`for`循环一样，我们不需要接触运行时。所有这些都被编译到虚拟机已经支持的原始控制流中。在这一章中，我们向前迈出了一大步 -- clox现在图灵完整了。我们还讨论了相当多的新语法：三种语句和两种表达式形式。即便如此，我们也只用了三个简单的新指令。对于我们的虚拟机架构来说，这是一个相当不错的努力-回报比。
 
 <aside name="leap">
 
@@ -1028,7 +1028,7 @@ for quality creative work.
 
 我把它读了好几遍，还有一些批评、回复和评论。我最后的感受充其量是喜忧参半。在很高的层次上来说，我是支持他的。他的总体论点是这样的：
 
-1. 作为程序员，我们编写程序——静态文本——但我们关心的是实际运行的程序——它的动态行为。
+1. 作为程序员，我们编写程序 -- 静态文本 -- 但我们关心的是实际运行的程序 -- 它的动态行为。
 2. 相比之下，我们更擅长对静态事物进行推理，而不是动态事物。（他没有提供任何证据来支持这一说法，但我接受这个说法）
 3. 因此，我们越能使程序的动态执行反映其文本结构，就越好。
 

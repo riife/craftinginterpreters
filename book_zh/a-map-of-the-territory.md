@@ -13,13 +13,13 @@ Platonic ideal form. Things like "stack", "bytecode", and "recursive descent",
 are nuts and bolts one particular implementation might use. From the user's
 perspective, as long as the resulting contraption faithfully follows the
 language's specification, it's all implementation detail.
-首先，我先做个简单说明。本书的大部分内容都是关于语言的*实现*，它与*语言本身*这种柏拉图式的理想形式有所不同。诸如“堆栈”，“字节码”和“递归下降”之类的东西是某个特定实现中可能使用的基本要素。从用户的角度来说，只要最终产生的装置能够忠实地遵循语言规范，它内部的都是实现细节。
+首先，我先做个简单说明。本书的大部分内容都是关于语言的 *实现* ，它与 *语言本身*这种柏拉图式的理想形式有所不同。诸如“堆栈”，“字节码”和“递归下降”之类的东西是某个特定实现中可能使用的基本要素。从用户的角度来说，只要最终产生的装置能够忠实地遵循语言规范，它内部的都是实现细节。
 
 We're going to spend a lot of time on those details, so if I have to write
 "language *implementation*" every single time I mention them, I'll wear my
 fingers off. Instead, I'll use "language" to refer to either a language or an
 implementation of it, or both, unless the distinction matters.
-我们将会花很多时间在这些细节上，所以如果我每次提及的时候都写“语言*实现*”，我的手指都会被磨掉。相反，除非有重要的区别，否则我将使用“语言”来指代一种语言或该语言的一种实现，或两者皆有。
+我们将会花很多时间在这些细节上，所以如果我每次提及的时候都写“语言 *实现* ”，我的手指都会被磨掉。相反，除非有重要的区别，否则我将使用“语言”来指代一种语言或该语言的一种实现，或两者皆有。
 
 ## The Parts of a Language  语言的各部分
 
@@ -109,7 +109,7 @@ ability to compose larger expressions and statements out of smaller parts. Did
 you ever diagram sentences in English class? If so, you've done what a parser
 does, except that English has thousands and thousands of "keywords" and an
 overflowing cornucopia of ambiguity. Programming languages are much simpler.
-下一步是**解析**。 这就是我们从句法中得到**语法**的地方——语法能够将较小的部分组成较大的表达式和语句。你在英语课上做过语法图解吗？如果有，你就做了解析器所做的事情，区别在于，英语中有成千上万的“关键字”和大量的歧义，而编程语言要简单得多。
+下一步是**解析**。 这就是我们从句法中得到**语法**的地方 -- 语法能够将较小的部分组成较大的表达式和语句。你在英语课上做过语法图解吗？如果有，你就做了解析器所做的事情，区别在于，英语中有成千上万的“关键字”和大量的歧义，而编程语言要简单得多。
 
 A **parser** takes the flat sequence of tokens and builds a tree structure that
 mirrors the nested nature of the grammar. These trees have a couple of different
@@ -152,7 +152,7 @@ The first bit of analysis that most languages do is called **binding** or
 and wire the two together. This is where **scope** comes into play -- the region
 of source code where a certain name can be used to refer to a certain
 declaration.
-大多数语言所做的第一点分析叫做**绑定**或**解析**。对于每一个**标识符**，我们都要找出定义该名称的地方，并将两者连接起来。这就是**作用域**的作用——在这个源代码区域中，某个名字可以用来引用某个声明。
+大多数语言所做的第一点分析叫做**绑定**或**解析**。对于每一个**标识符**，我们都要找出定义该名称的地方，并将两者连接起来。这就是**作用域**的作用 -- 在这个源代码区域中，某个名字可以用来引用某个声明。
 
 If the language is <span name="type">statically typed</span>, this is when we
 type check. Once we know where `a` and `b` are declared, we can also figure out
@@ -188,7 +188,7 @@ away:
 
 深吸一口气。 我们已经到达了山顶，并对用户的程序有了全面的了解。从分析中可见的所有语义信息都需要存储在某个地方。我们可以把它存储在几个地方：
 
-* 通常，它会被直接存储在语法树本身的**属性**中——属性是节点中的额外字段，这些字段在解析时不会初始化，但在稍后会进行填充。
+* 通常，它会被直接存储在语法树本身的**属性**中 -- 属性是节点中的额外字段，这些字段在解析时不会初始化，但在稍后会进行填充。
 * 有时，我们可能会将数据存储在外部的查找表中。 通常，该表的关键字是标识符，即变量和声明的名称。 在这种情况下，我们称其为**符号表**，并且其中与每个键关联的值告诉我们该标识符所指的是什么。
 * 最强大的记录工具是将树转化为一个全新的数据结构，更直接地表达代码的语义。这是下一节的内容。
 
@@ -236,7 +236,7 @@ A <span name="gcc">shared</span> intermediate representation reduces that
 dramatically. You write *one* front end for each source language that produces
 the IR. Then *one* back end for each target architecture. Now you can mix and
 match those to get every combination.
-一个共享的中间代码可以大大减少这种情况。你为每个产生IR的源语言写*一个*前端。然后为每个目标平台写*一个*后端。现在，你可以将这些混搭起来，得到每一种组合。
+一个共享的中间代码可以大大减少这种情况。你为每个产生IR的源语言写 *一个* 前端。然后为每个目标平台写 *一个* 后端。现在，你可以将这些混搭起来，得到每一种组合。
 
 <aside name="gcc">
 
@@ -261,7 +261,7 @@ makes the semantics more apparent...
 Once we understand what the user's program means, we are free to swap it out
 with a different program that has the *same semantics* but implements them more
 efficiently -- we can **optimize** it.
-一旦我们理解了用户程序的含义，我们就可以自由地用另一个具有相同语义但实现效率更高的程序来交换它——我们可以对它进行**优化**。
+一旦我们理解了用户程序的含义，我们就可以自由地用另一个具有相同语义但实现效率更高的程序来交换它 -- 我们可以对它进行**优化**。
 
 A simple example is **constant folding**: if some expression always evaluates to
 the exact same value, we can do the evaluation at compile time and replace the
@@ -337,7 +337,7 @@ For example, the [AAD][] ("ASCII Adjust AX Before Division") instruction lets
 you perform division, which sounds useful. Except that instruction takes, as
 operands, two binary-coded decimal digits packed into a single 16-bit register.
 When was the last time *you* needed BCD on a 16-bit machine?
-例如，[AAD]（"ASCII Adjust AX Before Division",除法前ASCII调整AX）指令可以让你执行除法，这听起来很有用。除了该指令将两个二进制编码的十进制数字作为操作数打包到一个16位寄存器中。*你*最后一次在16位机器上使用BCD是什么时候？
+例如，[AAD]（"ASCII Adjust AX Before Division",除法前ASCII调整AX）指令可以让你执行除法，这听起来很有用。除了该指令将两个二进制编码的十进制数字作为操作数打包到一个16位寄存器中。 *你* 最后一次在16位机器上使用BCD是什么时候？
 
 [aad]: http://www.felixcloutier.com/x86/AAD.html
 
@@ -464,7 +464,7 @@ these all-at-once compilers. You associate an *action* with each piece of the
 grammar, usually one that generates output code. Then, whenever the parser
 matches that chunk of syntax, it executes the action, building up the target
 code one rule at a time.
-[语法导向翻译][pass]是一种结构化的技术，用于构建这些一次性编译器。你可以将一个*操作*与语法的每个片段(通常是生成输出代码的语法片段)相关联。然后，每当解析器匹配该语法块时，它就执行操作，一次构建一个规则的目标代码。
+[语法导向翻译][pass]是一种结构化的技术，用于构建这些一次性编译器。你可以将一个 *操作* 与语法的每个片段(通常是生成输出代码的语法片段)相关联。然后，每当解析器匹配该语法块时，它就执行操作，一次构建一个规则的目标代码。
 
 [pass]: https://en.wikipedia.org/wiki/Syntax-directed_translation
 
@@ -512,7 +512,7 @@ of work. If you have some existing generic IR to target, you could bolt your
 front end onto that. Otherwise, it seems like you're stuck. But what if you
 treated some other *source language* as if it were an intermediate
 representation?
-为一种语言编写一个完整的后端可能需要大量的工作。 如果你有一些现有的通用IR作为目标，则可以将前端转换到该IR上。 否则，你可能会陷入困境。 但是，如果你将某些其他*源语言*视为中间代码，该怎么办？
+为一种语言编写一个完整的后端可能需要大量的工作。 如果你有一些现有的通用IR作为目标，则可以将前端转换到该IR上。 否则，你可能会陷入困境。 但是，如果你将某些其他 *源语言* 视为中间代码，该怎么办？
 
 You write a front end for your language. Then, in the back end, instead of doing
 all the work to *lower* the semantics to some primitive target language, you
@@ -520,12 +520,12 @@ produce a string of valid source code for some other language that's about as
 high level as yours. Then, you use the existing compilation tools for *that*
 language as your escape route off the mountain and down to something you can
 execute.
-你需要为你的语言编写一个前端。然后，在后端，你可以生成一份与你的语言级别差不多的其他语言的有效源代码字符串，而不是将所有代码*降低*到某个原始目标语言的语义。然后，你可以使用该语言现有的编译工具作为逃离大山的路径，得到某些可执行的内容。
+你需要为你的语言编写一个前端。然后，在后端，你可以生成一份与你的语言级别差不多的其他语言的有效源代码字符串，而不是将所有代码 *降低* 到某个原始目标语言的语义。然后，你可以使用该语言现有的编译工具作为逃离大山的路径，得到某些可执行的内容。
 
 They used to call this a **source-to-source compiler** or a **transcompiler**.
 After the rise of languages that compile to JavaScript in order to run in the
 browser, they've affected the hipster sobriquet **transpiler**.
-人们过去称之为**源到源编译器**或**转换编译器**。随着那些为了在浏览器中运行而编译成JavaScript的各类语言的兴起，它们有了一个时髦的名字——**转译器**。
+人们过去称之为**源到源编译器**或**转换编译器**。随着那些为了在浏览器中运行而编译成JavaScript的各类语言的兴起，它们有了一个时髦的名字 -- **转译器**。
 
 <aside name="gary">
 
@@ -654,7 +654,7 @@ can't bear to.
 
 Now *pine nuts*, on the other hand, are plant-based foods that are neither
 fruits nor vegetables. At least as far as I can tell.
-而*松子*则是既不是水果也不是蔬菜的植物性食品。至少在我看来是这样。
+而 *松子* 则是既不是水果也不是蔬菜的植物性食品。至少在我看来是这样。
 
 </aside>
 
@@ -683,25 +683,25 @@ Like apples and oranges, some implementations are clearly compilers and *not*
 interpreters. GCC and Clang take your C code and compile it to machine code. An
 end user runs that executable directly and may never even know which tool was
 used to compile it. So those are *compilers* for C.
-像苹果和橘子一样，某些实现显然是编译器，而不是解释器。 GCC和Clang接受你的C代码并将其编译为机器代码。 最终用户直接运行该可执行文件，甚至可能永远都不知道使用了哪个工具来编译它。 所以这些是C的*编译器*。
+像苹果和橘子一样，某些实现显然是编译器，而不是解释器。 GCC和Clang接受你的C代码并将其编译为机器代码。 最终用户直接运行该可执行文件，甚至可能永远都不知道使用了哪个工具来编译它。 所以这些是C的 *编译器* 。
 
 In older versions of Matz's canonical implementation of Ruby, the user ran Ruby
 from source. The implementation parsed it and executed it directly by traversing
 the syntax tree. No other translation occurred, either internally or in any
 user-visible form. So this was definitely an *interpreter* for Ruby.
-由 Matz 实现的老版本 Ruby 中，用户从源代码中运行Ruby。该实现通过遍历语法树对其进行解析并直接执行。期间都没有发生其他的转换，无论是在实现内部还是以任何用户可见的形式。所以这绝对是一个Ruby的*解释器*。
+由 Matz 实现的老版本 Ruby 中，用户从源代码中运行Ruby。该实现通过遍历语法树对其进行解析并直接执行。期间都没有发生其他的转换，无论是在实现内部还是以任何用户可见的形式。所以这绝对是一个Ruby的 *解释器*。
 
 But what of CPython? When you run your Python program using it, the code is
 parsed and converted to an internal bytecode format, which is then executed
 inside the VM. From the user's perspective, this is clearly an interpreter --
 they run their program from source. But if you look under CPython's scaly skin,
 you'll see that there is definitely some compiling going on.
-但是 CPython 呢？当你使用它运行你的Python程序时，代码会被解析并转换为内部字节码格式，然后在虚拟机内部执行。从用户的角度来看，这显然是一个解释器——他们是从源代码开始运行自己的程序。但如果你看一下CPython的内部，你会发现肯定有一些编译工作在进行。
+但是 CPython 呢？当你使用它运行你的Python程序时，代码会被解析并转换为内部字节码格式，然后在虚拟机内部执行。从用户的角度来看，这显然是一个解释器 -- 他们是从源代码开始运行自己的程序。但如果你看一下CPython的内部，你会发现肯定有一些编译工作在进行。
 
 The answer is that it is <span name="go">both</span>. CPython *is* an
 interpreter, and it *has* a compiler. In practice, most scripting languages work
 this way, as you can see:
-答案是两者兼而有之。 CPython是一个解释器，但他也*有*一个编译器。 实际上，大多数脚本语言都以这种方式工作，如你所见：
+答案是两者兼而有之。 CPython是一个解释器，但他也 *有* 一个编译器。 实际上，大多数脚本语言都以这种方式工作，如你所见：
 
 <aside name="go">
 
@@ -714,7 +714,7 @@ So `go` *is* a compiler (you can use it as a tool to compile code without
 running it), *is* an interpreter (you can invoke it to immediately run a program
 from source), and also *has* a compiler (when you use it as an interpreter, it
 is still compiling internally).
-所以，可以说`go`*是*一个编译器（你可以把它当做一个工具来编译代码而不运行）；*也可以说是*一个解释器（你可以调用它立即从源码中运行一个程序），并且*有*一个编译器（当你把它当做解释器使用时，它仍然在内部编译）。
+所以，可以说`go` *是* 一个编译器（你可以把它当做一个工具来编译代码而不运行）； *也可以说是* 一个解释器（你可以调用它立即从源码中运行一个程序），并且 *有* 一个编译器（当你把它当做解释器使用时，它仍然在内部编译）。
 
 [go tool]: https://golang.org/cmd/go/
 

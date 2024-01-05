@@ -163,7 +163,7 @@ wires up the superclass to the new subclass. In the last chapter, we defined an
 <code>OP_METHOD</code> instruction to mutate an existing class object by adding a method to
 its method table. This is similar<span class="em">&mdash;</span>the <code>OP_INHERIT</code> instruction takes an
 existing class and applies the effect of inheritance to it.
-之后，我们调用<code>namedVariable()</code>将进行继承的子类加载到栈中，接着是<code>OP_INHERIT</code>指令。该指令将超类与新的子类连接起来。在上一章中，我们定义了一条<code>OP_METHOD</code>指令，通过向已有类对象的方法表中添加方法来改变它。这里是类似的——<code>OP_INHERIT</code>指令接受一个现有的类，并对其应用继承的效果。</p>
+之后，我们调用<code>namedVariable()</code>将进行继承的子类加载到栈中，接着是<code>OP_INHERIT</code>指令。该指令将超类与新的子类连接起来。在上一章中，我们定义了一条<code>OP_METHOD</code>指令，通过向已有类对象的方法表中添加方法来改变它。这里是类似的<span class="em">&mdash;</span><code>OP_INHERIT</code>指令接受一个现有的类，并对其应用继承的效果。</p>
 <p>In the previous example, when the compiler works through this bit of syntax:
 在前面的例子中，当编译器处理这些语法时：</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Cruller</span> &lt; <span class="t">Doughnut</span> {
@@ -209,7 +209,7 @@ in enum <em>OpCode</em></div>
 
 <p>There are no operands to worry about. The two values we need<span class="em">&mdash;</span>superclass and
 subclass<span class="em">&mdash;</span>are both found on the stack. That means disassembling is easy.
-不需要担心任何操作数。我们需要的两个值——超类和子类——都可以在栈中找到。这意味着反汇编很容易。</p>
+不需要担心任何操作数。我们需要的两个值<span class="em">&mdash;</span>超类和子类<span class="em">&mdash;</span>都可以在栈中找到。这意味着反汇编很容易。</p>
 <div class="codehilite"><pre class="insert-before">      return constantInstruction(&quot;OP_CLASS&quot;, chunk, offset);
 </pre><div class="source-file"><em>debug.c</em><br>
 in <em>disassembleInstruction</em>()</div>
@@ -256,7 +256,7 @@ when <em>calling</em> a method, any method inherited from a superclass will be f
 right in the subclass&rsquo;s own method table. There is no extra runtime work needed
 for inheritance at all. By the time the class is declared, the work is done.
 This means inherited method calls are exactly as fast as normal method calls<span class="em">&mdash;</span>a <span name="two">single</span> hash table lookup.
-新方法则要快得多。当子类被声明时，我们将继承类的所有方法复制到子类自己的方法表中。之后，当我们<em>调用</em>某个方法时，从超类继承的任何方法都可以在子类自己的方法表中找到。继承根本不需要做额外的运行时工作。当类被声明时，工作就完成了。这意味着继承的方法和普通方法调用一样快——只需要一次哈希表查询。</p><img src="image/superclasses/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." />
+新方法则要快得多。当子类被声明时，我们将继承类的所有方法复制到子类自己的方法表中。之后，当我们<em>调用</em>某个方法时，从超类继承的任何方法都可以在子类自己的方法表中找到。继承根本不需要做额外的运行时工作。当类被声明时，工作就完成了。这意味着继承的方法和普通方法调用一样快<span class="em">&mdash;</span>只需要一次哈希表查询。</p><img src="image/superclasses/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." />
 <aside name="two">
 <p>Well, two hash table lookups, I guess. Because first we have to make sure a
 field on the instance doesn&rsquo;t shadow the method.
@@ -524,7 +524,7 @@ emit code to load the variable named &ldquo;super&rdquo;. That variable is a loc
 of the method body, but our existing upvalue support enables the VM to capture
 that local inside the body of the method or even in functions nested inside that
 method.
-这种机制在运行时为我们提供了一种方法，可以从子类的任何方法中访问外层子类的超类对象——只需发出代码来加载名为“super”的变量。这个变量是方法主体之外的一个局部变量，但是我们现有的上值支持VM在方法主体内、甚至是嵌套方法内的函数中捕获该局部变量。</p>
+这种机制在运行时为我们提供了一种方法，可以从子类的任何方法中访问外层子类的超类对象<span class="em">&mdash;</span>只需发出代码来加载名为“super”的变量。这个变量是方法主体之外的一个局部变量，但是我们现有的上值支持VM在方法主体内、甚至是嵌套方法内的函数中捕获该局部变量。</p>
 <h2><a href="#超类调用" id="超类调用"><small>29&#8202;.&#8202;3</small>超类调用</a></h2>
 <p>With that runtime support in place, we are ready to implement super calls. As
 usual, we go front to back, starting with the new syntax. A super call <span
@@ -940,7 +940,7 @@ previous challenge:
 <p>In Lox, as in most other object-oriented languages, when looking up a
 method, we start at the bottom of the class hierarchy and work our way up<span class="em">&mdash;</span>a subclass&rsquo;s method is preferred over a superclass&rsquo;s. In order to get to the
 superclass method from within an overriding method, you use <code>super</code>.
-在Lox中，和其它大多数面向对象的语言一样，当查找一个方法时，我们从类层次结构的底部开始，然后向上查找——子类的方法优于超类的方法。要想在子类方法中访问超类方法，可以使用<code>super</code>。</p>
+在Lox中，和其它大多数面向对象的语言一样，当查找一个方法时，我们从类层次结构的底部开始，然后向上查找<span class="em">&mdash;</span>子类的方法优于超类的方法。要想在子类方法中访问超类方法，可以使用<code>super</code>。</p>
 <p>The language <a href="https://beta.cs.au.dk/">BETA</a> takes the <a href="http://journal.stuffwithstuff.com/2012/12/19/the-impoliteness-of-overriding-methods/">opposite approach</a>. When you call a
 method, it starts at the <em>top</em> of the class hierarchy and works <em>down</em>. A
 superclass method wins over a subclass method. In order to get to the

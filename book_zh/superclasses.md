@@ -71,7 +71,7 @@ wires up the superclass to the new subclass. In the last chapter, we defined an
 `OP_METHOD` instruction to mutate an existing class object by adding a method to
 its method table. This is similar -- the `OP_INHERIT` instruction takes an
 existing class and applies the effect of inheritance to it.
-之后，我们调用`namedVariable()`将进行继承的子类加载到栈中，接着是`OP_INHERIT`指令。该指令将超类与新的子类连接起来。在上一章中，我们定义了一条`OP_METHOD`指令，通过向已有类对象的方法表中添加方法来改变它。这里是类似的——`OP_INHERIT`指令接受一个现有的类，并对其应用继承的效果。
+之后，我们调用`namedVariable()`将进行继承的子类加载到栈中，接着是`OP_INHERIT`指令。该指令将超类与新的子类连接起来。在上一章中，我们定义了一条`OP_METHOD`指令，通过向已有类对象的方法表中添加方法来改变它。这里是类似的 -- `OP_INHERIT`指令接受一个现有的类，并对其应用继承的效果。
 
 In the previous example, when the compiler works through this bit of syntax:
 在前面的例子中，当编译器处理这些语法时：
@@ -114,7 +114,7 @@ Now onto the new instruction.
 
 There are no operands to worry about. The two values we need -- superclass and
 subclass -- are both found on the stack. That means disassembling is easy.
-不需要担心任何操作数。我们需要的两个值——超类和子类——都可以在栈中找到。这意味着反汇编很容易。
+不需要担心任何操作数。我们需要的两个值 -- 超类和子类 -- 都可以在栈中找到。这意味着反汇编很容易。
 
 ^code disassemble-inherit (1 before, 1 after)
 
@@ -149,7 +149,7 @@ right in the subclass's own method table. There is no extra runtime work needed
 for inheritance at all. By the time the class is declared, the work is done.
 This means inherited method calls are exactly as fast as normal method calls --
 a <span name="two">single</span> hash table lookup.
-新方法则要快得多。当子类被声明时，我们将继承类的所有方法复制到子类自己的方法表中。之后，当我们*调用*某个方法时，从超类继承的任何方法都可以在子类自己的方法表中找到。继承根本不需要做额外的运行时工作。当类被声明时，工作就完成了。这意味着继承的方法和普通方法调用一样快——只需要一次哈希表查询。
+新方法则要快得多。当子类被声明时，我们将继承类的所有方法复制到子类自己的方法表中。之后，当我们*调用*某个方法时，从超类继承的任何方法都可以在子类自己的方法表中找到。继承根本不需要做额外的运行时工作。当类被声明时，工作就完成了。这意味着继承的方法和普通方法调用一样快 -- 只需要一次哈希表查询。
 
 <img src="image/superclasses/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." />
 
@@ -408,7 +408,7 @@ emit code to load the variable named "super". That variable is a local outside
 of the method body, but our existing upvalue support enables the VM to capture
 that local inside the body of the method or even in functions nested inside that
 method.
-这种机制在运行时为我们提供了一种方法，可以从子类的任何方法中访问外层子类的超类对象——只需发出代码来加载名为“super”的变量。这个变量是方法主体之外的一个局部变量，但是我们现有的上值支持VM在方法主体内、甚至是嵌套方法内的函数中捕获该局部变量。
+这种机制在运行时为我们提供了一种方法，可以从子类的任何方法中访问外层子类的超类对象 -- 只需发出代码来加载名为“super”的变量。这个变量是方法主体之外的一个局部变量，但是我们现有的上值支持VM在方法主体内、甚至是嵌套方法内的函数中捕获该局部变量。
 
 ## 超类调用
 
@@ -784,7 +784,7 @@ squeeze even more perf out. If that sounds fun, [keep reading][opt]...
     method, we start at the bottom of the class hierarchy and work our way up --
     a subclass's method is preferred over a superclass's. In order to get to the
     superclass method from within an overriding method, you use `super`.
-    在Lox中，和其它大多数面向对象的语言一样，当查找一个方法时，我们从类层次结构的底部开始，然后向上查找——子类的方法优于超类的方法。要想在子类方法中访问超类方法，可以使用`super`。
+    在Lox中，和其它大多数面向对象的语言一样，当查找一个方法时，我们从类层次结构的底部开始，然后向上查找 -- 子类的方法优于超类的方法。要想在子类方法中访问超类方法，可以使用`super`。
 
     The language [BETA][] takes the [opposite approach][inner]. When you call a
     method, it starts at the *top* of the class hierarchy and works *down*. A

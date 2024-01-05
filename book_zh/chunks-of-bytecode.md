@@ -29,7 +29,7 @@ An even more fundamental reason that jlox isn't sufficient is that it's too damn
 slow. A tree-walk interpreter is fine for some kinds of high-level, declarative
 languages. But for a general-purpose, imperative language -- even a "scripting"
 language like Lox -- it won't fly. Take this little script:
-jlox不够用的一个更根本的原因在于，它太慢了。树遍历解释器对于某些高级的声明式语言来说是不错的，但是对于通用的命令式语言——即使是Lox这样的“脚本”语言——这是行不通的。以下面的小脚本为例：
+jlox不够用的一个更根本的原因在于，它太慢了。树遍历解释器对于某些高级的声明式语言来说是不错的，但是对于通用的命令式语言 -- 即使是Lox这样的“脚本”语言 -- 这是行不通的。以下面的小脚本为例：
 
 ```lox
 fun fib(n) {
@@ -69,7 +69,7 @@ Blackbird.
 
 We need to rethink the core model. This chapter introduces that model, bytecode,
 and begins our new interpreter, clox.
-我们需要重新考虑核心模型。本章将介绍这个模型——字节码，并开始我们的新解释器，clox。
+我们需要重新考虑核心模型。本章将介绍这个模型 -- 字节码，并开始我们的新解释器，clox。
 
 ## 字节码？
 
@@ -87,7 +87,7 @@ Our existing interpreter has a couple of things going for it:
     runtime representation of the code directly maps to the syntax. It's
     virtually effortless to get from the parser to the data structures we need
     at runtime.
-    嗯，首先我们已经写好了，它已经完成了。它能完成的主要原因是这种风格的解释器*实现起来非常简单*。代码的运行时表示直接映射到语法。从解析器到我们在运行时需要的数据结构，几乎都毫不费力。
+    嗯，首先我们已经写好了，它已经完成了。它能完成的主要原因是这种风格的解释器 *实现起来非常简单* 。代码的运行时表示直接映射到语法。从解析器到我们在运行时需要的数据结构，几乎都毫不费力。
 
 *   It's *portable*. Our current interpreter is written in Java and runs on any
     platform Java supports. We could write a new implementation in C using the
@@ -173,7 +173,7 @@ representation.
 If you want to go *real* fast, you want to get all of those layers of
 indirection out of the way. Right down to the metal. Machine code. It even
 *sounds* fast. *Machine code.*
-如果你想真正快，就要摆脱所有的中间层，一直到最底层——机器码。听起来就很快，*机器码*。
+如果你想真正快，就要摆脱所有的中间层，一直到最底层 -- 机器码。听起来就很快，*机器码*。
 
 Compiling directly to the native instruction set the chip supports is what the
 fastest languages do. Targeting native code has been the most efficient option
@@ -243,7 +243,7 @@ platform-specific but fast. Bytecode sits in the middle. It retains the
 portability of a tree-walker -- we won't be getting our hands dirty with
 assembly code in this book. It sacrifices *some* simplicity to get a performance
 boost in return, though not as fast as going fully native.
-记住这两点。一方面，树遍历解释器简单、可移植，而且慢。另一方面，本地代码复杂且特定与平台，但是很快。字节码位于中间。它保留了树遍历型的可移植性——在本书中我们不会编写汇编代码，同时它牺牲了一些简单性来换取性能的提升，虽然没有完全的本地代码那么快。
+记住这两点。一方面，树遍历解释器简单、可移植，而且慢。另一方面，本地代码复杂且特定与平台，但是很快。字节码位于中间。它保留了树遍历型的可移植性 -- 在本书中我们不会编写汇编代码，同时它牺牲了一些简单性来换取性能的提升，虽然没有完全的本地代码那么快。
 
 Structurally, bytecode resembles machine code. It's a dense, linear sequence of
 binary instructions. That keeps overhead low and plays nice with the cache.
@@ -329,7 +329,7 @@ There are a handful of types and constants we'll use throughout the interpreter,
 and this is a convenient place to put them. For now, it's the venerable `NULL`,
 `size_t`, the nice C99 Boolean `bool`, and explicit-sized integer types --
 `uint8_t` and friends.
-在整个解释器中，我们会使用一些类型和常量，这是一个方便放置它们的地方。现在，它是古老的`NULL`、`size_t`，C99中的布尔类型`bool`，以及显式声明大小的整数类型——`uint8_t`和它的朋友们。
+在整个解释器中，我们会使用一些类型和常量，这是一个方便放置它们的地方。现在，它是古老的`NULL`、`size_t`，C99中的布尔类型`bool`，以及显式声明大小的整数类型 -- `uint8_t`和它的朋友们。
 
 ## 指令块
 
@@ -344,7 +344,7 @@ In our bytecode format, each instruction has a one-byte **operation code**
 (universally shortened to **opcode**). That number controls what kind of
 instruction we're dealing with -- add, subtract, look up variable, etc. We
 define those here:
-在我们的字节码格式中，每个指令都有一个字节的**操作码**（通常简称为**opcode**）。这个数字控制我们要处理的指令类型——加、减、查找变量等。我们在这块定义这些：
+在我们的字节码格式中，每个指令都有一个字节的**操作码**（通常简称为**opcode**）。这个数字控制我们要处理的指令类型 -- 加、减、查找变量等。我们在这块定义这些：
 
 ^code op-enum (1 before, 2 after)
 
@@ -513,7 +513,7 @@ memory management in clox -- allocating memory, freeing it, and changing the
 size of an existing allocation. Routing all of those operations through a single
 function will be important later when we add a garbage collector that needs to
 keep track of how much memory is in use.
-这个`reallocate()`函数是我们将在clox中用于所有动态内存管理的唯一函数——分配内存，释放内存以及改变现有分配的大小。当我们稍后添加一个需要跟踪内存使用情况的垃圾收集器时，通过单个函数路由所有这些操作是很重要的。
+这个`reallocate()`函数是我们将在clox中用于所有动态内存管理的唯一函数 -- 分配内存，释放内存以及改变现有分配的大小。当我们稍后添加一个需要跟踪内存使用情况的垃圾收集器时，通过单个函数路由所有这些操作是很重要的。
 
 The two size arguments passed to `reallocate()` control which operation to
 perform:
@@ -575,7 +575,7 @@ there isn't room to grow the block, `realloc()` instead allocates a *new* block
 of memory of the desired size, copies over the old bytes, frees the old block,
 and then returns a pointer to the new block. Remember, that's exactly the
 behavior we want for our dynamic array.
-只有在该块之后的内存未被使用的情况下，才能这样做。如果没有空间支持块的增长，`realloc()`会分配一个所需大小的*新*的内存块，复制旧的字节，释放旧内存块，然后返回一个指向新内存块的指针。记住，这正是我们的动态数组想要的行为。
+只有在该块之后的内存未被使用的情况下，才能这样做。如果没有空间支持块的增长，`realloc()`会分配一个所需大小的 *新* 的内存块，复制旧的字节，释放旧内存块，然后返回一个指向新内存块的指针。记住，这正是我们的动态数组想要的行为。
 
 Because computers are finite lumps of matter and not the perfect mathematical
 abstractions computer science theory would have us believe, allocation can fail
@@ -658,7 +658,7 @@ old-school program that takes a file containing human-readable mnemonic names
 for CPU instructions like "ADD" and "MULT" and translates them to their binary
 machine code equivalent. A *dis*assembler goes in the other direction -- given a
 blob of machine code, it spits out a textual listing of the instructions.
-为了解决这个问题，我们要创建一个**反汇编程序**。**汇编程序**是一个老式程序，它接收一个文件，该文件中包含CPU指令（如 "ADD" 和 "MULT"）的可读助记符名称，并将它们翻译成等价的二进制机器代码。反汇编程序则相反——给定一串机器码，它会返回指令的文本列表。
+为了解决这个问题，我们要创建一个**反汇编程序**。**汇编程序**是一个老式程序，它接收一个文件，该文件中包含CPU指令（如 "ADD" 和 "MULT"）的可读助记符名称，并将它们翻译成等价的二进制机器代码。反汇编程序则相反 -- 给定一串机器码，它会返回指令的文本列表。
 
 We'll implement something <span name="printer">similar</span>. Given a chunk, it
 will print out all of the instructions in it. A Lox *user* won't use this, but
@@ -725,7 +725,7 @@ The core of the "debug" module is this function:
 First, it prints the byte offset of the given instruction -- that tells us where
 in the chunk this instruction is. This will be a helpful signpost when we start
 doing control flow and jumping around in the bytecode.
-首先，它会打印给定指令的字节偏移量——这能告诉我们当前指令在字节码块中的位置。当我们在字节码中实现控制流和跳转时，这将是一个有用的路标。
+首先，它会打印给定指令的字节偏移量 -- 这能告诉我们当前指令在字节码块中的位置。当我们在字节码中实现控制流和跳转时，这将是一个有用的路标。
 
 Next, it reads a single byte from the bytecode at the given offset. That's our
 opcode. We <span name="switch">switch</span> on that. For each kind of
@@ -733,7 +733,7 @@ instruction, we dispatch to a little utility function for displaying it. On the
 off chance that the given byte doesn't look like an instruction at all -- a bug
 in our compiler -- we print that too. For the one instruction we do have,
 `OP_RETURN`, the display function is:
-接下来，它从字节码中的给定偏移量处读取一个字节。这也就是我们的操作码。我们根据该值做switch操作。对于每一种指令，我们都分派给一个小的工具函数来展示它。如果给定的字节看起来根本不像一条指令——这是我们编译器的一个错误——我们也要打印出来。对于我们目前仅有的一条指令`OP_RETURN`，对应的展示函数是：
+接下来，它从字节码中的给定偏移量处读取一个字节。这也就是我们的操作码。我们根据该值做switch操作。对于每一种指令，我们都分派给一个小的工具函数来展示它。如果给定的字节看起来根本不像一条指令 -- 这是我们编译器的一个错误 -- 我们也要打印出来。对于我们目前仅有的一条指令`OP_RETURN`，对应的展示函数是：
 
 <aside name="switch">
 
@@ -792,7 +792,7 @@ thinking at least a little bit about how our VM should represent values.
 For now, we're going to start as simple as possible -- we'll support only
 double-precision, floating-point numbers. This will obviously expand over time,
 so we'll set up a new module to give ourselves room to grow.
-现在，我们尽可能从最简单的开始——只支持双精度浮点数。这种表示形式显然会逐渐扩大，所以我们将建立一个新的模块，给自己留出扩展的空间。
+现在，我们尽可能从最简单的开始 -- 只支持双精度浮点数。这种表示形式显然会逐渐扩大，所以我们将建立一个新的模块，给自己留出扩展的空间。
 
 ^code value-h
 
@@ -914,7 +914,7 @@ Next, we define a convenience method to add a new constant to the chunk. Our
 yet-to-be-written compiler could write to the constant array inside Chunk
 directly -- it's not like C has private fields or anything -- but it's a little
 nicer to add an explicit function.
-接下来，我们定义一个便捷的方法来向字节码块中添加一个新常量。我们尚未编写的编译器可以在Chunk内部直接把常量值写入常量数组——它不像C语言那样有私有字段之类的东西——但是添加一个显式函数显然会更好一些。
+接下来，我们定义一个便捷的方法来向字节码块中添加一个新常量。我们尚未编写的编译器可以在Chunk内部直接把常量值写入常量数组 -- 它不像C语言那样有私有字段之类的东西 -- 但是添加一个显式函数显然会更好一些。
 
 ^code add-constant-h (1 before, 2 after)
 
@@ -977,7 +977,7 @@ example, a simple operation like "return" may have no operands, where an
 instruction for "load local variable" needs an operand to identify which
 variable to load. Each time we add a new opcode to clox, we specify what its
 operands look like -- its **instruction format**.
-每个操作码会定义它有多少操作数以及各自的含义。例如，一个像“return”这样简单的操作可能没有操作数，而一个“加载局部变量”的指令需要一个操作数来确定要加载哪个变量。每次我们向clox添加一个新的操作码时，我们都会指定它的操作数是什么样子的——即它的**指令格式**。
+每个操作码会定义它有多少操作数以及各自的含义。例如，一个像“return”这样简单的操作可能没有操作数，而一个“加载局部变量”的指令需要一个操作数来确定要加载哪个变量。每次我们向clox添加一个新的操作码时，我们都会指定它的操作数是什么样子的 -- 即它的**指令格式**。
 
 <aside name="operand">
 
@@ -1020,7 +1020,7 @@ opcode. Then we pull out the constant index from the subsequent byte in the
 chunk. We print that index, but that isn't super useful to us human readers. So
 we also look up the actual constant value -- since constants *are* known at
 compile time after all -- and display the value itself too.
-这里要做的事情更多一些。与`OP_ETURN`一样，我们会打印出操作码的名称。然后，我们从该字节码块的后续字节中获取常量索引。我们打印出这个索引值，但是这对于我们人类读者来说并不十分有用。所以，我们也要查找实际的常量值——因为常量毕竟是在编译时就知道的——并将这个值也展示出来。
+这里要做的事情更多一些。与`OP_ETURN`一样，我们会打印出操作码的名称。然后，我们从该字节码块的后续字节中获取常量索引。我们打印出这个索引值，但是这对于我们人类读者来说并不十分有用。所以，我们也要查找实际的常量值 -- 因为常量毕竟是在编译时就知道的 -- 并将这个值也展示出来。
 
 This requires some way to print a clox Value. That function will live in the
 "value" module, so we include that.
@@ -1051,7 +1051,7 @@ Remember that `disassembleInstruction()` also returns a number to tell the
 caller the offset of the beginning of the *next* instruction. Where `OP_RETURN`
 was only a single byte, `OP_CONSTANT` is two -- one for the opcode and one for
 the operand.
-记住，`disassembleInstruction()`也会返回一个数字，告诉调用方*下一条*指令的起始位置的偏移量。`OP_RETURN`只有一个字节，而`OP_CONSTANT`有两个字节——一个是操作码，一个是操作数。
+记住，`disassembleInstruction()`也会返回一个数字，告诉调用方*下一条*指令的起始位置的偏移量。`OP_RETURN`只有一个字节，而`OP_CONSTANT`有两个字节 -- 一个是操作码，一个是操作数。
 
 ## 行信息
 
@@ -1148,7 +1148,7 @@ instruction was compiled from. That gives us a way to map back to the original
 code when we're trying to figure out what some blob of bytecode is supposed to
 do. After printing the offset of the instruction -- the number of bytes from the
 beginning of the chunk -- we show its source line.
-现在我们有了每条指令的行信息，让我们好好利用它吧。在我们的反汇编程序中，展示每条指令是由哪一行源代码编译出来的是很有帮助的。当我们试图弄清楚某些字节码应该做什么时，这给我们提供了一种方法来映射回原始代码。在打印了指令的偏移量之后——从字节码块起点到当前指令的字节数——我们也展示它在源代码中的行号。
+现在我们有了每条指令的行信息，让我们好好利用它吧。在我们的反汇编程序中，展示每条指令是由哪一行源代码编译出来的是很有帮助的。当我们试图弄清楚某些字节码应该做什么时，这给我们提供了一种方法来映射回原始代码。在打印了指令的偏移量之后 -- 从字节码块起点到当前指令的字节数 -- 我们也展示它在源代码中的行号。
 
 ^code show-location (2 before, 2 after)
 

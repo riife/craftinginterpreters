@@ -32,7 +32,7 @@ evaluate an expression and produce a value. For each kind of expression syntax
 we can parse -- literal, operator, etc. -- we need a corresponding chunk of code
 that knows how to evaluate that tree and produce a result. That raises two
 questions:
-现在，我们的解释器只支持表达式。因此，为了“执行”代码，我们要计算一个表达式时并生成一个值。对于我们可以解析的每一种表达式语法——字面量，操作符等——我们都需要一个相应的代码块，该代码块知道如何计算该语法树并产生结果。这也就引出了两个问题：
+现在，我们的解释器只支持表达式。因此，为了“执行”代码，我们要计算一个表达式时并生成一个值。对于我们可以解析的每一种表达式语法 -- 字面量，操作符等 -- 我们都需要一个相应的代码块，该代码块知道如何计算该语法树并产生结果。这也就引出了两个问题：
 
 1. What kinds of values do we produce?
 我们要生成什么类型的值？
@@ -199,7 +199,7 @@ so to evaluate a literal, we simply pull it back out.
 
 The next simplest node to evaluate is grouping -- the node you get as a result
 of using explicit parentheses in an expression.
-下一个要求值的节点是分组——在表达式中显式使用括号时产生的语法树节点。
+下一个要求值的节点是分组 -- 在表达式中显式使用括号时产生的语法树节点。
 
 ^code visit-grouping
 
@@ -257,7 +257,7 @@ You can start to see how evaluation recursively traverses the tree. We can't
 evaluate the unary operator itself until after we evaluate its operand
 subexpression. That means our interpreter is doing a **post-order traversal** --
 each node evaluates its children before doing its own work.
-你可以看到求值过程是如何递归遍历语法树的。在对一元操作符本身进行计算之前，我们必须先对其操作数子表达式求值。这表明，解释器正在进行**后序遍历**——每个节点在自己求值之前必须先对子节点求值。
+你可以看到求值过程是如何递归遍历语法树的。在对一元操作符本身进行计算之前，我们必须先对其操作数子表达式求值。这表明，解释器正在进行**后序遍历** -- 每个节点在自己求值之前必须先对子节点求值。
 
 The other unary operator is logical not.
 另一个一元操作符是逻辑非。
@@ -315,7 +315,7 @@ Lox遵循Ruby的简单规则：`false`和`nil`是假的，其他都是真的。�
 
 On to the last expression tree class, binary operators. There's a handful of
 them, and we'll start with the arithmetic ones.
-来到最后的表达式树类——二元操作符，其中包含很多运算符，我们先从数学运算开始。
+来到最后的表达式树类 -- 二元操作符，其中包含很多运算符，我们先从数学运算开始。
 
 ^code visit-binary
 
@@ -863,7 +863,7 @@ Object[] stuff = new Integer[1];
 stuff[0] = "not an int!";
 ```
 
-这段代码在编译时没有任何错误。第一行代码将整数数组向上转换并存储到一个对象数组类型的变量中。第二行代码将字符串存储在其中一个单元格里。对象数组类型静态地允许该操作——字符串也是对象——但是`stuff`在运行时引用的整数数组中不应该包含字符串！为了避免这种灾难，当你在数组中存储一个值时，JVM会进行运行时检查，以确保该值是允许的类型。如果不是，则抛出ArrayStoreException。
+这段代码在编译时没有任何错误。第一行代码将整数数组向上转换并存储到一个对象数组类型的变量中。第二行代码将字符串存储在其中一个单元格里。对象数组类型静态地允许该操作 -- 字符串也是对象 -- 但是`stuff`在运行时引用的整数数组中不应该包含字符串！为了避免这种灾难，当你在数组中存储一个值时，JVM会进行运行时检查，以确保该值是允许的类型。如果不是，则抛出ArrayStoreException。
 
 Java可以通过禁止对第一行进行强制转换来避免在运行时检查这一点。它可以使数组保持不变，这样整型数组就不是对象数组。这在静态类型角度是合理的，但它禁止了只从数组中读取数据的常见安全的代码模式。如果你从来不向数组写入内容，那么协变是安全的。在支持泛型之前，这些模式对于Java 1.0的可用性尤为重要。
 

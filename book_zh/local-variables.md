@@ -48,7 +48,7 @@ scope means we can resolve a local variable just by looking at the text of the
 program -- locals are *not* late bound. Any processing work we do in the
 compiler is work we *don't* have to do at runtime, so our implementation of
 local variables will lean heavily on the compiler.
-幸运的是，词法作用域可以帮助我们。顾名思义，词法作用域意味着我们可以通过查看程序文本来解析局部变量——局部变量*不是*后期绑定的。我们在编译器中所做的任何处理工作都不必在运行时完成，因此局部变量的实现将在很大程度上依赖于编译器。
+幸运的是，词法作用域可以帮助我们。顾名思义，词法作用域意味着我们可以通过查看程序文本来解析局部变量 -- 局部变量*不是*后期绑定的。我们在编译器中所做的任何处理工作都不必在运行时完成，因此局部变量的实现将在很大程度上依赖于编译器。
 
 ## 表示局部变量
 
@@ -66,7 +66,7 @@ don't get in the way of those, we can stuff our local variables onto the stack
 too. This is great for performance. Allocating space for a new local requires
 only incrementing the `stackTop` pointer, and freeing is likewise a decrement.
 Accessing a variable from a known stack slot is an indexed array lookup.
-现在，我们只使用它来保存**临时变量**——我们在计算表达式时需要记住的短期数据块。只要我们不妨碍这些数据，我们也可以把局部变量塞到栈中。这对性能很有帮助。为一个新的局部变量分配空间只需要递增`stackTop`指针，而释放也同样是递减的过程。从已知的栈槽访问变量是一种索引数组的查询。
+现在，我们只使用它来保存**临时变量** -- 我们在计算表达式时需要记住的短期数据块。只要我们不妨碍这些数据，我们也可以把局部变量塞到栈中。这对性能很有帮助。为一个新的局部变量分配空间只需要递增`stackTop`指针，而释放也同样是递减的过程。从已知的栈槽访问变量是一种索引数组的查询。
 
 We do need to be careful, though. The VM expects the stack to behave like, well,
 a stack. We have to be OK with allocating new locals only on the top of the
@@ -118,7 +118,7 @@ variable lives.
 We'll take advantage of this by using these stack offsets as operands for the
 bytecode instructions that read and store local variables. This makes working
 with locals deliciously fast -- as simple as indexing into an array.
-我们将利用这一点，对于读取和存储局部变量的字节码指令，把这些栈偏移量作为其操作数。这使得局部变量非常快——就像索引数组一样简单。
+我们将利用这一点，对于读取和存储局部变量的字节码指令，把这些栈偏移量作为其操作数。这使得局部变量非常快 -- 就像索引数组一样简单。
 
 <aside name="fn">
 
@@ -165,7 +165,7 @@ Back in the Compiler struct, the `localCount` field tracks how many locals are
 in scope -- how many of those array slots are in use. We also track the "scope
 depth". This is the number of blocks surrounding the current bit of code we're
 compiling.
-回到Compiler结构体中，`localCount`字段记录了作用域中有多少局部变量——有多少个数组槽在使用。我们还会跟踪“作用域深度”。这指的是我们正在编译的当前代码外围的代码块数量。
+回到Compiler结构体中，`localCount`字段记录了作用域中有多少局部变量 -- 有多少个数组槽在使用。我们还会跟踪“作用域深度”。这指的是我们正在编译的当前代码外围的代码块数量。
 
 Our Java interpreter used a chain of maps to keep each block's variables
 separate from other blocks'. This time, we'll simply number variables with the
@@ -247,7 +247,7 @@ usually means a small indivisible unit, but for some reason, the Algol 60
 committee decided to use it to refer to a *compound* structure -- a series of
 statements. It could be worse, I suppose. Algol 58 called `begin` and `end`
 "statement parentheses".
-仔细想想，“块”是个奇怪的名字。作为比喻来说，“块”通常意味着一个不可分割的小单元，但出于某种原因，Algol 60委员会决定用它来指代一个复合结构——一系列语句。我想，还有更糟的情况，Algol 58将`begin`和`end`称为“语句括号”。
+仔细想想，“块”是个奇怪的名字。作为比喻来说，“块”通常意味着一个不可分割的小单元，但出于某种原因，Algol 60委员会决定用它来指代一个复合结构 -- 一系列语句。我想，还有更糟的情况，Algol 58将`begin`和`end`称为“语句括号”。
 
 <img src="image/local-variables/block.png" alt="A cinder block." class="above" />
 
@@ -295,7 +295,7 @@ each one. Given `beginScope()`, you can probably guess what `endScope()` does.
 
 That's it for blocks and scopes -- more or less -- so we're ready to stuff some
 variables into them.
-这就是块和作用域的全部内容——或多或少吧——现在我们准备在其中添加一些变量。
+这就是块和作用域的全部内容 -- 或多或少吧 -- 现在我们准备在其中添加一些变量。
 
 ## 声明局部变量
 
@@ -370,7 +370,7 @@ which declarations for them it has seen.
 But for local variables, the compiler does need to remember that the variable
 exists. That's what declaring it does -- it adds it to the compiler's list of
 variables in the current scope. We implement that using another new function.
-但是对于局部变量，编译器确实需要记住变量的存在。这就是声明的作用——将变量添加到编译器在当前作用域内的变量列表中。我们使用另一个新函数来实现这一点。
+但是对于局部变量，编译器确实需要记住变量的存在。这就是声明的作用 -- 将变量添加到编译器在当前作用域内的变量列表中。我们使用另一个新函数来实现这一点。
 
 ^code add-local
 
@@ -391,7 +391,7 @@ being compiled.
 As long as that string stays around during the entire compilation process --
 which it must since, you know, we're compiling it -- then all of the tokens
 pointing into it are fine.
-只要这个字符串在整个编译过程中存在——你知道，它一定存在，我们正在编译它——那么所有指向它的标识都是正常的。
+只要这个字符串在整个编译过程中存在 -- 你知道，它一定存在，我们正在编译它 -- 那么所有指向它的标识都是正常的。
 
 </aside>
 
@@ -701,7 +701,7 @@ any point in that expression we resolve an identifier that points back to this
 variable, we'll see that it is not initialized yet and report an error. After we
 finish compiling the initializer, we mark the variable as initialized and ready
 for use.
-一旦变量声明开始——换句话说，在它的初始化式之前——名称就会在当前作用域中声明。变量存在，但处于特殊的“未初始化”状态。然后我们编译初始化式。如果在表达式中的任何一个时间点，我们解析了一个指向该变量的标识符，我们会发现它还没有初始化，并报告错误。在我们完成初始化表达式的编译之后，把变量标记为已初始化并可供使用。
+一旦变量声明开始 -- 换句话说，在它的初始化式之前 -- 名称就会在当前作用域中声明。变量存在，但处于特殊的“未初始化”状态。然后我们编译初始化式。如果在表达式中的任何一个时间点，我们解析了一个指向该变量的标识符，我们会发现它还没有初始化，并报告错误。在我们完成初始化表达式的编译之后，把变量标记为已初始化并可供使用。
 
 To implement this, when we declare a local, we need to indicate the
 "uninitialized" state somehow. We could add a new field to Local, but let's be a

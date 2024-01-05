@@ -91,7 +91,7 @@ For now, we have only a couple of cases, but this will grow as we add strings,
 functions, and classes to clox. In addition to the type, we also need to store
 the data for the value -- the `double` for a number, `true` or `false` for a
 Boolean. We could define a struct with fields for each possible type.
-现在，我们只有这几种情况，但随着我们向clox中添加字符串、函数和类，这里也会越来越多。除了类型之外，我们还需要存储值的数据——数字是`double`值，Boolean是`true`或`false`。我们可以定义一个结构体，其中包含每种可能的类型所对应的字段。
+现在，我们只有这几种情况，但随着我们向clox中添加字符串、函数和类，这里也会越来越多。除了类型之外，我们还需要存储值的数据 -- 数字是`double`值，Boolean是`true`或`false`。我们可以定义一个结构体，其中包含每种可能的类型所对应的字段。
 
 <img src="image/types-of-values/struct.png" alt="A struct with two fields laid next to each other in memory." />
 
@@ -354,7 +354,7 @@ skim over it here, but basically the `...` and `va_list` stuff let us pass an
 arbitrary number of arguments to `runtimeError()`. It forwards those on to
 `vfprintf()`, which is the flavor of `printf()` that takes an explicit
 `va_list`.
-你以前肯定在C语言中调用过变参函数——接受不同数量参数的函数：`printf()`就是其中之一。但你可能还没*定义*过自己的变参函数。这本书不是C语言教程，所以我在这里略过了，但是基本上是`...`和`va_list`让我们可以向`runtimeError()`传递任意数量的参数。它将这些参数转发给`vfprintf()`，这是`printf()`的一个变体，需要一个显式地`va_list`。
+你以前肯定在C语言中调用过变参函数 -- 接受不同数量参数的函数：`printf()`就是其中之一。但你可能还没*定义*过自己的变参函数。这本书不是C语言教程，所以我在这里略过了，但是基本上是`...`和`va_list`让我们可以向`runtimeError()`传递任意数量的参数。它将这些参数转发给`vfprintf()`，这是`printf()`的一个变体，需要一个显式地`va_list`。
 
 <aside name="tutorial">
 
@@ -482,7 +482,7 @@ worry about with these new types, it's gratuitous -- and <span
 name="small">slow!</span> -- to waste a two-byte instruction and a constant
 table entry on them. Instead, we'll define three dedicated instructions to push
 each of these literals on the stack.
-但是考虑到这些新类型实际上只有三种可能的值，这样做是没有必要的——而且速度很慢！——浪费了一个两字节的指令和常量表中的一个项。相反，我们会定义三个专用指令来将这些字面量压入栈中。
+但是考虑到这些新类型实际上只有三种可能的值，这样做是没有必要的 -- 而且速度很慢！ -- 浪费了一个两字节的指令和常量表中的一个项。相反，我们会定义三个专用指令来将这些字面量压入栈中。
 
 <aside name="small" class="bottom">
 

@@ -33,7 +33,7 @@ interpreter to consume. If you haven't written a parser or interpreter yet,
 those requirements aren't exactly illuminating. Maybe your intuition can help.
 What is your brain doing when you play the part of a *human* interpreter? How do
 you mentally evaluate an arithmetic expression like this:
-在做这些事情之前，我们先关注一下主要目标——代码的表示形式。它应该易于解析器生成，也易于解释器使用。如果您还没有编写过解析器或解释器，那么这样的需求描述并不能很好地说明问题。也许你的直觉可以帮助你。当你扮演一个*人类*解释器的角色时，你的大脑在做什么？你如何在心里计算这样的算术表达式：
+在做这些事情之前，我们先关注一下主要目标 -- 代码的表示形式。它应该易于解析器生成，也易于解释器使用。如果您还没有编写过解析器或解释器，那么这样的需求描述并不能很好地说明问题。也许你的直觉可以帮助你。当你扮演一个*人类*解释器的角色时，你的大脑在做什么？你如何在心里计算这样的算术表达式：
 
 ```lox
 1 + 2 * 3 - 4
@@ -44,14 +44,14 @@ Dear Aunt Sally][sally]" stuff -- you know that the multiplication is evaluated
 before the addition or subtraction. One way to visualize that precedence is
 using a tree. Leaf nodes are numbers, and interior nodes are operators with
 branches for each of their operands.
-因为你已经理解了操作的顺序——以前的“[Please Excuse My Dear Aunt Sally](https://en.wikipedia.org/wiki/Order_of_operations#Mnemonics)”之类，你知道乘法在加减操作之前执行。有一种方法可以将这种优先级进行可视化，那就是使用树。叶子节点是数字，内部节点是运算符，它们的每个操作数都对应一个分支。
+因为你已经理解了操作的顺序 -- 以前的“[Please Excuse My Dear Aunt Sally](https://en.wikipedia.org/wiki/Order_of_operations#Mnemonics)”之类，你知道乘法在加减操作之前执行。有一种方法可以将这种优先级进行可视化，那就是使用树。叶子节点是数字，内部节点是运算符，它们的每个操作数都对应一个分支。
 
 [sally]: https://en.wikipedia.org/wiki/Order_of_operations#Mnemonics
 
 In order to evaluate an arithmetic node, you need to know the numeric values of
 its subtrees, so you have to evaluate those first. That means working your way
 from the leaves up to the root -- a *post-order* traversal:
-要想计算一个算术节点，你需要知道它的子树的数值，所以你必须先计算子树的结果。这意味着要从叶节点一直计算到根节点——*后序*遍历：
+要想计算一个算术节点，你需要知道它的子树的数值，所以你必须先计算子树的结果。这意味着要从叶节点一直计算到根节点 -- *后序*遍历：
 
 <span name="tree-steps"></span>
 
@@ -124,7 +124,7 @@ consists of individual characters and the strings are the valid lexemes --
 roughly "words". In the syntactic grammar we're talking about now, we're at a
 different level of granularity. Now each "letter" in the alphabet is an entire
 token and a "string" is a sequence of *tokens* -- an entire expression.
-我这里使用引号是因为当你从词法转到文法语法时，这些术语会让你有点困惑。在我们的扫描器词法中，alphabet（字母表）由单个字符组成，strings（字符串）是有效的词素（粗略的说，就是“单词”）。在现在讨论的句法语法中，我们处于一个不同的粒度水平。现在，字母表中的一个“letters（字符）”是一个完整的词法标记，而“strings（字符串）”是一个词法标记系列——一个完整的表达式。
+我这里使用引号是因为当你从词法转到文法语法时，这些术语会让你有点困惑。在我们的扫描器词法中，alphabet（字母表）由单个字符组成，strings（字符串）是有效的词素（粗略的说，就是“单词”）。在现在讨论的句法语法中，我们处于一个不同的粒度水平。现在，字母表中的一个“letters（字符）”是一个完整的词法标记，而“strings（字符串）”是一个词法标记系列 -- 一个完整的表达式。
 
 Oof. Maybe a table will help:
 
@@ -236,7 +236,7 @@ sequence of symbols in the head as well as in the body.
     are individual lexemes -- tokens coming from the scanner like `if` or
     `1234`.
 
-*   **终止符**是语法字母表中的一个字母。你可以把它想象成一个字面值。在我们定义的语法中，终止符是独立的词素——来自扫描器的词法标记，比如 `if` 或 `1234`。
+*   **终止符**是语法字母表中的一个字母。你可以把它想象成一个字面值。在我们定义的语法中，终止符是独立的词素 -- 来自扫描器的词法标记，比如 `if` 或 `1234`。
 
     These are called "terminals", in the sense of an "end point" because they
     don't lead to any further "moves" in the game. You simply produce that one
@@ -562,7 +562,7 @@ skeleton. Since the grammar is recursive -- note how `grouping`, `unary`, and
 `binary` all refer back to `expression` -- our data structure will form a tree.
 Since this structure represents the syntax of our language, it's called a <span
 name="ast">**syntax tree**</span>.
-最后，我们要写一些代码。这个小小的表达式语法就是我们的骨架。由于语法是递归的——请注意`grouping`, `unary`, 和 `binary` 都是指回`expression`的——我们的数据结构将形成一棵树。因为这个结构代表了我们语言的语法，所以叫做**语法树**。
+最后，我们要写一些代码。这个小小的表达式语法就是我们的骨架。由于语法是递归的 -- 请注意`grouping`, `unary`, 和 `binary` 都是指回`expression`的 -- 我们的数据结构将形成一棵树。因为这个结构代表了我们语言的语法，所以叫做**语法树**。
 
 <aside name="ast">
 
@@ -578,7 +578,7 @@ distinguish the different kinds -- think the number `123` versus the string
 `"123"` -- we included a simple TokenType enum. Syntax trees are not so <span
 name="token-data">homogeneous</span>. Unary expressions have a single operand,
 binary expressions have two, and literals have none.
-我们的扫描器使用一个单一的 Token 类来表示所有类型的词素。为了区分不同的种类——想想数字 `123` 和字符串 `"123"`——我们创建了一个简单的 TokenType 枚举。语法树并不是那么同质的。一元表达式只有一个操作数，二元表达式有两个操作数，而字面量则没有。
+我们的扫描器使用一个单一的 Token 类来表示所有类型的词素。为了区分不同的种类 -- 想想数字 `123` 和字符串 `"123"` -- 我们创建了一个简单的 TokenType 枚举。语法树并不是那么同质的。一元表达式只有一个操作数，二元表达式有两个操作数，而字面量则没有。
 
 We *could* mush that all together into a single Expression class with an
 arbitrary list of children. Some compilers do. But I like getting the most out
@@ -587,7 +587,7 @@ each kind of expression -- each production under `expression` -- we create a
 subclass that has fields for the nonterminals specific to that rule. This way,
 we get a compile error if we, say, try to access the second operand of a unary
 expression.
-我们*可以*将所有这些内容整合到一个包含任意子类列表的 Expression 类中。有些编译器会这么做。但我希望充分利用Java的类型系统。所以我们将为表达式定义一个基类。然后，对于每一种表达式——`expression`下的每一个生成式——我们创建一个子类，这个子类有该规则所特有的非终止符字段。这样，如果试图访问一元表达式的第二个操作数，就会得到一个编译错误。
+我们*可以*将所有这些内容整合到一个包含任意子类列表的 Expression 类中。有些编译器会这么做。但我希望充分利用Java的类型系统。所以我们将为表达式定义一个基类。然后，对于每一种表达式 -- `expression`下的每一个生成式 -- 我们创建一个子类，这个子类有该规则所特有的非终止符字段。这样，如果试图访问一元表达式的第二个操作数，就会得到一个编译错误。
 
 <aside name="token-data">
 
@@ -895,7 +895,7 @@ language designers today are still rediscovering them over forty years later.
 
 This makes it trivial to add new operations -- simply define another function
 that pattern matches on all of the types.
-这使得添加新操作非常简单——只需定义另一个与所有类型模式匹配的的函数即可。
+这使得添加新操作非常简单 -- 只需定义另一个与所有类型模式匹配的的函数即可。
 
 <img src="image/representing-code/columns.png" alt="The table split into columns for each function." />
 
@@ -907,7 +907,7 @@ Each style has a certain "grain" to it. That's what the paradigm name literally
 says -- an object-oriented language wants you to *orient* your code along the
 rows of types. A functional language instead encourages you to lump each
 column's worth of code together into a *function*.
-每种风格都有一定的 "纹路"。这就是范式名称的字面意思——面向对象的语言希望你按照类型的行来*组织*你的代码。而函数式语言则鼓励你把每一列的代码都归纳为一个*函数*。
+每种风格都有一定的 "纹路"。这就是范式名称的字面意思 -- 面向对象的语言希望你按照类型的行来*组织*你的代码。而函数式语言则鼓励你把每一列的代码都归纳为一个*函数*。
 
 A bunch of smart language nerds noticed that neither style made it easy to add
 *both* rows and columns to the <span name="multi">table</span>. They called this
@@ -1027,7 +1027,7 @@ To perform an operation on a pastry, we call its `accept()` method and pass in
 the visitor for the operation we want to execute. The pastry -- the specific
 subclass's overriding implementation of `accept()` -- turns around and calls the
 appropriate visit method on the visitor and passes *itself* to it.
-要对糕点执行一个操作，我们就调用它的`accept()`方法，并将我们要执行的操作vistor作为参数传入该方法。pastry类——特定子类对`accept()`的重写实现——会反过来，在visitor上调用合适的visit方法，并将*自身*作为参数传入。
+要对糕点执行一个操作，我们就调用它的`accept()`方法，并将我们要执行的操作vistor作为参数传入该方法。pastry类 -- 特定子类对`accept()`的重写实现 -- 会反过来，在visitor上调用合适的visit方法，并将*自身*作为参数传入。
 
 That's the heart of the trick right there. It lets us use polymorphic dispatch
 on the *pastry* classes to select the appropriate method on the *visitor* class.
@@ -1151,7 +1151,7 @@ methods for each of the expression types we have so far.
 Literal expressions are easy -- they convert the value to a string with a little
 check to handle Java's `null` standing in for Lox's `nil`. The other expressions
 have subexpressions, so they use this `parenthesize()` helper method:
-字面量表达式很简单——它们将值转换为一个字符串，并通过一个小检查用Java中的`null`代替Lox中的`nil`。其他表达式有子表达式，所以它们要使用`parenthesize()`这个辅助方法：
+字面量表达式很简单 -- 它们将值转换为一个字符串，并通过一个小检查用Java中的`null`代替Lox中的`nil`。其他表达式有子表达式，所以它们要使用`parenthesize()`这个辅助方法：
 
 ^code print-utilities
 

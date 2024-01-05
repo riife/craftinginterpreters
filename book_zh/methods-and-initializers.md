@@ -97,7 +97,7 @@ know the type and index for each captured upvalue. We encoded that using a
 series of pseudo-instructions following the main `OP_CLOSURE` instruction --
 basically a variable number of operands. The VM processes all of those extra
 bytes immediately when interpreting the `OP_CLOSURE` instruction.
-我们对闭包做了类似的操作。`OP_CLOSURE`指令需要知道每个捕获的上值的类型和索引。我们在主`OP_CLOSURE`指令之后使用一系列伪指令对其进行编码——基本上是一个可变数量的操作数。VM在解释`OP_CLOSURE`指令时立即处理所有这些额外的字节。
+我们对闭包做了类似的操作。`OP_CLOSURE`指令需要知道每个捕获的上值的类型和索引。我们在主`OP_CLOSURE`指令之后使用一系列伪指令对其进行编码 -- 基本上是一个可变数量的操作数。VM在解释`OP_CLOSURE`指令时立即处理所有这些额外的字节。
 
 Here our approach is a little different because from the VM's perspective, each
 instruction to define a method is a separate stand-alone operation. Either
@@ -751,7 +751,7 @@ ClassCompiler结构体的内存正好位于C栈中，这是通过使用递归下
 When an outermost class body ends, `enclosing` will be `NULL`, so this resets
 `currentClass` to `NULL`. Thus, to see if we are inside a class -- and therefore
 inside a method -- we simply check that module variable.
-当最外层的类主体结束时，`enclosing`将是`NULL`，因此这里会将`currentClass`重置为`NULL`。因此，要想知道我们是否在一个类内部——也就是是否在一个方法中——我们只需要检查模块变量。
+当最外层的类主体结束时，`enclosing`将是`NULL`，因此这里会将`currentClass`重置为`NULL`。因此，要想知道我们是否在一个类内部 -- 也就是是否在一个方法中 -- 我们只需要检查模块变量。
 
 ^code this-outside-class (1 before, 1 after)
 
@@ -1008,7 +1008,7 @@ method and then calling the result. Our VM must support those as separate
 operations because the user *can* separate them. You can access a method without
 calling it and then invoke the bound method later. Nothing we've implemented so
 far is unnecessary.
-Lox的语义将方法调用定义为两个操作——访问方法，然后调用结果。我们的虚拟机必须支持这些单独的操作，因为用户*可以*将它们区分对待。你可以在不调用方法的情况下访问它，接着稍后再调用已绑定的方法。我们目前还未实现的一切内容，都是不必要的。
+Lox的语义将方法调用定义为两个操作 -- 访问方法，然后调用结果。我们的虚拟机必须支持这些单独的操作，因为用户*可以*将它们区分对待。你可以在不调用方法的情况下访问它，接着稍后再调用已绑定的方法。我们目前还未实现的一切内容，都是不必要的。
 
 But *always* executing those as separate operations has a significant cost.
 Every single time a Lox program accesses and invokes a method, the runtime
@@ -1022,7 +1022,7 @@ The bound method is created by one bytecode instruction and then consumed by the
 very next one. In fact, it's so immediate that the compiler can even textually
 *see* that it's happening -- a dotted property access followed by an opening
 parenthesis is most likely a method call.
-大多数情况下，Lox程序会访问一个方法并立即调用它。已绑定方法是由一条字节码指令创建的，然后由下一条指令使用。事实上，它是如此直接，以至于编译器甚至可以从文本上看到它的发生——一个带点的属性访问后面跟着一个左括号，很可能是一个方法调用。
+大多数情况下，Lox程序会访问一个方法并立即调用它。已绑定方法是由一条字节码指令创建的，然后由下一条指令使用。事实上，它是如此直接，以至于编译器甚至可以从文本上看到它的发生 -- 一个带点的属性访问后面跟着一个左括号，很可能是一个方法调用。
 
 Since we can recognize this pair of operations at compile time, we have the
 opportunity to emit a <span name="super">new, special</span> instruction that
@@ -1133,7 +1133,7 @@ utility function:
 
 As you can guess by now, we split this code into a separate function because
 we're going to reuse it later -- in this case for `super` calls.
-你应该可以猜到，我们将这段代码拆分成一个单独的函数，是因为我们稍后会复用它——`super`调用中。
+你应该可以猜到，我们将这段代码拆分成一个单独的函数，是因为我们稍后会复用它 -- `super`调用中。
 
 </aside>
 
@@ -1156,7 +1156,7 @@ The receiver and method arguments are already right where they need to be.
 This is a key reason *why* we use stack slot zero to store the receiver -- it's
 how the caller already organizes the stack for a method call. An efficient
 calling convention is an important part of a bytecode VM's performance story.
-这就是 *为什么* 我们使用栈槽0来存储接收器——调用方就是这样组织方法调用栈的。高效的调用约定是字节码虚拟机性能故事的重要组成部分。
+这就是 *为什么* 我们使用栈槽0来存储接收器 -- 调用方就是这样组织方法调用栈的。高效的调用约定是字节码虚拟机性能故事的重要组成部分。
 
 </aside>
 
@@ -1320,7 +1320,7 @@ of an object-oriented programming language, and with respectable performance.
     useful -- most fields do not contain functions. But it is *necessary*
     because the language says fields and methods are accessed using the same
     syntax, and fields shadow methods.
-    在解释`OP_INVOKE`指令时，虚拟机必须执行两次哈希表查询。首先，它要查找可能会遮蔽方法的字段，只有这一步失败时才会查找方法。前一个检查很少有用——大多数字段都不包含函数。但它是*必要*的，因为语言要求字段和方法通过同样的语法来访问，并且字段会遮蔽方法。
+    在解释`OP_INVOKE`指令时，虚拟机必须执行两次哈希表查询。首先，它要查找可能会遮蔽方法的字段，只有这一步失败时才会查找方法。前一个检查很少有用 -- 大多数字段都不包含函数。但它是*必要*的，因为语言要求字段和方法通过同样的语法来访问，并且字段会遮蔽方法。
 
     That is a language *choice* that affects the performance of our
     implementation. Was it the right choice? If Lox were your language, what
@@ -1382,7 +1382,7 @@ In particular, this is a big advantage of dynamically typed languages. A static
 language requires you to learn *two* languages -- the runtime semantics and the
 static type system -- before you can get to the point where you are making the
 computer do stuff. Dynamic languages require you to learn only the former.
-特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。
+特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言 -- 运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。
 
 Eventually, programs get big enough that the value of static analysis pays for
 the effort to learn that second static language, but the value proposition isn't
@@ -1482,11 +1482,11 @@ proportionally smaller (but likely more devoted) audience size, go for it.
 
 程序员对他们的时间自然是保守的，对于哪些语言值得上传到他们的湿件（即大脑）中。他们不想把时间浪费在一门最终对他们没有用处的语言上。因此，作为语言设计者，你的目标是为他们提供尽可能多的语言能力，并尽可能地减少所需的学习。
 
-一个自然的方法是*简单化*。你的语言拥有的概念和功能越少，你需要学习的东西就越少。这就是小型<span name="dynamic_zh">脚本</span>语言虽然不像大型工业语言那样强大却经常获得成功的原因之一——它们更容易上手，而且它们一旦进入了人们的大脑，用户就想继续使用它们。
+一个自然的方法是*简单化*。你的语言拥有的概念和功能越少，你需要学习的东西就越少。这就是小型<span name="dynamic_zh">脚本</span>语言虽然不像大型工业语言那样强大却经常获得成功的原因之一 -- 它们更容易上手，而且它们一旦进入了人们的大脑，用户就想继续使用它们。
 
 <aside name="dynamic_zh">
 
-特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。
+特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言 -- 运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。
 
 最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。
 
@@ -1516,7 +1516,7 @@ proportionally smaller (but likely more devoted) audience size, go for it.
 [idiosyncracy]: https://en.wikipedia.org/wiki/Idiosyncrasy_credit
 </aside>
 
-任何时候，你为你的语言添加了其它语言没有的新东西，或者你的语言以不同的方式做了其它语言做的事情，你都会花费一下预算。这没关系——你*需要*花费预算来使你的语言更具有吸引力。但你的目标是明智地使用这些预算。对于每一种特性或差异，问问你自己它为你的语言增加了多少引人注目的能力，然后严格评估它是否值得。这种改变是否有价值，而且值得你花费一些新奇性预算？
+任何时候，你为你的语言添加了其它语言没有的新东西，或者你的语言以不同的方式做了其它语言做的事情，你都会花费一下预算。这没关系 -- 你*需要*花费预算来使你的语言更具有吸引力。但你的目标是明智地使用这些预算。对于每一种特性或差异，问问你自己它为你的语言增加了多少引人注目的能力，然后严格评估它是否值得。这种改变是否有价值，而且值得你花费一些新奇性预算？
 
 在实践中，我发现这意味着你最终会在语法上相当保守，而在语义上更加大胆。虽然换一套新衣服很有趣，但把花括号换成其它代码块分隔符并不可能给语言增加多少真正的能力，但它确实会花费一些新奇性。语法上的差异很难承载它们的重量。
 

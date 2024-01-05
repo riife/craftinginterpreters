@@ -10,7 +10,7 @@ one with decent error handling, a coherent internal structure, and the ability
 to robustly chew through a sophisticated syntax -- is considered a rare,
 impressive skill. In this chapter, you will <span name="attain">attain</span>
 it.
-本章是本书的第一个重要里程碑。我们中的许多人都曾将正则表达式和字符串操作糅合在一起，以便从一堆文本中提取一些信息。这些代码可能充满了错误，而且很难维护。编写一个真正的解析器——具有良好的错误处理、一致的内部结构和能够健壮地分析复杂语法的能力——被认为是一种罕见的、令人印象深刻的技能。在这一章中，你将获得这种技能。
+本章是本书的第一个重要里程碑。我们中的许多人都曾将正则表达式和字符串操作糅合在一起，以便从一堆文本中提取一些信息。这些代码可能充满了错误，而且很难维护。编写一个真正的解析器 -- 具有良好的错误处理、一致的内部结构和能够健壮地分析复杂语法的能力 -- 被认为是一种罕见的、令人印象深刻的技能。在这一章中，你将获得这种技能。
 
 <aside name="parse">
 
@@ -36,7 +36,7 @@ work in the [last chapter][]. You already know your way around a formal grammar.
 You're familiar with syntax trees, and we have some Java classes to represent
 them. The only remaining piece is parsing -- transmogrifying a sequence of
 tokens into one of those syntax trees.
-这比想象中要简单，部分是因为我们在[上一章][last chapter]中提前完成了很多困难的工作。你已经对形式化语法了如指掌，也熟悉了语法树，而且我们有一些Java类来表示它们。唯一剩下的部分是解析——将一个标记序列转换成这些语法树中的一个。
+这比想象中要简单，部分是因为我们在[上一章][last chapter]中提前完成了很多困难的工作。你已经对形式化语法了如指掌，也熟悉了语法树，而且我们有一些Java类来表示它们。唯一剩下的部分是解析 -- 将一个标记序列转换成这些语法树中的一个。
 
 
 [last chapter]: representing-code.html
@@ -46,7 +46,7 @@ scientists -- understandably tired of programming in assembly language --
 started designing more sophisticated, <span name="human">human</span>-friendly
 languages like Fortran and ALGOL. Alas, they weren't very *machine*-friendly
 for the primitive computers of the time.
-一些CS教科书在解析器上大做文章。在60年代，计算机科学家——他们理所当然地厌倦了用汇编语言编程——开始设计更复杂的、对人类友好的语言，比如Fortran和ALGOL。唉，对于当时原始的计算机来说，这些语言对机器并不友好。
+一些CS教科书在解析器上大做文章。在60年代，计算机科学家 -- 他们理所当然地厌倦了用汇编语言编程 -- 开始设计更复杂的、对人类友好的语言，比如Fortran和ALGOL。唉，对于当时原始的计算机来说，这些语言对机器并不友好。
 
 <aside name="human">
 
@@ -214,7 +214,7 @@ Without well-defined precedence and associativity, an expression that uses
 multiple operators is ambiguous -- it can be parsed into different syntax trees,
 which could in turn evaluate to different results. We'll fix that in Lox by
 applying the same precedence rules as C, going from lowest to highest.
-如果没有明确定义的优先级和结合性，使用多个运算符的表达式可能就会变得有歧义——它可以被解析为不同的语法树，而这些语法树又可能会计算出不同的结果。我们在Lox中会解决这个问题，使用与C语言相同的优先级规则，从低到高分别是：
+如果没有明确定义的优先级和结合性，使用多个运算符的表达式可能就会变得有歧义 -- 它可以被解析为不同的语法树，而这些语法树又可能会计算出不同的结果。我们在Lox中会解决这个问题，使用与C语言相同的优先级规则，从低到高分别是：
 
 <table>
 <thead>
@@ -329,7 +329,7 @@ example, `unary` matches a unary expression like `!negated` or a primary
 expression like `1234`. And `term` can match `1 + 2` but also `3 * 4 / 5`. The
 final `primary` rule covers the highest-precedence forms -- literals and
 parenthesized expressions.
-此处的每个规则仅匹配其当前优先级或更高优先级的表达式。 例如，`unary` 匹配一元表达式（如 `!negated`）或主表达式（如`1234`）。`term`可以匹配`1 + 2`，但也可以匹配`3 * 4 /5`。最后的`primary` 规则涵盖优先级最高的形式——字面量和括号表达式。
+此处的每个规则仅匹配其当前优先级或更高优先级的表达式。 例如，`unary` 匹配一元表达式（如 `!negated`）或主表达式（如`1234`）。`term`可以匹配`1 + 2`，但也可以匹配`3 * 4 /5`。最后的`primary` 规则涵盖优先级最高的形式 -- 字面量和括号表达式。
 
 We just need to fill in the productions for each of those rules. We'll do the
 easy ones first. The top `expression` rule matches any expression at any
@@ -367,7 +367,7 @@ primary        → NUMBER | STRING | "true" | "false" | "nil"
 A unary expression starts with a unary operator followed by the operand. Since
 unary operators can nest -- `!!true` is a valid if weird expression -- the
 operand can itself be a unary operator. A recursive rule handles that nicely.
-一元表达式以一元操作符开头，后跟操作数。因为一元操作符可以嵌套——`!!true`虽奇怪也是可用的表达式——这个操作数本身可以是一个一元表达式。递归规则可以很好地解决这个问题。
+一元表达式以一元操作符开头，后跟操作数。因为一元操作符可以嵌套 -- `!!true`虽奇怪也是可用的表达式 -- 这个操作数本身可以是一个一元表达式。递归规则可以很好地解决这个问题。
 
 ```ebnf
 unary          → ( "!" | "-" ) unary ;
@@ -409,7 +409,7 @@ In principle, it doesn't matter whether you treat multiplication as left- or
 right-associative -- you get the same result either way. Alas, in the real world
 with limited precision, roundoff and overflow mean that associativity can affect
 the result of a sequence of multiplications. Consider:
-原则上，你把乘法当作左关联还是右关联都没有关系——无论你使用哪种方式都可以得到相同的结果。但是，在精度有限的情况下，舍入和溢出意味着关联性会影响乘法序列的计算结果。如:
+原则上，你把乘法当作左关联还是右关联都没有关系 -- 无论你使用哪种方式都可以得到相同的结果。但是，在精度有限的情况下，舍入和溢出意味着关联性会影响乘法序列的计算结果。如:
 
 ```lox
 print 0.1 * (0.2 * 0.3);
@@ -475,7 +475,7 @@ of "L" and "R" -- [LL(k)][], [LR(1)][lr], [LALR][] -- along with more exotic
 beasts like [parser combinators][], [Earley parsers][], [the shunting yard
 algorithm][yard], and [packrat parsing][]. For our first interpreter, one
 technique is more than sufficient: **recursive descent**.
-现在有一大堆解析技术，它们的名字大多是 "L" 和 "R" 的组合——[LL(k)][], [LR(1)][lr], [LALR][]——还有更多的异类，比如[解析器组合子][parser combinators]、[Earley parsers][]、[分流码算法][yard]和[packrat解析][packrat parsing]。对于我们的第一个解释器来说，一种技术已经足够了：**递归下降**。
+现在有一大堆解析技术，它们的名字大多是 "L" 和 "R" 的组合 -- [LL(k)][], [LR(1)][lr], [LALR][] -- 还有更多的异类，比如[解析器组合子][parser combinators]、[Earley parsers][]、[分流码算法][yard]和[packrat解析][packrat parsing]。对于我们的第一个解释器来说，一种技术已经足够了：**递归下降**。
 
 [ll(k)]: https://en.wikipedia.org/wiki/LL_parser
 [lr]: https://en.wikipedia.org/wiki/LR_parser
@@ -587,7 +587,7 @@ Each method for parsing a grammar rule produces a syntax tree for that rule and
 returns it to the caller. When the body of the rule contains a nonterminal -- a
 reference to another rule -- we <span name="left">call</span> that other rule's
 method.
-每个解析语法规则的方法都会生成该规则对应的语法树，并将其返回给调用者。当规则主体中包含一个非终止符——对另一条规则的引用时，我们就会调用另一条规则对应的方法。
+每个解析语法规则的方法都会生成该规则对应的语法树，并将其返回给调用者。当规则主体中包含一个非终止符 -- 对另一条规则的引用时，我们就会调用另一条规则对应的方法。
 
 <aside name="left">
 
@@ -1022,7 +1022,7 @@ we picked it. *After* a semicolon, we're <span name="semicolon">probably</span>
 finished with a statement. Most statements start with a keyword -- `for`, `if`,
 `return`, `var`, etc. When the *next* token is any of those, we're probably
 about to start a statement.
-我们想要丢弃标记，直至达到下一条语句的开头。这个边界很容易发现——这也是我们选其作为边界的原因。在*分号*之后，我们可能就结束了一条语句。大多数语句都通过一个关键字开头——`for`、 `if`、 `return`、 `var`等等。当下一个标记是其中之一时，我们可能就要开始一条新语句了。
+我们想要丢弃标记，直至达到下一条语句的开头。这个边界很容易发现 -- 这也是我们选其作为边界的原因。在*分号*之后，我们可能就结束了一条语句。大多数语句都通过一个关键字开头 -- `for`、 `if`、 `return`、 `var`等等。当下一个标记是其中之一时，我们可能就要开始一条新语句了。
 
 <aside name="semicolon">
 
@@ -1232,7 +1232,7 @@ if ((flags & FLAG_MASK) == SOME_FLAG) { ... } // Right.
 
 这种内部一致性使语言更容易学习，因为用户需要纠正的边界情况和异常变少了。这很好，因为用户在使用我们的语言之前，需要先理解所有的语法和语义。一个更简单、更合理的语言是*有意义的*。
 
-但是，对于许多用户来说，有一个更快的捷径，可以将我们语言的思想融入他们的湿件中——*使用他们已经知道的概念*。许多我们语言的新用户都使用过其它一门或多门语言。如果我们的语言使用了与那些语言相同的一些语法或语义，那么用户需要学习（和*忘掉*）的东西就会少很多。
+但是，对于许多用户来说，有一个更快的捷径，可以将我们语言的思想融入他们的湿件中 -- *使用他们已经知道的概念*。许多我们语言的新用户都使用过其它一门或多门语言。如果我们的语言使用了与那些语言相同的一些语法或语义，那么用户需要学习（和*忘掉*）的东西就会少很多。
 
 这对词法语法特别有帮助。您现在可能不太记得了，但是回想一下您学习第一门编程语言时，代码看起来似乎很陌生且难以理解。 只有通过艰苦的努力，您才学会阅读和接受它。 如果你为你的新语言设计了一种新颖的语法，你就会迫使用户重新开始这个过程。
 

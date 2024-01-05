@@ -221,7 +221,7 @@ management or reference counting, but <span
 name="procrastination">eventually</span> settled on (and coined) garbage
 collection -- once the program was out of memory, it would go back and find
 unused storage it could reclaim.
-第一门托管语言是Lisp，它是继Fortran之后发明的第二种“高级”语言。John McCarthy曾考虑使用手动内存管理或引用计数，但最终还是选择（并创造了）垃圾回收——一旦程序的内存用完了，它就会回去寻找可以回收的未使用的存储空间。
+第一门托管语言是Lisp，它是继Fortran之后发明的第二种“高级”语言。John McCarthy曾考虑使用手动内存管理或引用计数，但最终还是选择（并创造了）垃圾回收 -- 一旦程序的内存用完了，它就会回去寻找可以回收的未使用的存储空间。
 
 <aside name="procrastination">
 
@@ -317,7 +317,7 @@ Whenever we call `reallocate()` to acquire more memory, we force a collection to
 run. The if check is because `reallocate()` is also called to free or shrink an
 allocation. We don't want to trigger a GC for that -- in particular because the
 GC itself will call `reallocate()` to free memory.
-每当我们调用`reallocate()`来获取更多内存时，都会强制运行一次回收。这个`if`检查是因为，在释放或收缩分配的内存时也会调用`reallocate()`。我们不希望在这种时候触发GC——特别是因为GC本身也会调用`reallocate()`来释放内存。
+每当我们调用`reallocate()`来获取更多内存时，都会强制运行一次回收。这个`if`检查是因为，在释放或收缩分配的内存时也会调用`reallocate()`。我们不希望在这种时候触发GC -- 特别是因为GC本身也会调用`reallocate()`来释放内存。
 
 Collecting right before <span name="demand">allocation</span> is the classic way
 to wire a GC into a VM. You're already calling into the memory manager, so it's
@@ -334,7 +334,7 @@ never collects any.
 More sophisticated collectors might run on a separate thread or be interleaved
 periodically during program execution -- often at function call boundaries or
 when a backward jump occurs.
-更复杂的回收器可能运行在单独的线程上，或者在程序执行过程中定期交错运行——通常是在函数调用边界处或发生后向跳转时。
+更复杂的回收器可能运行在单独的线程上，或者在程序执行过程中定期交错运行 -- 通常是在函数调用边界处或发生后向跳转时。
 
 </aside>
 
@@ -479,7 +479,7 @@ Those cover the roots that we typically think of -- the values that are
 obviously reachable because they're stored in variables the user's program can
 see. But the VM has a few of its own hidey-holes where it squirrels away
 references to values that it directly accesses.
-这些覆盖了我们通常认为的根——那些明显可达的值，因为它们存储在用户程序可以看到的变量中。但是虚拟机也有一些自己的藏身之所，可以隐藏对直接访问的值的引用。
+这些覆盖了我们通常认为的根 -- 那些明显可达的值，因为它们存储在用户程序可以看到的变量中。但是虚拟机也有一些自己的藏身之所，可以隐藏对直接访问的值的引用。
 
 Most function call state lives in the value stack, but the VM maintains a
 separate stack of CallFrames. Each CallFrame contains a pointer to the closure
@@ -625,7 +625,7 @@ publication.
 *   **<img src="image/garbage-collection/white.png" alt="A white circle."
     class="dot" /> 白色:** 在垃圾回收的开始阶段，每个对象都是白色的。这种颜色意味着我们根本没有达到或处理该对象。
 *   **<img src="image/garbage-collection/gray.png" alt="A gray circle."
-    class="dot" /> 灰色:** 在标记过程中，当我们第一次达到某个对象时，我们将其染为灰色。这种颜色意味着我们知道这个对象本身是可达的，不应该被收集。但我们还没有*通过*它来跟踪它引用的*其它*对象。用图算法的术语来说，这就是*工作列表（worklist）*——我们知道但还没有被处理的对象集合。
+    class="dot" /> 灰色:** 在标记过程中，当我们第一次达到某个对象时，我们将其染为灰色。这种颜色意味着我们知道这个对象本身是可达的，不应该被收集。但我们还没有*通过*它来跟踪它引用的*其它*对象。用图算法的术语来说，这就是*工作列表（worklist）* -- 我们知道但还没有被处理的对象集合。
 *   **<img src="image/garbage-collection/black.png" alt="A black circle."
     class="dot" /> 黑色:** 当我们接受一个灰色对象，并将其引用的所有对象全部标记后，我们就把这个灰色对象变为黑色。这种颜色意味着标记阶段已经完成了对该对象的处理。
 
@@ -766,7 +766,7 @@ Each object <span name="leaf">kind</span> has different fields that might
 reference other objects, so we need a specific blob of code for each type. We
 start with the easy ones -- strings and native function objects contain no
 outgoing references so there is nothing to traverse.
-每种对象类型都有不同的可能引用其它对象的字段，因此我们需要为每种类型编写一块特定的代码。我们从简单的开始——字符串和本地函数对象不包含向外的引用，因此没有任何东西需要遍历。
+每种对象类型都有不同的可能引用其它对象的字段，因此我们需要为每种类型编写一块特定的代码。我们从简单的开始 -- 字符串和本地函数对象不包含向外的引用，因此没有任何东西需要遍历。
 
 <aside name="leaf">
 
@@ -879,7 +879,7 @@ singly linked list is cumbersome. We have to continuously remember the previous
 node so we can unlink its next pointer, and we have to handle the edge case
 where we are freeing the first node. But, otherwise, it's pretty simple --
 delete every node in a linked list that doesn't have a bit set in it.
-这里大多数其它代码都在处理这样一个事实：从单链表中删除节点非常麻烦。我们必须不断地记住前一个节点，这样我们才能断开它的next指针，而且我们还必须处理释放第一个节点这种边界情况。但是，除此之外，它非常简单——删除链表中没有设置标记位的每个节点。
+这里大多数其它代码都在处理这样一个事实：从单链表中删除节点非常麻烦。我们必须不断地记住前一个节点，这样我们才能断开它的next指针，而且我们还必须处理释放第一个节点这种边界情况。但是，除此之外，它非常简单 -- 删除链表中没有设置标记位的每个节点。
 
 There's one little addition:
 还有一点需要补充：
@@ -969,7 +969,7 @@ each entry -- it's basically a hash *set* not a hash *map*. If the key string
 object's mark bit is not set, then it is a white object that is moments from
 being swept away. We delete it from the hash table first and thus ensure we
 won't see any dangling pointers.
-我们遍历表中的每一项。字符串驻留表只使用了每一项的键——它基本上是一个HashSet而不是HashMap。如果键字符串对象的标记位没有被设置，那么它就是一个白色对象，很快就会被清除。我们首先从哈希表中删除它，从而确保不会看到任何悬空指针。
+我们遍历表中的每一项。字符串驻留表只使用了每一项的键 -- 它基本上是一个HashSet而不是HashMap。如果键字符串对象的标记位没有被设置，那么它就是一个白色对象，很快就会被清除。我们首先从哈希表中删除它，从而确保不会看到任何悬空指针。
 
 ## 何时回收
 
@@ -1020,7 +1020,7 @@ There are two key metrics we can use to understand that cost better:
     and it spends a second of that inside `collectGarbage()`. That means the
     throughput is 90% -- it spent 90% of the time running the program and 10%
     on GC overhead.
-    **吞吐量**是指运行用户代码的时间与执行垃圾回收工作所花费的时间的总比例。假设你运行一个clox程序10秒钟，其中有1秒花在`collectGarbage()`中。这意味是吞吐量是90%——它花费了90%的时间运行程序，10%的时间用于GC开销。
+    **吞吐量**是指运行用户代码的时间与执行垃圾回收工作所花费的时间的总比例。假设你运行一个clox程序10秒钟，其中有1秒花在`collectGarbage()`中。这意味是吞吐量是90% -- 它花费了90%的时间运行程序，10%的时间用于GC开销。
 
     Throughput is the most fundamental measure because it tracks the total cost
     of collection overhead. All else being equal, you want to maximize
@@ -1183,7 +1183,7 @@ size of the heap. We track the total number of bytes of managed memory that the
 VM has allocated. When it goes above some threshold, we trigger a GC. After
 that, we note how many bytes of memory remain -- how many were *not* freed. Then
 we adjust the threshold to some value larger than that.
-其思想是，回收器的频率根据堆的大小自动调整。我们根据虚拟机已分配的托管内存的总字节数。当它超过某个阈值时，我们就触发一次GC。在那之后，我们关注一下有多少字节保留下来——多少没有被释放。然后我们将阈值调整为比它更大的某个值。
+其思想是，回收器的频率根据堆的大小自动调整。我们根据虚拟机已分配的托管内存的总字节数。当它超过某个阈值时，我们就触发一次GC。在那之后，我们关注一下有多少字节保留下来 -- 多少没有被释放。然后我们将阈值调整为比它更大的某个值。
 
 The result is that as the amount of live memory increases, we collect less
 frequently in order to avoid sacrificing throughput by re-traversing the growing
@@ -1217,7 +1217,7 @@ discover the best practices in an isolated lab environment. You don't see how a
 collector actually performs unless you run it on the kind of large, messy
 real-world programs it is actually intended for. It's like tuning a rally car
 -- you need to take it out on the course.
-学习垃圾回收器的一个挑战是，在孤立的实验室环境中很难发现最佳实践。除非你在大型的、混乱的真实世界的程序上运行回收器，否则你无法看到它的实际表现。这就像调校一辆拉力赛车——你需要把它带到赛道上。
+学习垃圾回收器的一个挑战是，在孤立的实验室环境中很难发现最佳实践。除非你在大型的、混乱的真实世界的程序上运行回收器，否则你无法看到它的实际表现。这就像调校一辆拉力赛车 -- 你需要把它带到赛道上。
 
 </aside>
 
