@@ -11,6 +11,7 @@ inheriting methods and calling superclass methods. We have [another
 chapter][optimization] after this one, but it introduces no new behavior. It
 <span name="faster">only</span> makes existing stuff faster. Make it to the end
 of this one, and you'll have a complete Lox implementation.
+这是我们向虚拟机添加新功能的最后一章。我们已经把几乎所有的Lox语言都装进虚拟机中了。剩下的就是继承方法和调用超类方法。在本章之后[还有一章][optimization]，但是没有引入新的行为。它只是让现有的东西更快。坚持到本章结束，你将拥有一个完整的Lox实现。
 
 <aside name="faster">
 
@@ -18,6 +19,7 @@ That "only" should not imply that making stuff faster isn't important! After
 all, the whole purpose of our entire second virtual machine is better
 performance over jlox. You could argue that *all* of the past fifteen chapters
 are "optimization".
+这个“只是”并不意味着加速不重要！毕竟，我们的第二个虚拟机的全部目的就是比jlox有更好的性能。你可以认为，前面的15章都是“优化”。
 
 </aside>
 
@@ -93,17 +95,13 @@ detect.
 access to a deranged nuclear physicist and a very heavily modified DeLorean, you
 cannot inherit from yourself.
 一个类不能成为它自己的超类。除非你能接触到一个核物理学家和一辆改装过的DeLorean汽车，否则你无法继承自己。
-<span name="DeLorean_zh"></span>
 
 <aside name="cycle">
 
 Interestingly, with the way we implement method inheritance, I don't think
 allowing cycles would actually cause any problems in clox. It wouldn't do
 anything *useful*, but I don't think it would cause a crash or infinite loop.
-
-
-
-译者注："一个核物理学家和一辆改装过的DeLorean汽车" 是电影《回到未来》的梗
+有趣的是，根据我们实现方法继承的方式，我认为允许循环实际上不会在clox中引起任何问题。它不会做任何 *有用* 的事情，但我认为它不会导致崩溃或无限循环。
 
 </aside>
 
@@ -159,6 +157,7 @@ a <span name="two">single</span> hash table lookup.
 
 Well, two hash table lookups, I guess. Because first we have to make sure a
 field on the instance doesn't shadow the method.
+好吧，我想应该是两次哈希查询。因为首先我们必须确保实例上的字段不会遮蔽方法。
 
 </aside>
 
@@ -183,9 +182,11 @@ superclass.
 As you can imagine, changing the set of methods a class defines imperatively at
 runtime can make it hard to reason about a program. It is a very powerful tool,
 but also a dangerous tool.
+可以想见，在运行时改变某个类中以命令式定义的方法集会使得对程序的推理变得困难。这是一个非常强大的工具，但也是一个危险的工具。
 
 Those who find this tool maybe a little *too* dangerous gave it the unbecoming
 name "monkey patching", or the even less decorous "duck punching".
+那些认为这个工具可能有点太危险的人，给它取了个不伦不类的名字“猴子补丁”，或者是更不体面的“鸭子打洞”。
 
 <img src="image/superclasses/monkey.png" alt="A monkey with an eyepatch, naturally." />
 
@@ -248,6 +249,7 @@ to refresh your memory on how super calls are statically resolved.
 "May" might not be a strong enough word. Presumably the method *has* been
 overridden. Otherwise, why are you bothering to use `super` instead of just
 calling it directly?
+“可能”这个词也许不够有力。大概这个方法*已经*被重写了。否则，你为什么要费力地使用`super`而不是直接调用它呢？
 
 </aside>
 
@@ -366,6 +368,7 @@ lexeme. If we tried to use a heap-allocated string for this, we'd end up leaking
 memory because it never gets freed. But the memory for C string literals lives
 in the executable's constant data section and never needs to be freed, so we're
 fine.
+我说“常量字符串”是因为标识不对其词素做任何内存管理。如果我们试图使用堆分配的字符串，最终会泄漏内存，因为它永远不会被释放。但是，C语言字符串字面量的内存位于可执行文件的常量数据部分，永远不需要释放，所以我们这样没有问题。
 
 </aside>
 
@@ -417,6 +420,7 @@ name="last">begins</span>, naturally enough, with the `super` keyword.
 <aside name="last">
 
 This is it, friend. The very last entry you'll add to the parsing table.
+就是这样，朋友，你要添加到解析表中的最后一项。
 
 </aside>
 
@@ -440,6 +444,7 @@ closure without invoking it:
 
 Hypothetical question: If a bare `super` token *was* an expression, what kind of
 object would it evaluate to?
+假设性问题：如果一个光秃秃的`super`标识 *是* 一个表达式，那么它会被计算为哪种对象呢？
 
 </aside>
 
@@ -515,12 +520,15 @@ information it needs to perform the super access:
 前三条指令让运行时获得了执行超类访问时需要的三条信息：
 
 1.  The first instruction loads **the instance** onto the stack.
-
 2.  The second instruction loads **the superclass where the method is
     resolved**.
-
 3.  Then the new `OP_GET_SUPER` instuction encodes **the name of the method to
     access** as an operand.
+
+
+1.  第一条指令将**实例**加载到栈中。
+2.  第二条指令加载了**将用于解析方法的超类**。
+3.  然后，新的`OP_GET_SUPER`指令将**要访问的方法名称**编码为操作数。
 
 The remaining instructions are the normal bytecode for evaluating an argument
 list and calling a function.
@@ -590,11 +598,13 @@ pushes the new bound method. Otherwise, it reports a runtime error and returns
 Another difference compared to `OP_GET_PROPERTY` is that we don't try to look
 for a shadowing field first. Fields are not inherited, so `super` expressions
 always resolve to methods.
+与`OP_GET_PROPERTY`相比的另一个区别是，我们不会先尝试寻找遮蔽字段。字段不会被继承，所以`super`表达式总是解析为方法。
 
 If Lox were a prototype-based language that used *delegation* instead of
 *inheritance*, then instead of one *class* inheriting from another *class*,
 instances would inherit from ("delegate to") other instances. In that case,
 fields *could* be inherited, and we would need to check for them here.
+如果Lox是一种使用 *委托* 而不是 *继承* 的基于原型的语言，那么就不是一个 *类* 继承另一个 *类*，而是实例继承自（委托给）其它实例。在这种情况下，字段可以被继承，我们就需要在这里检查它们。
 
 </aside>
 
@@ -636,6 +646,7 @@ of the method name to look up and the number of arguments to pass to it.
 
 This is a particularly *super* superinstruction, if you get what I'm saying.
 I... I'm sorry for this terrible joke.
+如果你明白我的意思，这是一个 *特别* 超级的超级指示。我...... 我很抱歉开了这个糟糕的玩笑。
 
 </aside>
 
@@ -795,13 +806,13 @@ squeeze even more perf out. If that sounds fun, [keep reading][opt]...
 
     *   When calling a method on a class, the method *highest* on the
         class's inheritance chain takes precedence.
-    *   当调用某个类中的方法时，该类继承链上最高的方法优先。
+        当调用某个类中的方法时，该类继承链上最高的方法优先。
 
     *   Inside the body of a method, a call to `inner` looks for a method with
         the same name in the nearest subclass along the inheritance chain
         between the class containing the `inner` and the class of `this`. If
         there is no matching method, the `inner` call does nothing.
-    *   在方法体内部，对`inner`的调用，会沿着包含`inner`的类和`this`的类之间的继承链，在最近的子类中查找同名的方法。如果没有匹配的方法，`inner`调用就什么也不做。
+        在方法体内部，对`inner`的调用，会沿着包含`inner`的类和`this`的类之间的继承链，在最近的子类中查找同名的方法。如果没有匹配的方法，`inner`调用就什么也不做。
 
     For example:
     举例来说：

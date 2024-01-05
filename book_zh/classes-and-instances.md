@@ -22,11 +22,13 @@ People who have strong opinions about object-oriented programming -- read
 "everyone" -- tend to assume OOP means some very specific list of language
 features, but really there's a whole space to explore, and each language has its
 own ingredients and recipes.
+那些对面向对象编程有强烈看法的人——读作“每个人”——往往认为OOP意味着一些非常具体的语言特性清单，但实际上有一个完整的空间可以探索，而每种语言都有自己的成分和配方。
 
 Self has objects but no classes. CLOS has methods but doesn't attach them to
 specific classes. C++ initially had no runtime polymorphism -- no virtual
 methods. Python has multiple inheritance, but Java does not. Ruby attaches
 methods to classes, but you can also define methods on a single object.
+Self有对象但没有类。CLOS有方法，当没有把它们附加到特定的类中。C++最初没有运行时多态——没有虚方法。Python有多重继承，但Java没有。Ruby把方法附加在类上，但你也可以在单个对象上定义方法。
 
 </aside>
 
@@ -95,6 +97,7 @@ these ObjClass structs to represent it.
 I named the variable "klass" not just to give the VM a zany preschool "Kidz
 Korner" feel. It makes it easier to get clox compiling as C++ where "class" is
 a reserved word.
+我将变量命名为“klass”，不仅仅是为了给虚拟机一种古怪的幼儿园的 "Kidz Korner" 感觉。它使得clox更容易被编译为C++，而C++中“class”是一个保留字。
 
 </aside>
 
@@ -107,6 +110,7 @@ When the VM no longer needs a class, it frees it like so:
 
 The braces here are pointless now, but will be useful in the next chapter when
 we add some more code to the switch case.
+这里的大括号现在没有意义，但在下一章我们为 switch case 添加更多代码时将会派上用场。
 
 </aside>
 
@@ -159,6 +163,7 @@ identifier right after consuming its token.
 We could have made class declarations be *expressions* instead of statements --
 they are essentially a literal that produces a value after all. Then users would
 have to explicitly bind the class to a variable themselves like:
+我们可以让类声明成为表达式而不是语句——比较它们本质上是一个产生值的字面量。然后用户必须自己显式地将类绑定到一个变量，比如：
 
 ```lox
 var Pie = class {}
@@ -166,6 +171,7 @@ var Pie = class {}
 
 Sort of like lambda functions but for classes. But since we generally want
 classes to be named anyway, it makes sense to treat them as declarations.
+这有点像lambda函数，但只是针对类的。但由于我们通常希望类被命名，所以将其视为声明是有意义的。
 
 </aside>
 
@@ -220,6 +226,7 @@ dynamically typed scripting language, it treats the top level of a program and
 the bodies of functions and blocks uniformly. Classes are just another kind of
 declaration, and since you can declare variables and functions inside blocks,
 you can declare classes in there too.
+“局部（Local）”类——在函数或块主体中声明的类，是一个不寻常的概念。许多语言根本不允许这一特性。但由于Lox是一种动态类型脚本语言，它会对程序的顶层代码和函数以及块的主体进行统一处理。类只是另一种声明，既然你可以在块中声明变量和函数，那你也可以在块中声明类。
 
 </aside>
 
@@ -243,11 +250,12 @@ Classes serve two main purposes in a language:
 *   **They are how you create new instances.** Sometimes this involves a `new`
     keyword, other times it's a method call on the class object, but you usually
     mention the class by name *somehow* to get a new instance.
-* **它们是你创建新实例的方式**。有时这会涉及到`new`关键字，有时则是对类对象的方法调用，但是你通常会以某种方式通过类的名称来获得一个新的实例。
-* **它们包含方法**。这些方法定义了类的所有实例的行为方式。
-
 *   **They contain methods.** These define how all instances of the class
     behave.
+
+
+*   **它们是你创建新实例的方式**。有时这会涉及到`new`关键字，有时则是对类对象的方法调用，但是你通常会以某种方式通过类的名称来获得一个新的实例。
+*   **它们包含方法**。这些方法定义了类的所有实例的行为方式。
 
 We won't get to methods until the next chapter, so for now we will only worry
 about the first part. Before classes can create instances, we need a
@@ -278,10 +286,12 @@ usually require fields to be explicitly declared. This way, the compiler knows
 exactly what fields each instance has. It can use that to determine the precise
 amount of memory needed for each instance and the offsets in that memory where
 each field can be found.
+能够在运行时自由地向对象添加字段，是大多数动态语言和静态语言之间的一个很大的实际区别。静态类型语言通常要求显式声明字段。这样，编译器就确切知道每个实例有哪些字段。它可以利用这一点来确定每个实例所需的精确内存量，以及每个字段在内存中的偏移量。
 
 In Lox and other dynamic languages, accessing a field is usually a hash table
 lookup. Constant time, but still pretty heavyweight. In a language like C++,
 accessing a field is as fast as offsetting a pointer by an integer constant.
+在Lox和其它动态语言中，访问字段通常是一次哈希表查询。常量时间复杂度，但仍然是相当重的。在C++这样的语言中，访问一个字段就像对指针偏移一个整数常量一样快。
 
 </aside>
 
@@ -377,6 +387,7 @@ Most object-oriented languages let a class define some sort of `toString()`
 method that lets the class specify how its instances are converted to a string
 and printed. If Lox was less of a toy language, I would want to support that
 too.
+大多数面向对象的语言允许类定义某种形式的`toString()`方法，让该类指定如何将其实例转换为字符串并打印出来。如果Lox部署一门玩具语言，我也想要支持它。
 
 </aside>
 
@@ -402,6 +413,7 @@ the called class and store the result on the stack.
 
 We ignore any arguments passed to the call for now. We'll revisit this code in
 the [next chapter][next] when we add support for initializers.
+我们暂时忽略传递给调用的所有参数。在下一章添加对初始化器的支持时，我们会重新审视这一段代码。
 
 [next]: methods-and-initializers.html
 
@@ -444,6 +456,7 @@ the parse table as an infix expression.
 I say "sort of" because the right-hand side after the `.` is not an expression,
 but a single identifier whose semantics are handled by the get or set expression
 itself. It's really closer to a postfix expression.
+我说“有点”是因为`.`右边的不是表达式，而是一个标识符，其语义由get或set表达式本身来处理。它实际上更接近于一个后缀表达式。
 
 </aside>
 
@@ -467,6 +480,7 @@ The compiler uses "property" instead of "field" here because, remember, Lox also
 lets you use dot syntax to access a method without calling it. "Property" is the
 general term we use to refer to any named entity you can access on an instance.
 Fields are the subset of properties that are backed by the instance's state.
+编译器在这里使用“属性（property）”而不是“字段（field）”，因为，请记住，Lox还允许你使用点语法来访问一个方法而不调用它。“属性”是一个通用术语，我们用来指代可以在实例上访问的任何命名实体。字段是基于实例状态的属性子集。
 
 </aside>
 
@@ -513,6 +527,7 @@ which also takes an operand for the property name.
 You can't *set* a non-field property, so I suppose that instruction could have
 been `OP_SET_FIELD`, but I thought it looked nicer to be consistent with the get
 instruction.
+你不能设置非字段属性，所以我认为这个指令本该是`OP_SET_FIELD`，但是我认为它与get指令一致看起来更漂亮。
 
 </aside>
 
@@ -574,11 +589,13 @@ Lox *could* support adding fields to values of other types. It's our language
 and we can do what we want. But it's likely a bad idea. It significantly
 complicates the implementation in ways that hurt performance -- for example,
 string interning gets a lot harder.
+Lox*可以*支持向其它类型的值中添加字段。这是我们的语言，我们可以做我们想做的。但这可能是个坏主意。它大大增加了实现的复杂性，从而损害了性能——例如，字符串驻留变得更加困难。<BR>
 
 Also, it raises gnarly semantic questions around the equality and identity of
 values. If I attach a field to the number `3`, does the result of `1 + 2` have
 that field as well? If so, how does the implementation track that? If not, are
 those two resulting "threes" still considered equal?
+此外，它还引起了关于数值的相等和同一性的复杂语义问题。如果我给数字`3`附加一个字段，那么`1+2`的结果也有这个字段吗？如果是的话，实现上如何跟踪它？如果不是，这两个结果中的“3”仍然被认为是相等的吗？
 
 </aside>
 
@@ -611,6 +628,7 @@ we need to leave that value on the stack. Here's what I mean:
 <aside name="stack">
 
 The stack operations go like this:
+栈的操作是这样的：
 
 <img src="image/classes-and-instances/stack.png" alt="Popping two values and then pushing the first value back on the stack."/>
 

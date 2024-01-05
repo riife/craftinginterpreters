@@ -475,7 +475,7 @@ of "L" and "R" -- [LL(k)][], [LR(1)][lr], [LALR][] -- along with more exotic
 beasts like [parser combinators][], [Earley parsers][], [the shunting yard
 algorithm][yard], and [packrat parsing][]. For our first interpreter, one
 technique is more than sufficient: **recursive descent**.
-现在有一大堆解析技术，它们的名字大多是 "L "和 "R "的组合——[LL(k)][], [LR(1)][lr], [LALR][]——还有更多的异类，比如[解析器组合子][parser combinators]、[Earley parsers][]、[分流码算法][yard]和[packrat解析][packrat parsing]。对于我们的第一个解释器来说，一种技术已经足够了：**递归下降**。
+现在有一大堆解析技术，它们的名字大多是 "L" 和 "R" 的组合——[LL(k)][], [LR(1)][lr], [LALR][]——还有更多的异类，比如[解析器组合子][parser combinators]、[Earley parsers][]、[分流码算法][yard]和[packrat解析][packrat parsing]。对于我们的第一个解释器来说，一种技术已经足够了：**递归下降**。
 
 [ll(k)]: https://en.wikipedia.org/wiki/LL_parser
 [lr]: https://en.wikipedia.org/wiki/LR_parser

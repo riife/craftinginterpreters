@@ -97,12 +97,14 @@ know the type and index for each captured upvalue. We encoded that using a
 series of pseudo-instructions following the main `OP_CLOSURE` instruction --
 basically a variable number of operands. The VM processes all of those extra
 bytes immediately when interpreting the `OP_CLOSURE` instruction.
+我们对闭包做了类似的操作。`OP_CLOSURE`指令需要知道每个捕获的上值的类型和索引。我们在主`OP_CLOSURE`指令之后使用一系列伪指令对其进行编码——基本上是一个可变数量的操作数。VM在解释`OP_CLOSURE`指令时立即处理所有这些额外的字节。
 
 Here our approach is a little different because from the VM's perspective, each
 instruction to define a method is a separate stand-alone operation. Either
 approach would work. A variable-sized pseudo-instruction is possibly marginally
 faster, but class declarations are rarely in hot loops, so it doesn't matter
 much.
+这里我们的方法有所不同，因为从VM的角度看，定义方法的每条指令都是一个独立的操作。两种方法都可行。可变大小的伪指令可能稍微快一点，但是类声明很少在热循环中出现，所以没有太大关系。
 
 </aside>
 
@@ -117,10 +119,13 @@ To define a new method, the VM needs three things:
 要定义一个新方法，VM需要三样东西：
 
 1.  The name of the method.
-
 1.  The closure for the method body.
-
 1.  The class to bind the method to.
+
+
+1.  方法名称。
+2.  方法主体的闭包。
+3.  绑定该方法的类。
 
 We'll incrementally write the compiler code to see how those all get through to
 the runtime, starting here:
@@ -155,6 +160,7 @@ If Lox supported declaring classes only at the top level, the VM could assume
 that any class could be found by looking it up directly from the global
 variable table. Alas, because we support local classes, we need to handle that
 case too.
+如果Lox只支持在顶层声明类，那么虚拟机就可以假定任何类都可以直接从全局变量表中查找出来。然而，由于我们支持局部类，所以我们也需要处理这种情况。
 
 </aside>
 
@@ -184,6 +190,7 @@ leave it on the stack in the first place? We could, but in the [next
 chapter][super] we will insert code between these two calls to support
 inheritance. At that point, it will be simpler if the class isn't sitting around
 on the stack.
+前面对`defineVariable()`的调用将类弹出栈，因此调用`namedVariable()`将其加载会栈中似乎有点愚蠢。为什么不一开始就把它留在栈上呢？我们可以这样做，但在[下一章][super]中，我们将在这两个调用之间插入代码，以支持继承。到那时，如果类不在栈上会更容易。
 
 [super]: superclasses.html
 
@@ -258,10 +265,12 @@ to get code to the bytecode interpreter is by going through clox's own compiler.
 Many bytecode VMs, like the JVM and CPython, support executing bytecode that has
 been compiled separately. That leads to a different security story. Maliciously
 crafted bytecode could crash the VM or worse.
+虚拟机相信它执行的指令是有效的，因为将代码送到字节码解释器的唯一途径是通过clox自己的编译器。许多字节码虚拟机，如JVM和CPython，支持执行单独编译好的字节码。这就导致了一个不同的安全问题。恶意编写的字节码可能会导致虚拟机崩溃，甚至更糟。
 
 To prevent that, the JVM does a bytecode verification pass before it executes
 any loaded code. CPython says it's up to the user to ensure any bytecode they
 run is safe.
+为了防止这种情况，JVM在执行任何加载的代码之前都会进行字节码验证。CPython说，由用户来确保他们运行的任何字节码都是安全的。
 
 </aside>
 
@@ -347,6 +356,7 @@ later like a function. When invoked, the VM will do some shenanigans to wire up
 
 I took the name "bound method" from CPython. Python behaves similar to Lox here,
 and I used its implementation for inspiration.
+我从CPython中借鉴了“bound method”这个名字。Python跟Lox这里的行为很类似，我通过它的实现获得灵感。
 
 </aside>
 
@@ -412,6 +422,7 @@ Tracing the method closure isn't really necessary. The receiver is an
 ObjInstance, which has a pointer to its ObjClass, which has a table for all of
 the methods. But it feels dubious to me in some vague way to have ObjBoundMethod
 rely on that.
+跟踪方法的闭包实际上是没有必要的。接收器是一个ObjInstance，它有一个指向其ObjClass的指针，而ObjClass有一个存储所有方法的表。但让ObjBoundMethod依赖于它，我觉得在某种程度上是值得怀疑的。
 
 </aside>
 
@@ -516,6 +527,7 @@ object type.
 
 A bound method *is* a first-class value, so they can store it in variables, pass
 it to functions, and otherwise do "value"-y stuff with it.
+已绑定方法 *是* 第一类值，所以他们可以把它存储在变量中，传递给函数，以及用它做“值”可做的事情。
 
 </aside>
 
@@ -559,6 +571,7 @@ parse table.
 
 The underscore at the end of the name of the parser function is because `this`
 is a reserved word in C++ and we support compiling clox as C++.
+解析器函数名称后面的下划线是因为`this`是C++中的一个保留字，我们支持将clox编译为C++。
 
 </aside>
 
@@ -763,6 +776,7 @@ Of course, Lox does let outside code directly access and modify an instance's
 fields without going through its methods. This is unlike Ruby and Smalltalk,
 which completely encapsulate state inside objects. Our toy scripting language,
 alas, isn't so principled.
+当然，Lox确实允许外部代码之间访问和修改一个实例的字段，而不需要通过实例的方法。这与Ruby和Smalltalk不同，后者将状态完全封装在对象中。我们的玩具式脚本语言，唉，不那么有原则。
 
 </aside>
 
@@ -775,18 +789,22 @@ methods, with a few tweaks:
 
 1.  The runtime automatically invokes the initializer method whenever an
     instance of a class is created.
-
 2.  The caller that constructs an instance always gets the instance <span
     name="return">back</span> after the initializer finishes, regardless of what
     the initializer function itself returns. The initializer method doesn't need
     to explicitly return `this`.
-
 3.  In fact, an initializer is *prohibited* from returning any value at all
     since the value would never be seen anyway.
+
+
+1.   每当一个类的实例被创建时，运行时会自动调用初始化器方法。
+2.   构建实例的调用方总是在初始化器完成后得到实例，而不管初始化器本身返回什么。初始化器方法不需要显式地返回`this`。
+3.   事实上，初始化器根本不允许返回任何值，因为这些值无论如何都不会被看到。
 
 <aside name="return">
 
 It's as if the initializer is implicitly wrapped in a bundle of code like this:
+就好像初始化器被隐式地包装在这样的一段代码中：
 
 ```lox
 fun create(klass) {
@@ -797,6 +815,7 @@ fun create(klass) {
 ```
 
 Note how the value returned by `init()` is discarded.
+注意`init()`返回的值是如何被丢弃的。
 
 </aside>
 
@@ -972,6 +991,7 @@ name="floppy">floppy</span> disk.
 I acknowledge that "floppy disk" may no longer be a useful size reference for
 current generations of programmers. Maybe I should have said "a few tweets" or
 something.
+我承认，“软盘”对于当前一代程序员来说，可能不再是一个有用的大小参考。也许我应该说“几条推特”之类的。
 
 </aside>
 
@@ -1019,16 +1039,19 @@ executes the same series of bytecode instructions one after the other. A classic
 optimization technique is to define a new single instruction called a
 **superinstruction** that fuses those into a single instruction with the same
 behavior as the entire sequence.
+如果你花足够的时间观察字节码虚拟机的运行，你会发现它经常一次次地执行同一系列的字节码指令。一个经典的优化技术是定义新的单条指令，称为**超级指令**，它将这些指令融合到具有与整个序列相同行为的单一指令。
 
 One of the largest performance drains in a bytecode interpreter is the overhead
 of decoding and dispatching each instruction. Fusing several instructions into
 one eliminates some of that.
+在字节码解释器中，最大的性能消耗之一是每个指令的解码和调度的开销。将几个指令融合在一起可以消除其中的一些问题。
 
 The challenge is determining *which* instruction sequences are common enough to
 benefit from this optimization. Every new superinstruction claims an opcode for
 its own use and there are only so many of those to go around. Add too many, and
 you'll need a larger encoding for opcodes, which then increases code size and
 makes decoding *all* instructions slower.
+难点在于确定*哪些*指令序列足够常见，并可以从这种优化中受益。每条新的超级指令都要求有一个操作码供自己使用，而这些操作码的数量是有限的。如果添加太多，你就需要对操作码进行更长的编码，这就增加了代码的大小，使得所有指令的解码速度变慢。
 
 </aside>
 
@@ -1041,8 +1064,11 @@ new `OP_INVOKE` instruction. It takes two operands:
 在编译器解析属性名称之后，我们寻找一个左括号。如果匹配到了，则切换到一个新的代码路径。在那里，我们会像编译调用表达式一样来编译参数列表。然后我们发出一条新的`OP_INVOKE`指令。它需要两个操作数：
 
 1.  The index of the property name in the constant table.
-
 2.  The number of arguments passed to the method.
+
+
+1. 属性名称在常量表中的索引。
+2. 传递给方法的参数数量。
 
 In other words, this single instruction combines the operands of the
 `OP_GET_PROPERTY` and `OP_CALL` instructions it replaces, in that order. It
@@ -1107,6 +1133,7 @@ utility function:
 
 As you can guess by now, we split this code into a separate function because
 we're going to reuse it later -- in this case for `super` calls.
+你应该可以猜到，我们将这段代码拆分成一个单独的函数，是因为我们稍后会复用它——`super`调用中。
 
 </aside>
 
@@ -1129,6 +1156,7 @@ The receiver and method arguments are already right where they need to be.
 This is a key reason *why* we use stack slot zero to store the receiver -- it's
 how the caller already organizes the stack for a method call. An efficient
 calling convention is an important part of a bytecode VM's performance story.
+这就是 *为什么* 我们使用栈槽0来存储接收器——调用方就是这样组织方法调用栈的。高效的调用约定是字节码虚拟机性能故事的重要组成部分。
 
 </aside>
 
@@ -1150,6 +1178,7 @@ We shouldn't pat ourselves on the back *too* firmly. This performance
 improvement is relative to our own unoptimized method call implementation which
 was quite slow. Doing a heap allocation for every single method call isn't going
 to win any races.
+我们不应该过于自信。这种性能优化是相对于我们自己未优化的方法调用实现而言的，而那种方法调用实现相当缓慢。为每个方法调用都进行堆分配不会赢得任何比赛。
 
 </aside>
 
@@ -1191,12 +1220,14 @@ There are cases where users may be satisfied when a program sometimes returns
 the wrong answer in return for running significantly faster or with a better
 bound on the performance. These are the field of [**Monte Carlo
 algorithms**][monte]. For some use cases, this is a good trade-off.
+在有些情况下，当程序偶尔返回错误的答案，以换取显著加快的运行速度或更好的性能边界，用户可能也是满意的。这些就是[**蒙特卡洛算法**][monte]的领域。对于某些用例来说，这是一个很好的权衡。
 
 [monte]: https://en.wikipedia.org/wiki/Monte_Carlo_algorithm
 
 The important part, though, is that the user is *choosing* to apply one of these
 algorithms. We language implementers can't unilaterally decide to sacrifice
 their program's correctness.
+不过，重要的是，由用户选择使用这些算法中的某一种。我们这些语言实现者不能单方面地决定牺牲程序的正确性。
 
 </aside>
 
@@ -1233,6 +1264,7 @@ language itself, we may sometimes choose to restrict or change the language in
 ways that enable optimizations. Users want expressive languages, but they also
 want fast implementations. Sometimes it is good language design to sacrifice a
 little power if you can give them perf in return.
+作为语言*设计者*，我们的角色非常不同。如果我们确实控制了语言本身，我们有时可能会选择限制或改变语言的方式来实现优化。用户想要有表达力的语言，但他们也想要快速实现。有时，如果牺牲一点功能来获得完美回报是很好的语言设计。
 
 </aside>
 
@@ -1241,14 +1273,17 @@ The code we wrote here follows a typical pattern in optimization:
 
 1.  Recognize a common operation or sequence of operations that is performance
     critical. In this case, it is a method access followed by a call.
-
 2.  Add an optimized implementation of that pattern. That's our `OP_INVOKE`
     instruction.
-
 3.  Guard the optimized code with some conditional logic that validates that the
     pattern actually applies. If it does, stay on the fast path. Otherwise, fall
     back to a slower but more robust unoptimized behavior. Here, that means
     checking that we are actually calling a method and not accessing a field.
+
+
+1.  识别出对性能至关重要的常见操作或操作序列。在本例中，它是一个方法访问后跟一个调用。
+2.  添加该模式的优化实现。也就是我们的`OP_INVOKE`指令。
+3.  用一些条件逻辑来验收是否适用该模式，从而保护优化后的代码。如果适用，就走捷径。否则，就退回到较慢但更稳健的非优化行为。在这里，意味着要检查我们是否真的在调用一个方法而不是访问一个字段。
 
 As your language work moves from getting the implementation working *at all* to
 getting it to work *faster*, you will find yourself spending more and more
@@ -1347,10 +1382,12 @@ In particular, this is a big advantage of dynamically typed languages. A static
 language requires you to learn *two* languages -- the runtime semantics and the
 static type system -- before you can get to the point where you are making the
 computer do stuff. Dynamic languages require you to learn only the former.
+特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。
 
 Eventually, programs get big enough that the value of static analysis pays for
 the effort to learn that second static language, but the value proposition isn't
 as obvious at the outset.
+最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。
 
 </aside>
 
@@ -1398,6 +1435,7 @@ social norms. You earn credit by fitting in and doing in-group things, which you
 can then spend on oddball activities that might otherwise raise eyebrows. In
 other words, demonstrating that you are "one of the good ones" gives you license
 to raise your freak flag, but only so far.
+心理学中的一个相关概念是[性格信用][idiosyncracy]，即社会上的其他人会给予你有限的与社会规范的偏离。你通过融入并做群体内的事情来获得信用，然后你可以把这些信用花费在那些可能会引人侧目的古怪活动上。换句话说，证明你是“好人之一”，让你有资格展示自己怪异的一面，但只能到此为止。
 
 [idiosyncracy]: https://en.wikipedia.org/wiki/Idiosyncrasy_credit
 
@@ -1448,7 +1486,9 @@ proportionally smaller (but likely more devoted) audience size, go for it.
 
 <aside name="dynamic_zh">
 
-特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。<BR>最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。
+特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。
+
+最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。
 
 </aside>
 

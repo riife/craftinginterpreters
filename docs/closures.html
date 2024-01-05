@@ -40,7 +40,7 @@
         <li><a href="#闭包对象"><small>25.1</small> 闭包对象</a></li>
         <li><a href="#上值"><small>25.2</small> 上值</a></li>
         <li><a href="#upvalue对象"><small>25.3</small> Upvalue对象</a></li>
-        <li><a href="#closed-upvalues--关闭的上值"><small>25.4</small> Closed Upvalues  关闭的上值</a></li>
+        <li><a href="#关闭的上值closed-upvalues"><small>25.4</small> 关闭的上值(Closed Upvalues)</a></li>
         <li class="divider"></li>
         <li class="end-part"><a href="#challenges">Challenges</a></li>
         <li class="end-part"><a href="#design-note"><small>note</small>关闭循环变量</a></li>
@@ -71,7 +71,7 @@
             <li><a href="#闭包对象"><small>25.1</small> 闭包对象</a></li>
             <li><a href="#上值"><small>25.2</small> 上值</a></li>
             <li><a href="#upvalue对象"><small>25.3</small> Upvalue对象</a></li>
-            <li><a href="#closed-upvalues--关闭的上值"><small>25.4</small> Closed Upvalues  关闭的上值</a></li>
+            <li><a href="#关闭的上值closed-upvalues"><small>25.4</small> 关闭的上值(Closed Upvalues)</a></li>
             <li class="divider"></li>
             <li class="end-part"><a href="#challenges">Challenges</a></li>
             <li class="end-part"><a href="#design-note"><small>note</small>关闭循环变量</a></li>
@@ -140,7 +140,8 @@ name="flying">escapes</span> while holding on to the local variable, <code>local
 outlive the function call where it was created.
 外层函数<code>makeClosure()</code>声明了一个变量<code>local</code>。它还创建了一个内层函数<code>closure()</code>，用于捕获该变量。然后<code>makeClosure()</code>返回对该内层函数的引用。因为闭包要在保留局部变量的同时进行退出，所以<code>local</code>必须比创建它的函数调用存活更长的时间。</p>
 <aside name="flying"><img src="image/closures/flying.png" class="above" alt="A local variable flying away from the stack."/>
-<p>Oh no, it&rsquo;s escaping!</p>
+<p>Oh no, it&rsquo;s escaping!
+哦，不，它逃走了！</p>
 </aside>
 <p>We could solve this problem by dynamically allocating memory for all local
 variables. That&rsquo;s what jlox does by putting everything in those Environment
@@ -151,7 +152,8 @@ those slower for the benefit of the rare local that is captured.
 我们可以通过为所有局部变量动态地分配内存来解决这个问题。这就是jlox所做的，它将所有对象都放在Java堆中漂浮的Environment对象中。但我们并不想这样做。使用堆栈<em>非常</em>快。大多数局部变量都不会被闭包捕获，并且具有栈语义。如果为了极少数被捕获的局部变量而使所有变量的速度变慢，那就糟糕了。</p>
 <aside name="stack">
 <p>There is a reason that C and Java use the stack for their local variables, after
-all.</p>
+all.
+毕竟，C和Java使用栈来存储局部变量是有原因的。</p>
 </aside>
 <p>This means a more complex approach than we used in our Java interpreter. Because
 some locals have very different lifetimes, we will have two implementation
@@ -167,7 +169,8 @@ optimized runtime representations. Some are more efficient but require a more
 complex compilation process than we could easily retrofit into clox.
 闭包早在Lisp时代就已经存在了，当时内存字节和CPU周期比祖母绿还要珍贵。在过去的几十年里，黑客们设计了各种各样的方式来编译闭包，以优化运行时表示。有些方法更有效，但也需要更复杂的编译过程，我们无法轻易地在clox中加以改造。</p>
 <aside name="lambda">
-<p>Search for &ldquo;closure conversion&rdquo; or &ldquo;lambda lifting&rdquo; to start exploring.</p>
+<p>Search for &ldquo;closure conversion&rdquo; or &ldquo;lambda lifting&rdquo; to start exploring.
+搜索“闭包转换 closure conversion”和“Lambda提升 lambda lifting”就可以开始探索了。</p>
 </aside>
 <p>The technique I explain here comes from the design of the Lua VM. It is fast,
 parsimonious with memory, and implemented with relatively little code. Even more
@@ -186,7 +189,8 @@ compile time.
 我们的虚拟机在运行时使用ObjFunction表示函数。这些对象是由前端在编译时创建的。在运行时，虚拟机所做的就是从一个常量表中加载函数对象，并将其与一个名称绑定。在运行时，没有“创建”函数的操作。与字符串和数字字面量一样，它们是纯粹在编译时实例化的常量。</p>
 <aside name="literal">
 <p>In other words, a function declaration in Lox <em>is</em> a kind of literal<span class="em">&mdash;</span>a piece
-of syntax that defines a constant value of a built-in type.</p>
+of syntax that defines a constant value of a built-in type.
+换句话说，Lox中的函数声明是一种字面量——定义某个内置类型的常量值的一段语法。</p>
 </aside>
 <p>That made sense because all of the data that composes a function is known at
 compile time: the chunk of bytecode compiled from the function&rsquo;s body, and the
@@ -224,7 +228,8 @@ function along with runtime state for the variables the function closes over.
 <aside name="raw">
 <p>The Lua implementation refers to the raw function object containing the bytecode
 as a &ldquo;prototype&rdquo;, which is a great word to describe this, except that word also
-gets overloaded to refer to <a href="https://en.wikipedia.org/wiki/Prototype-based_programming">prototypal inheritance</a>.</p>
+gets overloaded to refer to <a href="https://en.wikipedia.org/wiki/Prototype-based_programming">prototypal inheritance</a>.
+Lua实现中将包含字节码的原始函数对象称为“原型”，这个一个很好的形容词，只不过这个词也被重载以指代<a href="https://en.wikipedia.org/wiki/Prototype-based_programming">原型继承</a>。</p>
 </aside><img src="image/closures/obj-closure.png" alt="An ObjClosure with a reference to an ObjFunction."/>
 <p>We&rsquo;ll wrap every function in an ObjClosure, even if the function doesn&rsquo;t
 actually close over and capture any surrounding local variables. This is a
@@ -301,7 +306,8 @@ type.
 我们还有用于检查值类型的常用宏。</p>
 <aside name="macro">
 <p>Perhaps I should have defined a macro to make it easier to generate these
-macros. Maybe that would be a little too meta.</p>
+macros. Maybe that would be a little too meta.
+或许我应该定义一个宏，以便更容易地生成这些宏。也许这有点太玄了。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">#define OBJ_TYPE(value)        (AS_OBJ(value)-&gt;type)
 
@@ -436,7 +442,8 @@ sees them.
 我们删除了调用<code>OBJ_FUNCTION</code>类型对象的代码。因为我们用ObjClosures包装了所有的函数，运行时永远不会再尝试调用原生的ObjFunction。这些原生函数对象只存在于常量表中，并在其它部分看到它们之前立即被封装在闭包中。</p>
 <aside name="naked">
 <p>We don&rsquo;t want any naked functions wandering around the VM! What would the
-neighbors say?</p>
+neighbors say?
+我们不想让任何裸露的功能在虚拟机周围游荡！要不然邻居们会怎么说？</p>
 </aside>
 <p>We replace the old code with very similar code for calling a closure instead.
 The only difference is the type of object we pass to <code>call()</code>. The real changes
@@ -558,7 +565,8 @@ ObjClosure here, before the VM can execute it.
 onto the stack. Then we pop it after creating the closure, only to then push the
 closure. Why put the ObjFunction on there at all? As usual, when you see weird
 stack stuff going on, it&rsquo;s to keep the <a href="garbage-collection.html">forthcoming garbage collector</a> aware
-of some heap-allocated objects.</p>
+of some heap-allocated objects.
+这段代码看起来有点傻，因为我们仍然把原始的ObjFunction压入栈中，然后在创建完闭包之后弹出它，然后再将闭包压入栈。为什么要把ObjFunction放在这里呢？像往常一样，当你看到奇怪的堆栈操作发生时，它是为了让<a href="garbage-collection.html">即将到来的垃圾回收器</a>知道一些堆分配的对象。</p>
 </aside>
 <p>We are back to a working interpreter. The <em>user</em> can&rsquo;t tell any difference, but
 the compiler now generates code telling the VM to create a closure for each
@@ -632,7 +640,7 @@ important part is that upvalues serve as the layer of indirection needed to
 continue to find a captured local variable even after it moves off the stack.
 But before we get to all that, let&rsquo;s focus on compiling captured variables.
 这可能看起来让人不知所措，但不要害怕。我们会用自己的方式来完成的。重要的部分是，上值充当了中间层，以便在被捕获的局部变量离开堆栈后能继续找到它。但在此之前，让我们先关注一下编译捕获的变量。</p>
-<h3><a href="#compiling-upvalues--编译上值" id="compiling-upvalues--编译上值"><small>25&#8202;.&#8202;2&#8202;.&#8202;1</small>Compiling upvalues  编译上值</a></h3>
+<h3><a href="#编译上值compiling-upvalues" id="编译上值compiling-upvalues"><small>25&#8202;.&#8202;2&#8202;.&#8202;1</small>编译上值(Compiling upvalues)</a></h3>
 <p>As usual, we want to do as much work as possible during compilation to keep
 execution simple and fast. Since local variables are lexically scoped in Lox, we
 have enough knowledge at compile time to resolve which surrounding local
@@ -705,7 +713,8 @@ the outermost function without finding a local variable. The variable must be
 <aside name="undefined">
 <p>It might end up being an entirely undefined variable and not even global. But in
 Lox, we don&rsquo;t detect that error until runtime, so from the compiler&rsquo;s
-perspective, it&rsquo;s &ldquo;hopefully global&rdquo;.</p>
+perspective, it&rsquo;s &ldquo;hopefully global&rdquo;.
+它最终可能会是一个完全未定义的变量，甚至不是全局变量。但是在Lox中，我们直到运行时才能检测到这个错误，所以从编译器的角度看，它是“期望是全局的”。</p>
 </aside>
 <p>Otherwise, we try to resolve the identifier as a <em>local</em> variable in the
 <em>enclosing</em> compiler. In other words, we look for it right outside the current
@@ -751,7 +760,8 @@ number for use at runtime.
 这个函数向数组中添加了一个新的上值。它还记录了该函数所使用的上值的数量。它直接在ObjFunction中存储了这个计数值，因为我们在运行时也需要使用这个数字。</p>
 <aside name="bridge">
 <p>Like constants and function arity, the upvalue count is another one of those
-little pieces of data that form the bridge between the compiler and runtime.</p>
+little pieces of data that form the bridge between the compiler and runtime.
+就像常量和函数元数一样，上值计数也是连接编译器与运行时的一些小数据。</p>
 </aside>
 <p>The <code>index</code> field tracks the closed-over local variable&rsquo;s slot index. That way
 the compiler knows <em>which</em> variable in the enclosing function needs to be
@@ -855,7 +865,7 @@ add after struct <em>Local</em></div>
 <p>The <code>index</code> field stores which local slot the upvalue is capturing. The
 <code>isLocal</code> field deserves its own section, which we&rsquo;ll get to next.
 <code>index</code>字段存储了上值捕获的是哪个局部变量槽。<code>isLocal</code>字段值得有自己的章节，我们接下来会讲到。</p>
-<h3><a href="#flattening-upvalues--扁平化上值" id="flattening-upvalues--扁平化上值"><small>25&#8202;.&#8202;2&#8202;.&#8202;2</small>Flattening upvalues  扁平化上值</a></h3>
+<h3><a href="#扁平化上值flattening-upvalues" id="扁平化上值flattening-upvalues"><small>25&#8202;.&#8202;2&#8202;.&#8202;2</small>扁平化上值(Flattening upvalues)</a></h3>
 <p>In the example I showed before, the closure is accessing a variable declared in
 the immediately enclosing function. Lox also supports accessing local variables
 declared in <em>any</em> enclosing scope, as in:
@@ -918,19 +928,13 @@ closure for <code>inner()</code>, <code>x</code> is already off the stack.
 accessed &#9314;? We really have two problems:
 看到了吗，<code>x</code>在被捕获②之前，先被弹出 ①，随后又被访问③？我们确实有两个问题：</p>
 <ol>
-<li>
-<p>We need to resolve local variables that are declared in surrounding
-functions beyond the immediately enclosing one.</p>
-</li>
-<li>
-<p>我们需要解析在紧邻的函数之外的外围函数中声明的局部变量。</p>
-</li>
-<li>
-<p>我们需要能够捕获已经离开堆栈的变量。</p>
-</li>
-<li>
-<p>We need to be able to capture variables that have already left the stack.</p>
-</li>
+<li>We need to resolve local variables that are declared in surrounding
+functions beyond the immediately enclosing one.</li>
+<li>We need to be able to capture variables that have already left the stack.</li>
+</ol>
+<ol>
+<li>我们需要解析在紧邻的函数之外的外围函数中声明的局部变量。</li>
+<li>我们需要能够捕获已经离开堆栈的变量。</li>
 </ol>
 <p>Fortunately, we&rsquo;re in the middle of adding upvalues to the VM, and upvalues are
 explicitly designed for tracking variables that have escaped the stack. So, in a
@@ -983,7 +987,8 @@ the <span name="base">base</span> case.
 我们来慢慢看一下。首先，我们在外部函数中查找匹配的局部变量。如果我们找到了，就捕获该局部变量并返回。这就是基本情况。</p>
 <aside name="base">
 <p>The other base case, of course, is if there is no enclosing function. In that
-case, the variable can&rsquo;t be resolved lexically and is treated as global.</p>
+case, the variable can&rsquo;t be resolved lexically and is treated as global.
+当然，另一种基本情况是，没有外层函数。在这种情况下，该变量不能在词法上解析，并被当作全局变量处理。</p>
 </aside>
 <p>Otherwise, we look for a local variable beyond the immediately enclosing
 function. We do that by recursively calling <code>resolveUpvalue()</code> on the
@@ -1006,7 +1011,8 @@ upvalue index down to the next call.
 nesting. So an inner <em>recursive call</em> refers to an <em>outer</em> nested declaration.
 The innermost recursive call to <code>resolveUpvalue()</code> that finds the local variable
 will be for the <em>outermost</em> function, just inside the enclosing function where
-that variable is actually declared.</p>
+that variable is actually declared.
+每次递归调用<code>resolveUpvalue()</code>都会 <em>走出</em> 一层函数嵌套。因此，内部的 <em>递归调用</em> 指向的是 <em>外部</em> 的嵌套声明。查找局部变量的最内层的<code>resolveUpvalue()</code>递归调用对应的将是 <em>最外层</em> 的函数，就是实际声明该变量的外层函数的内部。</p>
 </aside>
 <p>It might help to walk through the original example when resolving <code>x</code>:
 在解析<code>x</code>的时候，走一遍原始的例子可能会有帮助：</p><img src="image/closures/recursion.png" alt="Tracing through a recursive call to resolveUpvalue()."/>
@@ -1227,7 +1233,7 @@ that a Lox user can directly access in a program. So this code will never
 actually execute<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>but it keeps the compiler from yelling at us about an
 unhandled switch case, so here we are.
 打印对终端用户没有用。上值是对象，只是为了让我们能够利用虚拟机的内存管理。它们并不是Lox用户可以在程序中直接访问的一等公民。因此，这段代码实际上永远不会执行……但它使得编译器不会因为未处理的case分支而对我们大喊大叫，所以我们这样做了。</p>
-<h3><a href="#upvalues-in-closures--闭包中的上值" id="upvalues-in-closures--闭包中的上值"><small>25&#8202;.&#8202;3&#8202;.&#8202;1</small>Upvalues in closures  闭包中的上值</a></h3>
+<h3><a href="#闭包中的上值upvalues-in-closures" id="闭包中的上值upvalues-in-closures"><small>25&#8202;.&#8202;3&#8202;.&#8202;1</small>闭包中的上值(Upvalues in closures)</a></h3>
 <p>When I first introduced upvalues, I said each closure has an array of them.
 We&rsquo;ve finally worked our way back to implementing that.
 我在第一次介绍上值时，说过每个闭包中都有一个上值数组。我们终于回到了实现它的道路上。</p>
@@ -1250,7 +1256,8 @@ the array.
 <p>Storing the upvalue count in the closure is redundant because the ObjFunction
 that the ObjClosure references also keeps that count. As usual, this weird code
 is to appease the GC. The collector may need to know an ObjClosure&rsquo;s upvalue
-array size after the closure&rsquo;s corresponding ObjFunction has already been freed.</p>
+array size after the closure&rsquo;s corresponding ObjFunction has already been freed.
+在闭包中存储上值数量是多余的，因为ObjClosure引用的ObjFunction也保存了这个数量。通常，这类奇怪的代码是为了适应GC。在闭包对应的ObjFunction已经被释放后，收集器可能也需要知道ObjClosure对应上值数组的大小。</p>
 </aside>
 <p>When we create an ObjClosure, we allocate an upvalue array of the proper size,
 which we determined at compile time and stored in the ObjFunction.
@@ -1402,7 +1409,8 @@ arithmetic, just a couple of pointer indirections and a <code>push()</code>.
 <aside name="assign">
 <p>The set instruction doesn&rsquo;t <em>pop</em> the value from the stack because, remember,
 assignment is an expression in Lox. So the result of the assignment<span class="em">&mdash;</span>the
-assigned value<span class="em">&mdash;</span>needs to remain on the stack for the surrounding expression.</p>
+assigned value<span class="em">&mdash;</span>needs to remain on the stack for the surrounding expression.
+设置指令不会从栈中 <em>弹出</em> 值，因为，请记住，赋值在Lox中是一个表达式。所以赋值的结果（所赋的值）需要保留在栈中，供外围的表达式使用。</p>
 </aside>
 <p>This is a milestone. As long as all of the variables remain on the stack, we
 have working closures. Try this:
@@ -1418,7 +1426,7 @@ have working closures. Try this:
 </pre></div>
 <p>Run this, and it correctly prints &ldquo;outside&rdquo;.
 运行这个，它就会正确地打印“outside”。</p>
-<h2><a href="#closed-upvalues--关闭的上值" id="closed-upvalues--关闭的上值"><small>25&#8202;.&#8202;4</small>Closed Upvalues  关闭的上值</a></h2>
+<h2><a href="#关闭的上值closed-upvalues" id="关闭的上值closed-upvalues"><small>25&#8202;.&#8202;4</small>关闭的上值(Closed Upvalues)</a></h2>
 <p>Of course, a key feature of closures is that they hold on to the variable as
 long as needed, even after the function that declares the variable has returned.
 Here&rsquo;s another example that <em>should</em> work:
@@ -1449,7 +1457,8 @@ name="academic">academic</span> question. I&rsquo;m not just splitting hairs.
 Consider:
 在我们开始编写代码之前，我想深入探讨一个重要的语义问题。闭包关闭的是一个<em>值</em>还是一个<em>变量</em>？这并不是一个纯粹的学术问题。我并不是在胡搅蛮缠。考虑一下：</p>
 <aside name="academic">
-<p>If Lox didn&rsquo;t allow assignment, it <em>would</em> be an academic question.</p>
+<p>If Lox didn&rsquo;t allow assignment, it <em>would</em> be an academic question.
+如果Lox不允许赋值，这就是一个学术问题。</p>
 </aside>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">globalSet</span>;
 <span class="k">var</span> <span class="i">globalGet</span>;
@@ -1476,7 +1485,8 @@ closure assigns a new value to it and the second closure reads the variable.
 <aside name="global">
 <p>The fact that I&rsquo;m using a couple of global variables isn&rsquo;t significant. I needed
 some way to return two values from a function, and without any kind of
-collection type in Lox, my options were limited.</p>
+collection type in Lox, my options were limited.
+我使用了多个全局变量的事实并不重要。我需要某种方式从一个函数中返回两个值。而在Lox中没有任何形式的聚合类型，我的选择很有限。</p>
 </aside>
 <p>What does the call to <code>globalGet()</code> print? If closures capture <em>values</em> then
 each closure gets its own copy of <code>a</code> with the value that <code>a</code> had at the point
@@ -1496,7 +1506,7 @@ the heap, we need to ensure that all closures capturing that variable retain a
 reference to its <em>one</em> new location. That way, when the variable is mutated, all
 closures see the change.
 到底是哪一个呢？对于Lox和我所知的其它大多数带闭包的语言来说，答案是后者。闭包捕获的是变量。你可以把它们看作是对<em>值所在位置</em>的捕获。当我们处理不再留存于栈上的闭包变量时，这一点很重要，要牢牢记住。当一个变量移动到堆中时，我们需要确保所有捕获该变量的闭包都保留对其新位置的引用。这样一来，当变量发生变化时，所有闭包都能看到这个变化。</p>
-<h3><a href="#closing-upvalues--关闭上值" id="closing-upvalues--关闭上值"><small>25&#8202;.&#8202;4&#8202;.&#8202;2</small>Closing upvalues  关闭上值</a></h3>
+<h3><a href="#关闭上值closing-upvalues" id="关闭上值closing-upvalues"><small>25&#8202;.&#8202;4&#8202;.&#8202;2</small>关闭上值(Closing upvalues)</a></h3>
 <p>We know that local variables always start out on the stack. This is faster, and
 lets our single-pass compiler emit code before it discovers the variable has
 been captured. We also know that closed-over variables need to move to the heap
@@ -1508,18 +1518,12 @@ a local variable still on the stack. When a variable moves to the heap, we are
 two questions we need to answer are:
 跟随Lua，我们会使用<strong>开放上值</strong>来表示一个指向仍在栈中的局部变量的上值。当变量移动到堆中时，我们就<em>关闭</em>上值，而结果自然就是一个<strong>关闭的上值</strong>。我们需要回答两个问题：</p>
 <ol>
-<li>
-<p>Where on the heap does the closed-over variable go?</p>
-</li>
-<li>
-<p>被关闭的变量放在堆中的什么位置？</p>
-</li>
-<li>
-<p>我们什么时候关闭上值？</p>
-</li>
-<li>
-<p>When do we close the upvalue?</p>
-</li>
+<li>Where on the heap does the closed-over variable go?</li>
+<li>When do we close the upvalue?</li>
+</ol>
+<ol>
+<li>被关闭的变量放在堆中的什么位置？</li>
+<li>我们什么时候关闭上值？</li>
 </ol>
 <p>The answer to the first question is easy. We already have a convenient object on
 the heap that represents a reference to a variable<span class="em">&mdash;</span>ObjUpvalue itself. The
@@ -1537,7 +1541,8 @@ have reported an error if any code tried to use it.
 第二个问题也很直截了当。只要变量在栈中，就可能存在引用它的代码，而且这些代码必须能够正确工作。因此，将变量提取到堆上的逻辑时间越晚越好。如果我们在局部变量超出作用域时将其移出，我们可以肯定，在那之后没有任何代码会试图从栈中访问它。在变量超出作用域之后，如果有任何代码试图访问它，编译器就会报告一个错误。</p>
 <aside name="after">
 <p>By &ldquo;after&rdquo; here, I mean in the lexical or textual sense<span class="em">&mdash;</span>code past the <code>}</code>
-for the block containing the declaration of the closed-over variable.</p>
+for the block containing the declaration of the closed-over variable.
+这里 的“之后”，指的是词法或文本意义上的——在包含关闭变量的声明语句的代码块的<code>}</code>之后的代码。</p>
 </aside>
 <p>The compiler already emits an <code>OP_POP</code> instruction when a local variable goes
 out of scope. If a variable is captured by a closure, we will instead emit a
@@ -1547,7 +1552,8 @@ name="param">locals</span> are closed over.
 当局部变量超出作用域时，编译器已经生成了<code>OP_POP</code>指令。如果变量被某个闭包捕获，我们会发出一条不同的指令，将该变量从栈中提取到其对应的上值。为此，编译器需要知道哪些局部变量被关闭了。</p>
 <aside name="param">
 <p>The compiler doesn&rsquo;t pop parameters and locals declared immediately inside the
-body of a function. We&rsquo;ll handle those too, in the runtime.</p>
+body of a function. We&rsquo;ll handle those too, in the runtime.
+编译器不会弹出参数和在函数体中声明的局部变量。这些我们也会在运行时处理。</p>
 </aside>
 <p>The compiler already maintains an array of Upvalue structs for each local
 variable in the function to track exactly that state. That array is good for
@@ -1586,7 +1592,8 @@ compiler implicitly declares is not captured.
 同样地，编译器隐式声明的特殊的“槽0中的局部变量”不会被捕获。</p>
 <aside name="zero">
 <p>Later in the book, it <em>will</em> become possible for a user to capture this
-variable. Just building some anticipation here.</p>
+variable. Just building some anticipation here.
+在本书的后面部分，用户将有可能捕获这个变量。这里只是建立一些预期。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">  local-&gt;depth = 0;
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -1657,7 +1664,7 @@ with our general performance goal that we want users to pay only for
 functionality that they use. Variables that aren&rsquo;t used by closures live and die
 entirely on the stack just as they did before.
 太好了。现在，生成的字节码准确地告诉运行时，每个被捕获的局部变量必须移动到堆中的确切时间。更好的是，它只对被闭包使用并需要这种特殊处理的局部变量才会这样做。这与我们的总体性能目标是一致的，即我们希望用户只为他们使用的功能付费。那些不被闭包使用的变量只会出现于栈中，就像以前一样。</p>
-<h3><a href="#tracking-open-upvalues--跟踪开放的上值" id="tracking-open-upvalues--跟踪开放的上值"><small>25&#8202;.&#8202;4&#8202;.&#8202;3</small>Tracking open upvalues  跟踪开放的上值</a></h3>
+<h3><a href="#跟踪开放的上值tracking-open-upvalues" id="跟踪开放的上值tracking-open-upvalues"><small>25&#8202;.&#8202;4&#8202;.&#8202;3</small>跟踪开放的上值(Tracking open upvalues)</a></h3>
 <p>Let&rsquo;s move over to the runtime side. Before we can interpret <code>OP_CLOSE_UPVALUE</code>
 instructions, we have an issue to resolve. Earlier, when I talked about whether
 closures capture variables or values, I said it was important that if multiple
@@ -1674,7 +1681,8 @@ of the upvalues, the other upvalue will have an orphaned value.
 <p>The VM <em>does</em> share upvalues if one closure captures an <em>upvalue</em> from a
 surrounding function. The nested case works correctly. But if two <em>sibling</em>
 closures capture the same local variable, they each create a separate
-ObjUpvalue.</p>
+ObjUpvalue.
+如果某个闭包从外围函数中捕获了一个 <em>上值</em> ，那么虚拟机确实会共享上值。嵌套的情况下，工作正常。但是如果两个同级闭包捕获了同一个局部变量，它们会各自创建一个单独的ObjUpvalue。</p>
 </aside>
 <p>To fix that, whenever the VM needs an upvalue that captures a particular local
 variable slot, we will first search for an existing upvalue pointing to that
@@ -1693,7 +1701,8 @@ on performance critical execution paths in the user&rsquo;s program.
 <p>Closures are frequently <em>invoked</em> inside hot loops. Think about the closures
 passed to typical higher-order functions on collections like <a href="https://en.wikipedia.org/wiki/Map_(higher-order_function)"><code>map()</code></a> and
 <a href="https://en.wikipedia.org/wiki/Filter_(higher-order_function)"><code>filter()</code></a>. That should be fast. But the function declaration that
-<em>creates</em> the closure happens only once and is usually outside of the loop.</p>
+<em>creates</em> the closure happens only once and is usually outside of the loop.
+闭包经常在热循环中被<em>调用</em>。想想传递给集合的典型高阶函数，如<a href="https://en.wikipedia.org/wiki/Map_(higher-order_function)"><code>map()</code></a>和<a href="https://en.wikipedia.org/wiki/Filter_(higher-order_function)"><code>filter()</code></a>。这应该是很的。但是创建闭包的函数声明只发生一次，而且通常是在循环之外。</p>
 </aside>
 <p>Even better, we can order the list of open upvalues by the stack slot index they
 point to. The common case is that a slot has <em>not</em> already been captured<span class="em">&mdash;</span>sharing variables between closures is uncommon<span class="em">&mdash;</span>and closures tend to capture
@@ -1797,7 +1806,8 @@ a node after it.
 我们从列表的头部开始，它是最接近栈顶的上值。我们遍历列表，使用一个小小的指针比较，对每一个指向的槽位高于当前查找的位置的上值进行迭代。当我们这样做时，我们要跟踪列表中前面的上值。如果我们在某个节点后面插入了一个节点，就需要更新该节点的<code>next</code>指针。</p>
 <aside name="head">
 <p>It&rsquo;s a singly linked list. It&rsquo;s not like we have any other choice than to start
-at the head and go forward from there.</p>
+at the head and go forward from there.
+这是个单链表。除了从头指针开始遍历，我们没有其它选择。</p>
 </aside>
 <p>There are three reasons we can exit the loop:
 我们有三个原因可以退出循环：</p>
@@ -1858,14 +1868,15 @@ pointer is the VM&rsquo;s head pointer.
 or the previous upvalue&rsquo;s <code>next</code> pointer uniformly by using a pointer to a
 pointer, but that kind of code confuses almost everyone who hasn&rsquo;t reached some
 Zen master level of pointer expertise. I went with the basic <code>if</code> statement
-approach.</p>
+approach.
+还有一种更简短的实现，通过使用一个指向指针的指针，来统一处理更新头部指针或前一个上值的<code>next</code>指针两种情况，但这种代码几乎会让所有未达到指针专业水平的人感到困惑。我选择了基本的<code>if</code>语句的方法。</p>
 </aside>
 <p>With this updated function, the VM now ensures that there is only ever a single
 ObjUpvalue for any given local slot. If two closures capture the same variable,
 they will get the same upvalue. We&rsquo;re ready to move those upvalues off the
 stack now.
 有了这个升级版函数，VM现在可以确保每个指定的局部变量槽都只有一个ObjUpvalue。如果两个闭包捕获了相同的变量，它们会得到相同的上值。现在，我们准备将这些上值从栈中移出。</p>
-<h3><a href="#closing-upvalues-at-runtime--在运行时关闭上值" id="closing-upvalues-at-runtime--在运行时关闭上值"><small>25&#8202;.&#8202;4&#8202;.&#8202;4</small>Closing upvalues at runtime  在运行时关闭上值</a></h3>
+<h3><a href="#在运行时关闭上值closing-upvalues-at-runtime" id="在运行时关闭上值closing-upvalues-at-runtime"><small>25&#8202;.&#8202;4&#8202;.&#8202;4</small>在运行时关闭上值(Closing upvalues at runtime)</a></h3>
 <p>The compiler helpfully emits an <code>OP_CLOSE_UPVALUE</code> instruction to tell the VM
 exactly when a local variable should be hoisted onto the heap. Executing that
 instruction is the interpreter&rsquo;s responsibility.
@@ -1926,7 +1937,8 @@ variable moves from the stack to the <code>closed</code> field, we simply update
 <code>location</code> to the address of the ObjUpvalue&rsquo;s <em>own</em> <code>closed</code> field.
 但是已经有一个中间层在起作用了——这些指令对<code>location</code>指针解引用以获取变量的值。当变量从栈移动到<code>closed</code>字段时，我们只需将<code>location</code>更新为ObjUpvalue<em>自己的</em><code>closed</code>字段。</p>
 <aside name="cool">
-<p>I&rsquo;m not praising myself here. This is all the Lua dev team&rsquo;s innovation.</p>
+<p>I&rsquo;m not praising myself here. This is all the Lua dev team&rsquo;s innovation.
+我并不是在自夸。这都是Lua开发团队的创新。</p>
 </aside><img src="image/closures/closing.png" alt="Moving a value from the stack to the upvalue's 'closed' field and then pointing the 'value' field to it."/>
 <p>We don&rsquo;t need to change how <code>OP_GET_UPVALUE</code> and <code>OP_SET_UPVALUE</code> are
 interpreted at all. That keeps them simple, which in turn keeps them fast. We do
@@ -1962,7 +1974,8 @@ immediately inside the function. Those need to get closed too.
 <p>There&rsquo;s nothing <em>preventing</em> us from closing the outermost function scope in the
 compiler and emitting <code>OP_POP</code> and <code>OP_CLOSE_UPVALUE</code> instructions. Doing so is
 just unnecessary because the runtime discards all of the stack slots used by the
-function implicitly when it pops the call frame.</p>
+function implicitly when it pops the call frame.
+没有什么<em>阻止</em>我们在编译器中关闭最外层的函数作用域，并生成<code>OP_POP</code>和<code>OP_CLOSE_UPVALUE</code>指令。这样做只是没有必要，因为运行时在弹出调用帧时，隐式地丢弃了函数使用的所有栈槽。</p>
 </aside>
 <p>This is the reason <code>closeUpvalues()</code> accepts a pointer to a stack slot. When a
 function returns, we call that same helper and pass in the first stack slot
@@ -2041,18 +2054,22 @@ iteration.
 <p>A <a href="http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent">famous koan</a> teaches us that &ldquo;objects are a poor man&rsquo;s closure&rdquo;
 (and vice versa). Our VM doesn&rsquo;t support objects yet, but now that we have
 closures we can approximate them. Using closures, write a Lox program that
-models two-dimensional vector &ldquo;objects&rdquo;. It should:</p>
+models two-dimensional vector &ldquo;objects&rdquo;. It should:
+一个<a href="http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent">著名的公案</a>告诉我们：“对象是简化版的闭包”（反之亦然）。我们的虚拟机还不支持对象，但现在我们有了闭包，我们可以近似地使用它们。使用闭包，编写一个Lox程序，建模一个二维矢量“对象”。它应该：</p>
 <ul>
 <li>
 <p>Define a &ldquo;constructor&rdquo; function to create a new vector with the given
-<em>x</em> and <em>y</em> coordinates.</p>
+<em>x</em> and <em>y</em> coordinates.
+定义一个“构造器”函数，创建一个具有给定x和y坐标的新矢量。</p>
 </li>
 <li>
 <p>Provide &ldquo;methods&rdquo; to access the <em>x</em> and <em>y</em> coordinates of values
-returned from that constructor.</p>
+returned from that constructor.
+提供“方法”来访问构造函数返回值的x和y坐标。</p>
 </li>
 <li>
-<p>Define an addition &ldquo;method&rdquo; that adds two vectors and produces a third.</p>
+<p>Define an addition &ldquo;method&rdquo; that adds two vectors and produces a third.
+定义一个相加“方法”，将两个向量相加并产生第三个向量。</p>
 </li>
 </ul>
 </li>
@@ -2136,7 +2153,8 @@ iterations of the loop, including the final exit.</p>
 <p>You&rsquo;re wondering how <em>three</em> enters the picture? After the second iteration,
 <code>i++</code> is executed, which increments <code>i</code> to three. That&rsquo;s what causes <code>i &lt;= 2</code> to
 evaluate to false and end the loop. If <code>i</code> never reached three, the loop would
-run forever.</p>
+run forever.
+你想知道“3”是怎么出现的吗？在第二次迭代后，执行<code>i++</code>，它将<code>i</code>增加到3。这就是导致<code>i&lt;=2</code>的值为false并结束循环的原因。如果<code>i</code>永远达不到3，循环就会一直运行下去。</p>
 </aside>
 <p>If you&rsquo;re familiar with JavaScript, you probably know that variables declared
 using <code>var</code> are implicitly <em>hoisted</em> to the surrounding function or top-level

@@ -459,6 +459,7 @@ like, their *jam*. I admire them, but I'm not mathematically astute enough to
 [FNV-1a][] that's served me fine over the years. Consider <span
 name="thing">trying</span> out different ones in your code and see if they make
 a difference.
+有些人把设计和计算哈希函数当作自己的工作。我很佩服他们，但我在数学上还不够精明，不足以成为其中一员。所以对于clox来说。我选择了一个简单、常用的哈希函数[FNV-1a][]，多年来它一直为我所用。可以考虑在你的代码中尝试不同的方法，看看它们是否有什么不同。
 
 [fnv-1a]: http://www.isthe.com/chongo/tech/comp/fnv/
 

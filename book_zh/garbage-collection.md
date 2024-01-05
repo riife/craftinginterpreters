@@ -43,6 +43,7 @@ Recycling would really be a better metaphor for this. The GC doesn't *throw
 away* the memory, it reclaims it to be reused for new data. But managed
 languages are older than Earth Day, so the inventors went with the analogy they
 knew.
+用 "循环利用" 来比喻这一点确实更恰当。GC 不会 *丢弃* 内存，而是回收内存，重新用于新数据。但托管语言的历史比地球日还要悠久，所以发明者们使用了他们熟悉的比喻。
 
 <img src="image/garbage-collection/recycle.png" class="above" alt="A recycle bin full of bits." />
 
@@ -66,12 +67,14 @@ I'm using "conservative" in the general sense. There is such a thing as a
 garbage collectors are "conservative" in that they keep memory alive if it
 *could* be accessed, instead of having a Magic 8-Ball that lets them more
 precisely know what data *will* be accessed.
+我用的是一般意义上的“保守”。有一种“保守的垃圾回收器”，它的意思更具体。所有的垃圾回收器都是“保守的”，如果内存*可以*被访问，它们就保持内存存活，而不是有一个魔力8号球，可以让它们更精确地知道哪些数据将被访问。
 
 A **conservative GC** is a special kind of collector that considers any piece of
 memory to be a pointer if the value in there looks like it could be an address.
 This is in contrast to a **precise GC** -- which is what we'll implement -- that
 knows exactly which words in memory are pointers and which store other kinds of
 values like numbers or strings.
+**保守的GC**是一种特殊的回收器，它认为如果任何一块内存中的值看起来可能是地址，那它就是一个指针。这与我们将要实现的**精确的GC**相反，精确GC知道内存中哪些数据是指针，哪些存储的是数字或字符串等其它类型的值。
 
 </aside>
 
@@ -130,6 +133,7 @@ references. Consider:
 <aside name="class">
 
 We'll get there [soon][classes], though!
+不过，我们很快就会到达[那里][classes]！
 
 [classes]: classes-and-instances.html
 
@@ -171,8 +175,9 @@ This gives us an inductive definition of reachability:
 这给了我们一个关于可达性的归纳定义：
 
 *   All roots are reachable.
-
 *   Any object referred to from a reachable object is itself reachable.
+
+
 * 所有根都是可达的。
 * 任何被某个可达对象引用的对象本身是可达的。
 
@@ -184,10 +189,11 @@ up unneeded memory:
 
 1.  Starting with the roots, traverse through object references to find the
     full set of reachable objects.
+2.  Free all objects *not* in that set.
+
+
 1. 从根开始，遍历对象引用，找到可达对象的完整集合。
 2. 释放不在集合中的所有对象。
-
-2.  Free all objects *not* in that set.
 
 Many <span name="handbook">different</span> garbage collection algorithms are in
 use today, but they all roughly follow that same structure. Some may interleave
@@ -201,6 +207,7 @@ If you want to explore other GC algorithms,
 [*The Garbage Collection Handbook*][gc book] (Jones, et al.) is the canonical
 reference. For a large book on such a deep, narrow topic, it is quite enjoyable
 to read. Or perhaps I have a strange idea of fun.
+如果你想探索其它的GC算法，[《垃圾回收手册》][gc book]是一本经典的参考书。对于这样一本深入浅出的大部头来说，它的阅读体验是相当愉快的。也许我对乐趣有种奇怪的看法。
 
 [gc book]: http://gchandbook.org/
 
@@ -222,6 +229,7 @@ In John McCarthy's "History of Lisp", he notes: "Once we decided on garbage
 collection, its actual implementation could be postponed, because only toy
 examples were being done." Our choice to procrastinate adding the GC to clox
 follows in the footsteps of giants.
+在John McCarthy的《Lisp的历史》中，他指出：“一旦我们决定进行垃圾回收，它的实际实现就会被推迟，因为当时只做了玩具性的例子。”我们选择推迟在clox中加入GC，是追随了巨人的脚步。
 
 </aside>
 
@@ -240,11 +248,14 @@ As the name implies, mark-sweep works in two phases:
     This is a classic graph traversal of all of the reachable objects. Each time
     we visit an object, we *mark* it in some way. (Implementations differ in how
     they record the mark.)
-
 *   **Sweeping:** Once the mark phase completes, every reachable object
     in the heap has been marked. That means any unmarked object is unreachable and
     ripe for reclamation. We go through all the unmarked objects and free each
     one.
+
+
+*   **标记**：我们从根开始，遍历或跟踪这些根所引用的所有对象。这是对所有可达对象的经典图式遍历。每次我们访问一个对象时，我们都用某种方式来标记它。（不同的实现方式，记录标记的方法也不同）
+*   **清除**：一旦标记阶段完成，堆中的每个可达对象都被标记了。这意味着任何未被标记的对象都是不可达的，可以被回收。我们遍历所有未被标记的对象，并逐个释放。
 
 It looks something like this:
 它看起来像是这样的：
@@ -256,6 +267,7 @@ It looks something like this:
 A **tracing garbage collector** is any algorithm that traces through the graph
 of object references. This is in contrast with reference counting, which has a
 different strategy for tracking the reachable objects.
+**跟踪式垃圾回收器**是指任何通过对象引用图来追踪的算法。这与引用计数相反，后者使用不同的策略来追踪可达对象。
 
 </aside>
 
@@ -273,6 +285,7 @@ name="one">function</span>:
 <aside name="one">
 
 Of course, we'll end up adding a bunch of helper functions too.
+当然，我们最终也会添加一些辅助函数。
 
 </aside>
 
@@ -321,6 +334,7 @@ never collects any.
 More sophisticated collectors might run on a separate thread or be interleaved
 periodically during program execution -- often at function call boundaries or
 when a backward jump occurs.
+更复杂的回收器可能运行在单独的线程上，或者在程序执行过程中定期交错运行——通常是在函数调用边界处或发生后向跳转时。
 
 </aside>
 
@@ -418,11 +432,10 @@ is some kind of Obj type will always have a valid pointer. But later we will
 call this function directly from other code, and in some of those places, the
 object being pointed to is optional.
 从`markValue()`中调用时，`NULL`检查是不必要的。某种Obj类型的Lox Value一定会有一个有效的指针。但稍后我们将从其它代码中直接调用这个函数，在其中一些地方，被指向的对象是可选的。
-Assuming we do have a valid object, we mark it by setting a flag. That new field lives in the Obj header struct all objects share.
-假设我们确实有一个有效的对象，我们通过设置一个标志来标记它。这个新字段存在于所有对象共享的Obj头中。
 
 Assuming we do have a valid object, we mark it by setting a flag. That new field
 lives in the Obj header struct all objects share.
+假设我们确实有一个有效的对象，我们通过设置一个标志来标记它。这个新字段存在于所有对象共享的Obj头中。
 
 ^code is-marked-field (1 before, 1 after)
 
@@ -543,6 +556,7 @@ complex web of objects for our collector to crawl through.
 I slotted this chapter into the book right here specifically *because* we now
 have closures which give us interesting objects for the garbage collector to
 process.
+我把这一章安排在这里，特别是因为我们现在有了闭包，它给我们提供了有趣的对象，让垃圾回收器来处理。
 
 </aside>
 
@@ -557,10 +571,12 @@ I say "mostly" because some garbage collectors move objects in the order that
 they are visited, so traversal order determines which objects end up adjacent in
 memory. That impacts performance because the CPU uses locality to determine
 which memory to preload into the caches.
+我说“几乎”是因为有些垃圾回收器是按照对象被访问的顺序来移动对象的，所以遍历顺序决定了哪些对象最终会在内存中相邻。这会影响性能，因为CPU使用位置来决定哪些内存要预加载到缓存中。
 
 Even when traversal order does matter, it's not clear which order is *best*.
 It's very difficult to determine which order objects will be used in in the
 future, so it's hard for the GC to know which order will help performance.
+即便在遍历顺序很重要的时候，也不清楚哪种顺序是最好的。很难确定对象在未来会以何种顺序被使用，因此GC很难知道哪种顺序有助于提高性能。
 
 </aside>
 
@@ -585,6 +601,7 @@ Advanced garbage collection algorithms often add other colors to the
 abstraction. I've seen multiple shades of gray, and even purple in some designs.
 My puce-chartreuse-fuchsia-malachite collector paper was, alas, not accepted for
 publication.
+高级的垃圾回收算法经常为这个抽象概念加入其它颜色。我见过多种深浅不一的灰色，甚至在一些设计中见过紫色。可惜的是，我的黄绿色-紫红色-孔雀石回收器论文没有被接受发表。
 
 </aside>
 
@@ -592,33 +609,44 @@ publication.
     class="dot" /> White:** At the beginning of a garbage collection, every
     object is white. This color means we have not reached or processed the
     object at all.
-
 *   **<img src="image/garbage-collection/gray.png" alt="A gray circle."
     class="dot" /> Gray:** During marking, when we first reach an object, we
     darken it gray. This color means we know the object itself is reachable and
     should not be collected. But we have not yet traced *through* it to see what
     *other* objects it references. In graph algorithm terms, this is the
     *worklist* -- the set of objects we know about but haven't processed yet.
-
 *   **<img src="image/garbage-collection/black.png" alt="A black circle."
     class="dot" /> Black:** When
     we take a gray object and mark all of the objects it references, we then
     turn the gray object black. This color means the mark phase is done
     processing that object.
 
+
+*   **<img src="image/garbage-collection/white.png" alt="A white circle."
+    class="dot" /> 白色:** 在垃圾回收的开始阶段，每个对象都是白色的。这种颜色意味着我们根本没有达到或处理该对象。
+*   **<img src="image/garbage-collection/gray.png" alt="A gray circle."
+    class="dot" /> 灰色:** 在标记过程中，当我们第一次达到某个对象时，我们将其染为灰色。这种颜色意味着我们知道这个对象本身是可达的，不应该被收集。但我们还没有*通过*它来跟踪它引用的*其它*对象。用图算法的术语来说，这就是*工作列表（worklist）*——我们知道但还没有被处理的对象集合。
+*   **<img src="image/garbage-collection/black.png" alt="A black circle."
+    class="dot" /> 黑色:** 当我们接受一个灰色对象，并将其引用的所有对象全部标记后，我们就把这个灰色对象变为黑色。这种颜色意味着标记阶段已经完成了对该对象的处理。
+
 In terms of that abstraction, the marking process now looks like this:
 从这个抽象的角度看，标记过程新增看起来是这样的：
 
 1.  Start off with all objects white.
+    开始时，所有对象都是白色的。
 
 2.  Find all the roots and mark them gray.
+    找到所有的根，将它们标记为灰色。
 
 3.  Repeat as long as there are still gray objects:
+    只要还存在灰色对象，就重复此过程：
 
     1.  Pick a gray object. Turn any white objects that the object mentions to
         gray.
+        选择一个灰色对象。将该对象引用的所有白色对象标记为灰色。
 
     2.  Mark the original gray object black.
+        将原来的灰色对象标记为黑色。
 
 I find it helps to visualize this. You have a web of objects with references
 between them. Initially, they are all little white dots. Off to the side are
@@ -642,6 +670,7 @@ black -- are reset to white for the next garbage collection cycle.
 Note that at every step of this process no black node ever points to a white
 node. This property is called the **tricolor invariant**. The traversal process
 maintains this invariant to ensure that no reachable object is ever collected.
+请注意，在此过程的每一步，都没有黑色节点指向白色节点。这个属性被称为**三色不变性**。变量过程中保持这一不变性，以确保没有任何可达对象被回收。
 
 </aside>
 
@@ -700,6 +729,7 @@ To be more robust, we can allocate a "rainy day fund" block of memory when we
 start the VM. If the gray stack allocation fails, we free the rainy day block
 and try again. That may give us enough wiggle room on the heap to create the
 gray stack, finish the GC, and free up more memory.
+为了更加健壮，我们可以在启动虚拟机时分配一个“雨天基金”内存块。如果灰色栈分配失败，我们就释放这个块并重新尝试。这可能会为我们在堆上提供足够的空间来创建灰色栈，完成GC并释放更多内存。
 
 </aside>
 
@@ -743,6 +773,7 @@ outgoing references so there is nothing to traverse.
 An easy optimization we could do in `markObject()` is to skip adding strings and
 native functions to the gray stack at all since we know they don't need to be
 processed. Instead, they could darken from white straight to black.
+我们可以在`markObject()`中做一个简单的优化，就是不要向灰色栈中添加字符串和本地函数，因为我们知道它们不需要处理。相对地，它们可以从白色直接变黑。
 
 </aside>
 
@@ -756,6 +787,7 @@ the gray stack.
 
 You may rightly wonder why we have the `isMarked` field at all. All in good
 time, friend.
+你可能正在好奇为什么要有`isMarked`字段。别急，朋友。
 
 </aside>
 
@@ -882,10 +914,12 @@ intern string *literals*. It also provides an API to add strings to the string
 table. For many years, the capacity of that table was fixed, and strings added
 to it could never be removed. If users weren't careful about their use of
 `String.intern()`, they could run out of memory and crash.
+这可能是一个真正的问题。Java并没有驻留*所有*字符串，但它确实驻留了字符串*字面量*。它还提供了向字符串表添加字符串的API。多年以来，该表的容量是固定的，添加到其中的字符串永远无法被删除。如果用户不谨慎使用`String.intern()`，他们可能会耗尽内存导致崩溃。
 
 Ruby had a similar problem for years where symbols -- interned string-like
 values -- were not garbage collected. Both eventually enabled the GC to collect
 these strings.
+Ruby多年以来也存在类似的问题，符号（驻留的类似字符串的值）不会被垃圾回收。两者最终都启用了GC来回收这些字符串。
 
 </aside>
 
@@ -1002,6 +1036,7 @@ There are two key metrics we can use to understand that cost better:
 
 Well, not *exactly* 100%. It did still put the allocated objects into a linked
 list, so there was some tiny overhead for setting those pointers.
+嗯，不完全是100%。它仍然将分配的对象放入了一个链表中，所以在设置这些指针时有一些微小的开销。
 
 </aside>
 
@@ -1030,6 +1065,7 @@ The bar represents the execution of a program, divided into time spent running
 user code and time spent in the GC. The size of the largest single slice of time
 running the GC is the latency. The size of all of the user code slices added up
 is the throughput.
+每个条带表示程序的执行，分为运行用户代码的时间和在GC中花费的时间。运行GC的最大单个时间片的大小就是延迟。所有用户代码片的大小相加就是吞吐量。
 
 </aside>
 
@@ -1053,10 +1089,12 @@ separate threads running garbage collection, giving you a **concurrent garbage
 collector**. In other words, hire some dishwashers to clean while others bake.
 This is how very sophisticated GCs work because it does let the bakers
 -- the worker threads -- keep running user code with little interruption.
+如果每个人代表一个线程，那么一个明显的优化就是让单独的线程进行垃圾回收，提供一个**并发垃圾回收器**。换句话说，在其他人烘焙的时候，雇佣一些洗碗工来清洗。这就是非常复杂的GC工作方式，因为它确实允许烘焙师（工作线程）在几乎没有中断的情况下持续运行用户代码。
 
 However, coordination is required. You don't want a dishwasher grabbing a bowl
 out of a baker's hands! This coordination adds overhead and a lot of complexity.
 Concurrent collectors are fast, but challenging to implement correctly.
+但是，协调是必须的。你不会想让洗碗工从面包师手中抢走碗吧！这种协调增加了开销和大量的复杂性。并发回收器速度很快，但要正确实现却很有挑战性。
 
 <img src="image/garbage-collection/baguette.png" class="above" alt="Un baguette." />
 
@@ -1081,6 +1119,7 @@ seconds while the GC mucks around in the heap.
 <aside name="butter">
 
 Clearly the baking analogy is going to my head.
+显然，烘焙的比喻让我头晕目眩。
 
 </aside>
 
@@ -1102,6 +1141,7 @@ collector really frequently.
 
 In contrast, an **incremental garbage collector** can do a little collection,
 then run some user code, then collect a little more, and so on.
+相比之下，**增量式垃圾回收器**可以做一点回收工作，然后运行一些用户代码，然后再做一点回收工作，以此类推。
 
 </aside>
 
@@ -1177,6 +1217,7 @@ discover the best practices in an isolated lab environment. You don't see how a
 collector actually performs unless you run it on the kind of large, messy
 real-world programs it is actually intended for. It's like tuning a rally car
 -- you need to take it out on the course.
+学习垃圾回收器的一个挑战是，在孤立的实验室环境中很难发现最佳实践。除非你在大型的、混乱的真实世界的程序上运行回收器，否则你无法看到它的实际表现。这就像调校一辆拉力赛车——你需要把它带到赛道上。
 
 </aside>
 
@@ -1265,11 +1306,13 @@ well-known of this variety is the [**Boehm–Demers–Weiser garbage
 collector**][boehm], usually just called the "Boehm collector". (The shortest
 path to fame in CS is a last name that's alphabetically early so that it shows
 up first in sorted lists of names.)
+我们的GC无法在C栈中查找地址，但很多GC可以。保守的垃圾回收器会查看所有内存，包括本机堆栈。这类垃圾回收器中最著名的是[**Boehm–Demers–Weiser垃圾回收器** ][boehm]，通常就叫作“Boehm 回收器”。（在CS中，成名的捷径是姓氏在字母顺序上靠前，这样就能在排序的名字列表中出现在第一位）
 
 [boehm]: https://en.wikipedia.org/wiki/Boehm_garbage_collector
 
 Many precise GCs walk the C stack too. Even those have to be careful about
 pointers to live objects that exist only in *CPU registers*.
+许多精确GC也在C栈中遍历。即便是这些GC，也必须对指向仅存于CPU寄存器中的活动对象的指针加以注意。
 
 </aside>
 
@@ -1441,6 +1484,7 @@ name="nursery">frequently</span> over the objects just in this region.
 
 Nurseries are also usually managed using a copying collector which is faster at
 allocating and freeing objects than a mark-sweep collector.
+nursery通常也是要复制回收器进行管理，它在分配和释放对象方面比标记-清除回收器更快。
 
 </aside>
 

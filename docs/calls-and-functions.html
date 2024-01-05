@@ -112,7 +112,8 @@ we&rsquo;re going to do it all. It&rsquo;s a lot, but we&rsquo;ll feel good when
 这一章是一头猛兽。我试图把功能分解成小块，但有时候你不得不吞下整顿饭。我们的下一个任务是函数。我们可以只从函数声明开始，但是如果你不能调用它们，那就没什么用了。我们可以实现调用，但是也没什么可调用的。而且，为了实现这两个功能所需的所有运行时支持，如果不能与你能直观看到的东西相挂钩，就不是很有价值。所以我们都要做。虽然内容很多，但等我们完成时，我们会感觉很好。</p>
 <aside name="eat">
 <p>Eating<span class="em">&mdash;</span>consumption<span class="em">&mdash;</span>is a weird metaphor for a creative act. But most of the
-biological processes that produce &ldquo;output&rdquo; are a little less, ahem, decorous.</p>
+biological processes that produce &ldquo;output&rdquo; are a little less, ahem, decorous.
+吃<span class="em">&mdash;</span>消费<span class="em">&mdash;</span>是对创造性行为的一个奇怪比喻。但大多数产生 &ldquo;产出&rdquo; 的生物过程就没那么 &ldquo;体面&rdquo; 了。</p>
 </aside>
 <h2><a href="#function-objects--函数对象" id="function-objects--函数对象"><small>24&#8202;.&#8202;1</small>Function Objects  函数对象</a></h2>
 <p>The most interesting structural change in the VM is around the stack. We already
@@ -159,7 +160,8 @@ handy for reporting readable runtime errors.
 函数是Lox中的一等公民，所以它们需要作为实际的Lox对象。因此，ObjFunction具有所有对象类型共享的Obj头。<code>arity</code>字段存储了函数所需要的参数数量。然后，除了字节码块，我们还需要存储函数名称。这有助于报告可读的运行时错误。</p>
 <aside name="name">
 <p>Humans don&rsquo;t seem to find numeric bytecode offsets particularly illuminating in
-crash dumps.</p>
+crash dumps.
+人们似乎并不觉得数值型的字节码偏移量在崩溃转储中特别有意义。</p>
 </aside>
 <p>This is the first time the &ldquo;object&rdquo; module has needed to reference Chunk, so we
 get an include.
@@ -239,7 +241,8 @@ chunk, so we call Chunk&rsquo;s destructor-like function.
 <aside name="free-name">
 <p>We don&rsquo;t need to explicitly free the function&rsquo;s name because it&rsquo;s an ObjString.
 That means we can let the garbage collector manage its lifetime for us. Or, at
-least, we&rsquo;ll be able to once we <a href="garbage-collection.html">implement a garbage collector</a>.</p>
+least, we&rsquo;ll be able to once we <a href="garbage-collection.html">implement a garbage collector</a>.
+我们不需要显式地释放函数名称，因为它是一个ObjString。这意味着我们可以让垃圾回收为我们管理它的生命周期。或者说，至少在实现<a href="garbage-collection.html">垃圾回收</a>之后，我们就可以这样做了。</p>
 </aside>
 <p>Lox lets you print any object, and functions are first-class objects, so we
 need to handle them too.
@@ -309,7 +312,8 @@ name="wrap">wrapped</span> inside an implicit <code>main()</code> function.
 <aside name="wrap">
 <p>One semantic corner where that analogy breaks down is global variables. They
 have special scoping rules different from local variables, so in that way, the
-top level of a script isn&rsquo;t like a function body.</p>
+top level of a script isn&rsquo;t like a function body.
+这种类比在语义上有个行不通的地方就是全局变量。它们具有与局部变量不同的特殊作用域规则，因此从这个角度来说，脚本的顶层并不像一个函数体。</p>
 </aside>
 <p>Before we get to user-defined functions, then, let&rsquo;s do the reorganization to
 support that implicit top-level function. It starts with the Compiler struct.
@@ -349,7 +353,8 @@ is happy.
 <aside name="current">
 <p>It&rsquo;s almost like I had a crystal ball that could see into the future and knew
 we&rsquo;d need to change the code later. But, really, it&rsquo;s because I wrote all the
-code for the book before any of the text.</p>
+code for the book before any of the text.
+这就像我有一个可以看到未来的水晶球，知道我们以后需要修改代码。但是，实际上，这是因为我在写文字之前已经写了本书中的所有代码。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">Compiler* current = NULL;
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -412,7 +417,8 @@ in <em>initCompiler</em>()</div>
 <p><span name="null"></span></p>
 <aside name="null">
 <p>I know, it looks dumb to null the <code>function</code> field only to immediately assign it
-a value a few lines later. More garbage collection-related paranoia.</p>
+a value a few lines later. More garbage collection-related paranoia.
+我知道，让<code>function</code>字段为空，但在几行之后又立即为其赋值，这看起来很蠢。更像是与垃圾回收有关的偏执。</p>
 </aside>
 <p>Creating an ObjFunction in the compiler might seem a little strange. A function
 object is the <em>runtime</em> representation of a function, but here we are creating
@@ -426,7 +432,8 @@ Then, at runtime, they are simply invoked.
 <p>We can create functions at compile time because they contain only data available
 at compile time. The function&rsquo;s code, name, and arity are all fixed. When we add
 closures in the <a href="closures.html">next chapter</a>, which capture variables at runtime,
-the story gets more complex.</p>
+the story gets more complex.
+我们可以在编译时创建函数，是因为它们只包含编译时可用的数据。函数的代码、名称和元都是固定的。等我们在<a href="closures.html">下一章</a>中添加闭包时（在运行时捕获变量），情况就变得更加复杂了。</p>
 </aside>
 <p>Here is another strange piece of code:
 下面是另一段奇怪的代码：</p>
@@ -525,7 +532,8 @@ name="debug">diagnostic</span> code that prints the entire stack can and does.
 用户没有办法获取对顶层函数的引用并试图打印它，但我们用来打印整个堆栈的诊断代码<code>DEBUG_TRACE_EXECUTION</code>可以而且确实这样做了。</p>
 <aside name="debug">
 <p>It is no fun if the diagnostic code we use to find bugs itself causes the VM to
-segfault!</p>
+segfault!
+如果我们用来寻找bug的诊断代码本身导致虚拟机发生故障，那就不好玩了。</p>
 </aside>
 <p>Bumping up a level to <code>compile()</code>, we adjust its signature.
 为了给<code>compile()</code>提升一级，我们调整其签名。
@@ -594,7 +602,8 @@ it keeps to itself.
 一种选择是将它们完全分开。每个函数在虚拟机堆栈中都有自己的一组专用槽，即使在函数没有被调用的情况下，它也会永远拥有这些槽。整个程序中的每个局部变量在虚拟机中都有自己保留的一小块内存。</p>
 <aside name="static">
 <p>It&rsquo;s basically what you&rsquo;d get if you declared every local variable in a C
-program using <code>static</code>.</p>
+program using <code>static</code>.
+这基本就是你在C语言中使用<code>static</code>声明每个局部变量的结果。</p>
 </aside>
 <p>Believe it or not, early programming language implementations worked this way.
 The first Fortran compilers statically allocated memory for each variable. The
@@ -611,7 +620,8 @@ cost on every function call.
 不过，更根本的问题是递归。通过递归，你可以在同一时刻处于对同一个函数的多次调用“中”。每个函数的局部变量都需要自己的内存。在jlox中，我们通过在每次调用函数或进入代码块时为环境动态分配内存来解决这个问题。在clox中，我们不希望在每次调用时都付出这样的性能代价。</p>
 <aside name="fortran">
 <p>Fortran avoided this problem by disallowing recursion entirely. Recursion was
-considered an advanced, esoteric feature at the time.</p>
+considered an advanced, esoteric feature at the time.
+Fortran完全不允许递归，从而避免了这个问题。递归在当时被认为是一种高级、深奥的特性。</p>
 </aside>
 <p>Instead, our solution lies somewhere between Fortran&rsquo;s static allocation and
 jlox&rsquo;s dynamic approach. The value stack in the VM works on the observation that
@@ -650,7 +660,8 @@ doesn&rsquo;t always work out. Consider:
 <aside name="imagine">
 <p>I say &ldquo;imagine&rdquo; because the compiler can&rsquo;t actually figure this out. Because
 functions are first class in Lox, we can&rsquo;t determine which functions call which
-others at compile time.</p>
+others at compile time.
+我说“想象”是因为编译器实际上无法弄清这一点。因为函数在Lox中是一等公民，我们无法在编译时确定哪些函数调用了哪些函数。</p>
 </aside>
 <div class="codehilite"><pre><span class="k">fun</span> <span class="i">first</span>() {
   <span class="k">var</span> <span class="i">a</span> = <span class="n">1</span>;
@@ -721,7 +732,8 @@ return addresses. Since they <em>didn&rsquo;t</em> support recursion, any given 
 needed only a single return address at any point in time. So when a function was
 called at runtime, the program would <em>modify its own code</em> to change a jump
 instruction at the end of the function to jump back to its caller. Sometimes the
-line between genius and madness is hair thin.</p>
+line between genius and madness is hair thin.
+早期Fortran编译器的作者在实现返回地址方面有一个巧妙的技巧。由于它们 <em>不</em> 支持递归，任何给定的函数在任何时间点都只需要一个返回地址。因此，当函数在运行时被调用时，程序会 <em>修改自己的代码</em> ，更改函数末尾的跳转指针，以跳回调用方。有时候，天才和疯子之间只有一线之隔。</p>
 </aside>
 <h3><a href="#调用栈" id="调用栈"><small>24&#8202;.&#8202;3&#8202;.&#8202;3</small>调用栈</a></h3>
 <p>So for each live function invocation<span class="em">&mdash;</span>each call that hasn&rsquo;t returned yet<span class="em">&mdash;</span>we
@@ -767,7 +779,8 @@ calls have stack semantics. If <code>first()</code> calls <code>second()</code>,
 <aside name="heap">
 <p>Many Lisp implementations dynamically allocate stack frames because it
 simplifies implementing <a href="https://en.wikipedia.org/wiki/Continuation">continuations</a>. If your language supports
-continuations, then function calls do <em>not</em> always have stack semantics.</p>
+continuations, then function calls do <em>not</em> always have stack semantics.
+许多Lisp实现都是动态地分配堆栈帧的，因为它简化实现了<a href="https://en.wikipedia.org/wiki/Continuation">续延</a>。如果你的语言支持续延，那么函数调用并不一定具有堆栈语义。</p>
 </aside>
 <p>So over in the VM, we create an array of these CallFrame structs up front and
 treat it as a stack, like we do with the value array.
@@ -811,7 +824,8 @@ When the VM starts up, the CallFrame stack is empty.
 <aside name="plenty">
 <p>It is still possible to overflow the stack if enough function calls use enough
 temporaries in addition to locals. A robust implementation would guard against
-this, but I&rsquo;m trying to keep things simple.</p>
+this, but I&rsquo;m trying to keep things simple.
+如果除了局部变量之外，还有足够多的临时变量，仍然有可能溢出堆栈。一个健壮的实现可以防止这种情况，但我想尽量保持简单。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">  vm.stackTop = vm.stack;
 </pre><div class="source-file"><em>vm.c</em><br>
@@ -869,7 +883,8 @@ through that variable.
 time, but that&rsquo;s verbose. More importantly, storing the frame in a local
 variable encourages the C compiler to keep that pointer in a register. That
 speeds up access to the frame&rsquo;s <code>ip</code>. There&rsquo;s no <em>guarantee</em> that the compiler
-will do this, but there&rsquo;s a good chance it will.</p>
+will do this, but there&rsquo;s a good chance it will.
+我们可以通过每次查看CallFrame数组来访问当前帧，但这太繁琐了。更重要的是，将帧存储在一个局部变量中，可以促使C编译器将该指针保存在一个寄存器中。这样就能加快对帧中<code>ip</code>的访问。我们不能保证编译器会这样做，但很有可能会这样做。</p>
 </aside>
 <p>Now onto each instruction that needs a little tender loving care.
 现在我们来看看每条需要温柔呵护的指令。</p>
@@ -1032,8 +1047,9 @@ keyword.
 在我们确实可以调用表达式之前，首先需要一些可以用来调用的东西，所以我们首先要处理函数声明。一切从关键字开始。</p>
 <aside name="fun">
 <p>Yes, I am going to make a dumb joke about the <code>fun</code> keyword every time it
-comes up.</p>
-<p>译者注： 作者这里使用了一个小小的双关，实在不好翻译</p>
+comes up.
+是的，每次提到这个有趣的关键词(<code>fun</code>)，我都会开一个愚蠢的玩笑。</p>
+<p>译者注： 作者这里使用了一个小小的双关 <code>function</code> 的开头是 <code>fun</code></p>
 </aside>
 <div class="codehilite"><pre class="insert-before">static void declaration() {
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -1125,7 +1141,8 @@ add after <em>block</em>()</div>
 <aside name="no-end-scope">
 <p>This <code>beginScope()</code> doesn&rsquo;t have a corresponding <code>endScope()</code> call. Because we
 end Compiler completely when we reach the end of the function body, there&rsquo;s no
-need to close the lingering outermost scope.</p>
+need to close the lingering outermost scope.
+这里的<code>beginScope()</code>并没有对应的<code>endScope()</code>调用。因为当达到函数体的末尾时，我们会完全结束整个Compiler，所以没必要关闭逗留的最外层作用域。</p>
 </aside>
 <p>For now, we won&rsquo;t worry about parameters. We parse an empty pair of parentheses
 followed by the body. The body starts with a left curly brace, which we parse
@@ -1142,7 +1159,8 @@ function. But now the front end needs to handle compiling multiple functions
 <aside name="nested">
 <p>Remember that the compiler treats top-level code as the body of an implicit
 function, so as soon as we add <em>any</em> function declarations, we&rsquo;re in a world of
-nested functions.</p>
+nested functions.
+请记住，编译器将顶层代码视为隐式函数的主体，因此只要添加任何函数声明，我们就会进入一个嵌套函数的世界。</p>
 </aside>
 <p>The trick for managing that is to create a separate Compiler for each function
 being compiled. When we start compiling a function declaration, we create a new
@@ -1211,7 +1229,8 @@ practical limit on how deeply nested function declarations can be. Go too far
 and you could overflow the C stack. If we want the compiler to be more robust
 against pathological or even malicious code<span class="em">&mdash;</span>a real concern for tools like
 JavaScript VMs<span class="em">&mdash;</span>it would be good to have our compiler artificially limit the
-amount of function nesting it permits.</p>
+amount of function nesting it permits.
+使用本地堆栈存储编译器结构体确实意味着我们的编译器对函数声明的嵌套深度有一个实际限制。如果嵌套太多，可能会导致C语言堆栈溢出。如果我们想让编译器能够更健壮地抵御错误甚至恶意的代码（这是JavaScript虚拟机等工具真正关心的问题），那么最好是人为地让编译器限制所允许的函数嵌套层级。</p>
 </aside>
 <h3><a href="#函数参数" id="函数参数"><small>24&#8202;.&#8202;4&#8202;.&#8202;2</small>函数参数</a></h3>
 <p>Functions aren&rsquo;t very useful if you can&rsquo;t pass arguments to them, so let&rsquo;s do
@@ -1277,7 +1296,8 @@ heap-allocated name string that it can keep around.
 <p>We just can&rsquo;t do anything <span name="useful">useful</span> with them.
 只是我们还不能用它们来做任何有用的事情。</p>
 <aside name="useful">
-<p>We can print them! I guess that&rsquo;s not very useful, though.</p>
+<p>We can print them! I guess that&rsquo;s not very useful, though.
+我们可以打印出来！不过，我想这也没什么用。</p>
 </aside>
 <h2><a href="#function-calls--函数调用" id="function-calls--函数调用"><small>24&#8202;.&#8202;5</small>Function Calls  函数调用</a></h2>
 <p>By the end of this section, we&rsquo;ll start to see some interesting behavior. The
@@ -1409,7 +1429,8 @@ the argument values already live.
 <p>Different bytecode VMs and real CPU architectures have different <em>calling
 conventions</em>, which is the specific mechanism they use to pass arguments, store
 the return address, etc. The mechanism I use here is based on Lua&rsquo;s clean, fast
-virtual machine.</p>
+virtual machine.
+不同的字节码虚拟机和真实的CPU架构有不同的调用约定，也就是它们传递参数、存储返回地址等的具体机制。我在这里使用的机制是基于Lua干净、快速的虚拟机。</p>
 </aside>
 <p>This means that we don&rsquo;t need to do <em>any</em> work to &ldquo;bind an argument to a
 parameter&rdquo;. There&rsquo;s no copying values between slots or across environments. The
@@ -1476,7 +1497,8 @@ add after <em>peek</em>()</div>
 
 <aside name="switch">
 <p>Using a <code>switch</code> statement to check a single type is overkill now, but will make
-sense when we add cases to handle other callable types.</p>
+sense when we add cases to handle other callable types.
+使用<code>switch</code>语句来检查一个类型现在看有些多余，但当我们添加case来处理其它调用类型时，就有意义了。</p>
 </aside>
 <p>There&rsquo;s more going on here than just initializing a new CallFrame. Because Lox
 is dynamically typed, there&rsquo;s nothing to prevent a user from writing bad code
@@ -1621,7 +1643,8 @@ replace 4 lines</div>
 <aside name="minus">
 <p>The <code>- 1</code> is because the IP is already sitting on the next instruction to be
 executed but we want the stack trace to point to the previous failed
-instruction.</p>
+instruction.
+这里的<code>-1</code>是因为IP已经指向了下一条待执行的指令上 ，但我们希望堆栈跟踪指向前一条失败的指令。</p>
 </aside>
 <p>After printing the error message itself, we walk the call stack from <span
 name="top">top</span> (the most recently called function) to bottom (the
@@ -1634,13 +1657,15 @@ with the function name.
 trace. Most put the innermost function as the first line and work their way
 towards the bottom of the stack. Python prints them out in the opposite order.
 So reading from top to bottom tells you how your program got to where it is, and
-the last line is where the error actually occurred.</p>
+the last line is where the error actually occurred.
+关于栈帧在跟踪信息中显示的顺序，存在一些不同的意见。大部分把最内部的函数放在第一行，然后向堆栈的底部。Python则以相反的顺序打印出来。因此，从上到下阅读可以告诉你程序是如何达到现在的位置的，而最后一行是错误实际发生的地方。</p>
 <p>There&rsquo;s a logic to that style. It ensures you can always see the innermost
 function even if the stack trace is too long to fit on one screen. On the other
 hand, the &ldquo;<a href="https://en.wikipedia.org/wiki/Inverted_pyramid_(journalism)">inverted pyramid</a>&rdquo; from journalism tells us we should put the most
 important information <em>first</em> in a block of text. In a stack trace, that&rsquo;s the
 function where the error actually occurred. Most other language implementations
-do that.</p>
+do that.
+这种风格有一个逻辑。它可以确保你始终可以看到最里面的函数，即使堆栈跟踪信息太长而无法在一个屏幕上显示。另一方面，新闻业中的“<a href="https://en.wikipedia.org/wiki/Inverted_pyramid_(journalism)">倒金字塔</a>”告诉我们，我们应该把最重要的信息放在一段文字的前面。在堆栈跟踪中，这就是实际发生错误的函数。大多数其它语言的实现都是如此。</p>
 </aside>
 <p>For example, if you run this broken program:
 举例来说，如果你运行这个坏掉的程序：</p>
@@ -1792,7 +1817,8 @@ to <span name="worst">return</span> from there.
 <aside name="worst">
 <p>Allowing <code>return</code> at the top level isn&rsquo;t the worst idea in the world. It would
 give you a natural way to terminate a script early. You could maybe even use a
-returned number to indicate the process&rsquo;s exit code.</p>
+returned number to indicate the process&rsquo;s exit code.
+允许在顶层 <code>return</code> 并不是世界上最糟糕的主意。它可以为你提供一种自然的方式来提前终止脚本。你甚至可以用返回的数字来表示进程的推出码。</p>
 </aside>
 <p>We&rsquo;ve specified that it&rsquo;s a compile error to have a <code>return</code> statement outside
 of any function, which we implement like so:
@@ -2009,7 +2035,8 @@ accomplishes that.
 你可能像知道为什么我们要在栈中压入和弹出名称与函数。看起来很奇怪，是吧？当涉及到垃圾回收时，你必须考虑这类问题。<code>copyString()</code>和<code>newNative()</code>都是动态分配内存的。这意味着一旦我们有了GC，它们就有可能触发一次收集。如果发生这种情况，我们需要确保收集器知道我们还没有用完名称和ObjFunction ，这样垃圾回收就不会将这些数据从我们手下释放出来。将它们存储在值栈中可以做到这一点。</p>
 <aside name="worry">
 <p>Don&rsquo;t worry if you didn&rsquo;t follow all that. It will make a lot more sense once we
-get around to <a href="garbage-collection.html">implementing the GC</a>.</p>
+get around to <a href="garbage-collection.html">implementing the GC</a>.
+如果你没搞懂也不用担心，一旦我们开始<a href="garbage-collection.html">实现GC</a>，它就会变得更有意义。</p>
 </aside>
 <p>It feels silly, but after all of that work, we&rsquo;re going to add only one
 little native function.
@@ -2069,7 +2096,8 @@ quite an improvement.
 <aside name="faster">
 <p>It&rsquo;s a little slower than a comparable Ruby program run in Ruby 2.4.3p205, and
 about 3x faster than one run in Python 3.7.3. And we still have a lot of simple
-optimizations we can do in our VM.</p>
+optimizations we can do in our VM.
+它比在Ruby 2.4.3p205中运行的同类Ruby程序稍慢，比在Python 3.7.3中运行的程序快3倍左右。而且我们仍然可以在我们的虚拟机中做很多简单的优化。</p>
 </aside>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
@@ -2079,32 +2107,36 @@ optimizations we can do in our VM.</p>
 inside the bytecode loop. Right now, we access it through a pointer to the
 current CallFrame. That requires a pointer indirection which may force the
 CPU to bypass the cache and hit main memory. That can be a real performance
-sink.</p>
+sink.
+读写<code>ip</code>字段是字节码循环中最频繁的操作之一。新增，我们通过一个指向当前CallFrame的指针来访问它。这里需要一次指针间接引用，可能会迫使CPU绕过缓存而进入主存。这可能是一个真正的性能损耗。</p>
 <p>Ideally, we&rsquo;d keep the <code>ip</code> in a native CPU register. C doesn&rsquo;t let us
 <em>require</em> that without dropping into inline assembly, but we can structure
 the code to encourage the compiler to make that optimization. If we store
 the <code>ip</code> directly in a C local variable and mark it <code>register</code>, there&rsquo;s a
-good chance the C compiler will accede to our polite request.</p>
+good chance the C compiler will accede to our polite request.
+理想情况下，我们一个将<code>ip</code>保存在一个本地CPU寄存器中。在不引入内联汇编的情况下，C语言中不允许我们这样做，但是我们可以通过结构化的代码来鼓励编译器进行优化。如果我们将<code>ip</code>直接存储在C局部变量中，并将其标记为<code>register</code>，那么C编译器很可能会同意我们的礼貌请求。</p>
 <p>This does mean we need to be careful to load and store the local <code>ip</code> back
 into the correct CallFrame when starting and ending function calls.
 Implement this optimization. Write a couple of benchmarks and see how it
-affects the performance. Do you think the extra code complexity is worth it?</p>
+affects the performance. Do you think the extra code complexity is worth it?
+这确实意味着在开始和结束函数调用时，我们需要谨慎地从正确的CallFrame中加载和保存局部变量<code>ip</code>。请实现这一优化。写几个基准测试，看看它对性能有什么影响。您认为增加的代码复杂性值得吗？</p>
 </li>
 <li>
 <p>Native function calls are fast in part because we don&rsquo;t validate that the
 call passes as many arguments as the function expects. We really should, or
 an incorrect call to a native function without enough arguments could cause
-the function to read uninitialized memory. Add arity checking.</p>
+the function to read uninitialized memory. Add arity checking.
+本地函数调用之所以快，部分原因是我们没有验证调用时传入的参数是否与期望的一样多。我们确实应该这样做，否则在没有足够参数的情况下错误地调用本地函数，会导致函数读取未初始化的内存空间。请添加参数数量检查。</p>
 </li>
 <li>
 <p>Right now, there&rsquo;s no way for a native function to signal a runtime error.
 In a real implementation, this is something we&rsquo;d need to support because
 native functions live in the statically typed world of C but are called
 from dynamically typed Lox land. If a user, say, tries to pass a string to
-<code>sqrt()</code>, that native function needs to report a runtime error.</p>
+<code>sqrt()</code>, that native function needs to report a runtime error.
+目前，本机函数还没有办法发出运行时错误的信号。在一个真正的语言实现中，这是我们需要支持的，因为本机函数存在于静态类型的C语言世界中，却被动态类型的Lox调用。假如说，用户试图向<code>sqrt()</code>传递一个字符串，则该本地函数需要报告一个运行时错误。</p>
 <p>Extend the native function system to support that. How does this capability
 affect the performance of native calls?
-目前，本机函数还没有办法发出运行时错误的信号。在一个真正的语言实现中，这是我们需要支持的，因为本机函数存在于静态类型的C语言世界中，却被动态类型的Lox调用。假如说，用户试图向<code>sqrt()</code>传递一个字符串，则该本地函数需要报告一个运行时错误。
 扩展本地函数系统，以支持该功能。这个功能会如何影响本地调用的性能？</p>
 </li>
 <li>

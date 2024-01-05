@@ -209,12 +209,14 @@ emits instructions to store the class in a variable with its name.
 <p>We did something similar for closures. The <code>OP_CLOSURE</code> instruction needs to
 know the type and index for each captured upvalue. We encoded that using a
 series of pseudo-instructions following the main <code>OP_CLOSURE</code> instruction<span class="em">&mdash;</span>basically a variable number of operands. The VM processes all of those extra
-bytes immediately when interpreting the <code>OP_CLOSURE</code> instruction.</p>
+bytes immediately when interpreting the <code>OP_CLOSURE</code> instruction.
+我们对闭包做了类似的操作。<code>OP_CLOSURE</code>指令需要知道每个捕获的上值的类型和索引。我们在主<code>OP_CLOSURE</code>指令之后使用一系列伪指令对其进行编码——基本上是一个可变数量的操作数。VM在解释<code>OP_CLOSURE</code>指令时立即处理所有这些额外的字节。</p>
 <p>Here our approach is a little different because from the VM&rsquo;s perspective, each
 instruction to define a method is a separate stand-alone operation. Either
 approach would work. A variable-sized pseudo-instruction is possibly marginally
 faster, but class declarations are rarely in hot loops, so it doesn&rsquo;t matter
-much.</p>
+much.
+这里我们的方法有所不同，因为从VM的角度看，定义方法的每条指令都是一个独立的操作。两种方法都可行。可变大小的伪指令可能稍微快一点，但是类声明很少在热循环中出现，所以没有太大关系。</p>
 </aside>
 <p>Now, for each method declaration, we emit a new <code>OP_METHOD</code> instruction that
 adds a single method to that class. When all of the <code>OP_METHOD</code> instructions
@@ -225,15 +227,14 @@ mutations.
 <p>To define a new method, the VM needs three things:
 要定义一个新方法，VM需要三样东西：</p>
 <ol>
-<li>
-<p>The name of the method.</p>
-</li>
-<li>
-<p>The closure for the method body.</p>
-</li>
-<li>
-<p>The class to bind the method to.</p>
-</li>
+<li>The name of the method.</li>
+<li>The closure for the method body.</li>
+<li>The class to bind the method to.</li>
+</ol>
+<ol>
+<li>方法名称。</li>
+<li>方法主体的闭包。</li>
+<li>绑定该方法的类。</li>
 </ol>
 <p>We&rsquo;ll incrementally write the compiler code to see how those all get through to
 the runtime, starting here:
@@ -279,7 +280,8 @@ with the ObjClass in the global variable table.
 <p>If Lox supported declaring classes only at the top level, the VM could assume
 that any class could be found by looking it up directly from the global
 variable table. Alas, because we support local classes, we need to handle that
-case too.</p>
+case too.
+如果Lox只支持在顶层声明类，那么虚拟机就可以假定任何类都可以直接从全局变量表中查找出来。然而，由于我们支持局部类，所以我们也需要处理这种情况。</p>
 </aside>
 <p>Fear not. The compiler does know the <em>name</em> of the class. We can capture it
 right after we consume its token.
@@ -315,7 +317,8 @@ call <code>namedVariable()</code> to load it right back onto the stack. Why not 
 leave it on the stack in the first place? We could, but in the <a href="superclasses.html">next
 chapter</a> we will insert code between these two calls to support
 inheritance. At that point, it will be simpler if the class isn&rsquo;t sitting around
-on the stack.</p>
+on the stack.
+前面对<code>defineVariable()</code>的调用将类弹出栈，因此调用<code>namedVariable()</code>将其加载会栈中似乎有点愚蠢。为什么不一开始就把它留在栈上呢？我们可以这样做，但在<a href="superclasses.html">下一章</a>中，我们将在这两个调用之间插入代码，以支持继承。到那时，如果类不在栈上会更容易。</p>
 </aside>
 <p>This means that when we execute each <code>OP_METHOD</code> instruction, the stack has the
 method&rsquo;s closure on top with the class right under it. Once we&rsquo;ve reached the
@@ -406,10 +409,12 @@ name="verify">trusts</span> its own compiler.
 to get code to the bytecode interpreter is by going through clox&rsquo;s own compiler.
 Many bytecode VMs, like the JVM and CPython, support executing bytecode that has
 been compiled separately. That leads to a different security story. Maliciously
-crafted bytecode could crash the VM or worse.</p>
+crafted bytecode could crash the VM or worse.
+虚拟机相信它执行的指令是有效的，因为将代码送到字节码解释器的唯一途径是通过clox自己的编译器。许多字节码虚拟机，如JVM和CPython，支持执行单独编译好的字节码。这就导致了一个不同的安全问题。恶意编写的字节码可能会导致虚拟机崩溃，甚至更糟。</p>
 <p>To prevent that, the JVM does a bytecode verification pass before it executes
 any loaded code. CPython says it&rsquo;s up to the user to ensure any bytecode they
-run is safe.</p>
+run is safe.
+为了防止这种情况，JVM在执行任何加载的代码之前都会进行字节码验证。CPython说，由用户来确保他们运行的任何字节码都是安全的。</p>
 </aside>
 <p>After the series of <code>OP_METHOD</code> instructions is done and the <code>OP_POP</code> has popped
 the class, we will have a class with a nicely populated method table, ready to
@@ -469,7 +474,8 @@ later like a function. When invoked, the VM will do some shenanigans to wire up
 当用户执行一个方法访问时，我们会找到该方法的闭包，并将其包装在一个新的“已绑定方法（bound method）”对象中，该对象会跟踪访问该方法的实例。这个已绑定对象可以像一个函数一样在稍后被调用。当被调用时，虚拟机会做一些小动作，将<code>this</code>连接到方法主体中的接收器。</p>
 <aside name="bound">
 <p>I took the name &ldquo;bound method&rdquo; from CPython. Python behaves similar to Lox here,
-and I used its implementation for inspiration.</p>
+and I used its implementation for inspiration.
+我从CPython中借鉴了“bound method”这个名字。Python跟Lox这里的行为很类似，我通过它的实现获得灵感。</p>
 </aside>
 <p>Here&rsquo;s the new object type:
 下面是新的对象类型：</p>
@@ -589,7 +595,8 @@ invoke the handle later. We also trace the method closure.
 <p>Tracing the method closure isn&rsquo;t really necessary. The receiver is an
 ObjInstance, which has a pointer to its ObjClass, which has a table for all of
 the methods. But it feels dubious to me in some vague way to have ObjBoundMethod
-rely on that.</p>
+rely on that.
+跟踪方法的闭包实际上是没有必要的。接收器是一个ObjInstance，它有一个指向其ObjClass的指针，而ObjClass有一个存储所有方法的表。但让ObjBoundMethod依赖于它，我觉得在某种程度上是值得怀疑的。</p>
 </aside>
 <p>The last operation all objects support is printing.
 所有对象要支持的最后一个操作是打印。</p>
@@ -704,7 +711,8 @@ object type.
 用户可以在类上声明方法，在实例上访问这些方法，并将已绑定的方法放到栈上。他们目前还不能使用这些已绑定方法做任何有意义的事。我们所缺少的操作就是调用他们。调用在<code>callValue()</code>中实现，所以我们在其中为新的对象类型添加一个case分支。</p>
 <aside name="do">
 <p>A bound method <em>is</em> a first-class value, so they can store it in variables, pass
-it to functions, and otherwise do &ldquo;value&rdquo;-y stuff with it.</p>
+it to functions, and otherwise do &ldquo;value&rdquo;-y stuff with it.
+已绑定方法 <em>是</em> 第一类值，所以他们可以把它存储在变量中，传递给函数，以及用它做“值”可做的事情。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">    switch (OBJ_TYPE(callee)) {
 </pre><div class="source-file"><em>vm.c</em><br>
@@ -753,7 +761,8 @@ replace 1 line</div>
 
 <aside name="this">
 <p>The underscore at the end of the name of the parser function is because <code>this</code>
-is a reserved word in C++ and we support compiling clox as C++.</p>
+is a reserved word in C++ and we support compiling clox as C++.
+解析器函数名称后面的下划线是因为<code>this</code>是C++中的一个保留字，我们支持将clox编译为C++。</p>
 </aside>
 <p>When the parser encounters a <code>this</code> in prefix position, it dispatches to a new
 parser function.
@@ -1008,7 +1017,8 @@ about when it&rsquo;s first created?
 <p>Of course, Lox does let outside code directly access and modify an instance&rsquo;s
 fields without going through its methods. This is unlike Ruby and Smalltalk,
 which completely encapsulate state inside objects. Our toy scripting language,
-alas, isn&rsquo;t so principled.</p>
+alas, isn&rsquo;t so principled.
+当然，Lox确实允许外部代码之间访问和修改一个实例的字段，而不需要通过实例的方法。这与Ruby和Smalltalk不同，后者将状态完全封装在对象中。我们的玩具式脚本语言，唉，不那么有原则。</p>
 </aside>
 <p>Object-oriented languages ensure that brand new objects are properly set up
 through constructors, which both produce a new instance and initialize its
@@ -1017,30 +1027,31 @@ an initializer to set up any fields. Initializers work mostly like normal
 methods, with a few tweaks:
 面向对象的语言通过构造函数确保新对象是被正确设置的，构造函数会生成一个新实例并初始化其状态。在Lox中，运行时会分配新的原始实例，而类可以声明一个初始化器来设置任何字段。初始化器的工作原理和普通方法差不多，只是做了一些调整：</p>
 <ol>
-<li>
-<p>The runtime automatically invokes the initializer method whenever an
-instance of a class is created.</p>
-</li>
-<li>
-<p>The caller that constructs an instance always gets the instance <span
+<li>The runtime automatically invokes the initializer method whenever an
+instance of a class is created.</li>
+<li>The caller that constructs an instance always gets the instance <span
 name="return">back</span> after the initializer finishes, regardless of what
 the initializer function itself returns. The initializer method doesn&rsquo;t need
-to explicitly return <code>this</code>.</p>
-</li>
-<li>
-<p>In fact, an initializer is <em>prohibited</em> from returning any value at all
-since the value would never be seen anyway.</p>
-</li>
+to explicitly return <code>this</code>.</li>
+<li>In fact, an initializer is <em>prohibited</em> from returning any value at all
+since the value would never be seen anyway.</li>
+</ol>
+<ol>
+<li>每当一个类的实例被创建时，运行时会自动调用初始化器方法。</li>
+<li>构建实例的调用方总是在初始化器完成后得到实例，而不管初始化器本身返回什么。初始化器方法不需要显式地返回<code>this</code>。</li>
+<li>事实上，初始化器根本不允许返回任何值，因为这些值无论如何都不会被看到。</li>
 </ol>
 <aside name="return">
-<p>It&rsquo;s as if the initializer is implicitly wrapped in a bundle of code like this:</p>
+<p>It&rsquo;s as if the initializer is implicitly wrapped in a bundle of code like this:
+就好像初始化器被隐式地包装在这样的一段代码中：</p>
 <div class="codehilite"><pre><span class="k">fun</span> <span class="i">create</span>(<span class="i">klass</span>) {
   <span class="k">var</span> <span class="i">obj</span> = <span class="i">newInstance</span>(<span class="i">klass</span>);
   <span class="i">obj</span>.<span class="i">init</span>();
   <span class="k">return</span> <span class="i">obj</span>;
 }
 </pre></div>
-<p>Note how the value returned by <code>init()</code> is discarded.</p>
+<p>Note how the value returned by <code>init()</code> is discarded.
+注意<code>init()</code>返回的值是如何被丢弃的。</p>
 </aside>
 <p>Now that we support methods, to add initializers, we merely need to implement
 those three special rules. We&rsquo;ll go in order.
@@ -1274,7 +1285,8 @@ name="floppy">floppy</span> disk.
 <aside name="floppy">
 <p>I acknowledge that &ldquo;floppy disk&rdquo; may no longer be a useful size reference for
 current generations of programmers. Maybe I should have said &ldquo;a few tweets&rdquo; or
-something.</p>
+something.
+我承认，“软盘”对于当前一代程序员来说，可能不再是一个有用的大小参考。也许我应该说“几条推特”之类的。</p>
 </aside>
 <h2><a href="#优化调用" id="优化调用"><small>28&#8202;.&#8202;5</small>优化调用</a></h2>
 <p>Our VM correctly implements the language&rsquo;s semantics for method calls and
@@ -1311,15 +1323,18 @@ performs an optimized method call.
 executes the same series of bytecode instructions one after the other. A classic
 optimization technique is to define a new single instruction called a
 <strong>superinstruction</strong> that fuses those into a single instruction with the same
-behavior as the entire sequence.</p>
+behavior as the entire sequence.
+如果你花足够的时间观察字节码虚拟机的运行，你会发现它经常一次次地执行同一系列的字节码指令。一个经典的优化技术是定义新的单条指令，称为<strong>超级指令</strong>，它将这些指令融合到具有与整个序列相同行为的单一指令。</p>
 <p>One of the largest performance drains in a bytecode interpreter is the overhead
 of decoding and dispatching each instruction. Fusing several instructions into
-one eliminates some of that.</p>
+one eliminates some of that.
+在字节码解释器中，最大的性能消耗之一是每个指令的解码和调度的开销。将几个指令融合在一起可以消除其中的一些问题。</p>
 <p>The challenge is determining <em>which</em> instruction sequences are common enough to
 benefit from this optimization. Every new superinstruction claims an opcode for
 its own use and there are only so many of those to go around. Add too many, and
 you&rsquo;ll need a larger encoding for opcodes, which then increases code size and
-makes decoding <em>all</em> instructions slower.</p>
+makes decoding <em>all</em> instructions slower.
+难点在于确定<em>哪些</em>指令序列足够常见，并可以从这种优化中受益。每条新的超级指令都要求有一个操作码供自己使用，而这些操作码的数量是有限的。如果添加太多，你就需要对操作码进行更长的编码，这就增加了代码的大小，使得所有指令的解码速度变慢。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">  if (canAssign &amp;&amp; match(TOKEN_EQUAL)) {
     expression();
@@ -1340,12 +1355,12 @@ list exactly like we do when compiling a call expression. Then we emit a single
 new <code>OP_INVOKE</code> instruction. It takes two operands:
 在编译器解析属性名称之后，我们寻找一个左括号。如果匹配到了，则切换到一个新的代码路径。在那里，我们会像编译调用表达式一样来编译参数列表。然后我们发出一条新的<code>OP_INVOKE</code>指令。它需要两个操作数：</p>
 <ol>
-<li>
-<p>The index of the property name in the constant table.</p>
-</li>
-<li>
-<p>The number of arguments passed to the method.</p>
-</li>
+<li>The index of the property name in the constant table.</li>
+<li>The number of arguments passed to the method.</li>
+</ol>
+<ol>
+<li>属性名称在常量表中的索引。</li>
+<li>传递给方法的参数数量。</li>
 </ol>
 <p>In other words, this single instruction combines the operands of the
 <code>OP_GET_PROPERTY</code> and <code>OP_CALL</code> instructions it replaces, in that order. It
@@ -1458,7 +1473,8 @@ utility function:
 这是一个运行时错误，所以我们报告错误并退出。否则，我们获取实例的类并跳转到另一个新的工具函数：</p>
 <aside name="helper">
 <p>As you can guess by now, we split this code into a separate function because
-we&rsquo;re going to reuse it later<span class="em">&mdash;</span>in this case for <code>super</code> calls.</p>
+we&rsquo;re going to reuse it later<span class="em">&mdash;</span>in this case for <code>super</code> calls.
+你应该可以猜到，我们将这段代码拆分成一个单独的函数，是因为我们稍后会复用它——<code>super</code>调用中。</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>vm.c</em><br>
 add after <em>callValue</em>()</div>
@@ -1487,7 +1503,8 @@ The receiver and method arguments are already right where they need to be.
 <aside name="juggle">
 <p>This is a key reason <em>why</em> we use stack slot zero to store the receiver<span class="em">&mdash;</span>it&rsquo;s
 how the caller already organizes the stack for a method call. An efficient
-calling convention is an important part of a bytecode VM&rsquo;s performance story.</p>
+calling convention is an important part of a bytecode VM&rsquo;s performance story.
+这就是 <em>为什么</em> 我们使用栈槽0来存储接收器——调用方就是这样组织方法调用栈的。高效的调用约定是字节码虚拟机性能故事的重要组成部分。</p>
 </aside>
 <p>If you fire up the VM and run a little program that calls methods now, you
 should see the exact same behavior as before. But, if we did our job right, the
@@ -1503,7 +1520,8 @@ huge improvement when it comes to programming language optimization.
 <p>We shouldn&rsquo;t pat ourselves on the back <em>too</em> firmly. This performance
 improvement is relative to our own unoptimized method call implementation which
 was quite slow. Doing a heap allocation for every single method call isn&rsquo;t going
-to win any races.</p>
+to win any races.
+我们不应该过于自信。这种性能优化是相对于我们自己未优化的方法调用实现而言的，而那种方法调用实现相当缓慢。为每个方法调用都进行堆分配不会赢得任何比赛。</p>
 </aside><img src="image/methods-and-initializers/benchmark.png" alt="Bar chart comparing the two benchmark results." />
 <h3><a href="#调用字段" id="调用字段"><small>28&#8202;.&#8202;5&#8202;.&#8202;1</small>调用字段</a></h3>
 <p>The fundamental creed of optimization is: &ldquo;Thou shalt not break correctness.&rdquo;
@@ -1534,10 +1552,12 @@ error when it can&rsquo;t find a method named &ldquo;field&rdquo;.
 <p>There are cases where users may be satisfied when a program sometimes returns
 the wrong answer in return for running significantly faster or with a better
 bound on the performance. These are the field of <a href="https://en.wikipedia.org/wiki/Monte_Carlo_algorithm"><strong>Monte Carlo
-algorithms</strong></a>. For some use cases, this is a good trade-off.</p>
+algorithms</strong></a>. For some use cases, this is a good trade-off.
+在有些情况下，当程序偶尔返回错误的答案，以换取显著加快的运行速度或更好的性能边界，用户可能也是满意的。这些就是<a href="https://en.wikipedia.org/wiki/Monte_Carlo_algorithm"><strong>蒙特卡洛算法</strong></a>的领域。对于某些用例来说，这是一个很好的权衡。</p>
 <p>The important part, though, is that the user is <em>choosing</em> to apply one of these
 algorithms. We language implementers can&rsquo;t unilaterally decide to sacrifice
-their program&rsquo;s correctness.</p>
+their program&rsquo;s correctness.
+不过，重要的是，由用户选择使用这些算法中的某一种。我们这些语言实现者不能单方面地决定牺牲程序的正确性。</p>
 </aside>
 <p>Earlier, when we implemented <code>OP_GET_PROPERTY</code>, we handled both field and method
 accesses. To squash this new bug, we need to do the same thing for <code>OP_INVOKE</code>.
@@ -1579,25 +1599,25 @@ only the language wouldn&rsquo;t allow some annoying corner case. But, as langua
 language itself, we may sometimes choose to restrict or change the language in
 ways that enable optimizations. Users want expressive languages, but they also
 want fast implementations. Sometimes it is good language design to sacrifice a
-little power if you can give them perf in return.</p>
+little power if you can give them perf in return.
+作为语言<em>设计者</em>，我们的角色非常不同。如果我们确实控制了语言本身，我们有时可能会选择限制或改变语言的方式来实现优化。用户想要有表达力的语言，但他们也想要快速实现。有时，如果牺牲一点功能来获得完美回报是很好的语言设计。</p>
 </aside>
 <p>The code we wrote here follows a typical pattern in optimization:
 我们在这里编写的代码遵循一个优化中的典型模式：</p>
 <ol>
-<li>
-<p>Recognize a common operation or sequence of operations that is performance
-critical. In this case, it is a method access followed by a call.</p>
-</li>
-<li>
-<p>Add an optimized implementation of that pattern. That&rsquo;s our <code>OP_INVOKE</code>
-instruction.</p>
-</li>
-<li>
-<p>Guard the optimized code with some conditional logic that validates that the
+<li>Recognize a common operation or sequence of operations that is performance
+critical. In this case, it is a method access followed by a call.</li>
+<li>Add an optimized implementation of that pattern. That&rsquo;s our <code>OP_INVOKE</code>
+instruction.</li>
+<li>Guard the optimized code with some conditional logic that validates that the
 pattern actually applies. If it does, stay on the fast path. Otherwise, fall
 back to a slower but more robust unoptimized behavior. Here, that means
-checking that we are actually calling a method and not accessing a field.</p>
-</li>
+checking that we are actually calling a method and not accessing a field.</li>
+</ol>
+<ol>
+<li>识别出对性能至关重要的常见操作或操作序列。在本例中，它是一个方法访问后跟一个调用。</li>
+<li>添加该模式的优化实现。也就是我们的<code>OP_INVOKE</code>指令。</li>
+<li>用一些条件逻辑来验收是否适用该模式，从而保护优化后的代码。如果适用，就走捷径。否则，就退回到较慢但更稳健的非优化行为。在这里，意味着要检查我们是否真的在调用一个方法而不是访问一个字段。</li>
 </ol>
 <p>As your language work moves from getting the implementation working <em>at all</em> to
 getting it to work <em>faster</em>, you will find yourself spending more and more
@@ -1682,10 +1702,12 @@ user wants to keep using them.</p>
 <p>In particular, this is a big advantage of dynamically typed languages. A static
 language requires you to learn <em>two</em> languages<span class="em">&mdash;</span>the runtime semantics and the
 static type system<span class="em">&mdash;</span>before you can get to the point where you are making the
-computer do stuff. Dynamic languages require you to learn only the former.</p>
+computer do stuff. Dynamic languages require you to learn only the former.
+特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。</p>
 <p>Eventually, programs get big enough that the value of static analysis pays for
 the effort to learn that second static language, but the value proposition isn&rsquo;t
-as obvious at the outset.</p>
+as obvious at the outset.
+最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。</p>
 </aside>
 <p>The problem with simplicity is that simply cutting features often sacrifices
 power and expressiveness. There is an art to finding features that punch above
@@ -1719,7 +1741,8 @@ idea that other people in society grant you a finite amount of deviations from
 social norms. You earn credit by fitting in and doing in-group things, which you
 can then spend on oddball activities that might otherwise raise eyebrows. In
 other words, demonstrating that you are &ldquo;one of the good ones&rdquo; gives you license
-to raise your freak flag, but only so far.</p>
+to raise your freak flag, but only so far.
+心理学中的一个相关概念是<a href="https://en.wikipedia.org/wiki/Idiosyncrasy_credit">性格信用</a>，即社会上的其他人会给予你有限的与社会规范的偏离。你通过融入并做群体内的事情来获得信用，然后你可以把这些信用花费在那些可能会引人侧目的古怪活动上。换句话说，证明你是“好人之一”，让你有资格展示自己怪异的一面，但只能到此为止。</p>
 </aside>
 <p>Anytime you add something new to your language that other languages don&rsquo;t have,
 or anytime your language does something other languages do in a different way,
@@ -1752,7 +1775,8 @@ proportionally smaller (but likely more devoted) audience size, go for it.</p>
 <p>程序员对他们的时间自然是保守的，对于哪些语言值得上传到他们的湿件（即大脑）中。他们不想把时间浪费在一门最终对他们没有用处的语言上。因此，作为语言设计者，你的目标是为他们提供尽可能多的语言能力，并尽可能地减少所需的学习。</p>
 <p>一个自然的方法是<em>简单化</em>。你的语言拥有的概念和功能越少，你需要学习的东西就越少。这就是小型<span name="dynamic_zh">脚本</span>语言虽然不像大型工业语言那样强大却经常获得成功的原因之一——它们更容易上手，而且它们一旦进入了人们的大脑，用户就想继续使用它们。</p>
 <aside name="dynamic_zh">
-<p>特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。<BR>最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。</p>
+<p>特别的，这是动态类型语言的一大优势。静态语言需要你学习两种语言——运行时语义和静态类型系统，然后才能让计算机做一些事情。动态语言只要求你学习前者。</p>
+<p>最终，程序变得足够大，静态分析的价值足以抵扣学习第二门静态语言的努力，但其价值在一开始并不那么明显。</p>
 </aside>
 <p>简单化的问题在于，简单地删减功能通常会牺牲功能和表现力。找到超越其重量的功能是一门艺术，但通常小型语言做得更少，</p>
 <p>还有另一种方法可以避免这个问题。诀窍是要意识到，用户不必将你的整个语言都装进他们的脑子里，只需要把他们<em>还没有的部分</em>装进去就行了。正如我在之前的<a href="parsing-expressions.html#design-note">设计笔记</a>中提到的，学习是转移他们已知内容与需要知道的内容之间的差量。</p>

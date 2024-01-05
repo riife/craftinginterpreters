@@ -17,6 +17,7 @@ we're going to do it all. It's a lot, but we'll feel good when we're done.
 
 Eating -- consumption -- is a weird metaphor for a creative act. But most of the
 biological processes that produce "output" are a little less, ahem, decorous.
+吃 -- 消费 -- 是对创造性行为的一个奇怪比喻。但大多数产生 "产出" 的生物过程就没那么 "体面" 了。
 
 </aside>
 
@@ -56,6 +57,7 @@ handy for reporting readable runtime errors.
 
 Humans don't seem to find numeric bytecode offsets particularly illuminating in
 crash dumps.
+人们似乎并不觉得数值型的字节码偏移量在崩溃转储中特别有意义。
 
 </aside>
 
@@ -105,6 +107,7 @@ chunk, so we call Chunk's destructor-like function.
 We don't need to explicitly free the function's name because it's an ObjString.
 That means we can let the garbage collector manage its lifetime for us. Or, at
 least, we'll be able to once we [implement a garbage collector][gc].
+我们不需要显式地释放函数名称，因为它是一个ObjString。这意味着我们可以让垃圾回收为我们管理它的生命周期。或者说，至少在实现[垃圾回收][gc]之后，我们就可以这样做了。
 
 [gc]: garbage-collection.html
 
@@ -163,6 +166,7 @@ name="wrap">wrapped</span> inside an implicit `main()` function.
 One semantic corner where that analogy breaks down is global variables. They
 have special scoping rules different from local variables, so in that way, the
 top level of a script isn't like a function body.
+这种类比在语义上有个行不通的地方就是全局变量。它们具有与局部变量不同的特殊作用域规则，因此从这个角度来说，脚本的顶层并不像一个函数体。
 
 </aside>
 
@@ -194,6 +198,7 @@ is happy.
 It's almost like I had a crystal ball that could see into the future and knew
 we'd need to change the code later. But, really, it's because I wrote all the
 code for the book before any of the text.
+这就像我有一个可以看到未来的水晶球，知道我们以后需要修改代码。但是，实际上，这是因为我在写文字之前已经写了本书中的所有代码。
 
 </aside>
 
@@ -231,6 +236,7 @@ Then we allocate a new function object to compile into.
 
 I know, it looks dumb to null the `function` field only to immediately assign it
 a value a few lines later. More garbage collection-related paranoia.
+我知道，让`function`字段为空，但在几行之后又立即为其赋值，这看起来很蠢。更像是与垃圾回收有关的偏执。
 
 </aside>
 
@@ -250,6 +256,7 @@ We can create functions at compile time because they contain only data available
 at compile time. The function's code, name, and arity are all fixed. When we add
 closures in the [next chapter][closures], which capture variables at runtime,
 the story gets more complex.
+我们可以在编译时创建函数，是因为它们只包含编译时可用的数据。函数的代码、名称和元都是固定的。等我们在[下一章][closures]中添加闭包时（在运行时捕获变量），情况就变得更加复杂了。
 
 [closures]: closures.html
 
@@ -311,6 +318,7 @@ name="debug">diagnostic</span> code that prints the entire stack can and does.
 
 It is no fun if the diagnostic code we use to find bugs itself causes the VM to
 segfault!
+如果我们用来寻找bug的诊断代码本身导致虚拟机发生故障，那就不好玩了。
 
 </aside>
 
@@ -366,6 +374,7 @@ it keeps to itself.
 
 It's basically what you'd get if you declared every local variable in a C
 program using `static`.
+这基本就是你在C语言中使用`static`声明每个局部变量的结果。
 
 </aside>
 
@@ -388,6 +397,7 @@ cost on every function call.
 
 Fortran avoided this problem by disallowing recursion entirely. Recursion was
 considered an advanced, esoteric feature at the time.
+Fortran完全不允许递归，从而避免了这个问题。递归在当时被认为是一种高级、深奥的特性。
 
 </aside>
 
@@ -438,6 +448,7 @@ doesn't always work out. Consider:
 I say "imagine" because the compiler can't actually figure this out. Because
 functions are first class in Lox, we can't determine which functions call which
 others at compile time.
+我说“想象”是因为编译器实际上无法弄清这一点。因为函数在Lox中是一等公民，我们无法在编译时确定哪些函数调用了哪些函数。
 
 </aside>
 
@@ -526,6 +537,7 @@ needed only a single return address at any point in time. So when a function was
 called at runtime, the program would *modify its own code* to change a jump
 instruction at the end of the function to jump back to its caller. Sometimes the
 line between genius and madness is hair thin.
+早期Fortran编译器的作者在实现返回地址方面有一个巧妙的技巧。由于它们 *不* 支持递归，任何给定的函数在任何时间点都只需要一个返回地址。因此，当函数在运行时被调用时，程序会 *修改自己的代码* ，更改函数末尾的跳转指针，以跳回调用方。有时候，天才和疯子之间只有一线之隔。
 
 </aside>
 
@@ -568,6 +580,7 @@ calls have stack semantics. If `first()` calls `second()`, the call to
 Many Lisp implementations dynamically allocate stack frames because it
 simplifies implementing [continuations][cont]. If your language supports
 continuations, then function calls do *not* always have stack semantics.
+许多Lisp实现都是动态地分配堆栈帧的，因为它简化实现了[续延][cont]。如果你的语言支持续延，那么函数调用并不一定具有堆栈语义。
 
 [cont]: https://en.wikipedia.org/wiki/Continuation
 
@@ -602,6 +615,7 @@ When the VM starts up, the CallFrame stack is empty.
 It is still possible to overflow the stack if enough function calls use enough
 temporaries in addition to locals. A robust implementation would guard against
 this, but I'm trying to keep things simple.
+如果除了局部变量之外，还有足够多的临时变量，仍然有可能溢出堆栈。一个健壮的实现可以防止这种情况，但我想尽量保持简单。
 
 </aside>
 
@@ -637,6 +651,7 @@ time, but that's verbose. More importantly, storing the frame in a local
 variable encourages the C compiler to keep that pointer in a register. That
 speeds up access to the frame's `ip`. There's no *guarantee* that the compiler
 will do this, but there's a good chance it will.
+我们可以通过每次查看CallFrame数组来访问当前帧，但这太繁琐了。更重要的是，将帧存储在一个局部变量中，可以促使C编译器将该指针保存在一个寄存器中。这样就能加快对帧中`ip`的访问。我们不能保证编译器会这样做，但很有可能会这样做。
 
 </aside>
 
@@ -739,8 +754,9 @@ keyword.
 
 Yes, I am going to make a dumb joke about the `fun` keyword every time it
 comes up.
+是的，每次提到这个有趣的关键词(`fun`)，我都会开一个愚蠢的玩笑。
 
-译者注： 作者这里使用了一个小小的双关，实在不好翻译
+译者注： 作者这里使用了一个小小的双关 `function` 的开头是 `fun`
 </aside>
 
 ^code match-fun (1 before, 1 after)
@@ -806,6 +822,7 @@ incrementally, starting with this:
 This `beginScope()` doesn't have a corresponding `endScope()` call. Because we
 end Compiler completely when we reach the end of the function body, there's no
 need to close the lingering outermost scope.
+这里的`beginScope()`并没有对应的`endScope()`调用。因为当达到函数体的末尾时，我们会完全结束整个Compiler，所以没必要关闭逗留的最外层作用域。
 
 </aside>
 
@@ -829,6 +846,7 @@ function. But now the front end needs to handle compiling multiple functions
 Remember that the compiler treats top-level code as the body of an implicit
 function, so as soon as we add *any* function declarations, we're in a world of
 nested functions.
+请记住，编译器将顶层代码视为隐式函数的主体，因此只要添加任何函数声明，我们就会进入一个嵌套函数的世界。
 
 </aside>
 
@@ -887,6 +905,7 @@ and you could overflow the C stack. If we want the compiler to be more robust
 against pathological or even malicious code -- a real concern for tools like
 JavaScript VMs -- it would be good to have our compiler artificially limit the
 amount of function nesting it permits.
+使用本地堆栈存储编译器结构体确实意味着我们的编译器对函数声明的嵌套深度有一个实际限制。如果嵌套太多，可能会导致C语言堆栈溢出。如果我们想让编译器能够更健壮地抵御错误甚至恶意的代码（这是JavaScript虚拟机等工具真正关心的问题），那么最好是人为地让编译器限制所允许的函数嵌套层级。
 
 </aside>
 
@@ -939,6 +958,7 @@ We just can't do anything <span name="useful">useful</span> with them.
 <aside name="useful">
 
 We can print them! I guess that's not very useful, though.
+我们可以打印出来！不过，我想这也没什么用。
 
 </aside>
 
@@ -1056,6 +1076,7 @@ Different bytecode VMs and real CPU architectures have different *calling
 conventions*, which is the specific mechanism they use to pass arguments, store
 the return address, etc. The mechanism I use here is based on Lua's clean, fast
 virtual machine.
+不同的字节码虚拟机和真实的CPU架构有不同的调用约定，也就是它们传递参数、存储返回地址等的具体机制。我在这里使用的机制是基于Lua干净、快速的虚拟机。
 
 </aside>
 
@@ -1097,6 +1118,7 @@ call begins here:
 
 Using a `switch` statement to check a single type is overkill now, but will make
 sense when we add cases to handle other callable types.
+使用`switch`语句来检查一个类型现在看有些多余，但当我们添加case来处理其它调用类型时，就有意义了。
 
 </aside>
 
@@ -1195,6 +1217,7 @@ looks like this:
 The `- 1` is because the IP is already sitting on the next instruction to be
 executed but we want the stack trace to point to the previous failed
 instruction.
+这里的`-1`是因为IP已经指向了下一条待执行的指令上 ，但我们希望堆栈跟踪指向前一条失败的指令。
 
 </aside>
 
@@ -1212,6 +1235,7 @@ trace. Most put the innermost function as the first line and work their way
 towards the bottom of the stack. Python prints them out in the opposite order.
 So reading from top to bottom tells you how your program got to where it is, and
 the last line is where the error actually occurred.
+关于栈帧在跟踪信息中显示的顺序，存在一些不同的意见。大部分把最内部的函数放在第一行，然后向堆栈的底部。Python则以相反的顺序打印出来。因此，从上到下阅读可以告诉你程序是如何达到现在的位置的，而最后一行是错误实际发生的地方。
 
 There's a logic to that style. It ensures you can always see the innermost
 function even if the stack trace is too long to fit on one screen. On the other
@@ -1219,6 +1243,7 @@ hand, the "[inverted pyramid][]" from journalism tells us we should put the most
 important information *first* in a block of text. In a stack trace, that's the
 function where the error actually occurred. Most other language implementations
 do that.
+这种风格有一个逻辑。它可以确保你始终可以看到最里面的函数，即使堆栈跟踪信息太长而无法在一个屏幕上显示。另一方面，新闻业中的“[倒金字塔][inverted pyramid]”告诉我们，我们应该把最重要的信息放在一段文字的前面。在堆栈跟踪中，这就是实际发生错误的函数。大多数其它语言的实现都是如此。
 
 [inverted pyramid]: https://en.wikipedia.org/wiki/Inverted_pyramid_(journalism)
 
@@ -1361,6 +1386,7 @@ return "What?!";
 Allowing `return` at the top level isn't the worst idea in the world. It would
 give you a natural way to terminate a script early. You could maybe even use a
 returned number to indicate the process's exit code.
+允许在顶层 `return` 并不是世界上最糟糕的主意。它可以为你提供一种自然的方式来提前终止脚本。你甚至可以用返回的数字来表示进程的推出码。
 
 </aside>
 
@@ -1508,6 +1534,7 @@ accomplishes that.
 
 Don't worry if you didn't follow all that. It will make a lot more sense once we
 get around to [implementing the GC][gc].
+如果你没搞懂也不用担心，一旦我们开始[实现GC][gc]，它就会变得更有意义。
 
 [gc]: garbage-collection.html
 
@@ -1559,6 +1586,7 @@ quite an improvement.
 It's a little slower than a comparable Ruby program run in Ruby 2.4.3p205, and
 about 3x faster than one run in Python 3.7.3. And we still have a lot of simple
 optimizations we can do in our VM.
+它比在Ruby 2.4.3p205中运行的同类Ruby程序稍慢，比在Python 3.7.3中运行的程序快3倍左右。而且我们仍然可以在我们的虚拟机中做很多简单的优化。
 
 </aside>
 
@@ -1571,33 +1599,37 @@ optimizations we can do in our VM.
     current CallFrame. That requires a pointer indirection which may force the
     CPU to bypass the cache and hit main memory. That can be a real performance
     sink.
+    读写`ip`字段是字节码循环中最频繁的操作之一。新增，我们通过一个指向当前CallFrame的指针来访问它。这里需要一次指针间接引用，可能会迫使CPU绕过缓存而进入主存。这可能是一个真正的性能损耗。
 
     Ideally, we'd keep the `ip` in a native CPU register. C doesn't let us
     *require* that without dropping into inline assembly, but we can structure
     the code to encourage the compiler to make that optimization. If we store
     the `ip` directly in a C local variable and mark it `register`, there's a
     good chance the C compiler will accede to our polite request.
+    理想情况下，我们一个将`ip`保存在一个本地CPU寄存器中。在不引入内联汇编的情况下，C语言中不允许我们这样做，但是我们可以通过结构化的代码来鼓励编译器进行优化。如果我们将`ip`直接存储在C局部变量中，并将其标记为`register`，那么C编译器很可能会同意我们的礼貌请求。
 
     This does mean we need to be careful to load and store the local `ip` back
     into the correct CallFrame when starting and ending function calls.
     Implement this optimization. Write a couple of benchmarks and see how it
     affects the performance. Do you think the extra code complexity is worth it?
+    这确实意味着在开始和结束函数调用时，我们需要谨慎地从正确的CallFrame中加载和保存局部变量`ip`。请实现这一优化。写几个基准测试，看看它对性能有什么影响。您认为增加的代码复杂性值得吗？
 
 2.  Native function calls are fast in part because we don't validate that the
     call passes as many arguments as the function expects. We really should, or
     an incorrect call to a native function without enough arguments could cause
     the function to read uninitialized memory. Add arity checking.
+    本地函数调用之所以快，部分原因是我们没有验证调用时传入的参数是否与期望的一样多。我们确实应该这样做，否则在没有足够参数的情况下错误地调用本地函数，会导致函数读取未初始化的内存空间。请添加参数数量检查。
 
 3.  Right now, there's no way for a native function to signal a runtime error.
     In a real implementation, this is something we'd need to support because
     native functions live in the statically typed world of C but are called
     from dynamically typed Lox land. If a user, say, tries to pass a string to
     `sqrt()`, that native function needs to report a runtime error.
+    目前，本机函数还没有办法发出运行时错误的信号。在一个真正的语言实现中，这是我们需要支持的，因为本机函数存在于静态类型的C语言世界中，却被动态类型的Lox调用。假如说，用户试图向`sqrt()`传递一个字符串，则该本地函数需要报告一个运行时错误。
 
     Extend the native function system to support that. How does this capability
     affect the performance of native calls?
-目前，本机函数还没有办法发出运行时错误的信号。在一个真正的语言实现中，这是我们需要支持的，因为本机函数存在于静态类型的C语言世界中，却被动态类型的Lox调用。假如说，用户试图向`sqrt()`传递一个字符串，则该本地函数需要报告一个运行时错误。
-扩展本地函数系统，以支持该功能。这个功能会如何影响本地调用的性能？
+    扩展本地函数系统，以支持该功能。这个功能会如何影响本地调用的性能？
 
 4.  Add some more native functions to do things you find useful. Write some
     programs using those. What did you add? How do they affect the feel of the

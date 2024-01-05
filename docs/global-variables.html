@@ -109,7 +109,8 @@ virtual machine will support variables.
 <a href="local-variables.html">next chapter</a>. In jlox, we managed to cram them both into a single chapter
 because we used the same implementation technique for all variables. We built a
 chain of environments, one for each scope, all the way up to the top. That was a
-simple, clean way to learn how to manage state.</p>
+simple, clean way to learn how to manage state.
+事实上，它将只支持<em>全局</em>变量。局部变量将在<a href="local-variables.html">下一章</a>中支持。在jlox中，我们设法将它们塞进了一个章节，因为我们对所有变量都使用了相同的实现技术。我们建立了一个环境链，每个作用域都有一个，一直到顶部作用域。这是学习如何管理状态的一种简单、干净的方法。</p>
 <p>But it&rsquo;s also <em>slow</em>. Allocating a new hash table each time you enter a block or
 call a function is not the road to a fast VM. Given how much code is concerned
 with using variables, if variables go slow, everything goes slow. For clox,
@@ -123,7 +124,8 @@ tuned for different use patterns. For example, JavaScript VMs often have a
 faster representation for objects that are used more like instances of classes
 compared to other objects whose set of properties is more freely modified. C and
 C++ compilers usually have a variety of ways to compile <code>switch</code> statements
-based on the number of cases and how densely packed the case values are.</p>
+based on the number of cases and how densely packed the case values are.
+这是复杂的语言实现中常见的元策略。通常情况下，同一种语言特性会有多种实现技术，每种技术都针对不同的使用模式进行了优化。举例来说，与属性集可以自由修改的其它对象相比，Java Script虚拟机通常对那些使用起来像类实例对象有着更快的表示形式。C和C++编译器通常由多种方法能够根据case分支数量和case值的密集程度来编译<code>switch</code>语句。</p>
 </aside>
 <p>A quick refresher on Lox semantics: Global variables in Lox are &ldquo;late bound&rdquo;, or
 resolved dynamically. This means you can compile a chunk of code that refers to
@@ -187,7 +189,8 @@ block.
 <aside name="parens">
 <p>Blocks work sort of like parentheses do for expressions. A block lets you put
 the &ldquo;lower-precedence&rdquo; declaration statements in places where only a
-&ldquo;higher-precedence&rdquo; non-declaring statement is allowed.</p>
+&ldquo;higher-precedence&rdquo; non-declaring statement is allowed.
+代码块的作用有点像表达式中的括号。块可以让你把“低级别的”声明语句放在只允许“高级别的”非声明语句的地方。</p>
 </aside>
 <p>In this chapter, we&rsquo;ll cover only a couple of statements and one
 declaration.
@@ -274,7 +277,8 @@ return <code>false</code>. This <span name="turtles">helper</span> function is i
 in terms of this other helper:
 你可能看出它是从jlox来的。如果当前的标识是指定类型，我们就消耗该标识并返回<code>true</code>。否则，我们就不处理该标识并返回<code>false</code>。这个辅助函数是通过另一个辅助函数实现的：</p>
 <aside name="turtles">
-<p>It&rsquo;s helpers all the way down!</p>
+<p>It&rsquo;s helpers all the way down!
+一路上都是帮手！</p>
 </aside>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>consume</em>()</div>
@@ -293,7 +297,8 @@ the parser easier to read.
 <p>This sounds trivial, but handwritten parsers for non-toy languages get pretty
 big. When you have thousands of lines of code, a utility function that turns two
 lines into one and makes the result a little more readable easily earns its
-keep.</p>
+keep.
+这听起来微不足道，但是非玩具型语言的手写解析器非常大。当你有数千行代码时，如果一个实用函数可以将两行代码简化为一行代码，并使结果更易于阅读，那它就很容易被接受。</p>
 </aside>
 <p>If we did match the <code>print</code> token, then we compile the rest of the statement
 here:
@@ -345,7 +350,8 @@ modifies the stack. For example, <code>OP_ADD</code> pops two values and pushes 
 leaving the stack one element smaller than before.
 请注意，在此之后我们不会再向栈中压入任何内容。这是虚拟机中表达式和语句之间的一个关键区别。每个字节码指令都有<strong>堆栈效应</strong>，这个值用于描述指令如何修改堆栈内容。例如，<code>OP_ADD</code>会弹出两个值并压入一个值，使得栈中比之前少了一个元素。</p>
 <aside name="effect">
-<p>The stack is one element shorter after an <code>OP_ADD</code>, so its effect is -1:</p><img src="image/global-variables/stack-effect.png" alt="The stack effect of an OP_ADD instruction." />
+<p>The stack is one element shorter after an <code>OP_ADD</code>, so its effect is -1:
+<code>OP_ADD</code>执行过后堆栈会少一个元素，所以它的效应是<code>-1</code>：</p><img src="image/global-variables/stack-effect.png" alt="The stack effect of an OP_ADD instruction." />
 </aside>
 <p>You can sum the stack effects of a series of instructions to get their total
 effect. When you add the stack effects of the series of instructions compiled
@@ -377,7 +383,8 @@ name="return">step</span> closer to the complete implementation of clox.
 当虚拟机只编译和计算一条表达式时，我们在<code>OP_RETURN</code>中使用一些临时代码来输出值。现在我们已经有了语句和<code>print</code>，就不再需要这些了。我们离clox的完全实现又近了一步。</p>
 <aside name="return">
 <p>We&rsquo;re only one step closer, though. We will revisit <code>OP_RETURN</code> again when we
-add functions. Right now, it exits the entire interpreter loop.</p>
+add functions. Right now, it exits the entire interpreter loop.
+不过，我们只是近了一步。等我们添加函数时，还会重新审视<code>OP_RETURN</code>。现在，它退出整个解释器的循环即可。</p>
 </aside>
 <p>As usual, a new instruction needs support in the disassembler.
 像往常一样，一条新指令需要反汇编程序的支持。</p>
@@ -472,7 +479,8 @@ statements in real-world code in languages like C are expression statements.
 表达式语句现在还不是很有用，因为我们无法创建任何有副作用的表达式，但等我们后面添加函数时，它们将是必不可少的。在像C这样的真正语言中，大部分语句都是表达式语句。</p>
 <aside name="majority">
 <p>By my count, 80 of the 149 statements, in the version of &ldquo;compiler.c&rdquo; that we
-have at the end of this chapter are expression statements.</p>
+have at the end of this chapter are expression statements.
+据我统计，在本章末尾的<code>compiler.c</code>版本中，149条语句中有80条是表达式语句。</p>
 </aside>
 <h3><a href="#错误同步" id="错误同步"><small>21&#8202;.&#8202;1&#8202;.&#8202;3</small>错误同步</a></h3>
 <p>While we&rsquo;re getting this initial work done in the compiler, we can tie off a
@@ -537,7 +545,8 @@ operations we need to support:
 仅仅能够<em>打印</em>并不能为你的语言在编程语言博览会上赢得任何奖项，所以让我们继续做一些更有野心的事，让变量发挥作用。我们需要支持三种操作：</p>
 <aside name="fair">
 <p>I can&rsquo;t help but imagine a &ldquo;language fair&rdquo; like some country 4H thing. Rows of
-straw-lined stalls full of baby languages <em>moo</em>ing and <em>baa</em>ing at each other.</p>
+straw-lined stalls full of baby languages <em>moo</em>ing and <em>baa</em>ing at each other.
+我不禁想象起一个 &ldquo;语言集市&ldquo;，就像某个国家的 4H 协会。一排排铺着稻草的摊位上摆满了稚嫩的语言，互相 <em>哞哞</em> 叫着。</p>
 </aside>
 <ul>
 <li>Declaring a new variable using a <code>var</code> statement.
@@ -594,14 +603,17 @@ name="nil"><code>nil</code></span> by emitting an <code>OP_NIL</code> instructio
 expect the statement to be terminated with a semicolon.
 关键字后面跟着变量名。它是由<code>parseVariable()</code>编译的，我们马上就会讲到。然后我们会寻找一个<code>=</code>，后跟初始化表达式。如果用户没有初始化变量，编译器会生成<code>OP_NIL</code>指令隐式地将其初始化为<code>nil</code>。无论哪种方式，我们都希望语句以分号结束。</p>
 <aside name="nil" class="bottom">
-<p>Essentially, the compiler desugars a variable declaration like:</p>
+<p>Essentially, the compiler desugars a variable declaration like:
+基本上，编译器会对变量声明进行脱糖处理，如</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">a</span>;
 </pre></div>
-<p>into:</p>
+<p>into:
+变成:</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">a</span> = <span class="k">nil</span>;
 </pre></div>
 <p>The code it generates for the former is identical to what it produces for the
-latter.</p>
+latter.
+它为前者生成的代码和为后者生成的代码是相同的。</p>
 </aside>
 <p>There are two new functions here for working with variables and identifiers.
 Here is the first:
@@ -663,7 +675,8 @@ instruction takes that value and stores it away for later.
 <p>I know some of these functions seem pretty pointless right now. But we&rsquo;ll get
 more mileage out of them as we add more language features for working with
 names. Function and class declarations both declare new variables, and variable
-and assignment expressions access them.</p>
+and assignment expressions access them.
+我知道这里有一些函数现在看起来没什么意义。但是，随着我们增加更多与名称相关的语言特性，我们会从中获得更多的好处。函数和类声明都声明了新的变量，而变量表达式和赋值表达式会访问它们。</p>
 </aside>
 <p>Over in the runtime, we begin with this new instruction:
 在运行时，我们从这条新指令开始：</p>
@@ -698,7 +711,8 @@ hash table with that name as the key.
 <p>Note that we don&rsquo;t <em>pop</em> the value until <em>after</em> we add it to the hash table.
 That ensures the VM can still find the value if a garbage collection is
 triggered right in the middle of adding it to the hash table. That&rsquo;s a distinct
-possibility since the hash table requires dynamic allocation when it resizes.</p>
+possibility since the hash table requires dynamic allocation when it resizes.
+请注意，直到将值添加到哈希表之后，我们才会弹出它。这确保了如果在将值添加到哈希表的过程中触发了垃圾回收，虚拟机仍然可以找到这个值。这显然是很可能的，因为哈希表在调整大小时需要动态分配。</p>
 </aside>
 <p>This code doesn&rsquo;t check to see if the key is already in the table. Lox is pretty
 lax with global variables and lets you redefine them without error. That&rsquo;s
@@ -761,7 +775,8 @@ in <em>initVM</em>()</div>
 当我们退出时，就将其删掉。</p>
 <aside name="tear">
 <p>The process will free everything on exit, but it feels undignified to require
-the operating system to clean up our mess.</p>
+the operating system to clean up our mess.
+这个进程在退出时会释放所有的东西，但要求操作系统来收拾我们的烂摊子，总感觉很不体面。</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">void freeVM() {
 </pre><div class="source-file"><em>vm.c</em><br>
@@ -886,7 +901,8 @@ than they need to be. Alas, other design choices in our <span
 name="jlox">bytecode</span> compiler make assignment annoying to implement.
 在这本书中，我一直试图让你走在一条相对安全和简单的道路上。我并不回避困难的<em>问题</em>，但是我尽量不让解决方案过于复杂。可惜的是，我们的字节码编译器中的其它设计选择使得赋值的实现变得很麻烦。</p>
 <aside name="jlox">
-<p>If you recall, assignment was pretty easy in jlox.</p>
+<p>If you recall, assignment was pretty easy in jlox.
+如果你还记得，在jlox中赋值是很容易的。</p>
 </aside>
 <p>Our bytecode VM uses a single-pass compiler. It parses and generates bytecode
 on the fly without any intermediate AST. As soon as it recognizes a piece of
@@ -978,7 +994,8 @@ declaration</a>.
 <p>The call to <code>tableSet()</code> stores the value in the global variable table even if
 the variable wasn&rsquo;t previously defined. That fact is visible in a REPL session,
 since it keeps running even after the runtime error is reported. So we also take
-care to delete that zombie value from the table.</p>
+care to delete that zombie value from the table.
+对<code>tableSet()</code>的调用会将值存储在全局变量表中，即使该变量之前没有定义。这个问题在REPL会话中是用户可见的，因为即使报告了运行时错误，它仍然在运行。因此，我们也要注意从表中删除僵尸值。</p>
 </aside>
 <p>The other difference is that setting a variable doesn&rsquo;t pop the value off the
 stack. Remember, assignment is an expression, so it needs to leave that value
@@ -1010,7 +1027,8 @@ this should be a syntax error. But here&rsquo;s what our parser does:
 <p>Wouldn&rsquo;t it be wild if <code>a * b</code> <em>was</em> a valid assignment target, though? You
 could imagine some algebra-like language that tried to divide the assigned value
 up in some reasonable way and distribute it to <code>a</code> and <code>b</code><span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>that&rsquo;s probably
-a terrible idea.</p>
+a terrible idea.
+如果<code>a*b</code>是一个有效的赋值目标，这岂不是很疯狂？你可以想象一些类似代数的语言，试图以某种合理的方式划分所赋的值，并将其分配给<code>a</code>和<code>b</code>……这可能是一个很糟糕的主意。</p>
 </aside>
 <ol>
 <li>First, <code>parsePrecedence()</code> parses <code>a</code> using the <code>variable()</code> prefix parser.</li>
@@ -1020,6 +1038,8 @@ a terrible idea.</p>
 <li>That calls <code>variable()</code> again for parsing <code>b</code>.</li>
 <li>Inside that call to <code>variable()</code>, it looks for a trailing <code>=</code>. It sees one
 and thus parses the rest of the line as an assignment.</li>
+</ol>
+<ol>
 <li>首先，<code>parsePrecedence()</code>使用<code>variable()</code>前缀解析器解析<code>a</code>。</li>
 <li>之后，会进入中缀解析循环。</li>
 <li>达到<code>*</code>，并调用<code>binary()</code>。</li>
@@ -1130,7 +1150,8 @@ them <em>all</em> to accept the parameter.
 这样，前面的错误程序在编译时就会正确地得到一个错误。好了，现在我们完成了吗？也不尽然。看，我们正向一个解析函数传递参数。但是这些函数是存储在一个函数指令表格中的，所以所有的解析函数需要具有相同的类型。尽管大多数解析函数都不支持被用作赋值目标——setter是唯一的一个——但我们这个友好的C编译器要求它们<em>都</em>接受相同的参数。</p>
 <aside name="index">
 <p>If Lox had arrays and subscript operators like <code>array[index]</code> then an infix <code>[</code>
-would also allow assignment to support <code>array[index] = value</code>.</p>
+would also allow assignment to support <code>array[index] = value</code>.
+如果Lox有数组和下标操作符，如<code>array[index]</code>，那么中缀操作符<code>[</code>也能允许赋值，支持：<code>array[index] = value</code>。</p>
 </aside>
 <p>So we&rsquo;re going to finish off this chapter with some grunt work. First, let&rsquo;s go
 ahead and pass the flag to the infix parse functions.
@@ -1272,10 +1293,12 @@ text of the entire program before any code is run. Consider this program:
 <p>Here, we can tell statically that <code>oops</code> will not be defined because there
 is <em>no</em> declaration of that global anywhere in the program. Note that
 <code>useVar()</code> is never called either, so even though the variable isn&rsquo;t
-defined, no runtime error will occur because it&rsquo;s never used either.</p>
+defined, no runtime error will occur because it&rsquo;s never used either.
+这里，我们可以静态地告知用户<code>oops</code>不会被定义，因为在程序中 <em>没有</em> 任何地方对该全局变量进行了声明。请注意，<code>useVar()</code>也从未被调用，所以即使变量没有被定义，也不会发生运行时错误，因为它从未被使用。</p>
 <p>We could report mistakes like this as compile errors, at least when running
 from a script. Do you think we should? Justify your answer. What do other
-scripting languages you know do?</p>
+scripting languages you know do?
+我们可以将这样的错误报告为编译错误，至少在运行脚本时是这样。你认为我们应该这样做吗？请说明你的答案。你知道其它脚本语言是怎么做的吗？</p>
 </li>
 </ol>
 </div>

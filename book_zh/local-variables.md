@@ -14,11 +14,13 @@ name="global">global</span> variety. In this chapter, we'll extend that to
 support blocks, block scope, and local variables. In jlox, we managed to pack
 all of that and globals into one chapter. For clox, that's two chapters worth of
 work partially because, frankly, everything takes more effort in C.
+[上一章][last chapter]介绍了clox中的变量，但是只介绍了全局变量。在本章中，我们将进一步支持块、块作用域和局部变量。在jlox中，我们设法将所有这些内容和全局变量打包成一章。对于clox来说，这需要两章的工作量，坦率的说，部分原因是在C语言中一切都要花费更多的精力。
 
 <aside name="global">
 
 There's probably some dumb "think globally, act locally" joke here, but I'm
 struggling to find it.
+这里可能有一些 "放眼全球，立足当下" 的笑话，但我很难找到。
 
 </aside>
 
@@ -37,6 +39,7 @@ local variables that's as efficient as possible.
 
 Function parameters are also heavily used. They work like local variables too,
 so we'll use the same implementation technique for them.
+函数参数也被大量使用。它们也像局部变量一样工作，因此我们将会对它们使用同样的实现技术。
 
 </aside>
 
@@ -86,12 +89,14 @@ This alignment obviously isn't coincidental. I designed Lox to be amenable to
 single-pass compilation to stack-based bytecode. But I didn't have to tweak the
 language too much to fit in those restrictions. Most of its design should feel
 pretty natural.
+这种排列方式显然不是巧合。我将Lox设计成可以单遍编译为基于堆栈的字节码。但我没必要为了适应这些限制对语言进行过多的调整。它的大部分设计应该感觉很自然。
 
 This is in large part because the history of languages is deeply tied to
 single-pass compilation and -- to a lesser degree -- stack-based architectures.
 Lox's block scoping follows a tradition stretching back to BCPL. As programmers,
 our intuition of what's "normal" in a language is informed even today by the
 hardware limitations of yesteryear.
+这在很大程度上是因为语言的历史与单次编译紧密联系在一起，其次是基于堆栈的架构。Lox的块作用域遵循的传统可以追溯到BCPL。作为程序员，我们对一门语言中什么是“正常”的直觉，即使在今天也会受到过去的硬件限制的影响。
 
 </aside>
 
@@ -122,6 +127,7 @@ indexed from there. When we add [functions][], that scheme gets a little more
 complex. Each function needs its own region of the stack for its parameters and
 local variables. But, as we'll see, that doesn't add as much complexity as you
 might expect.
+在本章中，局部变量从虚拟机堆栈数组的底部开始，并在那里建立索引。当我们添加函数时，这个方案就变得有点复杂了。每个函数都需要自己的堆栈区域来存放参数和局部变量。但是，正如我们将看到的，这并没有如你所想那样增加太多的复杂性。
 
 [functions]: calls-and-functions.html
 
@@ -149,6 +155,7 @@ the locals array a fixed size.
 
 We're writing a single-pass compiler, so it's not like we have *too* many other
 options for how to order them in the array.
+我们正在编写一个单遍编译器，所以对于如何在数组中对变量进行排序，我们并没有太多的选择。
 
 </aside>
 
@@ -195,6 +202,7 @@ the code we already wrote, so here's a global variable instead:
 In particular, if we ever want to use our compiler in a multi-threaded
 application, possibly with multiple compilers running in parallel, then using a
 global variable is a *bad* idea.
+特别说明，如果我们想在多线程应用程序中使用编译器（可能有多个编译器并行运行），那么使用全局变量是一个坏主意。
 
 </aside>
 
@@ -239,6 +247,7 @@ usually means a small indivisible unit, but for some reason, the Algol 60
 committee decided to use it to refer to a *compound* structure -- a series of
 statements. It could be worse, I suppose. Algol 58 called `begin` and `end`
 "statement parentheses".
+仔细想想，“块”是个奇怪的名字。作为比喻来说，“块”通常意味着一个不可分割的小单元，但出于某种原因，Algol 60委员会决定用它来指代一个复合结构——一系列语句。我想，还有更糟的情况，Algol 58将`begin`和`end`称为“语句括号”。
 
 <img src="image/local-variables/block.png" alt="A cinder block." class="above" />
 
@@ -257,6 +266,7 @@ helper function to compile the rest of the block:
 <aside name="helper">
 
 This function will come in handy later for compiling function bodies.
+在后面编译函数体时，这个方法会派上用场。
 
 </aside>
 
@@ -342,6 +352,7 @@ efficient than that.
 <aside name="locals">
 
 The code on the left compiles to the sequence of instructions on the right.
+左边的代码编译成右边的指令序列。
 
 </aside>
 
@@ -375,10 +386,12 @@ directly stores a copy of the Token struct for the identifier. Tokens store a
 pointer to the first character of their lexeme and the lexeme's length. That
 pointer points into the original source string for the script or REPL entry
 being compiled.
+担心作为变量名称的字符串的生命周期吗？Local直接存储了标识符对应Token结构体的副本。Token存储了一个指向其词素中第一个字符的指针，以及词素的长度。该指针指向正在编译的脚本或REPL输入语句的源字符串。
 
 As long as that string stays around during the entire compilation process --
 which it must since, you know, we're compiling it -- then all of the tokens
 pointing into it are fine.
+只要这个字符串在整个编译过程中存在——你知道，它一定存在，我们正在编译它——那么所有指向它的标识都是正常的。
 
 </aside>
 
@@ -417,6 +430,7 @@ assumption by making this an error.
 
 Interestingly, the Rust programming language *does* allow this, and idiomatic
 code relies on it.
+有趣的是，Rust语言确实允许这样做，而且惯用代码也依赖于此。
 
 </aside>
 
@@ -447,6 +461,7 @@ We detect that error like so:
 
 Don't worry about that odd `depth != -1` part yet. We'll get to what that's
 about later.
+暂时先不用关心那个奇怪的`depth != -1`部分。我们稍后会讲到。
 
 </aside>
 
@@ -473,6 +488,7 @@ need an include.
 
 It would be a nice little optimization if we could check their hashes, but
 tokens aren't full LoxStrings, so we haven't calculated their hashes yet.
+如果我们能检查它们的哈希值，将是一个不错的小优化，但标识不是完整的LoxString，所以我们还没有计算出它们的哈希值。
 
 </aside>
 
@@ -502,6 +518,7 @@ When multiple local variables go out of scope at once, you get a series of
 `OP_POP` instructions that get interpreted one at a time. A simple optimization
 you could add to your Lox implementation is a specialized `OP_POPN` instruction
 that takes an operand for the number of slots to pop and pops them all at once.
+当多个局部变量同时退出作用域时，你会得到一系列的`OP_POP`指令，这些指令会被逐个解释。你可以在你的Lox实现中添加一个简单的优化，那就是专门的`OP_POPN`指令，该指令接受一个操作数，作为弹出的槽位的数量，并一次性弹出所有槽位。
 
 </aside>
 
@@ -592,6 +609,7 @@ instructions only look for data at the *top* of the stack. This is the core
 aspect that makes our bytecode instruction set *stack*-based.
 [Register-based][reg] bytecode instruction sets avoid this stack juggling at the
 cost of having larger instructions with more operands.
+把局部变量的值压到栈中似乎是多余的，因为它已经在栈中较低的某个位置了。问题是，其它字节码指令只能查找*栈顶*的数据。这也是我们的字节码指令集基于堆栈的主要表现。[基于寄存器][reg]的字节码指令集避免了这种堆栈技巧，其代价是有着更多操作数的大型指令。
 
 [reg]: a-virtual-machine.html#design-note
 
@@ -633,6 +651,7 @@ implement a debugger for our VM. When users step through code, they expect to
 see the values of local variables organized by their names. To support that,
 we'd need to output some additional information that tracks the name of each
 local variable at each stack slot.
+如果我们想为虚拟机实现一个调试器，在编译器中擦除局部变量名称是一个真正的问题。当用户逐步执行代码时，他们希望看到局部变量的值按名称排列。为了支持这一点，我们需要输出一些额外的信息，以跟踪每个栈槽中的局部变量的名称。
 
 </aside>
 
@@ -651,6 +670,7 @@ name="elegant">elegant</span>.
 <aside name="elegant">
 
 No, not even Scheme.
+不，即便Scheme也不是。
 
 </aside>
 
@@ -741,6 +761,7 @@ checking that values have the proper type for their operation. In fact, in some
 statically typed languages like C, you don't even *know* the type at runtime.
 The compiler completely erases any representation of a value's type leaving just
 the bare bits.
+你可以把静态类型看作是这种趋势的一个极端例子。静态类型语言将所有的类型分析和类型错误处理都在编译过程中进行了整理。这样，运行时就不必浪费时间来检查值是否具有适合其操作的类型。事实上，在一些静态类型语言（如C）中，你甚至不*知道*运行时的类型。编译器完全擦除值类型的任何表示，只留下空白的比特位。
 
 </aside>
 

@@ -32,13 +32,14 @@ understand a program's performance just by thinking real hard. Those days are
 long gone, separated from the present by microcode, cache lines, branch
 prediction, deep compiler pipelines, and mammoth instruction sets. We like to
 pretend C is a "low-level" language, but the stack of technology between
-在计算机早期，曾经有一段时间，一个熟练的程序员可以把整个硬件架构和编译器管道记在脑子里，只需要认真思考就可以了解程序的性能。那些日子早已一去不复返了，现在已经被微码、缓存线、分支预测、深层编译器管道和庞大的指令集所分隔。我们喜欢假装C语言是一种“低级”语言，但在`printf("Hello, world!");`和屏幕上出现的问候语之间的技术栈现在已经很高了。
+在计算机早期，曾经有一段时间，一个熟练的程序员可以把整个硬件架构和编译器管道记在脑子里，只需要认真思考就可以了解程序的性能。那些日子早已一去不复返了，现在已经被微码、缓存线、分支预测、深层编译器管道和庞大的指令集所分隔。我们喜欢假装C语言是一种“低级”语言，但在
 
 ```c
 printf("Hello, world!");
 ```
 
 and a greeting appearing on screen is now perilously tall.
+和屏幕上出现的问候语之间的技术栈现在已经很高了。
 
 Optimization today is an empirical science. Our program is a border collie
 sprinting through the hardware's obstacle course. If we want her to reach the
@@ -63,8 +64,11 @@ have similar needs when it comes to performance:
 
 1.  How do we validate that an optimization *does* improve performance, and by
     how much?
-
 2.  How do we ensure that other unrelated changes don't *regress* performance?
+
+
+1.  我们如何验证一项优化确实提高了性能，以及提高了多少？
+2.  我们如何确保其它不相关的修改不会使性能退步？
 
 The Lox programs we write to accomplish those goals are **benchmarks**. These
 are carefully crafted programs that stress some part of the language
@@ -77,6 +81,7 @@ name="much">*long*</span> it takes to do it.
 Most benchmarks measure running time. But, of course, you'll eventually find
 yourself needing to write benchmarks that measure memory allocation, how much
 time is spent in the garbage collector, startup time, etc.
+大多数基准程序测量的是运行时间。但是，当然，你最终会发现自己需要编写基准测试来测量内存分配、垃圾回收器花费的时间、启动时间等等。
 
 </aside>
 
@@ -107,6 +112,7 @@ In the early proliferation of JavaScript VMs, the first widely used benchmark
 suite was SunSpider from WebKit. During the browser wars, marketing folks used
 SunSpider results to claim their browser was fastest. That highly incentivized
 VM hackers to optimize to those benchmarks.
+在JavaScript虚拟机的早期扩散中，第一个广泛使用的基准测试套件是WebKit的SunSpider。在浏览器大战期间，营销人员利用SunSpider的结果来宣称他们的浏览器是最快的。这极大地激励了虚拟机专家们根据这些基准进行优化。
 
 Unfortunately, SunSpider programs often didn't match real-world JavaScript. They
 were mostly microbenchmarks -- tiny toy programs that completed quickly. Those
@@ -115,14 +121,17 @@ benchmarks penalize complex just-in-time compilers that start off slower but get
 code paths. This put VM hackers in the unfortunate position of having to choose
 between making the SunSpider numbers get better, or actually optimizing the
 kinds of programs real users ran.
+不幸的是，SunSpider程序往往与真实世界的JavaScript不匹配。它们大多是微基准测试——快速结束的小玩具程序。这些基准测试对复杂的即时编译器不利，因为它们一开始速度比较慢，但一旦JIT有足够的时间来优化并重新编译热点代码，就会变得快 *很* 多。这将虚拟机专家们置于一个不幸的境地：要么让SubSpider的数字变得更好，要么实际优化真实用户运行的程序类型。
 
 Google's V8 team responded by sharing their Octane benchmark suite, which was
 closer to real-world code at the time. Years later, as JavaScript use patterns
 continued to evolve, even Octane outlived its usefulness. Expect that your
 benchmarks will evolve as your language's ecosystem does.
+谷歌的V8团队分享了他们的Octane基准测试套件，这在当时更接近于真实世界的代码。多年以后，随着JavaScript使用模式的不断发展，甚至Octane也失去了作用。期待你的基准测试随着你的语言生态系统的发展而发展。
 
 Remember, the ultimate goal is to make *user programs* faster, and benchmarks
 are only a proxy for that.
+记住，最终目标是使*用户程序*更快，而基准测试只是实现这个目标的一个代替物。
 
 </aside>
 
@@ -159,10 +168,12 @@ branch mispredictions, memory allocations, and all sorts of other metrics.
 are trying to optimize clox, not the user's Lox script. Of course, the choice of
 which Lox program to load into our VM will highly affect which parts of clox get
 stressed, which is why benchmarks are so important.
+这里的“你的程序”是指运行其它Lox程序的Lox虚拟机本身。我们要优化的是clox，而不是用户的Lox脚本。当然，选择哪一个Lox程序加载到虚拟机中会极大地影响clox的哪些部分会受到压力，这就是基准测试如此重要的原因。
 
 A profiler *won't* show us how much time is spent in each *Lox* function in the
 script being run. We'd have to write our own "Lox profiler" to do that, which is
 slightly out of scope for this book.
+剖析器 *不会* 告诉我们正在运行的脚本中每个Lox函数花费了多少时间。我们必须编写自己的“Lox剖析器”才能做到这一点，这有点超出了本书的范围。
 
 </aside>
 
@@ -229,10 +240,12 @@ executes. By calculating a rolling sum and printing the result, we ensure the VM
 *must* execute all that Lox code. This is an important habit. Unlike our simple
 Lox VM, many compilers do aggressive dead code elimination and are smart enough
 to discard a computation whose result is never used.
+这个基准测试的另一个注意点是要*使用*所执行的代码的结果。通过计算滚动求和与打印结果，我们确保虚拟机*必须*执行所有的Lox代码。这是一个重要的习惯。与我们这个简单的Lox虚拟机不同，很多编译器都做了积极的死码消除，并且聪明到会丢弃那些结果未被使用的计算逻辑。
 
 Many a programming language hacker has been impressed by the blazing performance
 of a VM on some benchmark, only to realize that it's because the compiler
 optimized the entire benchmark program away to nothing.
+许多编程语言黑客都会对虚拟机在某些基准测试上的惊人表现印象深刻，最后才意识到这是因为编译器将整个基准测试程序优化到不存在了。
 
 </aside>
 
@@ -253,6 +266,7 @@ tables of different sizes. The six keys we add to each table here aren't even
 enough to get over our hash table's eight-element minimum threshold. But I
 didn't want to throw an enormous benchmark script at you. Feel free to add more
 critters and treats if you like.
+如果你真的想要对哈希表的性能进行基准测试，那你应该使用许多不同大小的表。我们在这里给每个表添加的6个键甚至都没有超过哈希表中8个元素的最小阈值。但我不想向你抛出一个庞大的基准测试脚本。如果你喜欢，可以随意添加更多的小动物和食物。
 
 </aside>
 
@@ -267,7 +281,7 @@ Here's what I found: Naturally, the function with the greatest inclusive time is
 other functions it calls -- the total time between when you enter the function
 and when it returns.) Since `run()` is the main bytecode execution loop, it
 drives everything.
-下面是我的发现：自然，非独占时间最大的函数是`run()`。（**非独占时间（Inclusive time）**是指在某个函数及其调用的所有其它函数中所花费的总时间——即从你进入函数到函数返回之间的总时间。）因为`run()`是主要的字节码执行循环，它驱动着一切。
+下面是我的发现：自然，非独占时间最大的函数是`run()`。（ **非独占时间(Inclusive time)** 是指在某个函数及其调用的所有其它函数中所花费的总时间——即从你进入函数到函数返回之间的总时间。）因为`run()`是主要的字节码执行循环，它驱动着一切。
 
 Inside `run()`, there are small chunks of time sprinkled in various cases in the
 bytecode switch for common instructions like `OP_POP`, `OP_RETURN`, and
@@ -336,6 +350,7 @@ name="division">arithmetic</span> operators. Can we do something better?
 Pipelining makes it hard to talk about the performance of an individual CPU
 instruction, but to give you a feel for things, division and modulo are about
 30-50 *times* slower than addition and subtraction on x86.
+流水线使得我们很难讨论单个CPU指令的性能，但可以给你一个直观感受，在x86上，除法和模运算比加法和减法运算慢30-50 *倍*。
 
 </aside>
 
@@ -392,6 +407,7 @@ Another potential improvement is to eliminate the decrement by storing the bit
 mask directly instead of the capacity. In my tests, that didn't make a
 difference. Instruction pipelining makes some operations essentially free if the
 CPU is bottlenecked elsewhere.
+另一个潜在的改进是通过直接存储位掩码而不是存储容量值来消除减法。在我的测试中，这并没有什么区别。如果CPU在其它方面遇到瓶颈，指令流水线的存在使得一些操作基本上是无用的。
 
 </aside>
 
@@ -444,6 +460,7 @@ latter measure because the reported number represents *speed*. You can directly
 compare the numbers before and after an optimization. When measuring execution
 time, you have to do a little arithmetic to get to a good relative measure of
 performance.
+我们最初的基准测试是固定工作量，然后测量时间。修改后的脚本计算它在10秒内可以执行多少批次的调用，是固定时间并测量工作量。对于性能的比较，我喜欢后一种方法，因为报告的数字代表了速度。你可以直接比较优化前后的数字。当测量执行时间时，你必须进行一些计算，才能得到一个良好的相对性能测量。
 
 </aside>
 
@@ -491,11 +508,13 @@ I'm not sure who first came up with this trick. The earliest source I can find
 is David Gudeman's 1993 paper "Representing Type Information in Dynamically
 Typed Languages". Everyone else cites that. But Gudeman himself says the paper
 isn't novel work, but instead "gathers together a body of folklore".
+我不确定是谁首先提出了这个技巧。我能找到的最早的资料是David Gudeman在1993年发表的论文 《在动态类型语言中表示类型信息（Representing Type Information in Dynamically Typed Languages）》。其他人都在引用这篇文章。但是Gudeman自己说这篇论文并不是什么新颖的工作，而是 "收集了大量的民间传说"。
 
 Maybe the inventor has been lost to the mists of time, or maybe it's been
 reinvented a number of times. Anyone who ruminates on IEEE 754 long enough
 probably starts thinking about trying to stuff something useful into all those
 unused NaN bits.
+也许发明者已经消失在时间的迷雾中，也许它已经被重新发明了很多次。任何人对IEEE 754进行了足够长时间的思考，都可能会开始考虑在那些未使用的NaN中加入一些有用的信息。
 
 </aside>
 
@@ -559,6 +578,7 @@ double-precision, IEEE floating-point number looks like this:
 <aside name="hyphen">
 
 That's a lot of hyphens for one sentence.
+一句话用了这么多的连字符。
 
 </aside>
 
@@ -567,12 +587,15 @@ That's a lot of hyphens for one sentence.
 *   Starting from the right, the first 52 bits are the **fraction**,
     **mantissa**, or **significand** bits. They represent the significant digits
     of the number, as a binary integer.
-
 *   Next to that are 11 **exponent** bits. These tell you how far the mantissa
     is shifted away from the decimal (well, binary) point.
-
 *   The highest bit is the <span name="sign">**sign bit**</span>, which
     indicates whether the number is positive or negative.
+
+
+*   从右边开始，前52位是**分数**、**尾数**或**有效位**。它们以二进制整数形式表示数值的有效数字。
+*   接下来是11个**指数**位。它们会告诉你尾数中的小数点要移动多少位。
+*   最高的位是**符号**位，表示这个数值是正数还是负数。
 
 I know that's a little vague, but this chapter isn't a deep dive on
 floating point representation. If you want to know how the exponent and mantissa
@@ -585,6 +608,7 @@ write.
 Since the sign bit is always present, even if the number is zero, that implies
 that "positive zero" and "negative zero" have different bit representations, and
 indeed, IEEE 754 does distinguish those.
+因为符号位一直存在，即使数字是零，这意味着“正零”和“负零”有不同的位表示形式，事实上，IEEE 754确实区分了它们。
 
 </aside>
 
@@ -609,6 +633,7 @@ try to read one.
 
 I don't know if any CPUs actually *do* trap signalling NaNs and abort. The spec
 just says they *could*.
+我不知道是否有CPU真正做到了捕获信号NaN并中止，规范中只是说它们 *可以*。
 
 </aside>
 
@@ -643,6 +668,7 @@ either unspecified or always zero.
 
 48 bits is enough to address 262,144 gigabytes of memory. Modern operating
 systems also give each process its own address space, so that should be plenty.
+48比特位足以对262,114GB的内存进行寻找。现代操作系统也为每个进程提供了自己的地址空间，所以这应该足够了。
 
 </aside>
 
@@ -746,16 +772,19 @@ Spec authors don't like type punning because it makes optimization harder. A key
 optimization technique is reordering instructions to fill the CPU's execution
 pipelines. A compiler can reorder code only when doing so doesn't have a
 user-visible effect, obviously.
+规范的作者不喜欢类型双关，因为它使得优化变得更加困难。一个关键的优化技术是对指令进行重新排序，以填充CPU的执行管道。显然，编译器只有在重排序不会产生用户可见的影响时才可以这样做。
 
 Pointers make that harder. If two pointers point to the same value, then a write
 through one and a read through the other cannot be reordered. But what about two
 pointers of *different* types? If those could point to the same object, then
 basically *any* two pointers could be aliases to the same value. That
 drastically limits the amount of code the compiler is free to rearrange.
+指针使得这一点更加困难。如果两个指针指向同一个值，那么通过一个指针进行的写操作和通过另一个指针进行的读操作就不能被重新排序。但是，如果是两个 *不同* 类型的指针呢？如果这些指针可以指向同一个对象，那么基本上 *任意* 两个指针都可以成为同一个值的别名。这极大地限制了编译器可以自由地重新排列的代码量。
 
 To avoid that, compilers want to assume **strict aliasing** -- pointers of
 incompatible types cannot point to the same value. Type punning, by nature,
 breaks that assumption.
+为了避免这种情况，编译器希望采用 **严格别名** ——不兼容类型的指针不能指向相同的值。类型双关，从本质上来说，打破了这种假设。
 
 </aside>
 
@@ -801,6 +830,7 @@ we're calling so we also need an <span name="union">include</span>.
 
 If you find yourself with a compiler that does not optimize the `memcpy()` away,
 try this instead:
+如果你发现自己的编译器没有对`memcpy()`进行优化，可以试试这个：
 
 ```c
 double valueToNum(Value value) {
@@ -845,6 +875,7 @@ Pretty certain, but not strictly guaranteed. As far as I know, there is nothing
 preventing a CPU from producing a NaN value as the result of some operation
 whose bit representation collides with ones we have claimed. But in my tests
 across a number of architectures, I haven't seen it happen.
+非常肯定，但不是严格保证。据我所知，没有什么可以阻止CPU产生一个NaN值，作为某些操作的结果，而且这些操作的位表示形式会与我们声明的位表示形式相冲突。但在我跨多个架构的测试中，还没有看到这种情况发生。
 
 </aside>
 
@@ -952,10 +983,13 @@ states the value can be in:
 相反，我们在值上按位或1，来合并仅有的两个有效的Boolean比特位模式。这样，值就剩下了三种可能的状态：
 
 1. It was `FALSE_VAL` and has now been converted to `TRUE_VAL`.
-
 2. It was `TRUE_VAL` and the `| 1` did nothing and it's still `TRUE_VAL`.
-
 3. It's some other, non-Boolean value.
+
+
+1. 之前是`FALSE_VAL`，现在转换为`TRUE_VAL`。
+2. 之前是`TRUE_VAL`，`| 1`没有起任何作用，结果仍然是`TRUE_VAL`。
+3. 它是其它的非布尔值。
 
 At that point, we can simply compare the result to `TRUE_VAL` to see if we're
 in the first two states or the third.
@@ -987,8 +1021,10 @@ value is an Obj pointer. That's because Obj pointers are always aligned to an
 the three lowest bits of an Obj pointer will always be zero. We could store
 whatever we wanted in there and just mask it off before dereferencing the
 pointer.
+实际上，即使该值是一个Obj指针，我们也*可以*使用最低位来存储类型标签。这是因为Obj指针总是被对齐到8字节边界，因为Obj包含一个64位的字段。这反过来意味着Obj指针的最低三位始终是0。我们可以在其中存储任何我们想要的东西，只是在解引用指针之前要将这些屏蔽掉。
 
 This is another value representation optimization called **pointer tagging**.
+这是另一种被称为**指针标记**的值表示形式优化方案。
 
 </aside>
 
@@ -1018,9 +1054,11 @@ I try to follow the letter of the law when it comes to the code in this book, so
 this paragraph is dubious. There comes a point when optimizing where you push
 the boundary of not just what the *spec says* you can do, but what a real
 compiler and chip let you get away with.
+在涉及到本书中的代码时，我都试图遵循法律条文，所以这一段是值得怀疑的。在优化的时候，你会遇到一个问题，那就是你不仅要突破*规范所规定*的边界，还有突破真正的编译器和芯片所允许的边界。
 
 There are risks when stepping outside of the spec, but there are rewards in that
 lawless territory too. It's up to you to decide if the gains are worth it.
+超出规范之外是有风险的，但在这个无法无天的领域也会有回报。这样做是否值得，取决于你自己。
 
 </aside>
 
@@ -1129,6 +1167,7 @@ decide how pedantic you want to be.
 In fact, jlox gets NaN equality wrong. Java does the right thing when you
 compare primitive doubles using `==`, but not if you box those to Double or
 Object and compare them using `equals()`, which is how jlox implements equality.
+事实上，jlox把NaN相等性搞错了。当你使用`==`来比较基本类型double时，Java做的是正确的，但如果你把这些值包装在Double或Object中，并使用`equals()`来比较它们时，就是错的，而这正是jlox中使用相等性的方式。
 
 </aside>
 
@@ -1165,9 +1204,11 @@ end users experience. Compiler optimizations, like inlining, can dramatically
 affect which parts of the code are performance hotspots. Hand-optimizing a debug
 build risks sending you off "fixing" problems that the optimizing compiler will
 already solve for you.
+在做剖析工作时，你基本总是想剖析程序的优化后的“发布”构建版本，因为这反映了最终用户体验的性能情况。编译器的优化（如内联）会极大地影响代码中哪些部分是性能热点。手工优化一个调试构建版本，可能会让你去“修复”那些优化编译器本来就会为你解决的问题。
 
 Make sure you don't accidentally benchmark and optimize your debug build. I seem
 to make that mistake at least once a year.
+请确保你不会意外地对调试构建版本进行基准测试和优化。我似乎每年都至少要犯一次这样的错误。
 
 </aside>
 
@@ -1248,6 +1289,7 @@ This goes for other domains too. I don't think there's a single topic I've
 learned in programming -- or even outside of programming -- that I haven't ended
 up finding useful in other areas. One of my favorite aspects of software
 engineering is how much it rewards those with eclectic interests.
+这也适用于其它领域。我认为我在编程中所学到的任何一个主题——甚至在编程之外——最终都发现在其它领域中是有用的。我最喜欢软件工程的一个方面正是它对那些兴趣广泛的人的助益。
 
 </aside>
 
@@ -1274,6 +1316,7 @@ are some suggestions for which branches in the tunnel to explore:
 
     I like Cooper and Torczon's *Engineering a Compiler* for this. Appel's
     *Modern Compiler Implementation* books are also well regarded.
+    在这方面，我喜欢Cooper和Torczon的《*编译器工程，Engineering a Compiler*》。Appel的《*现代编译器实现，Modern Compiler Implementation*》一书也广受好评。
 
     </aside>
 
@@ -1299,10 +1342,12 @@ are some suggestions for which branches in the tunnel to explore:
     implementations of jlox and clox use the very permissive [MIT license][].
     You are more than welcome to [take either of those interpreters][source] and
     do whatever you want with them. Go to town.
+    本书的文本版权归我所有，但jlox和clox的代码和实现采用了非常宽松的[MIT许可][MIT license]。我非常欢迎你使用[这些解释器][source]中的任何一个，对它们做任何你想做的事。去吧。
 
     If you make significant changes to the language, it would be good to also
     change the name, mostly to avoid confusing people about what the name "Lox"
     represents.
+    如果你对语言做了重大改动，最好也能改一下名字，主要是为了避免人们对“Lox”这个名字的含义感到困惑。
 
     </aside>
 
