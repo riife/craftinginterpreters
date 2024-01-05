@@ -4,7 +4,7 @@
 > 正如那人所说，每一个复杂的问题都有一个简单的解决方案，而且是错误的。
 >
 > <cite>Umberto Eco, <em>Foucault's Pendulum</em></cite>
-> <cite>翁贝托·艾柯, <em>傅科摆</em></cite>
+> <cite>翁贝托 · 艾柯, <em>傅科摆</em></cite>
 
 Thanks to our diligent labor in [the last chapter][last], we have a virtual
 machine with working functions. What it lacks is closures. Aside from global

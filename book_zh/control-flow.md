@@ -73,7 +73,7 @@ answer to the last question -- a definition of what kinds of functions are <span
 name="uncomputable">computable</span>. They each crafted a tiny system with a
 minimum set of machinery that is still powerful enough to compute any of a
 (very) large class of functions.
-我想指出的是，在证明前两个问题的答案是 "否" 的过程中，艾伦·图灵和阿隆佐·邱奇为最后一个问题设计了一个精确的答案，即定义了什么样的函数是可计算的。他们各自设计了一个具有最小机械集的微型系统，该系统仍然强大到足以计算一个超大类函数中的任何一个。
+我想指出的是，在证明前两个问题的答案是 "否" 的过程中，艾伦 · 图灵和阿隆佐 · 邱奇为最后一个问题设计了一个精确的答案，即定义了什么样的函数是可计算的。他们各自设计了一个具有最小机械集的微型系统，该系统仍然强大到足以计算一个超大类函数中的任何一个。
 
 <aside name="uncomputable">
 
@@ -106,7 +106,7 @@ Turing machines have better name recognition -- there's no Hollywood film about
 Alonzo Church yet -- but the two formalisms are [equivalent in power][thesis].
 In fact, any programming language with some minimal level of expressiveness is
 powerful enough to compute *any* computable function.
-图灵机的知名度更高 -- 目前还没有关于阿隆佐·邱奇的好莱坞电影，但这两种形式[在能力上是等价的][thesis]。事实上，任何具有最低表达能力的编程语言都足以计算 *任何* 可计算函数。
+图灵机的知名度更高 -- 目前还没有关于阿隆佐 · 邱奇的好莱坞电影，但这两种形式[在能力上是等价的][thesis]。事实上，任何具有最低表达能力的编程语言都足以计算 *任何* 可计算函数。
 
 [thesis]: https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis
 

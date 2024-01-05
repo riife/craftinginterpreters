@@ -3,7 +3,7 @@
 > 哈希，x。这个词没有定义，没人知道哈希是什么。
 >
 > <cite>Ambrose Bierce, <em>The Unabridged Devil's Dictionary</em></cite>
-> <cite>安布罗斯·比尔斯, <em>无删减魔鬼词典</em></cite>
+> <cite>安布罗斯 · 比尔斯, <em>无删减魔鬼词典</em></cite>
 
 Before we can add variables to our burgeoning virtual machine, we need some way
 to look up a value given a variable's name. Later, when we add classes, we'll

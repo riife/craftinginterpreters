@@ -9,7 +9,7 @@
 > 空虚的无物也会有了住处和名字<br />
 >
 > <cite>William Shakespeare, <em>A Midsummer Night's Dream</em></cite>
-> <cite>威廉·莎士比亚, <em>仲夏夜之梦</em></cite>
+> <cite>威廉 · 莎士比亚, <em>仲夏夜之梦</em></cite>
 
 The [last chapter][] introduced variables to clox, but only of the <span
 name="global">global</span> variety. In this chapter, we'll extend that to

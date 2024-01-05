@@ -24,7 +24,7 @@ name="inherited">first</span> one, [Simula][]. Early on, Kristen Nygaard and
 Ole-Johan Dahl noticed commonalities across classes in the simulation programs
 they wrote. Inheritance gave them a way to reuse the code for those similar
 parts.
-继承出现在面向对象语言中，可以追溯到第一种语言Simula。早些时候，克里斯汀·尼加德(Kristen Nygaard)和奥勒-约翰·达尔(Ole-Johan Dahl)注意到，在他们编写的模拟程序中，不同类之间存在共性。继承为他们提供了一种重用相似部分代码的方法。
+继承出现在面向对象语言中，可以追溯到第一种语言Simula。早些时候，克里斯汀 · 尼加德(Kristen Nygaard)和奥勒-约翰 · 达尔(Ole-Johan Dahl)注意到，在他们编写的模拟程序中，不同类之间存在共性。继承为他们提供了一种重用相似部分代码的方法。
 
 [simula]: https://en.wikipedia.org/wiki/Simula
 

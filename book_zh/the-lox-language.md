@@ -66,7 +66,7 @@ grammar problems are around types. Dennis Ritchie had this idea called
 "[declaration reflects use][use]", where variable declarations mirror the
 operations you would have to perform on the variable to get to a value of the
 base type. Clever idea, but I don't think it worked out great in practice.
-我肯定有偏见，但我认为Lox的语法很干净。 C语言最严重的语法问题就是关于类型的。丹尼斯·里奇（Dennis Ritchie）有个想法叫“声明反映[使用][use]”，其中变量声明反映了为获得基本类型的值而必须对变量执行的操作。这主意不错，但是我认为实践中效果不太好。Lox没有静态类型，所以我们避免了这一点。
+我肯定有偏见，但我认为Lox的语法很干净。 C语言最严重的语法问题就是关于类型的。丹尼斯 · 里奇（Dennis Ritchie）有个想法叫“声明反映[使用][use]”，其中变量声明反映了为获得基本类型的值而必须对变量执行的操作。这主意不错，但是我认为实践中效果不太好。Lox没有静态类型，所以我们避免了这一点。
 
 [use]: http://softwareengineering.stackexchange.com/questions/117024/why-was-the-c-syntax-for-arrays-pointers-and-functions-designed-this-way
 
