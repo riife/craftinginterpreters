@@ -1,9 +1,11 @@
 > When you are a Bear of Very Little Brain, and you Think of Things, you find
 > sometimes that a Thing which seemed very Thingish inside you is quite
 > different when it gets out into the open and has other people looking at it.
+>
 > 你要是一只脑子很小的熊，当你想事情的时候，你会发现，有时在你心里看起来很像回事的事情，当它展示出来，让别人看着它的时候，就完全不同了。
 >
 > <cite>A. A. Milne, <em>Winnie-the-Pooh</em></cite>
+> <cite>A. A. 米尔恩, <em>小熊维尼</em></cite>
 
 The past few chapters were huge, packed full of complex techniques and pages of
 code. In this chapter, there's only one new concept to learn and a scattering of

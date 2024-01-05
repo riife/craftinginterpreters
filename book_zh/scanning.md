@@ -1,5 +1,7 @@
 > Take big bites. Anything worth doing is worth overdoing.
+> 
 > 全力以赴。任何值得做的事都值得竭尽全力。
+> 
 > <cite>Robert A. Heinlein, <em>Time Enough for Love</em></cite>
 
 The first step in any compiler or interpreter is <span

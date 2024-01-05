@@ -2,9 +2,11 @@
 > knowledge of its nature. Great love springs from great knowledge of the
 > beloved object, and if you know it but little you will be able to love it only
 > a little or not at all.
+>
 > 如果一个人没有完全了解任何事物的本质，他就没有权利去爱或恨它。伟大的爱来自于对所爱之物的深刻了解，如果你对它知之甚少，你就只能爱一点点，或者根本不爱它。
 >
 > <cite>Leonardo da Vinci</cite>
+> <cite>列奥纳多·达·芬奇</cite>
 
 We're eleven chapters in, and the interpreter sitting on your machine is nearly
 a complete scripting language. It could use a couple of built-in data structures

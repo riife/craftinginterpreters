@@ -1,11 +1,9 @@
 > I wanna, I wanna,<br />
 > I wanna, I wanna,<br />
 > I wanna be trash.<br />
-> 我想，我想,<br />
-> 我想，我想,<br />
-> 我想成为垃圾.<br />
 >
 > <cite>The Whip, &ldquo;Trash&rdquo;</cite>
+> <cite>The Whip乐队的歌曲, &ldquo;Trash&rdquo;</cite>
 
 We say Lox is a "high-level" language because it frees programmers from worrying
 about details irrelevant to the problem they're solving. The user becomes an

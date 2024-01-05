@@ -2,9 +2,11 @@
 > some attention to practical things; it will improve your theories. If you find
 > that you're spending almost all your time on practice, start turning some
 > attention to theoretical things; it will improve your practice.
+>
 > 如果你发现你几乎把所有的时间都花在了理论上，那就开始把一些注意力转向实际的东西；这会提高你的理论水平。如果你发现你几乎把所有的时间都花在了实践上，那就开始把一些注意力转向理论上的东西；这将改善你的实践。
 >
 > <cite>Donald Knuth</cite>
+> <cite>高德纳</cite>
 
 We already have ourselves a complete implementation of Lox with jlox, so why
 isn't the book over yet? Part of this is because jlox relies on the <span

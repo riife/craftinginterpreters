@@ -98,8 +98,8 @@
 <p>And that is also the way the human mind works<span class="em">&mdash;</span>by the compounding of old
 ideas into new structures that become new ideas that can themselves be used in
 compounds, and round and round endlessly, growing ever more remote from the
-basic earthbound imagery that is each language&rsquo;s soil.
-这也是人类思维的运作方式<span class="em">&mdash;</span>将旧的想法复合成为新结构，成为新的想法，而这些想法本身又可以被用于复合，循环往复，无休无止，越来越远离每一种语言赖以生存的基本的土壤。</p>
+basic earthbound imagery that is each language&rsquo;s soil.</p>
+<p>这也是人类思维的运作方式——将旧的想法复合成为新结构，成为新的想法，而这些想法本身又可以被用于复合，循环往复，无休无止，越来越远离每一种语言赖以生存的基本的土壤。</p>
 <p><cite>Douglas R. Hofstadter, <em>I Am a Strange Loop</em></cite></p>
 </blockquote>
 <p>This chapter marks the culmination of a lot of hard work. The previous chapters
@@ -108,7 +108,7 @@ add useful functionality in their own right, but each also supplies a piece of a
 statements, variables, control flow, and lexical scope<span class="em">&mdash;</span>add a couple more, and
 assemble them all into support for real user-defined functions and function
 calls.
-这一章标志着很多艰苦工作的一个高潮。在前面的章节中，各自添加了一些有用的功能，但是每一章也都提供了一个拼图的碎片。我们整理这些碎片<span class="em">&mdash;</span>表达式、语句、变量、控制流和词法作用域，再加上其它功能，并把他们组合起来，以支持真正的用户定义函数和函数调用。</p>
+这一章标志着很多艰苦工作的一个高潮。在前面的章节中，各自添加了一些有用的功能，但是每一章也都提供了一个拼图的碎片。我们整理这些碎片——表达式、语句、变量、控制流和词法作用域，再加上其它功能，并把他们组合起来，以支持真正的用户定义函数和函数调用。</p>
 <aside name="lambda"><img src="image/functions/lambda.png" alt="A lambda puzzle." />
 </aside>
 <h2><a href="#函数调用" id="函数调用"><small>10&#8202;.&#8202;1</small>函数调用</a></h2>
@@ -233,7 +233,7 @@ First, we parse a primary expression, the &ldquo;left operand&rdquo; to the call
 time we see a <code>(</code>, we call <code>finishCall()</code> to parse the call expression using the
 previously parsed expression as the callee. The returned expression becomes the
 new <code>expr</code> and we loop to see if the result is itself called.
-这里的代码与语法规则并非完全一致。为了保持代码简洁，我调整了一些东西<span class="em">&mdash;</span>这是我们手写解析器的优点之一。但它与我们解析中缀运算符的方式类似。首先，我们解析一个基本表达式，即调用的左操作数。然后，每次看到<code>(</code>，我们就调用<code>finishCall()</code>解析调用表达式，并使用之前解析出的表达式作为被调用者。返回的表达式成为新的<code>expr</code>，我们循环检查其结果是否被调用。</p>
+这里的代码与语法规则并非完全一致。为了保持代码简洁，我调整了一些东西——这是我们手写解析器的优点之一。但它与我们解析中缀运算符的方式类似。首先，我们解析一个基本表达式，即调用的左操作数。然后，每次看到<code>(</code>，我们就调用<code>finishCall()</code>解析调用表达式，并使用之前解析出的表达式作为被调用者。返回的表达式成为新的<code>expr</code>，我们循环检查其结果是否被调用。</p>
 <aside name="while-true">
 <p>This code would be simpler as <code>while (match(LEFT_PAREN))</code> instead of the silly
 <code>while (true)</code> and <code>break</code>. Don&rsquo;t worry, it will make sense when we expand the
@@ -477,7 +477,7 @@ but often overlooked facet of language implementations<span class="em">&mdash;</
 name="native"><strong>native functions</strong></span>. These are functions that the
 interpreter exposes to user code but that are implemented in the host language
 (in our case Java), not the language being implemented (Lox).
-理论上我们可以调用函数了，但是我们还没有可供调用的函数。在我们实现用户自定义函数之前，现在正好可以介绍语言实现中一个重要但经常被忽视的方面<span class="em">&mdash;</span><strong>原生函数（本地函数）</strong>。这些函数是解释器向用户代码公开的，但它们是用宿主语言(在我们的例子中是Java)实现的，而不是正在实现的语言(Lox)。</p>
+理论上我们可以调用函数了，但是我们还没有可供调用的函数。在我们实现用户自定义函数之前，现在正好可以介绍语言实现中一个重要但经常被忽视的方面——<strong>原生函数（本地函数）</strong>。这些函数是解释器向用户代码公开的，但它们是用宿主语言(在我们的例子中是Java)实现的，而不是正在实现的语言(Lox)。</p>
 <p>Sometimes these are called <strong>primitives</strong>, <strong>external functions</strong>, or <strong>foreign
 functions</strong>. Since these functions can be called while the user&rsquo;s program is
 running, they form part of the implementation&rsquo;s runtime. A lot of programming
@@ -538,12 +538,12 @@ benchmark, and exit, but that adds a lot of overhead<span class="em">&mdash;</sp
 shenanigans, etc. That stuff does matter, of course, but if you&rsquo;re just trying
 to validate an optimization to some piece of the interpreter, you don&rsquo;t want
 that overhead obscuring your results.
-我们可以测量启动解释器、运行基准测试代码并退出所消耗的时间，但是这其中包括很多时间开销<span class="em">&mdash;</span>JVM启动时间，操作系统欺诈等等。当然，这些东西确实很重要，但如果您只是试图验证对解释器某个部分的优化，你肯定不希望这些多余的时间开销掩盖你的结果。</p>
+我们可以测量启动解释器、运行基准测试代码并退出所消耗的时间，但是这其中包括很多时间开销——JVM启动时间，操作系统欺诈等等。当然，这些东西确实很重要，但如果您只是试图验证对解释器某个部分的优化，你肯定不希望这些多余的时间开销掩盖你的结果。</p>
 <p>A nicer solution is to have the benchmark script itself measure the time elapsed
 between two points in the code. To do that, a Lox program needs to be able to
 tell time. There&rsquo;s no way to do that now<span class="em">&mdash;</span>you can&rsquo;t implement a useful clock
 &ldquo;from scratch&rdquo; without access to the underlying clock on the computer.
-一个更好的解决方案是让基准脚本本身度量代码中两个点之间的时间间隔。要做到这一点，Lox程序需要能够报时。现在没有办法做到这一点<span class="em">&mdash;</span>如果不访问计算机上的底层时钟，就无法从头实现一个可用的时钟。</p>
+一个更好的解决方案是让基准脚本本身度量代码中两个点之间的时间间隔。要做到这一点，Lox程序需要能够报时。现在没有办法做到这一点——如果不访问计算机上的底层时钟，就无法从头实现一个可用的时钟。</p>
 <p>So we&rsquo;ll add <code>clock()</code>, a native function that returns the number of seconds
 that have passed since some fixed point in time. The difference between two
 successive invocations tells you how much time elapsed between the two calls.
@@ -616,7 +616,7 @@ Richard P. Gabriel 和 Kent Pitman 创造了 &ldquo;Lisp-1&rdquo; 这个术语�
 <p>If we wanted to add other native functions<span class="em">&mdash;</span>reading input from the user,
 working with files, etc.<span class="em">&mdash;</span>we could add them each as their own anonymous class
 that implements LoxCallable. But for the book, this one is really all we need.
-如果我们想要添加其它本地函数<span class="em">&mdash;</span>读取用户输入，处理文件等等<span class="em">&mdash;</span>我们可以依次为它们提供实现LoxCallable接口的匿名类。但是在本书中，这个函数足以满足需要。</p>
+如果我们想要添加其它本地函数——读取用户输入，处理文件等等——我们可以依次为它们提供实现LoxCallable接口的匿名类。但是在本书中，这个函数足以满足需要。</p>
 <p>Let&rsquo;s get ourselves out of the function-defining business and let our users
 take over<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
 让我们从函数定义的事务中解脱出来，由用户来接管吧。</p>
@@ -824,7 +824,7 @@ of a language implementation. Functions are deeply tied to that.</p>
 <em>encapsulates</em> its parameters<span class="em">&mdash;</span>no other code outside of the function can see
 them. This means each function gets its own environment where it stores those
 variables.
-参数是函数的核心，尤其是考虑到函数<em>封装</em>了其参数<span class="em">&mdash;</span>函数之外的代码看不到这些参数。这意味着每个函数都会维护自己的环境，其中存储着那些变量。</p>
+参数是函数的核心，尤其是考虑到函数<em>封装</em>了其参数——函数之外的代码看不到这些参数。这意味着每个函数都会维护自己的环境，其中存储着那些变量。</p>
 <p>Further, this environment must be created dynamically. Each function <em>call</em> gets
 its own environment. Otherwise, recursion would break. If there are multiple
 calls to the same function in play at the same time, each needs its <em>own</em>
@@ -935,7 +935,7 @@ add after <em>visitExpressionStmt</em>()</div>
 function <em>syntax node</em><span class="em">&mdash;</span>a compile-time representation of the function<span class="em">&mdash;</span>and
 convert it to its runtime representation. Here, that&rsquo;s a LoxFunction that wraps
 the syntax node.
-这类似于我们介绍其它文本表达式的方式。我们会接收一个函数<em>语法</em>节点<span class="em">&mdash;</span>函数的编译时表示形式<span class="em">&mdash;</span>然后将其转换为运行时表示形式。在这里就是一个封装了语法节点的LoxFunction实例。</p>
+这类似于我们介绍其它文本表达式的方式。我们会接收一个函数<em>语法</em>节点——函数的编译时表示形式——然后将其转换为运行时表示形式。在这里就是一个封装了语法节点的LoxFunction实例。</p>
 <p>Function declarations are different from other literal nodes in that the
 declaration <em>also</em> binds the resulting object to a new variable. So, after
 creating the LoxFunction, we create a new binding in the current environment and
@@ -1159,7 +1159,7 @@ it implicitly returns <code>nil</code>.
 我们将对<code>executeBlock()</code>的调用封装在一个try-catch块中。当捕获一个返回异常时，它会取出其中的值并将其作为<code>call()</code>方法的返回值。如果没有捕获任何异常，意味着函数到达了函数体的末尾，而且没有遇到<code>return</code>语句。在这种情况下，隐式地返回<code>nil</code>。</p>
 <p>Let&rsquo;s try it out. We finally have enough power to support this classic
 example<span class="em">&mdash;</span>a recursive function to calculate Fibonacci numbers:
-我们来试一下。我们终于有能力支持这个经典的例子<span class="em">&mdash;</span>递归函数计算Fibonacci数：</p>
+我们来试一下。我们终于有能力支持这个经典的例子——递归函数计算Fibonacci数：</p>
 <p><span name="slow"></span></p>
 <div class="codehilite"><pre><span class="k">fun</span> <span class="i">fib</span>(<span class="i">n</span>) {
   <span class="k">if</span> (<span class="i">n</span> &lt;= <span class="n">1</span>) <span class="k">return</span> <span class="i">n</span>;
@@ -1197,7 +1197,7 @@ if an identifier isn&rsquo;t defined inside the function body itself, the interp
 can look outside the function in the global scope to find it. In the Fibonacci
 example, that&rsquo;s how the interpreter is able to look up the recursive call to
 <code>fib</code> inside the function&rsquo;s own body<span class="em">&mdash;</span><code>fib</code> is a global variable.
-目前，它始终是<code>globals</code>，即顶级的全局环境。这样，如果一个标识符不是在函数体内部定义的，解释器可以在函数外部的全局作用域中查找它。在Fibonacci的例子中，这就是解释器如何能够在函数体中实现对<code>fib</code>的递归调用<span class="em">&mdash;</span><code>fib</code>是一个全局变量。</p>
+目前，它始终是<code>globals</code>，即顶级的全局环境。这样，如果一个标识符不是在函数体内部定义的，解释器可以在函数外部的全局作用域中查找它。在Fibonacci的例子中，这就是解释器如何能够在函数体中实现对<code>fib</code>的递归调用——<code>fib</code>是一个全局变量。</p>
 <p>But recall that in Lox, function declarations are allowed <em>anywhere</em> a name can
 be bound. That includes the top level of a Lox script, but also the inside of
 blocks or other functions. Lox supports <strong>local functions</strong> that are defined

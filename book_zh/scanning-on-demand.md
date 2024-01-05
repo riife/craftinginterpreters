@@ -5,6 +5,7 @@
 > 文学就是26个字母、10个阿拉伯数字和大概8个标点符号的水平排列。
 >
 > <cite>Kurt Vonnegut, <em>Like Shaking Hands With God: A Conversation about Writing</em></cite>
+> <cite>冯尼古特, <em>像与上帝握手：关于写作的谈话</em></cite>
 
 Our second interpreter, clox, has three phases -- scanner, compiler, and virtual
 machine. A data structure joins each pair of phases. Tokens flow from scanner to

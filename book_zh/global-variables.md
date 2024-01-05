@@ -2,9 +2,11 @@
 > it never faded, and it never got stale. And then, when one wanted it, the
 > bottle could be uncorked, and it would be like living the moment all over
 > again.
+>
 > 如果有一种发明能把一段记忆装进瓶子里就好了，像香味一样。它永远不会褪色，也不会变质。然后，当一个人想要的时候，可以打开瓶塞，就像重新活在那个时刻一样。
 >
 > <cite>Daphne du Maurier, <em>Rebecca</em></cite>
+> <cite>达芙妮-杜穆里埃, <em>蝴蝶梦</em></cite>
 
 The [previous chapter][hash] was a long exploration of one big, deep,
 fundamental computer science data structure. Heavy on theory and concept. There

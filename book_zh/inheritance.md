@@ -5,6 +5,7 @@
 > as salty as the sea we used to live in! When we're frightened, the hair on our
 > skin stands up, just like it did when we had fur. We are history! Everything
 > we've ever been on the way to becoming us, we still are.
+>
 > 我们曾经是海里一团一团的东西，然后是鱼，然后是蜥蜴、老鼠、猴子，以及介于其间的数百种形态。这只手曾经是鳍，这只手曾经是爪子！在我人类的嘴里，有狼的尖牙，有兔子的凿齿，还有牛的磨牙！我们的血和我们曾经生活的大海一样咸！当我们受到惊吓时，我们皮肤上的毛发会竖起来，就像我们有毛时一样。我们就是历史！我们在成为我们的路上曾拥有的一切，我们仍然拥有。
 >
 > <cite>Terry Pratchett, <em>A Hat Full of Sky</em></cite>

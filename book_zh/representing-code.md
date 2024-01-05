@@ -1,6 +1,8 @@
 > To dwellers in a wood, almost every species of tree has its voice as well as
 > its feature.
+> 
 > 对于森林中的居民来说，几乎每一种树都有它的声音和特点。
+> 
 > <cite>Thomas Hardy, <em>Under the Greenwood Tree</em></cite>
 
 In the [last chapter][scanning], we took the raw source code as a string and

@@ -1,7 +1,9 @@
 > When you are on the dancefloor, there is nothing to do but dance.
+>
 > 当你在舞池里时，除了跳舞，别无选择。
 >
 > <cite>Umberto Eco, <em>The Mysterious Flame of Queen Loana</em></cite>
+> <cite>翁贝托·艾柯, <em>洛安娜女王的神秘火焰</em></cite>
 
 It is time for our virtual machine to bring its nascent objects to life with
 behavior. That means methods and method calls. And, since they are a special

@@ -1,6 +1,7 @@
 > Any problem in computer science can be solved with another level of
 > indirection. Except for the problem of too many layers of indirection.
-> 计算机科学中的任何问题都可以通过引入一个中间层来解决。除了中间层太多的问题。
+>
+> 计算机科学中的任何问题都可以通过引入一个中间层来解决。除了中间层太多这个问题。
 >
 > <cite>David Wheeler</cite>
 

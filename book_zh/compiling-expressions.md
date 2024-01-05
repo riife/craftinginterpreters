@@ -1,8 +1,10 @@
 > In the middle of the journey of our life I found myself within a dark woods
 > where the straight way was lost.
+>
 > 方吾生之半路，恍余处乎幽林，失正轨而迷误。
 >
 > <cite>Dante Alighieri, <em>Inferno</em></cite>
+> <cite>但丁, <em>地狱</em></cite>
 
 This chapter is exciting for not one, not two, but *three* reasons. First, it
 provides the final segment of our VM's execution pipeline. Once in place, we can

@@ -1,9 +1,11 @@
 > "Ah? A small aversion to menial labor?" The doctor cocked an eyebrow.
 > "Understandable, but misplaced. One should treasure those hum-drum
 > tasks that keep the body occupied but leave the mind and heart unfettered."
+>
 > “啊？对琐碎的劳动有点反感？”医生挑了挑眉毛，“可以理解，但这是错误的。一个人应该珍惜那些让身体忙碌，但让思想和心灵不受束缚的琐碎工作。”
 >
 > <cite>Tad Williams, <em>The Dragonbone Chair</em></cite>
+> <cite>泰德-威廉姆斯, <em>龙骨椅</em></cite>
 
 Our little VM can represent three types of values right now: numbers, Booleans,
 and `nil`. Those types have two important things in common: they're immutable

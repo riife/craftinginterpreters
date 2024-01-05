@@ -1,5 +1,6 @@
 > Logic, like whiskey, loses its beneficial effect when taken in too large
 > quantities.
+> 
 > 逻辑和威士忌一样，如果摄入太多，就会失去其有益的效果。
 > 
 > <cite>Edward John Moreton Drax Plunkett, Lord Dunsany</cite>

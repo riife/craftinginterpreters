@@ -1,9 +1,11 @@
 > Caring too much for objects can destroy you. Only -- if you care for a thing
 > enough, it takes on a life of its own, doesn't it? And isn’t the whole point
 > of things -- beautiful things -- that they connect you to some larger beauty?
+>
 > 对物品过于关心会毁了你。只是，如果你对一件事物足够关心，它就有了自己的生命，不是吗？而事物 -- 美丽的事物 -- 的全部意义不就是把你和一些更大的美联系起来吗？
 >
 > <cite>Donna Tartt, <em>The Goldfinch</em></cite>
+> <cite>唐娜 塔特, <em>金翅雀</em></cite>
 
 The last area left to implement in clox is object-oriented programming. <span
 name="oop">OOP</span> is a bundle of intertwined features: classes, instances,

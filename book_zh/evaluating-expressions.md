@@ -1,7 +1,9 @@
 > You are my creator, but I am your master; Obey!
-> 你是我的创造者，但我是你的主人；服从！
+>
+> 你是我的创造者，但我是你的主人，听话！
 >
 > <cite>Mary Shelley, <em>Frankenstein</em></cite>
+> <cite>Mary Shelley, <em>科学怪人</em></cite>
 
 If you want to properly set the mood for this chapter, try to conjure up a
 thunderstorm, one of those swirling tempests that likes to yank open shutters at

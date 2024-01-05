@@ -2,6 +2,7 @@
 > important, but because they are so small and trivial. The wonderful effects
 > created on stage are often the result of a secret so absurd that the magician
 > would be embarrassed to admit that that was how it was done.
+>
 > 魔术师们之所以保护他们的秘密，并不是因为秘密很大、很重要，而是它们是如此小而微不足道。在舞台上创造出的奇妙效果往往源自于一个荒谬的小秘密，以至于魔术师都不好意思承认这是如何完成的。
 >
 > <cite>Christopher Priest, <em>The Prestige</em></cite>

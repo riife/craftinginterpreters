@@ -9,7 +9,6 @@
 
 由于本人英语水平有限，大部分翻译内容取自 [craftinginterpreters_zh][] 或 ChatGPT 或者翻译网站，若发现有任何出错的地方，欢迎提交 PR 或者 [联系我][zhihu]。
 
-项目尚未开发完毕，正在持续更新中。
 
 [zh reading online]: https://zaslee.github.io/craftinginterpreters/
 [en reading online]: http://craftinginterpreters.com
