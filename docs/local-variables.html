@@ -410,8 +410,7 @@ and compiling variable declarations. We&rsquo;ve got <code>var</code> statements
 expressions and assignment in there now. It&rsquo;s just that the compiler assumes
 all variables are global. So we don&rsquo;t need any new parsing support, we just need
 to hook up the new scoping semantics to the existing code.
-通常我们会从解析开始，但是我们的编译器已经支持了解析和编译变量声明。我们现在已经有了<code>var</code>语句、标识符表达式和赋值语句。只是编译器假设所有的变量都是全局变量。所以，我们不需要任何新的解析支持，我们只需要将新的作用域语义与已有的代码连接起来。
-<img src="22.局部变量/declaration.png" alt="The code flow within varDeclaration()." /></p><img src="image/local-variables/declaration.png" alt="The code flow within varDeclaration()." />
+通常我们会从解析开始，但是我们的编译器已经支持了解析和编译变量声明。我们现在已经有了<code>var</code>语句、标识符表达式和赋值语句。只是编译器假设所有的变量都是全局变量。所以，我们不需要任何新的解析支持，我们只需要将新的作用域语义与已有的代码连接起来。</p><img src="image/local-variables/declaration.png" alt="The code flow within varDeclaration()." />
 <p>Variable declaration parsing begins in <code>varDeclaration()</code> and relies on a couple
 of other functions. First, <code>parseVariable()</code> consumes the identifier token for
 the variable name, adds its lexeme to the chunk&rsquo;s constant table as a string,
@@ -613,10 +612,6 @@ quickly for many non-equal strings. If the <span name="hash">lengths</span> are
 the same, we check the characters using <code>memcmp()</code>. To get to <code>memcmp()</code>, we
 need an include.
 既然我们知道两个词素的长度，那我们首先检查它。对于很多不相等的字符串，在这一步就很快失败了。如果长度相同，我们就使用<code>memcmp()</code>检查字符。为了使用<code>memcmp()</code>，我们需要引入一下。</p>
-<ul>
-<li></li>
-</ul>
-<p>有了这个，我们就能创造出变量。但是，它们会停留在声明它们的作用域之外，像幽灵一样。当一个代码块结束时，我们需要让其中的变量安息。</p>
 <aside name="hash">
 <p>It would be a nice little optimization if we could check their hashes, but
 tokens aren&rsquo;t full LoxStrings, so we haven&rsquo;t calculated their hashes yet.</p>
@@ -632,7 +627,8 @@ tokens aren&rsquo;t full LoxStrings, so we haven&rsquo;t calculated their hashes
 
 <p>With this, we&rsquo;re able to bring variables into being. But, like ghosts, they
 linger on beyond the scope where they are declared. When a block ends, we need
-to put them to rest.</p>
+to put them to rest.
+有了这个，我们就能创造出变量。但是，它们会停留在声明它们的作用域之外，像幽灵一样。当一个代码块结束时，我们需要让其中的变量安息。</p>
 <div class="codehilite"><pre class="insert-before">  current-&gt;scopeDepth--;
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>endScope</em>()</div>

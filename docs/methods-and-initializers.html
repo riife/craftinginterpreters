@@ -691,8 +691,7 @@ the stack with the bound method.
 </pre></div>
 <p>Here is what happens when the VM executes the <code>bindMethod()</code> call for the
 <code>brunch.eggs</code> expression:
-下面是虚拟机执行<code>brunch.eggs</code>表达式的<code>bindMethod()</code>调用时发生的情况：
-<img src="28.方法和初始化器/bind-method.png" alt="The stack changes caused by bindMethod()." /></p><img src="image/methods-and-initializers/bind-method.png" alt="The stack changes caused by bindMethod()." />
+下面是虚拟机执行<code>brunch.eggs</code>表达式的<code>bindMethod()</code>调用时发生的情况：</p><img src="image/methods-and-initializers/bind-method.png" alt="The stack changes caused by bindMethod()." />
 <p>That&rsquo;s a lot of machinery under the hood, but from the user&rsquo;s perspective, they
 simply get a function that they can call.
 在底层有很多机制，但从用户的角度来看，他们只是得到了一个可以调用的函数。</p>
@@ -1072,8 +1071,7 @@ for the initializer&rsquo;s closure. Say we run this program:
 <span class="t">Brunch</span>(<span class="s">&quot;eggs&quot;</span>, <span class="s">&quot;coffee&quot;</span>);
 </pre></div>
 <p>When the VM executes the call to <code>Brunch()</code>, it goes like this:
-当VM执行对<code>Brunch()</code>的调用时，情况是这样的：
-<img src="28.方法和初始化器/init-call-frame.png" alt="The aligned stack windows for the Brunch() call and the corresponding init() method it forwards to." /></p><img src="image/methods-and-initializers/init-call-frame.png" alt="The aligned stack windows for the Brunch() call and the corresponding init() method it forwards to." />
+当VM执行对<code>Brunch()</code>的调用时，情况是这样的：</p><img src="image/methods-and-initializers/init-call-frame.png" alt="The aligned stack windows for the Brunch() call and the corresponding init() method it forwards to." />
 <p>Any arguments passed to the class when we called it are still sitting on the
 stack above the instance. The new CallFrame for the <code>init()</code> method shares that
 stack window, so those arguments implicitly get forwarded to the initializer.

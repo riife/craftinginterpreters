@@ -173,8 +173,7 @@ chunk.
 <p>Otherwise, we send the completed chunk over to the VM to be executed. When the
 VM finishes, we free the chunk and we&rsquo;re done. As you can see, the signature to
 <code>compile()</code> is different now.
-否则，我们将完整的字节码块发送到虚拟机中去执行。当虚拟机完成后，我们会释放该字节码块，这样就完成了。如你所见，现在<code>compile()</code>的签名已经不同了。
-<u><em>compiler.h，替换一行代码：</em></u></p>
+否则，我们将完整的字节码块发送到虚拟机中去执行。当虚拟机完成后，我们会释放该字节码块，这样就完成了。如你所见，现在<code>compile()</code>的签名已经不同了。</p>
 <div class="codehilite"><pre class="insert-before">#define clox_compiler_h
 
 </pre><div class="source-file"><em>compiler.h</em><br>
@@ -453,11 +452,6 @@ occurred. The bytecode will never get executed, so it&rsquo;s harmless to keep o
 trucking. The trick is that while the panic mode flag is set, we simply suppress
 any other errors that get detected.
 之后，我们继续进行编译，就像错误从未发生过一样。字节码永远不会被执行，所以继续运行也是无害的。诀窍在于，虽然设置了紧急模式标志，但我们只是简单地屏蔽了检测到的其它错误。</p>
-<ul>
-<li></li>
-</ul>
-<p>There’s a good chance the parser will go off in the weeds, but the user won’t know because the errors all get swallowed. Panic mode ends when the parser reaches a synchronization point. For Lox, we chose statement boundaries, so when we later add those to our compiler, we’ll clear the flag there.
-解析器很有可能会崩溃，但是用户不会知道，因为错误都会被吞掉。当解析器到达一个同步点时，紧急模式就结束了。对于Lox，我们选择了语句作为边界，所以当我们稍后将语句添加到编译器时，将会清除该标志。</p>
 <div class="codehilite"><pre class="insert-before">static void errorAt(Token* token, const char* message) {
 </pre><div class="source-file"><em>compiler.c</em><br>
 in <em>errorAt</em>()</div>
@@ -469,7 +463,8 @@ in <em>errorAt</em>()</div>
 <p>There&rsquo;s a good chance the parser will go off in the weeds, but the user won&rsquo;t
 know because the errors all get swallowed. Panic mode ends when the parser
 reaches a synchronization point. For Lox, we chose statement boundaries, so when
-we later add those to our compiler, we&rsquo;ll clear the flag there.</p>
+we later add those to our compiler, we&rsquo;ll clear the flag there.
+解析器很有可能会崩溃，但是用户不会知道，因为错误都会被吞掉。当解析器到达一个同步点时，紧急模式就结束了。对于Lox，我们选择了语句作为边界，所以当我们稍后将语句添加到编译器时，将会清除该标志。</p>
 <p>These new fields need to be initialized.
 这些新字段需要被初始化。</p>
 <div class="codehilite"><pre class="insert-before">  initScanner(source);
@@ -637,6 +632,8 @@ even have Booleans. For this chapter, we&rsquo;re only going to worry about four
 <li>Parentheses for grouping: <code>(123)</code></li>
 <li>Unary negation: <code>-123</code></li>
 <li>The Four Horsemen of the Arithmetic: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code></li>
+</ul>
+<ul>
 <li>数值字面量：<code>123</code></li>
 <li>用于分组的括号：<code>(123)</code></li>
 <li>一元取负：<code>-123</code></li>
@@ -788,12 +785,12 @@ weird to write the negate instruction <em>after</em> its operand&rsquo;s bytecod
 <code>-</code> appears on the left, but think about it in terms of order of execution:
 就像在<code>grouping()</code>中一样，我们会递归地调用<code>expression()</code>来编译操作数。之后，我们发出字节码执行取负运算。因为<code>-</code>出现在左边，将取负指令放在其操作数的<em>后面</em>似乎有点奇怪，但是从执行顺序的角度来考虑：</p>
 <ol>
-<li>
-<p>We evaluate the operand first which leaves its value on the stack.</p>
-</li>
-<li>
-<p>Then we pop that value, negate it, and push the result.</p>
-</li>
+<li>We evaluate the operand first which leaves its value on the stack.</li>
+<li>Then we pop that value, negate it, and push the result.</li>
+</ol>
+<ol>
+<li>首先计算操作数，并将其值留在堆栈中。</li>
+<li>然后弹出该值，对其取负，并将结果压入栈中。</li>
 </ol>
 <p>So the <code>OP_NEGATE</code> instruction should be emitted <span name="line">last</span>.
 This is part of the compiler&rsquo;s job<span class="em">&mdash;</span>parsing the program in the order it
@@ -946,16 +943,19 @@ onto the operator token in the middle.
 <ol>
 <li>
 <p>We call <code>expression()</code>. That in turn calls
-<code>parsePrecedence(PREC_ASSIGNMENT)</code>.</p>
+<code>parsePrecedence(PREC_ASSIGNMENT)</code>.
+我们调用<code>expression()</code>，它会进一步调用<code>parsePrecedence(PREC_ASSIGNMENT)</code></p>
 </li>
 <li>
 <p>That function (once we implement it) sees the leading number token and
 recognizes it is parsing a number literal. It hands off control to
-<code>number()</code>.</p>
+<code>number()</code>.
+该函数（一旦实现后）会看到前面的数字标识，并意识到正在解析一个数值字面量。它将控制权交给<code>number()</code>。</p>
 </li>
 <li>
 <p><code>number()</code> creates a constant, emits an <code>OP_CONSTANT</code>, and returns back to
-<code>parsePrecedence()</code>.</p>
+<code>parsePrecedence()</code>.
+<code>number()</code>创建一个常数，发出一个<code>OP_CONSTANT</code>指令，然后返回到<code>parsePrecedence()</code></p>
 </li>
 </ol>
 <p>Now what? The call to <code>parsePrecedence()</code> should consume the entire addition
@@ -1062,15 +1062,18 @@ also know we need a table that, given a token type, lets us find
 <ul>
 <li>
 <p>the function to compile a prefix expression starting with a token of that
-type,</p>
+type,
+编译以该类型标识为起点的前缀表达式的函数</p>
 </li>
 <li>
 <p>the function to compile an infix expression whose left operand is followed
-by a token of that type, and</p>
+by a token of that type, and
+编译一个左操作数后跟该类型标识的中缀表达式的函数，以及</p>
 </li>
 <li>
 <p>the precedence of an <span name="prefix">infix</span> expression that uses
-that token as an operator.</p>
+that token as an operator.
+使用该标识作为操作符的中缀表达式的优先级</p>
 </li>
 </ul>
 <aside name="prefix">
@@ -1191,12 +1194,11 @@ a pretty confusing infix operator.
 add new expression types, some of these slots will get functions in them. One of
 the things I like about this approach to parsing is that it makes it very easy
 to see which tokens are in use by the grammar and which are available.
-但是，我们还没有填入整个语法。在后面的章节中，当我们添加新的表达式类型时，其中一些槽会插入函数。我喜欢这种解析方法的一点是，它使我们很容易看到哪些标识被语法使用，以及哪些标识是可用的。
-Now that we have the table, we are finally ready to write the code that uses it. This is where our Pratt parser comes to life. The easiest function to define is <code>getRule()</code>.
-我们现在有了这个表格，终于准备好编写使用它的代码了。这就是我们的Pratt解析器发挥作用的地方。最容易定义的函数是<code>getRule()</code>。</p>
+但是，我们还没有填入整个语法。在后面的章节中，当我们添加新的表达式类型时，其中一些槽会插入函数。我喜欢这种解析方法的一点是，它使我们很容易看到哪些标识被语法使用，以及哪些标识是可用的。</p>
 <p>Now that we have the table, we are finally ready to write the code that uses it.
 This is where our Pratt parser comes to life. The easiest function to define is
-<code>getRule()</code>.</p>
+<code>getRule()</code>.
+我们现在有了这个表格，终于准备好编写使用它的代码了。这就是我们的Pratt解析器发挥作用的地方。最容易定义的函数是<code>getRule()</code>。</p>
 <div class="codehilite"><div class="source-file"><em>compiler.c</em><br>
 add after <em>parsePrecedence</em>()</div>
 <pre><span class="k">static</span> <span class="t">ParseRule</span>* <span class="i">getRule</span>(<span class="t">TokenType</span> <span class="i">type</span>) {
@@ -1398,7 +1400,8 @@ but the foundation is in place.
 <li>
 <p>To really understand the parser, you need to see how execution threads
 through the interesting parsing functions<span class="em">&mdash;</span><code>parsePrecedence()</code> and the
-parser functions stored in the table. Take this (strange) expression:</p>
+parser functions stored in the table. Take this (strange) expression:
+要真正理解解析器，你需要查看执行线程如何通过有趣的解析函数——<code>parsePrecedence()</code>和表格中的解析器函数。以这个（奇怪的）表达式为例：</p>
 <div class="codehilite"><pre>(-<span class="n">1</span> + <span class="n">2</span>) * <span class="n">3</span> - -<span class="n">4</span>
 </pre></div>
 <p>Write a trace of how those functions are called. Show the order they are
@@ -1411,8 +1414,8 @@ pointers. That&rsquo;s because <code>-</code> is both a prefix operator (unary n
 an infix one (subtraction).
 <code>TOKEN_MINUS</code>的ParseRule行同时具有前缀和中缀函数指针。这是因为<code>-</code>既是前缀操作符（一元取负），也是一个中缀操作符（减法）。</p>
 <p>In the full Lox language, what other tokens can be used in both prefix and
-infix positions? What about in C or in another language of your choice?</p>
-<p>在完整的Lox语言中，还有哪些标识可以同时用于前缀和中缀位置？在C语言或你选择的其它语言中呢？</p>
+infix positions? What about in C or in another language of your choice?
+在完整的Lox语言中，还有哪些标识可以同时用于前缀和中缀位置？在C语言或你选择的其它语言中呢？</p>
 </li>
 <li>
 <p>You might be wondering about complex &ldquo;mixfix&rdquo; expressions that have more

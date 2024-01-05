@@ -729,7 +729,6 @@ the entire wavefront forward.
 
 Here's where we traverse a single object's references:
 下面是我们遍历某个对象的引用的地方：
-<u>*memory.c，在markValue()方法后添加代码：*</u>
 
 ^code blacken-object
 
@@ -1235,7 +1234,7 @@ But I aim to teach you not just the theory of programming languages but the
 sometimes painful reality. I am going to roll over a rotten log and show you the
 nasty bugs that live under it, and garbage collector bugs really are some of the
 grossest invertebrates out there.
-但是，我的目的不仅仅是教授编程语言的理论，还要教你有时令人痛苦的现实。我要掀开一根烂木头，向你展示生活在下面的讨厌的虫子，垃圾回收器虫真的是世界上最恶心的无脊椎动物之一【译者注：bug双关】。
+但是，我的目的不仅仅是教授编程语言的理论，还要教你有时令人痛苦的现实。我要掀开一根烂木头，向你展示生活在下面的讨厌的虫子，垃圾回收器虫(垃圾回收器bug)真的是世界上最恶心的无脊椎动物之一。
 
 The collector's job is to free dead objects and preserve live ones. Mistakes are
 easy to make in both directions. If the VM fails to free objects that aren't

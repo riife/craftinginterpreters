@@ -484,7 +484,6 @@ It's as if the function gets a "window" or "frame" within the larger stack where
 it can store its locals. The position of the **call frame** is determined at
 runtime, but within and relative to that region, we know where to find things.
 这就好像是函数在更大的堆栈中得到了一个“窗口”或“帧”，它可以在其中存储局部变量。**调用帧**的位置是在运行时确定的，但在该区域内部及其相对位置上，我们知道在哪里可以找到目标。
-![The stack at the two points when second() is called, with a window hovering over each one showing the pair of stack slots used by the function.](24.调用和函数/window.png)
 
 <img src="image/calls-and-functions/window.png" alt="The stack at the two points when second() is called, with a window hovering over each one showing the pair of stack slots used by the function." />
 
@@ -734,13 +733,14 @@ infrastructure is there and ready for us now. Let's take advantage of it.
 Before we can do call expressions, we need something to call, so we'll do
 function declarations first. The <span name="fun">fun</span> starts with a
 keyword.
-在我们确实可以调用表达式之前，首先需要一些可以用来调用的东西，所以我们首先要处理函数声明。一切从关键字开始。【译者注：作者这里使用了一个小小的双关，实在不好翻译】
+在我们确实可以调用表达式之前，首先需要一些可以用来调用的东西，所以我们首先要处理函数声明。一切从关键字开始。
 
 <aside name="fun">
 
 Yes, I am going to make a dumb joke about the `fun` keyword every time it
 comes up.
 
+译者注： 作者这里使用了一个小小的双关，实在不好翻译
 </aside>
 
 ^code match-fun (1 before, 1 after)
@@ -1030,7 +1030,6 @@ parameters.
 When the VM starts executing the body of `sum()`, we want its stack window to
 look like this:
 当VM开始执行`sum()`函数体时，我们需要栈窗口看起来像这样：
-![The same stack with the sum() function's call frame window surrounding fn sum, 5, 6, and 7.](24.调用和函数/parameter-window.png)
 
 <img src="image/calls-and-functions/parameter-window.png" alt="The same stack with the sum() function's call frame window surrounding fn sum, 5, 6, and 7." />
 
@@ -1040,7 +1039,6 @@ is no coincidence. When I talked about each CallFrame having its own window into
 the stack, I never said those windows must be *disjoint*. There's nothing
 preventing us from overlapping them, like this:
 你是否注意到，调用者设置的实参槽和被调用者需要的形参槽的顺序是完全匹配的？多么方便啊！这并非巧合。当我谈到每个CallFrame在栈中都有自己的窗口时，从未说过这些窗口一定是不相交的。没有什么能阻止我们将它们重叠起来，就像这样：
-![The same stack with the top-level call frame covering the entire stack and the sum() function's call frame window surrounding fn sum, 5, 6, and 7.](http://www.craftinginterpreters.com/image/calls-and-functions/overlapping-windows.png)
 
 <img src="image/calls-and-functions/overlapping-windows.png" alt="The same stack with the top-level call frame covering the entire stack and the sum() function's call frame window surrounding fn sum, 5, 6, and 7." />
 

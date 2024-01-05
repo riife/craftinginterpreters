@@ -122,7 +122,8 @@ little less daunting when it&rsquo;s behind you than when it loomed ahead.
 work in the <a href="representing-code.html">last chapter</a>. You already know your way around a formal grammar.
 You&rsquo;re familiar with syntax trees, and we have some Java classes to represent
 them. The only remaining piece is parsing<span class="em">&mdash;</span>transmogrifying a sequence of
-tokens into one of those syntax trees.</p>
+tokens into one of those syntax trees.
+这比想象中要简单，部分是因为我们在<a href="representing-code.html">上一章</a>中提前完成了很多困难的工作。你已经对形式化语法了如指掌，也熟悉了语法树，而且我们有一些Java类来表示它们。唯一剩下的部分是解析——将一个标记序列转换成这些语法树中的一个。</p>
 <p>Some CS textbooks make a big deal out of parsers. In the &rsquo;60s, computer
 scientists<span class="em">&mdash;</span>understandably tired of programming in assembly language<span class="em">&mdash;</span>started designing more sophisticated, <span name="human">human</span>-friendly
 languages like Fortran and ALGOL. Alas, they weren&rsquo;t very <em>machine</em>-friendly
@@ -187,6 +188,8 @@ together in the last chapter:
 <li>For the operator, pick <code>"/"</code>.</li>
 <li>For the right-hand <code>expression</code>, pick <code>binary</code> again.</li>
 <li>In that nested <code>binary</code> expression, pick <code>3 - 1</code>.</li>
+</ol>
+<ol>
 <li>从<code>expression</code>开始，选择<code>binary</code>。</li>
 <li>对于左边的<code>expression</code>，选择<code>NUMBER</code>，并且使用<code>6</code>。</li>
 <li>对于操作符，选择<code>/</code>。</li>
@@ -208,8 +211,7 @@ together in the last chapter:
 <li>对于右边的<code>expression</code>，选择<code>NUMBER</code>，并且使用<code>1</code>。</li>
 </ol>
 <p>Those produce the same <em>strings</em>, but not the same <em>syntax trees</em>:
-它们产生相同的字符串，但对应的是不同的<em>语法树</em>：
-<img src="6.解析表达式/syntax-trees.png" alt="Two valid syntax trees: (6 / 3) - 1 and 6 / (3 - 1)" /></p><img src="image/parsing-expressions/syntax-trees.png" alt="Two valid syntax trees: (6 / 3) - 1 and 6 / (3 - 1)" />
+它们产生相同的字符串，但对应的是不同的<em>语法树</em>：</p><img src="image/parsing-expressions/syntax-trees.png" alt="Two valid syntax trees: (6 / 3) - 1 and 6 / (3 - 1)" />
 <p>In other words, the grammar allows seeing the expression as <code>(6 / 3) - 1</code> or <code>6 / (3 - 1)</code>. The <code>binary</code> rule lets operands nest any which way you want. That in
 turn affects the result of evaluating the parsed tree. The way mathematicians
 have addressed this ambiguity since blackboards were first invented is by
@@ -261,14 +263,7 @@ operator isn&rsquo;t associative, so <code>a .. b</code> is OK, but <code>a .. b
 multiple operators is ambiguous<span class="em">&mdash;</span>it can be parsed into different syntax trees,
 which could in turn evaluate to different results. We&rsquo;ll fix that in Lox by
 applying the same precedence rules as C, going from lowest to highest.
-如果没有明确定义的优先级和结合性，使用多个运算符的表达式可能就会变得有歧义——它可以被解析为不同的语法树，而这些语法树又可能会计算出不同的结果。我们在Lox中会解决这个问题，使用与C语言相同的优先级规则，从低到高分别是：
-| Name | Operators | Associates |
-| | | |
-| Equality 等于 | <code>==</code> <code>!=</code> | Left 左结合 |
-| Comparison 比较 | <code>&gt;</code> <code>&gt;=</code> <code>&lt;</code> <code>&lt;=</code> | Left 左结合 |
-| Term 加减运算 | <code>-</code> <code>+</code> | Left 左结合 |
-| Factor 乘除运算 | <code>/</code> <code>*</code> | Left 左结合 |
-| Unary 一元运算符 | <code>!</code> <code>-</code> | Right 右结合 |</p><table>
+如果没有明确定义的优先级和结合性，使用多个运算符的表达式可能就会变得有歧义——它可以被解析为不同的语法树，而这些语法树又可能会计算出不同的结果。我们在Lox中会解决这个问题，使用与C语言相同的优先级规则，从低到高分别是：</p><table>
 <thead>
 <tr>
   <td>Name</td>
@@ -302,6 +297,45 @@ applying the same precedence rules as C, going from lowest to highest.
   <td>Unary</td>
   <td><code>!</code> <code>-</code></td>
   <td>Right</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li></li>
+</ul><table>
+<thead>
+<tr>
+  <td>Name</td>
+  <td>Operators</td>
+  <td>Associates</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>等于</td>
+  <td><code>==</code> <code>!=</code></td>
+  <td>左结合</td>
+</tr>
+<tr>
+  <td>比较</td>
+  <td><code>&gt;</code> <code>&gt;=</code>
+      <code>&lt;</code> <code>&lt;=</code></td>
+  <td>左结合</td>
+</tr>
+<tr>
+  <td>加减运算</td>
+  <td><code>-</code> <code>+</code></td>
+  <td>左结合</td>
+</tr>
+<tr>
+  <td>乘除运算</td>
+  <td><code>/</code> <code>*</code></td>
+  <td>左结合</td>
+</tr>
+<tr>
+  <td>一元运算符</td>
+  <td><code>!</code> <code>-</code></td>
+  <td>右结合</td>
 </tr>
 </tbody>
 </table>
@@ -417,9 +451,7 @@ and divisions. This matches the same syntax as the previous rule, but better
 mirrors the code we&rsquo;ll write to parse Lox. We use the same structure for all of
 the other binary operator precedence levels, giving us this complete expression
 grammar:
-我们将因子表达式定义为乘法和除法的扁平<em>序列</em>。这与前面的规则语法相同，但更好地反映了我们将编写的解析Lox的代码。我们对其它二元运算符的优先级使用相同的结构，从而得到下面这个完整的表达式语法：
-This grammar is more complex than the one we had before, but in return we have eliminated the previous one’s ambiguity. It’s just what we need to make a parser.
-这个语法比我们以前的那个更复杂，但反过来我们也消除了前一个语法定义中的歧义。这正是我们制作解析器时所需要的。</p>
+我们将因子表达式定义为乘法和除法的扁平<em>序列</em>。这与前面的规则语法相同，但更好地反映了我们将编写的解析Lox的代码。我们对其它二元运算符的优先级使用相同的结构，从而得到下面这个完整的表达式语法：</p>
 <div class="codehilite"><pre><span class="i">expression</span>     → <span class="i">equality</span> ;
 <span class="i">equality</span>       → <span class="i">comparison</span> ( ( <span class="s">&quot;!=&quot;</span> | <span class="s">&quot;==&quot;</span> ) <span class="i">comparison</span> )* ;
 <span class="i">comparison</span>     → <span class="i">term</span> ( ( <span class="s">&quot;&gt;&quot;</span> | <span class="s">&quot;&gt;=&quot;</span> | <span class="s">&quot;&lt;&quot;</span> | <span class="s">&quot;&lt;=&quot;</span> ) <span class="i">term</span> )* ;
@@ -432,13 +464,15 @@ This grammar is more complex than the one we had before, but in return we have e
 </pre></div>
 <p>This grammar is more complex than the one we had before, but in return we have
 eliminated the previous one&rsquo;s ambiguity. It&rsquo;s just what we need to make a
-parser.</p>
+parser.
+这个语法比我们以前的那个更复杂，但反过来我们也消除了前一个语法定义中的歧义。这正是我们制作解析器时所需要的。</p>
 <h2><a href="#递归下降分析" id="递归下降分析"><small>6&#8202;.&#8202;2</small>递归下降分析</a></h2>
 <p>There is a whole pack of parsing techniques whose names are mostly combinations
 of &ldquo;L&rdquo; and &ldquo;R&rdquo;<span class="em">&mdash;</span><a href="https://en.wikipedia.org/wiki/LL_parser">LL(k)</a>, <a href="https://en.wikipedia.org/wiki/LR_parser">LR(1)</a>, <a href="https://en.wikipedia.org/wiki/LALR_parser">LALR</a><span class="em">&mdash;</span>along with more exotic
 beasts like <a href="https://en.wikipedia.org/wiki/Parser_combinator">parser combinators</a>, <a href="https://en.wikipedia.org/wiki/Earley_parser">Earley parsers</a>, <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">the shunting yard
 algorithm</a>, and <a href="https://en.wikipedia.org/wiki/Parsing_expression_grammar">packrat parsing</a>. For our first interpreter, one
-technique is more than sufficient: <strong>recursive descent</strong>.</p>
+technique is more than sufficient: <strong>recursive descent</strong>.
+现在有一大堆解析技术，它们的名字大多是 &ldquo;L &ldquo;和 &ldquo;R &ldquo;的组合——<a href="https://en.wikipedia.org/wiki/LL_parser">LL(k)</a>, <a href="https://en.wikipedia.org/wiki/LR_parser">LR(1)</a>, <a href="https://en.wikipedia.org/wiki/LALR_parser">LALR</a>——还有更多的异类，比如<a href="https://en.wikipedia.org/wiki/Parser_combinator">解析器组合子</a>、<a href="https://en.wikipedia.org/wiki/Earley_parser">Earley parsers</a>、<a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">分流码算法</a>和<a href="https://en.wikipedia.org/wiki/Parsing_expression_grammar">packrat解析</a>。对于我们的第一个解释器来说，一种技术已经足够了：<strong>递归下降</strong>。</p>
 <p>Recursive descent is the simplest way to build a parser, and doesn&rsquo;t require
 using complex parser generator tools like Yacc, Bison or ANTLR. All you need is
 straightforward handwritten code. Don&rsquo;t be fooled by its simplicity, though.
@@ -469,14 +503,7 @@ CS的人真的需要聚在一起理清他们的隐喻。甚至不要让我开始
 <p>A recursive descent parser is a literal translation of the grammar&rsquo;s rules
 straight into imperative code. Each rule becomes a function. The body of the
 rule translates to code roughly like:
-递归下降解析器是一种将语法规则直接翻译成命令式代码的文本翻译器。每个规则都会变成一个函数，规则主体翻译成代码大致是这样的：
-| Grammar notation | Code representation |
-| | |
-| Terminal | Code to match and consume a token 匹配并消费一个语法标记 |
-| Nonterminal | Call to that rule’s function 调用规则对应的函数 |
-| <code>|</code> | <code>if</code> or <code>switch</code> statement if或switch语句 |
-| <code>*</code> or <code>+</code> | <code>while</code> or <code>for</code> loop while或for循环 |
-| <code>?</code> | <code>if</code> statement if语句 |</p><table>
+递归下降解析器是一种将语法规则直接翻译成命令式代码的文本翻译器。每个规则都会变成一个函数，规则主体翻译成代码大致是这样的：</p><table>
 <thead>
 <tr>
   <td>Grammar notation</td>
@@ -489,6 +516,23 @@ rule translates to code roughly like:
   <tr><td><code>|</code></td><td><code>if</code> or <code>switch</code> statement</td></tr>
   <tr><td><code>*</code> or <code>+</code></td><td><code>while</code> or <code>for</code> loop</td></tr>
   <tr><td><code>?</code></td><td><code>if</code> statement</td></tr>
+</tbody>
+</table>
+<ul>
+<li></li>
+</ul><table>
+<thead>
+<tr>
+  <td>Grammar notation</td>
+  <td>Code representation</td>
+</tr>
+</thead>
+<tbody>
+  <tr><td>Terminal</td><td>匹配并消费一个语法标记</td></tr>
+  <tr><td>Nonterminal</td><td>调用规则对应的函数</td></tr>
+  <tr><td><code>|</code></td><td>if或switch语句</td></tr>
+  <tr><td><code>*</code> or <code>+</code></td><td>while或for循环</td></tr>
+  <tr><td><code>?</code></td><td>`if` statement if语句</td></tr>
 </tbody>
 </table>
 <p>The descent is described as &ldquo;recursive&rdquo; because when a grammar rule refers to
@@ -524,8 +568,7 @@ reading tokens instead of characters. We store the list of tokens and use
 <p>We&rsquo;re going to run straight through the expression grammar now and translate
 each rule to Java code. The first rule, <code>expression</code>, simply expands to the
 <code>equality</code> rule, so that&rsquo;s straightforward.
-我们现在要直接执行表达式语法，并将每一条规则翻译为Java代码。第一条规则<code>expression</code>，简单地展开为<code>equality</code>规则，所以很直接：
-<u><em>lox/Parser.java，在 Parser()方法添加：</em></u></p>
+我们现在要直接执行表达式语法，并将每一条规则翻译为Java代码。第一条规则<code>expression</code>，简单地展开为<code>equality</code>规则，所以很直接：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
 add after <em>Parser</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">Expr</span> <span class="i">expression</span>() {
@@ -781,11 +824,6 @@ expressions.
 <p>Most of the cases for the rule are single terminals, so parsing is
 straightforward.
 该规则中大部分都是终止符，可以直接进行解析。</p>
-<ul>
-<li></li>
-</ul>
-<p>The interesting branch is the one for handling parentheses. After we match an opening <code>(</code> and parse the expression inside it, we <em>must</em> find a <code>)</code> token. If we don’t, that’s an error.
-有趣的一点是处理括号的分支。当我们匹配了一个开头<code>(</code>并解析了里面的表达式后，我们必须找到一个<code>)</code>标记。如果没有找到，那就是一个错误。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Parser.java</em><br>
 add after <em>unary</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">Expr</span> <span class="i">primary</span>() {
@@ -808,7 +846,8 @@ add after <em>unary</em>()</div>
 
 <p>The interesting branch is the one for handling parentheses. After we match an
 opening <code>(</code> and parse the expression inside it, we <em>must</em> find a <code>)</code> token. If
-we don&rsquo;t, that&rsquo;s an error.</p>
+we don&rsquo;t, that&rsquo;s an error.
+有趣的一点是处理括号的分支。当我们匹配了一个开头<code>(</code>并解析了里面的表达式后，我们必须找到一个<code>)</code>标记。如果没有找到，那就是一个错误。</p>
 <h2><a href="#语法错误" id="语法错误"><small>6&#8202;.&#8202;3</small>语法错误</a></h2>
 <p>A parser really has two jobs:
 解析器实际上有两项工作：</p>
@@ -1198,10 +1237,12 @@ analogous syntax for expressions. A comma-separated series of expressions
 can be given where a single expression is expected (except inside a function
 call&rsquo;s argument list). At runtime, the comma operator evaluates the left
 operand and discards the result. Then it evaluates and returns the right
-operand.</p>
+operand.
+在C语言中，块是一种语句形式，它允许你把一系列的语句打包作为一个语句来使用。<a href="https://en.wikipedia.org/wiki/Comma_operator">逗号运算符</a>是表达式的类似语法。可以在需要单个表达式的地方给出以逗号分隔的表达式序列(函数调用的参数列表除外)。在运行时，逗号操作符计算左操作数并丢弃结果。然后计算并返回右操作数。</p>
 <p>Add support for comma expressions. Give them the same precedence and
 associativity as in C. Write the grammar, and then implement the necessary
-parsing code.</p>
+parsing code.
+添加对逗号表达式的支持。赋予它们与c语言中相同的优先级和结合性。编写语法，然后实现必要的解析代码。</p>
 </li>
 <li>
 <p>Likewise, add support for the C-style conditional or &ldquo;ternary&rdquo; operator

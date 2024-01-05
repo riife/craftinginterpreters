@@ -79,13 +79,6 @@ In places in the interpreter where we need to store a Lox value, we can use
 Object as the type. Java has boxed versions of its primitive types that all
 subclass Object, so we can use those for Lox's built-in types:
 在解释器中需要存储Lox值的地方，我们可以使用Object作为类型。Java已经将其基本类型的所有子类对象装箱了，因此我们可以将它们用作Lox的内置类型：
-| Lox type Lox类 | Java representation Java表示 |
-| | |
-| Any Lox value | Object |
-| `nil` | `null` |
-| Boolean | Boolean |
-| number | Double |
-| string | String |
 
 <table>
 <thead>
@@ -144,6 +137,7 @@ in something like an `interpret()` method. In effect, we could tell each syntax
 tree node, "Interpret thyself". This is the Gang of Four's
 [Interpreter design pattern][]. It's a neat pattern, but like I mentioned
 earlier, it gets messy if we jam all sorts of logic into the tree classes.
+接下来，我们需要大量的代码实现我们可解析的每种表达式对应的求值逻辑。我们可以把这些代码放在语法树的类中，比如添加一个`interpret()`方法。然后，我们可以告诉每一个语法树节点“解释你自己”，这就是四人组的[解释器模式][Interpreter design pattern]。这是一个整洁的模式，但正如我前面提到的，如果我们将各种逻辑都塞进语法树类中，就会变得很混乱。
 
 [interpreter design pattern]: https://en.wikipedia.org/wiki/Interpreter_pattern
 
@@ -152,6 +146,7 @@ chapter, we created an AstPrinter class. It took in a syntax tree and
 recursively traversed it, building up a string which it ultimately returned.
 That's almost exactly what a real interpreter does, except instead of
 concatenating strings, it computes values.
+相反，我们将重用我们的[访问者模式][Visitor pattern]。在前面的章节中，我们创建了一个AstPrinter类。它接受一个语法树，并递归地遍历它，构建一个最终返回的字符串。这几乎就是一个真正的解释器所做的事情，只不过解释器不是连接字符串，而是计算值。
 
 [visitor pattern]: representing-code.html#the-visitor-pattern
 
@@ -635,6 +630,7 @@ That gets us detecting runtime errors deep in the innards of the evaluator. The
 errors are getting thrown. The next step is to write the code that catches them.
 For that, we need to wire up the Interpreter class into the main Lox class that
 drives it.
+这样我们就可以在计算器的内部检测运行时错误。错误已经被抛出了。下一步就是编写能捕获这些错误的代码。为此，我们需要将Interpreter类连接到驱动它的Lox主类中。
 
 ## 连接解释器
 
@@ -702,7 +698,6 @@ we don't have function calls yet, so I guess we don't have to worry about it.
 
 After showing the error, `runtimeError()` sets this field:
 展示错误之后，`runtimeError()`会设置以下字段：
-<u>*lox/Lox.java，在 Lox类中添加：*</u>
 
 ^code had-runtime-error-field (1 before, 1 after)
 
@@ -767,27 +762,28 @@ interpreter doesn't do very much, but it's alive!
     comparisons among mixed types, like `3 < "pancake"` could be handy to enable
     things like ordered collections of heterogeneous types. Or it could simply
     lead to bugs and confusion.
-1、允许对数字之外的类型进行比较可能是个有用的特性。操作符可能对字符串有合理的解释。即使是混合类型之间的比较，如`3<"pancake"`，也可以方便地支持异构类型的有序集合。否则可能导致错误和混乱。
+    允许对数字之外的类型进行比较可能是个有用的特性。操作符可能对字符串有合理的解释。即使是混合类型之间的比较，如`3<"pancake"`，也可以方便地支持异构类型的有序集合。否则可能导致错误和混乱。
 你是否会扩展Lox以支持对其他类型的比较？如果是，您允许哪些类型间的比较，以及如何定义它们的顺序？证明你的选择并与其他语言进行比较。
 
     Would you extend Lox to support comparing other types? If so, which pairs of
     types do you allow and how do you define their ordering? Justify your
     choices and compare them to other languages.
+    你是否会扩展Lox以支持对其他类型的比较？如果是，您允许哪些类型间的比较，以及如何定义它们的顺序？证明你的选择并与其他语言进行比较。
 
 2.  Many languages define `+` such that if *either* operand is a string, the
     other is converted to a string and the results are then concatenated. For
     example, `"scone" + 4` would yield `scone4`. Extend the code in
     `visitBinaryExpr()` to support that.
-2、许多语言对`+`的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，`"scone" + 4`的结果应该是`scone4`。扩展`visitBinaryExpr()`中的代码以支持该特性。
+    许多语言对`+`的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，`"scone" + 4`的结果应该是`scone4`。扩展`visitBinaryExpr()`中的代码以支持该特性。
 
 3.  What happens right now if you divide a number by zero? What do you think
     should happen? Justify your choice. How do other languages you know handle
     division by zero, and why do they make the choices they do?
-3、如果你用一个数除以0会发生什么？你认为应该发生什么？证明你的选择。你知道的其他语言是如何处理除零的，为什么他们会做出这样的选择？
-更改`visitBinaryExpr()`中的实现代码，以检测并报告运行时错误。
+    如果你用一个数除以0会发生什么？你认为应该发生什么？证明你的选择。你知道的其他语言是如何处理除零的，为什么他们会做出这样的选择？
 
     Change the implementation in `visitBinaryExpr()` to detect and report a
     runtime error for this case.
+    更改`visitBinaryExpr()`中的实现代码，以检测并报告运行时错误。
 
 </div>
 

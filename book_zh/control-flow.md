@@ -26,6 +26,7 @@ stability of the foundation they had built their work upon. To address that
 [crisis][], they went back to square one. Starting from a handful of axioms,
 logic, and set theory, they hoped to rebuild mathematics on top of an
 impervious foundation.
+在上世纪初，数学家们陷入了一系列令人困惑的悖论之中，导致他们对自己工作所依赖的基础的稳定性产生怀疑。为了解决这一[危机][crisis]，他们又回到了原点。他们希望从少量的公理、逻辑和集合理论开始，在一个不透水的地基上重建数学。
 
 [crisis]: https://en.wikipedia.org/wiki/Foundations_of_mathematics#Foundational_crisis
 
@@ -54,6 +55,7 @@ They wanted to rigorously answer questions like, "Can all true statements be
 proven?", "Can we [compute][] all functions that we can define?", or even the
 more general question, "What do we mean when we claim a function is
 'computable'?"
+他们想要严格地回答这样的问题：“所有真实的陈述都可以被[证明][compute]吗？”，“我们可以计算我们能定义的所有函数吗？”，甚至是更一般性的问题，“当我们声称一个函数是'可计算的'时，代表什么意思？”
 
 [compute]: https://en.wikipedia.org/wiki/Computable_function
 
@@ -103,6 +105,7 @@ Turing machines have better name recognition -- there's no Hollywood film about
 Alonzo Church yet -- but the two formalisms are [equivalent in power][thesis].
 In fact, any programming language with some minimal level of expressiveness is
 powerful enough to compute *any* computable function.
+图灵机的知名度更高——目前还没有关于阿隆佐·邱奇的好莱坞电影，但这两种形式[在能力上是等价的][thesis]。事实上，任何具有最低表达能力的编程语言都足以计算 *任何* 可计算函数。
 
 [thesis]: https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis
 

@@ -295,7 +295,6 @@ expressions and assignment in there now. It's just that the compiler assumes
 all variables are global. So we don't need any new parsing support, we just need
 to hook up the new scoping semantics to the existing code.
 通常我们会从解析开始，但是我们的编译器已经支持了解析和编译变量声明。我们现在已经有了`var`语句、标识符表达式和赋值语句。只是编译器假设所有的变量都是全局变量。所以，我们不需要任何新的解析支持，我们只需要将新的作用域语义与已有的代码连接起来。
-![The code flow within varDeclaration().](22.局部变量/declaration.png)
 
 <img src="image/local-variables/declaration.png" alt="The code flow within varDeclaration()." />
 
@@ -469,8 +468,6 @@ quickly for many non-equal strings. If the <span name="hash">lengths</span> are
 the same, we check the characters using `memcmp()`. To get to `memcmp()`, we
 need an include.
 既然我们知道两个词素的长度，那我们首先检查它。对于很多不相等的字符串，在这一步就很快失败了。如果长度相同，我们就使用`memcmp()`检查字符。为了使用`memcmp()`，我们需要引入一下。
-*
-有了这个，我们就能创造出变量。但是，它们会停留在声明它们的作用域之外，像幽灵一样。当一个代码块结束时，我们需要让其中的变量安息。
 
 <aside name="hash">
 
@@ -484,6 +481,7 @@ tokens aren't full LoxStrings, so we haven't calculated their hashes yet.
 With this, we're able to bring variables into being. But, like ghosts, they
 linger on beyond the scope where they are declared. When a block ends, we need
 to put them to rest.
+有了这个，我们就能创造出变量。但是，它们会停留在声明它们的作用域之外，像幽灵一样。当一个代码块结束时，我们需要让其中的变量安息。
 
 ^code pop-locals (1 before, 1 after)
 

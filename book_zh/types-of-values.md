@@ -388,7 +388,6 @@ index *minus one*. That's because the interpreter advances past each instruction
 before executing it. So, at the point that we call `runtimeError()`, the failed
 instruction is the previous one.
 我们使用当前字节码指令索引减1来查看字节码块的调试行数组。这是因为解释器在之前每条指令之前都会向前推进。所以，当我们调用 `runtimeError()`，失败的指令就是前一条。
-Just showing the immediate line where the error occurred doesn’t provide much context. Better would be a full stack trace. But we don’t even have functions to call yet, so there is no call stack to trace.
 
 <aside name="stack">
 
@@ -509,18 +508,16 @@ skip right to the parser. With our table-based Pratt parser, we just need to
 slot parser functions into the rows associated with those keyword token types.
 We'll use the same function in all three slots. Here:
 我们的扫描器已经将`true`、`false`和`nil`视为关键字，所以我们可以直接调到解析器。对于我们这个基于表格的Pratt解析器，只需要将解析器函数插入到与这些关键字标识类型相对应的行中。我们会在三个槽中使用相同的函数。这里：
-*
-这里:
-*
-还有这里:
 
 ^code table-false (1 before, 1 after)
 
 Here:
+这里:
 
 ^code table-true (1 before, 1 after)
 
 And here:
+还有这里:
 
 ^code table-nil (1 before, 1 after)
 
@@ -818,11 +815,13 @@ very own chapter][strings].
 1. We could reduce our binary operators even further than we did here. Which
    other instructions can you eliminate, and how would the compiler cope with
    their absence?
+   我们可以进一步简化二元操作符。还有哪些指令可以取消，编译器如何应对这些指令的缺失？
 
 2. Conversely, we can improve the speed of our bytecode VM by adding more
    specific instructions that correspond to higher-level operations. What
    instructions would you define to speed up the kind of user code we added
    support for in this chapter?
+   相反，我们可以通过添加更多对应于高级操作的专用指令来提高字节码虚拟机的速度。你会定义什么指令来加速我们在本章中添加的那种用户代码？
 
 </div>
 

@@ -119,6 +119,7 @@ that it has a canonical name. It's an example of [*type punning*][pun], but that
 term is too broad. In the absence of any better ideas, I'll call it **struct
 inheritance**, because it relies on structs and roughly follows how
 single-inheritance of state works in object-oriented languages.
+相对地，我们会使用另一种技术。它已经存在了很久，以至于C语言规范为它提供了明确的支持，但我不知道它是否有一个正式的名字。这是一个[类型双关][pun]的例子，但这个术语太宽泛了。鉴于没有更好的想法，我将其称为**结构体继承**，因为它依赖于结构体，并大致遵循了面向对象语言中状态的单继承工作方式。
 
 [pun]: https://en.wikipedia.org/wiki/Type_punning
 
@@ -243,13 +244,13 @@ more than once, that expression gets evaluated multiple times.
 That's bad if the expression has side effects. If we put the body of
 `isObjType()` into the macro definition and then you did, say,
 如果这个表达式有副作用，那就不好了。如果我们把`isObjType()`的主体放到宏的定义中，假设你这么使用
-那么它就会从堆栈中弹出两个值！使用函数可以解决这个问题。
 
 ```c
 IS_STRING(POP())
 ```
 
 then it would pop two values off the stack! Using a function fixes that.
+那么它就会从堆栈中弹出两个值！使用函数可以解决这个问题。
 
 As long as we ensure that we set the type tag correctly whenever we create an
 Obj of some type, this macro will tell us when it's safe to cast a value to a
@@ -605,6 +606,7 @@ reclaims unused memory while the program is running. We've got some other stuff
 to get in place before we're ready to tackle that project. Until then, we are
 living on borrowed time. The longer we wait to add the collector, the harder it
 is to do.
+完整的解决方案是一个[垃圾回收器][gc]，在程序运行时回收不使用的内存。在我们准备着手那个项目之前，还有一些其它的事情要做。在那之前，我们只是侥幸运行。我们等待添加收集器的时间越长，它就越难做。
 
 <aside name="borrowed">
 
@@ -690,6 +692,7 @@ There's no sophisticated logic for that. Once the program is done, we can free
 
 That empty function we defined [way back when][vm] finally does something! It
 calls this:
+我们[早先][vm]定义的空函数终于有了用武之地！它调用了这个方法：
 
 [vm]: a-virtual-machine.html#an-instruction-execution-machine
 
@@ -717,7 +720,6 @@ and then free the ObjString. Those both use one last memory management macro.
 It's a tiny <span name="free">wrapper</span> around `reallocate()` that
 "resizes" an allocation down to zero bytes.
 这是围绕`reallocate()`的一个小包装，可以将分配的内存“调整”为零字节。
-Using `reallocate()` to free memory might seem pointless. Why not just call `free()`? Later, this will help the VM track how much memory is still being used. If all allocation and freeing goes through `reallocate()`, it’s easy to keep a running count of the number of bytes of allocated memory.
 
 <aside name="free">
 
@@ -746,8 +748,6 @@ running. Later, when it's possible to write longer-running Lox programs, the VM
 will eat more and more memory as it goes, not relinquishing a single byte until
 the entire program is done.
 这样一来，我们的虚拟机就不会再泄露内存了。像一个好的C程序一样，它会在退出之前进行清理。但在虚拟机运行时，它不会释放任何对象。稍后，当可以编写长时间运行的Lox程序时，虚拟机在运行过程中会消耗越来越多的内存，在整个程序完成之前不会释放任何一个字节。
-We won’t address that until we’ve added [a real garbage collector](http://www.craftinginterpreters.com/garbage-collection.html), but this is a big step. We now have the infrastructure to support a variety of different kinds of dynamically allocated objects. And we’ve used that to add strings to clox, one of the most used types in most programming languages. Strings in turn enable us to build another fundamental data type, especially in dynamic languages: the venerable [hash table](http://www.craftinginterpreters.com/hash-tables.html). But that’s for the next chapter . . .
-在添加真正的垃圾收集器之前，我们不会解决这个问题，但这是一个很大的进步。我们现在拥有了支持各种不同类型的动态分配对象的基础设施。我们利用这一点在clox中加入了字符串，这是大多数编程语言中最常用的类型之一。字符串反过来又使我们能够构建另一种基本的数据类型，尤其是在动态语言中：古老的哈希表。但这是下一章的内容了……
 
 We won't address that until we've added [a real garbage collector][gc], but this
 is a big step. We now have the infrastructure to support a variety of different
@@ -755,6 +755,7 @@ kinds of dynamically allocated objects. And we've used that to add strings to
 clox, one of the most used types in most programming languages. Strings in turn
 enable us to build another fundamental data type, especially in dynamic
 languages: the venerable [hash table][]. But that's for the next chapter...
+在添加真正的垃圾收集器之前，我们不会解决这个问题，但这是一个很大的进步。我们现在拥有了支持各种不同类型的动态分配对象的基础设施。我们利用这一点在clox中加入了字符串，这是大多数编程语言中最常用的类型之一。字符串反过来又使我们能够构建另一种基本的数据类型，尤其是在动态语言中：古老的哈希表。但这是下一章的内容了……
 
 [hash table]: hash-tables.html
 

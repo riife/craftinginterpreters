@@ -41,6 +41,7 @@ came first and are the most popular style. With the rise of JavaScript (and to a
 lesser extent [Lua][]), prototypes are more widely known than they used to be.
 I'll talk more about those [later][]. For Lox, we're taking the, ahem, classic
 approach.
+面向对象编程有三大途径：类(classes)、[原型(prototypes)][prototypes]和[多方法(multimethods)][multimethods]。类排在第一位，是最流行的风格。随着JavaScript（其次是[Lua][]）的兴起，原型也比以前更加广为人知。稍后我们会更多地讨论这些问题。对于Lox，我们采取的是经典的方法。
 
 [prototypes]: http://gameprogrammingpatterns.com/prototype.html
 [multimethods]: https://en.wikipedia.org/wiki/Multiple_dispatch
@@ -88,6 +89,7 @@ back to Simula, also do inheritance to reuse behavior across classes. We'll add
 that in the [next chapter][inheritance]. Even kicking that out, we still have a
 lot to get through. This is a big chapter and everything doesn't quite come
 together until we have all of the above pieces, so gather your stamina.
+这大概是最低要求。大多数面向对象的语言（一直追溯到Simula），也都是通过继承来跨类重用行为。我们会在[下一章][inheritance]中添加该功能。即使剔除了这些，我们仍然有很多东西需要完成。这是一个很大的章节，直到我们完成上述所有内容之后，才能把所有东西整合到一起。所以请集中精力。
 
 <aside name="circle">
 
@@ -209,7 +211,13 @@ class body.
 We wrap the name and list of methods into a Stmt.Class node and we're done.
 Previously, we would jump straight into the interpreter, but now we need to
 plumb the node through the resolver first.
-我们将名称和方法列表封装到Stmt.Class节点中，这样就完成了。以前，我们会直接进入解释器中，但是现在我们需要先进入分析器中对节点进行分析。【译者注：为了区分parse和resolve，这里将resolver称为分析器，用于对代码中的变量进行分析】
+<span name="resolver_zh"></span>我们将名称和方法列表封装到Stmt.Class节点中，这样就完成了。以前，我们会直接进入解释器中，但是现在我们需要先进入分析器中对节点进行分析。
+
+<aside name="resolver_zh">
+
+译者注：为了区分parse和resolve，这里将resolver称为分析器，用于对代码中的变量进行分析
+
+</aside>
 
 ^code resolver-visit-class
 
@@ -407,7 +415,6 @@ The outer `while` loop there corresponds to the `*` in the grammar rule. We zip
 along the tokens building up a chain of calls and gets as we find parentheses
 and dots, like so:
 外面的`while`循环对应于语法规则中的`*`。随着查找括号和点，我们会沿着标记构建一系列的call和get，就像：
-![Parsing a series of '.' and '()' expressions to an AST.](12.类/zip.png)
 
 <img src="image/classes/zip.png" alt="Parsing a series of '.' and '()' expressions to an AST." />
 
@@ -630,7 +637,6 @@ also don't need to add any new parser support for method *calls*. We already
 have `.` (getters) and `()` (function calls). A "method call" simply chains
 those together.
 我们的解析器已经解析了方法声明，所以我们在这部分做的不错。我们也不需要为方法*调用*添加任何新的解析器支持。我们已经有了`.`(getter)和`()`(函数调用)。“方法调用”只是简单地将这些串在一起。
-![The syntax tree for 'object.method(argument)](12.类/method.png)
 
 <img src="image/classes/method.png" alt="The syntax tree for 'object.method(argument)" />
 
@@ -1395,6 +1401,7 @@ interpreter has grown an entire programming paradigm. Classes, methods, fields,
     that can be called directly on the class object itself. Add support for
     them. Use a `class` keyword preceding the method to indicate a static method
     that hangs off the class object.
+    我们有实例上的方法，但是没有办法定义可以直接在类对象上调用的“静态”方法。添加对它们的支持，在方法之前使用`class`关键字指示该方法是一个挂载在类对象上的静态方法。
 
     ```lox
     class Math {

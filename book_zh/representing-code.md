@@ -52,10 +52,6 @@ In order to evaluate an arithmetic node, you need to know the numeric values of
 its subtrees, so you have to evaluate those first. That means working your way
 from the leaves up to the root -- a *post-order* traversal:
 要想计算一个算术节点，你需要知道它的子树的数值，所以你必须先计算子树的结果。这意味着要从叶节点一直计算到根节点——*后序*遍历：
-* A.从完整的树开始，先计算最下面的操作`2*3`；
-* B.现在计算`+`；
-* C.接下来，计算`-`；
-* D.最终得到答案。
 
 <span name="tree-steps"></span>
 
@@ -64,16 +60,16 @@ from the leaves up to the root -- a *post-order* traversal:
 <aside name="tree-steps">
 
 A. Starting with the full tree, evaluate the bottom-most operation, `2 * 3`.
-从整棵树开始，评估最底层的运算，即 `2 * 3`。
+从完整的树开始，先计算最下面的操作2*3；
 
 B. Now we can evaluate the `+`.
-现在我们可以评估 `+`。
+现在计算+；
 
 C. Next, the `-`.
-下一个是 `-`。
+接下来，计算-；
 
 D. The final answer.
-最后是结果。
+最终得到答案。
 
 </aside>
 
@@ -118,6 +114,7 @@ We need a bigger hammer, and that hammer is a **context-free grammar**
 **[formal grammars][]**. A formal grammar takes a set of atomic pieces it calls
 its "alphabet". Then it defines a (usually infinite) set of "strings" that are
 "in" the grammar. Each string is a sequence of "letters" in the alphabet.
+我们需要一把更大的锤子，这把锤子就是 **上下文无关文法(context-free grammar)**（CFG）。它是形式语法工具箱中最重要的工具。形式语法将一组原子片段称为 "**[字母表][formal grammars]**"。然后，它定义了一组（通常是无限的）"字符串"，这些字符串是语法中的 "字符串"。每个字符串都是字母表中的一个 "字母" 序列。
 
 [formal grammars]: https://en.wikipedia.org/wiki/Formal_grammar
 
@@ -130,12 +127,6 @@ token and a "string" is a sequence of *tokens* -- an entire expression.
 我这里使用引号是因为当你从词法转到文法语法时，这些术语会让你有点困惑。在我们的扫描器词法中，alphabet（字母表）由单个字符组成，strings（字符串）是有效的词素（粗略的说，就是“单词”）。在现在讨论的句法语法中，我们处于一个不同的粒度水平。现在，字母表中的一个“letters（字符）”是一个完整的词法标记，而“strings（字符串）”是一个词法标记系列——一个完整的表达式。
 
 Oof. Maybe a table will help:
-嗯，使用表格可能更有助于理解：
-| Terminology<br/>术语 | | Lexical grammar 词法 | Syntactic grammar 语法 |
-| | | | |
-| The “alphabet” is . . . <br />字母表 | → | Characters<br />字符 | Tokens<br />词法标记 |
-| A “string” is . . . <br />字符串 | → | Lexeme or token<br />词素或词法标记 | Expression<br />表达式 |
-| It's implemented by the . . . <br />实现 | → | Scanner<br />扫描器 | Parser<br />解析器 |
 
 <table>
 <thead>
@@ -164,6 +155,39 @@ Oof. Maybe a table will help:
   <td>&rarr;&ensp;</td>
   <td>Scanner</td>
   <td>Parser</td>
+</tr>
+</tbody>
+</table>
+
+嗯，使用表格可能更有助于理解：
+
+<table>
+<thead>
+<tr>
+  <td>术语</td>
+  <td></td>
+  <td>词法</td>
+  <td>语法</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>字母表</td>
+  <td>&rarr;&ensp;</td>
+  <td>字符</td>
+  <td>词法标记</td>
+</tr>
+<tr>
+  <td>字符串</td>
+  <td>&rarr;&ensp;</td>
+  <td>词素或词法标记</td>
+  <td>表达式</td>
+</tr>
+<tr>
+  <td>实现</span></td>
+  <td>&rarr;&ensp;</td>
+  <td>扫描器</td>
+  <td>解析器</td>
 </tr>
 </tbody>
 </table>
@@ -212,13 +236,20 @@ sequence of symbols in the head as well as in the body.
     are individual lexemes -- tokens coming from the scanner like `if` or
     `1234`.
 
+*   **终止符**是语法字母表中的一个字母。你可以把它想象成一个字面值。在我们定义的语法中，终止符是独立的词素——来自扫描器的词法标记，比如 `if` 或 `1234`。
+
     These are called "terminals", in the sense of an "end point" because they
     don't lead to any further "moves" in the game. You simply produce that one
     symbol.
 
+    这些词素被称为“终止符”，表示“终点”，因为它们不会导致游戏中任何进一步的 "动作"。你只是简单地产生了那一个符号。
+
+
 *   A **nonterminal** is a named reference to another rule in the grammar. It
     means "play that rule and insert whatever it produces here". In this way,
     the grammar composes.
+
+*   非终止符是对语法中另一条规则的命名引用。它的意思是 "执行那条规则，然后将它产生的任何内容插入这里"。这样，语法就构成了。
 
 There is one last refinement: you may have multiple rules with the same name.
 When you reach a nonterminal with that name, you are allowed to pick any of the
@@ -335,7 +366,7 @@ yielding all manner of breakfasts like "bacon with sausage with scrambled eggs
 with bacon..." We won't though. This time we'll pick `bread`. There are three
 rules for that, each of which contains only a terminal. We'll pick "English
 muffin".
-我们可以不断选择`breakfast` 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon ...”，【存疑，按照规则设置，这里应该不会出现以bacon开头的字符串，原文可能有误】但我们不会这样做。这一次我们选择`bread`。有三个对应的规则，每个规则只包含一个终止符。我们选 "English muffin"。
+我们可以不断选择`breakfast` 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon ...”，但我们不会这样做。这一次我们选择`bread`。有三个对应的规则，每个规则只包含一个终止符。我们选 "English muffin"。
 
 With that, every nonterminal in the string has been expanded until it finally
 contains only terminals and we're left with:
@@ -433,6 +464,7 @@ Not too bad, I hope. If you're used to grep or using [regular
 expressions][regex] in your text editor, most of the punctuation should be
 familiar. The main difference is that symbols here represent entire tokens, not
 single characters.
+我希望还不算太坏。如果你习惯使用grep或在你的文本编辑器中使用[正则表达式][regex]，大多数的标点符号应该是熟悉的。主要区别在于，这里的符号代表整个标记，而不是单个字符。
 
 [regex]: https://en.wikipedia.org/wiki/Regular_expression#Standards
 
@@ -808,6 +840,7 @@ type checking pass.
 If we added instance methods to the expression classes for every one of those
 operations, that would smush a bunch of different domains together. That
 violates [separation of concerns][] and leads to hard-to-maintain code.
+如果我们为每一个操作的表达式类中添加实例方法，就会将一堆不同的领域混在一起。这违反了[关注点分离原则][separation of concerns]，并会产生难以维护的代码。
 
 [separation of concerns]: https://en.wikipedia.org/wiki/Separation_of_concerns
 
@@ -1171,6 +1204,7 @@ maintain AstPrinter, feel free to delete it. We won't need it again.
 
 1.  Earlier, I said that the `|`, `*`, and `+` forms we added to our grammar
     metasyntax were just syntactic sugar. Take this grammar:
+    之前我说过，我们在语法元语法中添加的`|`、`*`、`+`等形式只是语法糖。以这个语法为例:
 
     ```ebnf
     expr → expr ( "(" ( expr ( "," expr )* )? ")" | "." IDENTIFIER )+
@@ -1180,8 +1214,10 @@ maintain AstPrinter, feel free to delete it. We won't need it again.
 
     Produce a grammar that matches the same language but does not use any of
     that notational sugar.
+    生成一个与同一语言相匹配的语法，但不要使用任何语法糖。
 
     *Bonus:* What kind of expression does this bit of grammar encode?
+    附加题：这一点语法表示了什么样的表达式？
 
 1.  The Visitor pattern lets you emulate the functional style in an
     object-oriented language. Devise a complementary pattern for a functional

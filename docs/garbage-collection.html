@@ -1033,8 +1033,7 @@ between turning white objects gray and gray objects black, gradually advancing
 the entire wavefront forward.
 这与文本描述的算法已经尽可能接近了。在栈清空之前，我们会不断取出灰色对象，遍历它们的引用，然后将它们标记为黑色。遍历某个对象的引用可能会出现新的白色对象，这些对象被标记为灰色并添加到栈中。所以这个函数在把白色对象变成灰色和把灰色对象变成黑色之间来回摆动，逐渐把整个波前向前推进。</p>
 <p>Here&rsquo;s where we traverse a single object&rsquo;s references:
-下面是我们遍历某个对象的引用的地方：
-<u><em>memory.c，在markValue()方法后添加代码：</em></u></p>
+下面是我们遍历某个对象的引用的地方：</p>
 <div class="codehilite"><div class="source-file"><em>memory.c</em><br>
 add after <em>markValue</em>()</div>
 <pre><span class="k">static</span> <span class="t">void</span> <span class="i">blackenObject</span>(<span class="t">Obj</span>* <span class="i">object</span>) {
@@ -1640,7 +1639,7 @@ we have created.
 sometimes painful reality. I am going to roll over a rotten log and show you the
 nasty bugs that live under it, and garbage collector bugs really are some of the
 grossest invertebrates out there.
-但是，我的目的不仅仅是教授编程语言的理论，还要教你有时令人痛苦的现实。我要掀开一根烂木头，向你展示生活在下面的讨厌的虫子，垃圾回收器虫真的是世界上最恶心的无脊椎动物之一【译者注：bug双关】。</p>
+但是，我的目的不仅仅是教授编程语言的理论，还要教你有时令人痛苦的现实。我要掀开一根烂木头，向你展示生活在下面的讨厌的虫子，垃圾回收器虫(垃圾回收器bug)真的是世界上最恶心的无脊椎动物之一。</p>
 <p>The collector&rsquo;s job is to free dead objects and preserve live ones. Mistakes are
 easy to make in both directions. If the VM fails to free objects that aren&rsquo;t
 needed, it slowly leaks memory. If it frees an object that is in use, the user&rsquo;s

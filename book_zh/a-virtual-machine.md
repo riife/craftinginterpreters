@@ -158,6 +158,7 @@ The name "IP" is traditional, and -- unlike many traditional names in CS --
 actually makes sense: it's an **[instruction pointer][ip]**. Almost every
 instruction set in the <span name="ip">world</span>, real and virtual, has a
 register or variable like this.
+“IP”这个名字很传统，而且与CS中的很多传统名称不同的是，它是有实际意义的：它是一个[**指令指针**][ip]。几乎世界上所有的指令集，不管是真实的还是虚拟的，都有一个类似的寄存器或变量。
 
 [ip]: https://en.wikipedia.org/wiki/Program_counter
 
@@ -257,7 +258,6 @@ what's going on inside our VM. That call to `printf()` necessitates an include.
 
 We also have a new macro to define.
 我们还需要定义一个新的宏。
-<u>*vm.c，在 run()方法中添加代码：*</u>
 
 ^code read-constant (1 before, 2 after)
 
@@ -266,13 +266,12 @@ number as an index, and looks up the corresponding Value in the chunk's constant
 table. In later chapters, we'll add a few more instructions with operands that
 refer to constants, so we're setting up this helper macro now.
 `READ_CONTANT()`从字节码中读取下一个字节，将得到的数字作为索引，并在代码块的常量表中查找相应的Value。在后面的章节中，我们将添加一些操作数指向常量的指令，所以我们现在要设置这个辅助宏。
-Like the previous `READ_BYTE` macro, `READ_CONSTANT` is only used inside `run()`. To make that scoping more explicit, the macro definitions themselves are confined to that function. We define them at the beginning and—because we care—undefine them at the end.
-与之前的`READ_BYTE`宏类似，`READ_CONSTANT`只会在`run()`方法中使用。为了使作用域更明确，宏定义本身要被限制在该函数中。我们在开始时定义了它们，然后因为我们比较关心，在结束时取消它们的定义。
 
 Like the previous `READ_BYTE` macro, `READ_CONSTANT` is only used inside
 `run()`. To make that scoping more explicit, the macro definitions themselves
 are confined to that function. We <span name="macro">define</span> them at the
 beginning and -- because we care -- undefine them at the end.
+与之前的`READ_BYTE`宏类似，`READ_CONSTANT`只会在`run()`方法中使用。为了使作用域更明确，宏定义本身要被限制在该函数中。我们在开始时定义了它们，然后因为我们比较关心，在结束时取消它们的定义。
 
 ^code undef-read-constant (1 before, 1 after)
 
@@ -706,10 +705,9 @@ The two halves work, but it's hard to get a feel for how cleverly they interact
 with only the two rudimentary instructions we have so far. So let's teach our
 interpreter to do arithmetic.
 我们的虚拟机的核心和灵魂现在都已经就位了。字节码循环分派和执行指令。栈堆随着数值的流动而增长和收缩。这两部分都在工作，但仅凭我们目前的两条基本指令，很难感受到它们如何巧妙地互动。所以让我们教解释器如何做算术。
-We’ll start with the simplest arithmetic operation, unary negation.
-我们从最简单的算术运算开始，即一元取负。
 
 We'll start with the simplest arithmetic operation, unary negation.
+我们从最简单的算术运算开始，即一元取负。
 
 ```lox
 var a = 1.2;
@@ -891,7 +889,6 @@ arithmetic *bytecode instructions* do not.
 Let's put some of our new instructions through their paces by evaluating a
 larger expression:
 我们通过计算一个更大的表达式来检验一些新指令。
-![The expression being evaluated: -((1.2 + 3.4) / 5.6)](15.虚拟机/chunk.png)
 
 <img src="image/a-virtual-machine/chunk.png" alt="The expression being
 evaluated: -((1.2 + 3.4) / 5.6)" />
@@ -934,6 +931,7 @@ generate it for us.
 
 1.  What bytecode instruction sequences would you generate for the following
     expressions:
+    你会为以下表达式生成什么样的*字节码*指令序列：
 
     ```lox
     1 * 2 + 3
@@ -956,11 +954,11 @@ generate it for us.
     ```
 
     First, without using `OP_NEGATE`. Then, without using `OP_SUBTRACT`.
+    首先是不能使用 `OP_NEGATE`。然后，试一下不使用`OP_SUBTRACT`。
 
     Given the above, do you think it makes sense to have both instructions? Why
     or why not? Are there any other redundant instructions you would consider
     including?
-    首先是不能使用 `OP_NEGATE`。然后，试一下不使用`OP_SUBTRACT`。
     综上所述，你认为同时拥有这两条指令有意义吗？为什么呢？还有没有其它指令可以考虑加入？
 
 3.  Our VM's stack has a fixed size, and we don't check if pushing a value

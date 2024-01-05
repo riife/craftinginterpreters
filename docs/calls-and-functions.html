@@ -689,8 +689,7 @@ absolute stack index by adding the function call&rsquo;s starting slot.
 <p>It&rsquo;s as if the function gets a &ldquo;window&rdquo; or &ldquo;frame&rdquo; within the larger stack where
 it can store its locals. The position of the <strong>call frame</strong> is determined at
 runtime, but within and relative to that region, we know where to find things.
-这就好像是函数在更大的堆栈中得到了一个“窗口”或“帧”，它可以在其中存储局部变量。<strong>调用帧</strong>的位置是在运行时确定的，但在该区域内部及其相对位置上，我们知道在哪里可以找到目标。
-<img src="24.调用和函数/window.png" alt="The stack at the two points when second() is called, with a window hovering over each one showing the pair of stack slots used by the function." /></p><img src="image/calls-and-functions/window.png" alt="The stack at the two points when second() is called, with a window hovering over each one showing the pair of stack slots used by the function." />
+这就好像是函数在更大的堆栈中得到了一个“窗口”或“帧”，它可以在其中存储局部变量。<strong>调用帧</strong>的位置是在运行时确定的，但在该区域内部及其相对位置上，我们知道在哪里可以找到目标。</p><img src="image/calls-and-functions/window.png" alt="The stack at the two points when second() is called, with a window hovering over each one showing the pair of stack slots used by the function." />
 <p>The historical name for this recorded location where the function&rsquo;s locals start
 is a <strong>frame pointer</strong> because it points to the beginning of the function&rsquo;s call
 frame. Sometimes you hear <strong>base pointer</strong>, because it points to the base stack
@@ -1030,10 +1029,11 @@ infrastructure is there and ready for us now. Let&rsquo;s take advantage of it.
 <p>Before we can do call expressions, we need something to call, so we&rsquo;ll do
 function declarations first. The <span name="fun">fun</span> starts with a
 keyword.
-在我们确实可以调用表达式之前，首先需要一些可以用来调用的东西，所以我们首先要处理函数声明。一切从关键字开始。【译者注：作者这里使用了一个小小的双关，实在不好翻译】</p>
+在我们确实可以调用表达式之前，首先需要一些可以用来调用的东西，所以我们首先要处理函数声明。一切从关键字开始。</p>
 <aside name="fun">
 <p>Yes, I am going to make a dumb joke about the <code>fun</code> keyword every time it
 comes up.</p>
+<p>译者注： 作者这里使用了一个小小的双关，实在不好翻译</p>
 </aside>
 <div class="codehilite"><pre class="insert-before">static void declaration() {
 </pre><div class="source-file"><em>compiler.c</em><br>
@@ -1391,15 +1391,13 @@ parameters.
 从<code>sum()</code>本身的角度来考虑这个问题。当编译器编译<code>sum()</code>时，它自动分配了槽位0。然后，它在该位置后为参数<code>a</code>、<code>b</code>、<code>c</code>依次分配了局部槽。为了执行对<code>sum()</code>的调用，我们需要一个通过被调用函数和可用栈槽区域初始化的CallFrame。然后我们需要收集传递给函数的参数，并将它们放入参数对应的槽中。</p>
 <p>When the VM starts executing the body of <code>sum()</code>, we want its stack window to
 look like this:
-当VM开始执行<code>sum()</code>函数体时，我们需要栈窗口看起来像这样：
-<img src="24.调用和函数/parameter-window.png" alt="The same stack with the sum() function&rsquo;s call frame window surrounding fn sum, 5, 6, and 7." /></p><img src="image/calls-and-functions/parameter-window.png" alt="The same stack with the sum() function's call frame window surrounding fn sum, 5, 6, and 7." />
+当VM开始执行<code>sum()</code>函数体时，我们需要栈窗口看起来像这样：</p><img src="image/calls-and-functions/parameter-window.png" alt="The same stack with the sum() function's call frame window surrounding fn sum, 5, 6, and 7." />
 <p>Do you notice how the argument slots that the caller sets up and the parameter
 slots the callee needs are both in exactly the right order? How convenient! This
 is no coincidence. When I talked about each CallFrame having its own window into
 the stack, I never said those windows must be <em>disjoint</em>. There&rsquo;s nothing
 preventing us from overlapping them, like this:
-你是否注意到，调用者设置的实参槽和被调用者需要的形参槽的顺序是完全匹配的？多么方便啊！这并非巧合。当我谈到每个CallFrame在栈中都有自己的窗口时，从未说过这些窗口一定是不相交的。没有什么能阻止我们将它们重叠起来，就像这样：
-<img src="http://www.craftinginterpreters.com/image/calls-and-functions/overlapping-windows.png" alt="The same stack with the top-level call frame covering the entire stack and the sum() function&rsquo;s call frame window surrounding fn sum, 5, 6, and 7." /></p><img src="image/calls-and-functions/overlapping-windows.png" alt="The same stack with the top-level call frame covering the entire stack and the sum() function's call frame window surrounding fn sum, 5, 6, and 7." />
+你是否注意到，调用者设置的实参槽和被调用者需要的形参槽的顺序是完全匹配的？多么方便啊！这并非巧合。当我谈到每个CallFrame在栈中都有自己的窗口时，从未说过这些窗口一定是不相交的。没有什么能阻止我们将它们重叠起来，就像这样：</p><img src="image/calls-and-functions/overlapping-windows.png" alt="The same stack with the top-level call frame covering the entire stack and the sum() function's call frame window surrounding fn sum, 5, 6, and 7." />
 <p><span name="lua">The</span> top of the caller&rsquo;s stack contains the function
 being called followed by the arguments in order. We know the caller doesn&rsquo;t have
 any other slots above those in use because any temporaries needed when

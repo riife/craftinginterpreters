@@ -105,7 +105,8 @@ variables and blocks</a>, we had scoping nice and tight. But when we
 <a href="functions.html">later added closures</a>, a hole opened in our formerly waterproof
 interpreter. Most real programs are unlikely to slip through this hole, but as
 language implementers, we take a sacred vow to care about correctness even in
-the deepest, dampest corners of the semantics.</p>
+the deepest, dampest corners of the semantics.
+哦，不! 我们的语言实现正在进水! 在我们刚<a href="statements-and-state.html">添加变量和代码块时</a>，我们把作用域控制的很好很严密。但是当我们后来<a href="functions.html">添加闭包之后</a>，我们以前防水的解释器上就出现了一个洞。大多数真正的程序都不可能从这个洞里溜走，但是作为语言实现者，我们要立下神圣的誓言，即使在语义的最深处、最潮湿的角落里也要关心正确性。</p>
 <p>We will spend this entire chapter exploring that leak, and then carefully
 patching it up. In the process, we will gain a more rigorous understanding of
 lexical scoping as used by Lox and other languages in the C tradition. We&rsquo;ll
@@ -270,8 +271,7 @@ function was declared, so it has a reference back to the environment for the
 block.
 我们得到一个对应该代码块的新环境。在这个环境中，我们声明了一个名称<code>showA</code>，它绑定到为表示函数而创建的LoxFunction对象。该对象中有一个<code>closure</code>字段，用于捕获函数声明时的环境，因此它有一个指向该代码块环境的引用。</p>
 <p>Now we call <code>showA()</code>.
-现在我们调用<code>showA()</code>。
-<img src="11.解析和绑定/environment-3.png" alt="An empty environment for showA()&rsquo;s body linking to the previous two. &lsquo;a&rsquo; is resolved in the global environment." /></p><img src="image/resolving-and-binding/environment-3.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
+现在我们调用<code>showA()</code>。</p><img src="image/resolving-and-binding/environment-3.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
 <p>The interpreter dynamically creates a new environment for the function body of
 <code>showA()</code>. It&rsquo;s empty since that function doesn&rsquo;t declare any variables. The
 parent of that environment is the function&rsquo;s closure<span class="em">&mdash;</span>the outer block
@@ -287,8 +287,7 @@ Great.
 <p>It&rsquo;s in the same block<span class="em">&mdash;</span>the same scope<span class="em">&mdash;</span>as <code>showA()</code>, so it goes into the
 same environment, which is also the same environment <code>showA()</code>&rsquo;s closure refers
 to. This is where it gets interesting. We call <code>showA()</code> again.
-它和<code>showA()</code>在同一个代码块中——同一个作用域，所以它进入了同一个环境，也就是<code>showA()</code>的闭包所指向的环境。这就是有趣的地方了。我们再次调用<code>showA()</code>。
-<img src="11.解析和绑定/environment-5.png" alt="An empty environment for showA()&rsquo;s body linking to the previous two. &lsquo;a&rsquo; is resolved in the block environment." /></p><img src="image/resolving-and-binding/environment-5.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
+它和<code>showA()</code>在同一个代码块中——同一个作用域，所以它进入了同一个环境，也就是<code>showA()</code>的闭包所指向的环境。这就是有趣的地方了。我们再次调用<code>showA()</code>。</p><img src="image/resolving-and-binding/environment-5.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
 <p>We create a new empty environment for the body of <code>showA()</code> again, wire it up to
 that closure, and run the body. When the interpreter walks the chain of
 environments to find <code>a</code>, it now discovers the <em>new</em> <code>a</code> in the block
@@ -395,13 +394,11 @@ throw out a bunch of mostly fine code.
 <p>Instead, we&rsquo;ll store the resolution in a way that makes the most out of our
 existing Environment class. Recall how the accesses of <code>a</code> are interpreted in
 the problematic example.
-相对地，我们将以最充分利用现有Environment类的方式来存储解析结果。回想一下，在有问题的例子中，<code>a</code>的访问是如何被解释的。
-<img src="http://craftinginterpreters.com/image/resolving-and-binding/environment-3.png" alt="An empty environment for showA()&rsquo;s body linking to the previous two. &lsquo;a&rsquo; is resolved in the global environment." /></p><img src="image/resolving-and-binding/environment-3.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
+相对地，我们将以最充分利用现有Environment类的方式来存储解析结果。回想一下，在有问题的例子中，<code>a</code>的访问是如何被解释的。</p><img src="image/resolving-and-binding/environment-3.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
 <p>In the first (correct) evaluation, we look at three environments in the chain
 before finding the global declaration of <code>a</code>. Then, when the inner <code>a</code> is later
 declared in a block scope, it shadows the global one.
-在第一次（正确的）求值中，我们会检查链中的环境，并找到<code>a</code>的全局声明。然后，当内部的<code>a</code>在块作用域中声明时，它会遮蔽全局的变量<code>a</code>。
-<img src="http://craftinginterpreters.com/image/resolving-and-binding/environment-5.png" alt="An empty environment for showA()&rsquo;s body linking to the previous two. &lsquo;a&rsquo; is resolved in the block environment." /></p><img src="image/resolving-and-binding/environment-5.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
+在第一次（正确的）求值中，我们会检查链中的环境，并找到<code>a</code>的全局声明。然后，当内部的<code>a</code>在块作用域中声明时，它会遮蔽全局的变量<code>a</code>。</p><img src="image/resolving-and-binding/environment-5.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
 <p>The next lookup walks the chain, finds <code>a</code> in the <em>second</em> environment and
 stops there. Each environment corresponds to a single lexical scope where
 variables are declared. If we could ensure a variable lookup always walked the
@@ -595,8 +592,7 @@ more dynamic in Lox. When resolving a variable, if we can&rsquo;t find it in the
 of local scopes, we assume it must be global.
 作用域栈只用于局部块作用域。解析器不会跟踪在全局作用域的顶层声明的变量，因为它们在Lox中是更动态的。当解析一个变量时，如果我们在本地作用域栈中找不到它，我们就认为它一定是全局的。</p>
 <p>Since scopes are stored in an explicit stack, exiting one is straightforward.
-由于作用域被存储在一个显式的栈中，退出作用域很简单。
-<u><em>lox/Resolver.java，在 beginScope()方法后添加：</em></u></p>
+由于作用域被存储在一个显式的栈中，退出作用域很简单。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Resolver.java</em><br>
 add after <em>beginScope</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">void</span> <span class="i">endScope</span>() {
@@ -1050,8 +1046,7 @@ the user&rsquo;s program. It may be hard to find all of the bits of state that n
 recalculating when they&rsquo;re hiding in the foliage of the syntax tree. A benefit
 of storing this data outside of the nodes is that it makes it easy to <em>discard</em>
 it<span class="em">&mdash;</span>simply clear the map.
-像IDE这种的交互式工具经常会增量地对用户的部分代码进行重新分析和解析。当这些状态隐藏在语法树的枝叶中时，可能很难找到所有需要重新计算的状态。将这些数据存储在节点之外的好处之一就是，可以很容易地丢弃这部分数据——只需要清除map即可。
-<em>lox/Interpreter.java</em>，在 <em>Interpreter</em>类中添加</p>
+像IDE这种的交互式工具经常会增量地对用户的部分代码进行重新分析和解析。当这些状态隐藏在语法树的枝叶中时，可能很难找到所有需要重新计算的状态。将这些数据存储在节点之外的好处之一就是，可以很容易地丢弃这部分数据——只需要清除map即可。</p>
 <div class="codehilite"><pre class="insert-before">  private Environment environment = globals;
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
 in class <em>Interpreter</em></div>
@@ -1444,11 +1439,13 @@ variables differently? Do you agree with their choices? Justify your answer.
 <p>Our resolver calculates <em>which</em> environment the variable is found in, but
 it&rsquo;s still looked up by name in that map. A more efficient environment
 representation would store local variables in an array and look them up by
-index.</p>
+index.
+我们的解析器会计算出变量是在哪个环境中找到的，但是它仍然需要根据名称在对应的map中查找。一个更有效的环境表示形式是将局部变量保存在一个数组中，并通过索引来查找它们。</p>
 <p>Extend the resolver to associate a unique index for each local variable
 declared in a scope. When resolving a variable access, look up both the
 scope the variable is in and its index and store that. In the interpreter,
-use that to quickly access a variable by its index instead of using a map.</p>
+use that to quickly access a variable by its index instead of using a map.
+扩展解析器，为作用域中声明的每个局部变量关联一个唯一的索引。当解析一个变量的访问时，查找变量所在的作用域及对应的索引，并保存起来。在解释器中，使用这个索引快速的访问一个变量。</p>
 </li>
 </ol>
 </div>

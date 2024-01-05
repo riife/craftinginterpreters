@@ -727,7 +727,6 @@ function references a local variable declared several hops away, we'll thread it
 through all of the intermediate functions by having each function capture an
 upvalue for the next function to grab.
 解决方案是允许闭包捕获局部变量或紧邻函数中*已有的上值*。如果一个深度嵌套的函数引用了几跳之外声明的局部变量，我们让每个函数捕获一个上值，供下一个函数抓取，从而穿透所有的中间函数。
-![An upvalue in inner() points to an upvalue in middle(), which points to a local variable in outer().](25.闭包/linked-upvalues.png)
 
 <img src="image/closures/linked-upvalues.png" alt="An upvalue in inner() points to an upvalue in middle(), which points to a local variable in outer()."/>
 
@@ -797,7 +796,6 @@ that variable is actually declared.
 
 It might help to walk through the original example when resolving `x`:
 在解析`x`的时候，走一遍原始的例子可能会有帮助：
-![Tracing through a recursive call to resolveUpvalue().](25.闭包/recursion.png)
 
 <img src="image/closures/recursion.png" alt="Tracing through a recursive call to resolveUpvalue()."/>
 

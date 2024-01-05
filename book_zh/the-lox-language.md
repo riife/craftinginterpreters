@@ -666,6 +666,11 @@ of downy hairs around semantics, so let's sharpen our words. From here on out:
     the body of the function. Thus, a function *declaration* has a *parameter*
     list. Others call these **formal parameters** or simply **formals**.
 
+现在是澄清一些术语的好时机。有些人把 "parameter "和 "argument "混为一谈，好像它们可以互换，而对许多人来说，它们确实可以互换。我们要花很多时间围绕语义学来对其进行分辨，所以让我们在这里把话说清楚：
+
+*   **argument**是你在调用函数时传递给它的实际值。所以一个函数*调用*有一个*argument*列表。有时你会听到有人用**实际参数**指代这些参数。
+*   **parameter**是一个变量，用于在函数的主体里面存放参数的值。因此，一个函数*声明*有一个*parameter*列表。也有人把这些称为**形式参数**或者干脆称为**形参**。
+
 <aside name="define">
 
 Speaking of terminology, some statically typed languages like C make a
@@ -814,6 +819,7 @@ is still pretty rad. Billions of lines of successful code have been written in
 OOP languages, shipping millions of apps to happy users. Likely a majority of
 working programmers today are using an object-oriented language. They can't all
 be *that* wrong.
+90年代的 "一直都是继承 "的狂潮确实产生了一些畸形的类层次结构，但面向对象的编程还是很流行的。数十亿行成功的代码都是用OOP语言编写的，为用户提供了数百万个应用程序。很可能今天大多数在职程序员都在使用面向对象语言。他们不可能都错得那么离谱。
 
 In particular, for a dynamically typed language, objects are pretty handy. We
 need *some* way of defining compound data types to bundle blobs of stuff

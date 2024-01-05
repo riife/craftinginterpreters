@@ -133,8 +133,6 @@ I have designed our little AST metaprogramming script in anticipation of this.
 That's why we passed in "Expr" as a parameter to `defineAst()`. Now we add
 another call to define Stmt and its <span name="stmt-ast">subclasses</span>.
 这意味着要为语句创建一个新的基类。正如我们的前辈那样，我们将使用“Stmt”这个隐秘的名字。我很有远见，在设计我们的AST元编程脚本时就已经预见到了这一点。这就是为什么我们把“Expr”作为参数传给了`defineAst()`。现在我们添加另一个方法调用来定义`Stmt`和它的子类。
-*
-新节点对应的生成代码可以参考附录： [Appendix II](http://craftinginterpreters.com/appendix-ii.html): [Expression statement](http://craftinginterpreters.com/appendix-ii.html#expression-statement), [Print statement](http://craftinginterpreters.com/appendix-ii.html#print-statement).
 
 <aside name="foresight">
 
@@ -295,7 +293,6 @@ on this tiny helper method:
 That's the statement analogue to the `evaluate()` method we have for
 expressions. Since we're working with lists now, we need to let Java know.
 这类似于处理表达式的`evaluate()`方法，这是这里处理语句。因为我们要使用列表，所以我们需要在Java中引入一下。
-<u>*lox/Interpreter.java*</u>
 
 ^code import-list (2 before, 2 after)
 
@@ -843,8 +840,6 @@ should be pure math that produces values -- crystalline, unchanging ones -- like
 an act of divine creation. Not some grubby automaton that beats blobs of data
 into shape, one imperative grunt at a time.
 更改变量是一种副作用，顾名思义，一些语言专家认为副作用是肮脏或不优雅的。代码应该是纯粹的数学，它会产生值——纯净的、不变的值——就像上帝造物一样。而不是一些肮脏的自动机器，将数据块转换成各种形式，一次执行一条命令。
-Lox is not so austere. Lox is an imperative language, and mutation comes with the territory. Adding support for assignment doesn’t require much work. Global variables already support redefinition, so most of the machinery is there now. Mainly, we’re missing an explicit assignment notation.
-Lox没有这么严苛。Lox是一个命令式语言，可变性是与生俱来的，添加对赋值操作的支持并不需要太多工作。全局变量已经支持了重定义，所以该机制的大部分功能已经存在。主要的是，我们缺少显式的赋值符号。
 
 <aside name="pure">
 
@@ -860,6 +855,7 @@ Lox is not so austere. Lox is an imperative language, and mutation comes with
 the territory. Adding support for assignment doesn't require much work. Global
 variables already support redefinition, so most of the machinery is there now.
 Mainly, we're missing an explicit assignment notation.
+Lox没有这么严苛。Lox是一个命令式语言，可变性是与生俱来的，添加对赋值操作的支持并不需要太多工作。全局变量已经支持了重定义，所以该机制的大部分功能已经存在。主要的是，我们缺少显式的赋值符号。
 
 ### 赋值语法
 
@@ -1184,8 +1180,6 @@ This is in contrast to **dynamic scope** where you don't know what a name refers
 to until you execute the code. Lox doesn't have dynamically scoped *variables*,
 but methods and fields on objects are dynamically scoped.
 这与**动态作用域**形成了对比，在动态作用域中，直到执行代码时才知道名称指向的是什么。Lox没有动态作用域*变量*，但是对象上的方法和字段是动态作用域的。
-When `playIt()` calls `thing.play()`, we don’t know if we’re about to hear “Careless Whisper” or “Fore!” It depends on whether you pass a Saxophone or a GolfClub to the function, and we don’t know that until runtime.
-当`playIt()`调用`thing.play()`时，我们不知道我们将要听到的是 "Careless Whisper" 还是 "Fore!" 。这取决于你向函数传递的是Saxophone还是GolfClub，而我们在运行时才知道这一点。
 
 ```lox
 class Saxophone {
@@ -1208,6 +1202,7 @@ fun playIt(thing) {
 When `playIt()` calls `thing.play()`, we don't know if we're about to hear
 "Careless Whisper" or "Fore!" It depends on whether you pass a Saxophone or a
 GolfClub to the function, and we don't know that until runtime.
+当`playIt()`调用`thing.play()`时，我们不知道我们将要听到的是 "Careless Whisper" 还是 "Fore!" 。这取决于你向函数传递的是Saxophone还是GolfClub，而我们在运行时才知道这一点。
 
 Scope and environments are close cousins. The former is the theoretical concept,
 and the latter is the machinery that implements it. As our interpreter works its

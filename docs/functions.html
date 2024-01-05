@@ -289,7 +289,8 @@ implicitly passed to the method, so it claims one of the slots.
 <p>Our Java interpreter for Lox doesn&rsquo;t really need a limit, but having a maximum
 number of arguments will simplify our bytecode interpreter in <a href="a-bytecode-virtual-machine.html">Part III</a>. We
 want our two interpreters to be compatible with each other, even in weird corner
-cases like this, so we&rsquo;ll add the same limit to jlox.</p>
+cases like this, so we&rsquo;ll add the same limit to jlox.
+Lox的Java解释器实际上并不需要限制，但是设置一个最大的参数数量限制可以简化<a href="a-bytecode-virtual-machine.html">第三部分</a>中的字节码解释器。即使是在这样奇怪的地方里，我们也希望两个解释器能够相互兼容，所以我们为jlox添加同样的限制。</p>
 <div class="codehilite"><pre class="insert-before">      do {
 </pre><div class="source-file"><em>lox/Parser.java</em><br>
 in <em>finishCall</em>()</div>
@@ -311,8 +312,7 @@ keepin&rsquo; on.
 <p>We don&rsquo;t have any functions we can call, so it seems weird to start implementing
 calls first, but we&rsquo;ll worry about that when we get there. First, our
 interpreter needs a new import.
-我们还没有任何可以调用的函数，所以先实现函数调用似乎有点奇怪，但是这个问题我们后面再考虑。首先，我们的解释器需要引入一个新依赖。
-<u>lox/Interpreter.java</u></p>
+我们还没有任何可以调用的函数，所以先实现函数调用似乎有点奇怪，但是这个问题我们后面再考虑。首先，我们的解释器需要引入一个新依赖。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em></div>
 <pre class="insert"><span class="k">import</span> <span class="i">java.util.ArrayList</span>;
 </pre><pre class="insert-after">import java.util.List;
@@ -396,11 +396,6 @@ Java string, so when we cast that to LoxCallable, the JVM will throw a
 ClassCastException. We don&rsquo;t want our interpreter to vomit out some nasty Java
 stack trace and die. Instead, we need to check the type ourselves first.
 在Lox中，字符串不是可调用的数据类型。Lox字符串在运行时中的本质其实是java字符串，所以当我们把它当作<code>LoxCallable</code> 处理的时候，JVM就会抛出<code>ClassCastException</code>。我们并不想让我们的解释器吐出一坨java堆栈信息然后挂掉。所以，我们自己必须先做一次类型检查。</p>
-<ul>
-<li></li>
-</ul>
-<p>We still throw an exception, but now we’re throwing our own exception type, one that the interpreter knows to catch and report gracefully.
-我们的实现同样也是抛出错误，但它们能够被解释器捕获并优雅地展示出来。</p>
 <div class="codehilite"><pre class="insert-before">    }
 
 </pre><div class="source-file"><em>lox/Interpreter.java</em><br>
@@ -415,7 +410,8 @@ in <em>visitCallExpr</em>()</div>
 <div class="source-file-narrow"><em>lox/Interpreter.java</em>, in <em>visitCallExpr</em>()</div>
 
 <p>We still throw an exception, but now we&rsquo;re throwing our own exception type, one
-that the interpreter knows to catch and report gracefully.</p>
+that the interpreter knows to catch and report gracefully.
+我们的实现同样也是抛出错误，但它们能够被解释器捕获并优雅地展示出来。</p>
 <h3><a href="#checking-arity--检查元数" id="checking-arity--检查元数"><small>10&#8202;.&#8202;1&#8202;.&#8202;4</small>Checking arity  检查元数</a></h3>
 <p>The other problem relates to the function&rsquo;s <strong>arity</strong>. Arity is the fancy term
 for the number of arguments a function or operation expects. Unary operators
@@ -1236,8 +1232,7 @@ seem crazy, but users do expect it to work. Alas, if you run it now, you get an
 undefined variable error in the call to <code>counter()</code> when the body of <code>count()</code>
 tries to look up <code>i</code>. That&rsquo;s because the environment chain in effect looks like
 this:
-如果你以前从未遇到过带有嵌套函数的语言，那么这可能看起来很疯狂，但用户确实希望它能工作。唉，如果你现在运行它，当<code>count()</code>的函数体试图查找<code>i</code>时，会在对<code>counter()</code>的调用中得到一个未定义的变量错误，这是因为当前的环境链看起来像是这样的：
-<img src="10.函数/global.png" alt="The environment chain from count()&rsquo;s body to the global scope." /></p><img src="image/functions/global.png" alt="The environment chain from count()'s body to the global scope." />
+如果你以前从未遇到过带有嵌套函数的语言，那么这可能看起来很疯狂，但用户确实希望它能工作。唉，如果你现在运行它，当<code>count()</code>的函数体试图查找<code>i</code>时，会在对<code>counter()</code>的调用中得到一个未定义的变量错误，这是因为当前的环境链看起来像是这样的：</p><img src="image/functions/global.png" alt="The environment chain from count()'s body to the global scope." />
 <p>When we call <code>count()</code> (through the reference to it stored in <code>counter</code>), we
 create a new empty environment for the function body. The parent of that is the
 global environment. We lost the environment for <code>makeCounter()</code> where <code>i</code> is
@@ -1245,8 +1240,7 @@ bound.
 当我们调用<code>count()</code>时（通过<code>counter</code>中保存的引用），我们会为函数体创建一个新的空环境，它的父环境就是全局环境。我们丢失了<code>i</code>所在的<code>makeCounter()</code>环境。</p>
 <p>Let&rsquo;s go back in time a bit. Here&rsquo;s what the environment chain looked like right
 when we declared <code>count()</code> inside the body of <code>makeCounter()</code>:
-我们把时间往回拨一点。我们在<code>makeCounter()</code>的函数体中声明<code>count()</code>时，环境链的样子是下面这样：
-<img src="10.函数/body.png" alt="The environment chain inside the body of makeCounter()." /></p><img src="image/functions/body.png" alt="The environment chain inside the body of makeCounter()." />
+我们把时间往回拨一点。我们在<code>makeCounter()</code>的函数体中声明<code>count()</code>时，环境链的样子是下面这样：</p><img src="image/functions/body.png" alt="The environment chain inside the body of makeCounter()." />
 <p>So at the point where the function is declared, we can see <code>i</code>. But when we
 return from <code>makeCounter()</code> and exit its body, the interpreter discards that
 environment. Since the interpreter doesn&rsquo;t keep the environment surrounding
@@ -1323,7 +1317,8 @@ example now. It works!
 powerful than the rudimentary arithmetic calculator it used to be. Alas, in our
 rush to cram closures in, we have let a tiny bit of dynamic scoping leak into
 the interpreter. In the <a href="resolving-and-binding.html">next chapter</a>, we will explore deeper into lexical
-scope and close that hole.</p>
+scope and close that hole.
+函数让我们对代码进行抽象、重用和编排。Lox比之前的初级算术计算器要强大得多。唉，在我们匆匆忙忙支持闭包时，已经让一小部分动态作用域泄露到解释器中了。在<a href="resolving-and-binding.html">下一章</a>中，我们将深入探索词法作用域，堵住这个漏洞。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>

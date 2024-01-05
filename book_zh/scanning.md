@@ -219,9 +219,9 @@ it. Before we get to that, let's get more precise about what tokens are.
 有了一些基本的错误处理，我们的应用程序外壳已经准备好了。一旦我们有了一个带有 `scanTokens()` 方法的 Scanner 类，我们就可以开始运行它了。在我们开始之前，让我们更精确地了解什么是标记（tokens）。
 
 ## 词素和标记（词法单元）
-下面是一行lox代码：
 
 Here's a line of Lox code:
+下面是一行lox代码：
 
 ```lox
 var language = "lox";
@@ -379,6 +379,7 @@ regexes if you want to, and there's a pile of interesting theory underlying why
 that is and what it means. Tools like [Lex][] or
 [Flex][] are designed expressly to let you do this -- throw a handful of regexes
 at them, and they give you a complete scanner <span name="lex">back</span>.
+如果你愿意，你可以非常精确地使用正则表达式来识别Lox的所有不同词组，而且还有一堆有趣的理论来支撑着为什么会这样以及它的意义。像[Lex][]或[Flex][]这样的工具就是专门为实现这一功能而设计的——向其中传入一些正则表达式，它可以为您提供完整的扫描器。
 
 <aside name="lex">
 
@@ -398,9 +399,9 @@ delegating that task. We're about handcrafted goods.
 由于我们的目标是了解扫描器是如何工作的，所以我们不会把这个任务交给正则表达式。我们要亲自动手实现。
 
 ## Scanner类
-事不宜迟，我们先来建一个扫描器吧。
 
 Without further ado, let's make ourselves a scanner.
+事不宜迟，我们先来建一个扫描器吧。
 
 ^code scanner-class
 
@@ -619,7 +620,6 @@ We'll do strings first, since they always begin with a specific character, `"`.
 
 That calls:
 这里会调用：
-*lox/Scanner.java*，在 *scanToken*()方法之后添加：
 
 ^code string
 
@@ -682,6 +682,7 @@ what you do, some case ends up weird.
 ```
 
 We don't allow a leading or trailing decimal point, so these are both invalid:
+我们不允许使用小数点前或小数点后的数字，因此这两个数字都是无效的：
 
 ```lox
 .1234
@@ -843,7 +844,6 @@ That gets identifiers working. To handle keywords, we see if the identifier's
 lexeme is one of the reserved words. If so, we use a token type specific to that
 keyword. We define the set of reserved words in a map.
 这样标识符就开始工作了。为了处理关键字，我们要查看标识符的词素是否是保留字之一。如果是，我们就使用该关键字特有的标记类型。我们在map中定义保留字的集合。
-<u>*lox/Scanner.java，在 Scanner类中添加：</u>
 
 ^code keyword-map
 
@@ -870,7 +870,6 @@ and see if it handles them as it should.
 1.  The lexical grammars of Python and Haskell are not *regular*. What does that
     mean, and why aren't they?
     Python和Haskell的语法不是*常规的*。 这是什么意思，为什么不是呢？
-* Python和Haskell都采用了对缩进敏感的语法，所以它们必须将缩进级别的变动识别为词法标记。这样做需要比较连续行的开头空格数量，这是使用常规语法无法做到的。
 
 1.  Aside from separating tokens -- distinguishing `print foo` from `printfoo`
     -- spaces aren't used for much in most languages. However, in a couple of

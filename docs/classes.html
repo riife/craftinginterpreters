@@ -132,7 +132,8 @@ closer, details emerge and I gain a more nuanced perspective.
 came first and are the most popular style. With the rise of JavaScript (and to a
 lesser extent <a href="https://www.lua.org/pil/13.4.1.html">Lua</a>), prototypes are more widely known than they used to be.
 I&rsquo;ll talk more about those <a href="#design-note">later</a>. For Lox, we&rsquo;re taking the, ahem, classic
-approach.</p>
+approach.
+面向对象编程有三大途径：类(classes)、<a href="http://gameprogrammingpatterns.com/prototype.html">原型(prototypes)</a>和<a href="https://en.wikipedia.org/wiki/Multiple_dispatch">多方法(multimethods)</a>。类排在第一位，是最流行的风格。随着JavaScript（其次是<a href="https://www.lua.org/pil/13.4.1.html">Lua</a>）的兴起，原型也比以前更加广为人知。稍后我们会更多地讨论这些问题。对于Lox，我们采取的是经典的方法。</p>
 <aside name="multimethods">
 <p>Multimethods are the approach you&rsquo;re least likely to be familiar with. I&rsquo;d love
 to talk more about them<span class="em">&mdash;</span>I designed <a href="http://magpie-lang.org/">a hobby language</a> around them
@@ -167,7 +168,8 @@ operate on each instances&rsquo; state.
 back to Simula, also do inheritance to reuse behavior across classes. We&rsquo;ll add
 that in the <a href="inheritance.html">next chapter</a>. Even kicking that out, we still have a
 lot to get through. This is a big chapter and everything doesn&rsquo;t quite come
-together until we have all of the above pieces, so gather your stamina.</p>
+together until we have all of the above pieces, so gather your stamina.
+这大概是最低要求。大多数面向对象的语言（一直追溯到Simula），也都是通过继承来跨类重用行为。我们会在<a href="inheritance.html">下一章</a>中添加该功能。即使剔除了这些，我们仍然有很多东西需要完成。这是一个很大的章节，直到我们完成上述所有内容之后，才能把所有东西整合到一起。所以请集中精力。</p>
 <aside name="circle"><img src="image/classes/circle.png" alt="The relationships between classes, methods, instances, constructors, and fields." />
 <p>It&rsquo;s like the circle of life, <em>sans</em> Sir Elton John.
 这就像生命的轮回，<em>除了</em> Elton John 爵士。</p>
@@ -280,7 +282,10 @@ class body.
 <p>We wrap the name and list of methods into a Stmt.Class node and we&rsquo;re done.
 Previously, we would jump straight into the interpreter, but now we need to
 plumb the node through the resolver first.
-我们将名称和方法列表封装到Stmt.Class节点中，这样就完成了。以前，我们会直接进入解释器中，但是现在我们需要先进入分析器中对节点进行分析。【译者注：为了区分parse和resolve，这里将resolver称为分析器，用于对代码中的变量进行分析】</p>
+<span name="resolver_zh"></span>我们将名称和方法列表封装到Stmt.Class节点中，这样就完成了。以前，我们会直接进入解释器中，但是现在我们需要先进入分析器中对节点进行分析。</p>
+<aside name="resolver_zh">
+<p>译者注：为了区分parse和resolve，这里将resolver称为分析器，用于对代码中的变量进行分析</p>
+</aside>
 <div class="codehilite"><div class="source-file"><em>lox/Resolver.java</em><br>
 add after <em>visitBlockStmt</em>()</div>
 <pre>  <span class="a">@Override</span>
@@ -529,8 +534,7 @@ in <em>call</em>()</div>
 <p>The outer <code>while</code> loop there corresponds to the <code>*</code> in the grammar rule. We zip
 along the tokens building up a chain of calls and gets as we find parentheses
 and dots, like so:
-外面的<code>while</code>循环对应于语法规则中的<code>*</code>。随着查找括号和点，我们会沿着标记构建一系列的call和get，就像：
-<img src="12.类/zip.png" alt="Parsing a series of &lsquo;.&rsquo; and &lsquo;()&rsquo; expressions to an AST." /></p><img src="image/classes/zip.png" alt="Parsing a series of '.' and '()' expressions to an AST." />
+外面的<code>while</code>循环对应于语法规则中的<code>*</code>。随着查找括号和点，我们会沿着标记构建一系列的call和get，就像：</p><img src="image/classes/zip.png" alt="Parsing a series of '.' and '()' expressions to an AST." />
 <p>Instances of the new Expr.Get node feed into the resolver.
 新的Expr.Get节点实例会被送入分析器。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Resolver.java</em><br>
@@ -790,8 +794,7 @@ need behavior<span class="em">&mdash;</span>methods.
 also don&rsquo;t need to add any new parser support for method <em>calls</em>. We already
 have <code>.</code> (getters) and <code>()</code> (function calls). A &ldquo;method call&rdquo; simply chains
 those together.
-我们的解析器已经解析了方法声明，所以我们在这部分做的不错。我们也不需要为方法<em>调用</em>添加任何新的解析器支持。我们已经有了<code>.</code>(getter)和<code>()</code>(函数调用)。“方法调用”只是简单地将这些串在一起。
-<img src="12.类/method.png" alt="The syntax tree for &lsquo;object.method(argument)" /></p><img src="image/classes/method.png" alt="The syntax tree for 'object.method(argument)" />
+我们的解析器已经解析了方法声明，所以我们在这部分做的不错。我们也不需要为方法<em>调用</em>添加任何新的解析器支持。我们已经有了<code>.</code>(getter)和<code>()</code>(函数调用)。“方法调用”只是简单地将这些串在一起。</p><img src="image/classes/method.png" alt="The syntax tree for 'object.method(argument)" />
 <p>That raises an interesting question. What happens when those two expressions are
 pulled apart? Assuming that <code>method</code> in this example is a method on the class of
 <code>object</code> and not a field on the instance, what should the following piece of
@@ -1667,7 +1670,8 @@ interpreter has grown an entire programming paradigm. Classes, methods, fields,
 <p>We have methods on instances, but there is no way to define &ldquo;static&rdquo; methods
 that can be called directly on the class object itself. Add support for
 them. Use a <code>class</code> keyword preceding the method to indicate a static method
-that hangs off the class object.</p>
+that hangs off the class object.
+我们有实例上的方法，但是没有办法定义可以直接在类对象上调用的“静态”方法。添加对它们的支持，在方法之前使用<code>class</code>关键字指示该方法是一个挂载在类对象上的静态方法。</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="t">Math</span> {
   <span class="k">class</span> <span class="i">square</span>(<span class="i">n</span>) {
     <span class="k">return</span> <span class="i">n</span> * <span class="i">n</span>;

@@ -28,7 +28,6 @@ with using variables, if variables go slow, everything goes slow. For clox,
 we'll improve that by using a much more efficient strategy for <span
 name="different">local</span> variables, but globals aren't as easily optimized.
 但它也很慢。每次进入一个代码块或调用一个函数时，都要分配一个新的哈希表，这不是通往快速虚拟机的道路。鉴于很多代码都与使用变量有关，如果变量操作缓慢，一切都会变慢。对于clox，我们会通过对局部变量使用更有效的策略来改善这一点，但全局变量不那么容易优化。
-This is a common meta-strategy in sophisticated language implementations. Often, the same language feature will have multiple implementation techniques, each tuned for different use patterns. For example, JavaScript VMs often have a faster representation for objects that are used more like instances of classes compared to other objects whose set of properties is more freely modified. C and C++ compilers usually have a variety of ways to compile `switch` statements based on the number of cases and how densely packed the case values are.
 
 <aside name="different">
 
@@ -653,7 +652,6 @@ bytecode for the whole thing.
 
 The problem is not as dire as it might seem, though. Look at how the parser sees that example:
 不过，这个问题并不像看上去那么可怕。看看解析器是如何处理这个例子的：
-![The 'menu.brunch(sunday).beverage = "mimosa"' statement, showing that 'menu.brunch(sunday)' is an expression.](21.全局变量/setter.png)
 
 <img src="image/global-variables/setter.png" alt="The 'menu.brunch(sunday).beverage = &quot;mimosa&quot;' statement, showing that 'menu.brunch(sunday)' is an expression." />
 
@@ -735,7 +733,6 @@ a * b = c + d;
 According to Lox's grammar, `=` has the lowest precedence, so this should be
 parsed roughly like:
 根据Lox语法，`=`的优先级最低，所以这大致应该解析为：
-![The expected parse, like '(a * b) = (c + d)'.](21.全局变量/ast-good.png)
 
 <img src="image/global-variables/ast-good.png" alt="The expected parse, like '(a * b) = (c + d)'." />
 
@@ -768,7 +765,6 @@ a terrible idea.
 
 In other words, the parser sees the above code like:
 换句话说，解析器将上面的代码看作：
-![The actual parse, like 'a * (b = c + d)'.](21.全局变量/ast-bad.png)
 
 <img src="image/global-variables/ast-bad.png" alt="The actual parse, like 'a * (b = c + d)'." />
 
@@ -857,36 +853,31 @@ function type.
 And some completely tedious code to accept this parameter in all of our existing
 parse functions. Here:
 还有一些非常乏味的代码，为了在所有的现有解析函数中接受这个参数。这里：
-*
-这里:
-*
-这里:
-*
-这里:
-*
-还有这里:
-*
-最后:
 
 ^code binary (1 after)
 
 And here:
+这里:
 
 ^code parse-literal (1 after)
 
 And here:
+这里:
 
 ^code grouping (1 after)
 
 And here:
+这里:
 
 ^code number (1 after)
 
 And here too:
+还有这里:
 
 ^code string (1 after)
 
 And, finally:
+最后:
 
 ^code unary (1 after)
 

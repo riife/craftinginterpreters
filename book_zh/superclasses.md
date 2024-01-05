@@ -92,13 +92,18 @@ detect.
 <span name="cycle">A</span> class cannot be its own superclass. Unless you have
 access to a deranged nuclear physicist and a very heavily modified DeLorean, you
 cannot inherit from yourself.
-一个类不能成为它自己的超类。除非你能接触到一个核物理学家和一辆改装过的DeLorean汽车【译者注：电影《回到未来》的梗】，否则你无法继承自己。
+一个类不能成为它自己的超类。除非你能接触到一个核物理学家和一辆改装过的DeLorean汽车，否则你无法继承自己。
+<span name="DeLorean_zh"></span>
 
 <aside name="cycle">
 
 Interestingly, with the way we implement method inheritance, I don't think
 allowing cycles would actually cause any problems in clox. It wouldn't do
 anything *useful*, but I don't think it would cause a crash or infinite loop.
+
+
+
+译者注："一个核物理学家和一辆改装过的DeLorean汽车" 是电影《回到未来》的梗
 
 </aside>
 
@@ -131,7 +136,6 @@ at each ancestor's method table until we found it.
 For example, calling `cook()` on an instance of Cruller sends jlox on this
 journey:
 例如，在Cruller的实例上调用`cook()`方法，jlox会这样做：
-![Resolving a call to cook() in an instance of Cruller means walking the superclass chain.](29.超类/jlox-resolve.png)
 
 <img src="image/superclasses/jlox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller means walking the superclass chain." />
 
@@ -148,7 +152,6 @@ for inheritance at all. By the time the class is declared, the work is done.
 This means inherited method calls are exactly as fast as normal method calls --
 a <span name="two">single</span> hash table lookup.
 新方法则要快得多。当子类被声明时，我们将继承类的所有方法复制到子类自己的方法表中。之后，当我们*调用*某个方法时，从超类继承的任何方法都可以在子类自己的方法表中找到。继承根本不需要做额外的运行时工作。当类被声明时，工作就完成了。这意味着继承的方法和普通方法调用一样快——只需要一次哈希表查询。
-![Resolving a call to cook() in an instance of Cruller which has the method in its own method table.](29.超类/clox-resolve.png)
 
 <img src="image/superclasses/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." />
 
@@ -504,7 +507,6 @@ class Cruller < Doughnut {
 The bytecode emitted for the `super.finish("icing")` expression looks and works
 like this:
 `super.finish("icing")`发出的字节码看起来像是这样的：
-![The series of bytecode instructions for calling super.finish().](29.超类/super-instructions.png)
 
 <img src="image/superclasses/super-instructions.png" alt="The series of bytecode instructions for calling super.finish()." />
 
@@ -669,7 +671,6 @@ expects it to be for a closure call.
 
 With our optimized instructions, things are shuffled a bit:
 在我们优化的指令中，事情有点被打乱：
-![The series of bytecode instructions for calling super.finish() using OP_SUPER_INVOKE.](29.超类/super-invoke.png)
 
 <img src="image/superclasses/super-invoke.png" class="wide" alt="The series of bytecode instructions for calling super.finish() using OP_SUPER_INVOKE." />
 

@@ -217,7 +217,8 @@ that the C specification carves out specific support for it, but I don&rsquo;t k
 that it has a canonical name. It&rsquo;s an example of <a href="https://en.wikipedia.org/wiki/Type_punning"><em>type punning</em></a>, but that
 term is too broad. In the absence of any better ideas, I&rsquo;ll call it <strong>struct
 inheritance</strong>, because it relies on structs and roughly follows how
-single-inheritance of state works in object-oriented languages.</p>
+single-inheritance of state works in object-oriented languages.
+相对地，我们会使用另一种技术。它已经存在了很久，以至于C语言规范为它提供了明确的支持，但我不知道它是否有一个正式的名字。这是一个<a href="https://en.wikipedia.org/wiki/Type_punning">类型双关</a>的例子，但这个术语太宽泛了。鉴于没有更好的想法，我将其称为<strong>结构体继承</strong>，因为它依赖于结构体，并大致遵循了面向对象语言中状态的单继承工作方式。</p>
 <p>Like a tagged union, each Obj starts with a tag field that identifies what kind
 of object it is<span class="em">&mdash;</span>string, instance, etc. Following that are the payload fields.
 Instead of a union with cases for each type, each type is its own separate
@@ -400,11 +401,11 @@ more than once, that expression gets evaluated multiple times.
 突击测试：为什么不直接把这个函数体放在宏中？与其它函数相比，这个函数有什么不同？对，这是因为函数体使用了两次<code>value</code>。宏的展开方式是在主体中形参名称出现的每个地方插入实参<em>表达式</em>。如果一个宏中使用某个参数超过一次，则该表达式就会被求值多次。</p>
 <p>That&rsquo;s bad if the expression has side effects. If we put the body of
 <code>isObjType()</code> into the macro definition and then you did, say,
-如果这个表达式有副作用，那就不好了。如果我们把<code>isObjType()</code>的主体放到宏的定义中，假设你这么使用
-那么它就会从堆栈中弹出两个值！使用函数可以解决这个问题。</p>
+如果这个表达式有副作用，那就不好了。如果我们把<code>isObjType()</code>的主体放到宏的定义中，假设你这么使用</p>
 <div class="codehilite"><pre><span class="a">IS_STRING</span>(<span class="a">POP</span>())
 </pre></div>
-<p>then it would pop two values off the stack! Using a function fixes that.</p>
+<p>then it would pop two values off the stack! Using a function fixes that.
+那么它就会从堆栈中弹出两个值！使用函数可以解决这个问题。</p>
 <p>As long as we ensure that we set the type tag correctly whenever we create an
 Obj of some type, this macro will tell us when it&rsquo;s safe to cast a value to a
 specific object type. We can do that using these:
@@ -880,7 +881,8 @@ memory on the user&rsquo;s behalf. The responsibility to manage memory doesn&rsq
 reclaims unused memory while the program is running. We&rsquo;ve got some other stuff
 to get in place before we&rsquo;re ready to tackle that project. Until then, we are
 living on borrowed time. The longer we wait to add the collector, the harder it
-is to do.</p>
+is to do.
+完整的解决方案是一个<a href="garbage-collection.html">垃圾回收器</a>，在程序运行时回收不使用的内存。在我们准备着手那个项目之前，还有一些其它的事情要做。在那之前，我们只是侥幸运行。我们等待添加收集器的时间越长，它就越难做。</p>
 <aside name="borrowed">
 <p>I&rsquo;ve seen a number of people implement large swathes of their language before
 trying to start on the GC. For the kind of toy programs you typically run while
@@ -988,7 +990,8 @@ in <em>freeVM</em>()</div>
 <div class="source-file-narrow"><em>vm.c</em>, in <em>freeVM</em>()</div>
 
 <p>That empty function we defined <a href="a-virtual-machine.html#an-instruction-execution-machine">way back when</a> finally does something! It
-calls this:</p>
+calls this:
+我们<a href="a-virtual-machine.html#an-instruction-execution-machine">早先</a>定义的空函数终于有了用武之地！它调用了这个方法：</p>
 <div class="codehilite"><pre class="insert-before">void* reallocate(void* pointer, size_t oldSize, size_t newSize);
 </pre><div class="source-file"><em>memory.h</em><br>
 add after <em>reallocate</em>()</div>
@@ -1050,8 +1053,7 @@ and then free the ObjString. Those both use one last memory management macro.
 
 <p>It&rsquo;s a tiny <span name="free">wrapper</span> around <code>reallocate()</code> that
 &ldquo;resizes&rdquo; an allocation down to zero bytes.
-这是围绕<code>reallocate()</code>的一个小包装，可以将分配的内存“调整”为零字节。
-Using <code>reallocate()</code> to free memory might seem pointless. Why not just call <code>free()</code>? Later, this will help the VM track how much memory is still being used. If all allocation and freeing goes through <code>reallocate()</code>, it’s easy to keep a running count of the number of bytes of allocated memory.</p>
+这是围绕<code>reallocate()</code>的一个小包装，可以将分配的内存“调整”为零字节。</p>
 <aside name="free">
 <p>Using <code>reallocate()</code> to free memory might seem pointless. Why not just call
 <code>free()</code>? Later, this will help the VM track how much memory is still being
@@ -1086,15 +1088,14 @@ its mess before exiting. But it doesn&rsquo;t free any objects while the VM is
 running. Later, when it&rsquo;s possible to write longer-running Lox programs, the VM
 will eat more and more memory as it goes, not relinquishing a single byte until
 the entire program is done.
-这样一来，我们的虚拟机就不会再泄露内存了。像一个好的C程序一样，它会在退出之前进行清理。但在虚拟机运行时，它不会释放任何对象。稍后，当可以编写长时间运行的Lox程序时，虚拟机在运行过程中会消耗越来越多的内存，在整个程序完成之前不会释放任何一个字节。
-We won’t address that until we’ve added <a href="http://www.craftinginterpreters.com/garbage-collection.html">a real garbage collector</a>, but this is a big step. We now have the infrastructure to support a variety of different kinds of dynamically allocated objects. And we’ve used that to add strings to clox, one of the most used types in most programming languages. Strings in turn enable us to build another fundamental data type, especially in dynamic languages: the venerable <a href="http://www.craftinginterpreters.com/hash-tables.html">hash table</a>. But that’s for the next chapter . . .
-在添加真正的垃圾收集器之前，我们不会解决这个问题，但这是一个很大的进步。我们现在拥有了支持各种不同类型的动态分配对象的基础设施。我们利用这一点在clox中加入了字符串，这是大多数编程语言中最常用的类型之一。字符串反过来又使我们能够构建另一种基本的数据类型，尤其是在动态语言中：古老的哈希表。但这是下一章的内容了……</p>
+这样一来，我们的虚拟机就不会再泄露内存了。像一个好的C程序一样，它会在退出之前进行清理。但在虚拟机运行时，它不会释放任何对象。稍后，当可以编写长时间运行的Lox程序时，虚拟机在运行过程中会消耗越来越多的内存，在整个程序完成之前不会释放任何一个字节。</p>
 <p>We won&rsquo;t address that until we&rsquo;ve added <a href="garbage-collection.html">a real garbage collector</a>, but this
 is a big step. We now have the infrastructure to support a variety of different
 kinds of dynamically allocated objects. And we&rsquo;ve used that to add strings to
 clox, one of the most used types in most programming languages. Strings in turn
 enable us to build another fundamental data type, especially in dynamic
-languages: the venerable <a href="hash-tables.html">hash table</a>. But that&rsquo;s for the next chapter<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span></p>
+languages: the venerable <a href="hash-tables.html">hash table</a>. But that&rsquo;s for the next chapter<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>
+在添加真正的垃圾收集器之前，我们不会解决这个问题，但这是一个很大的进步。我们现在拥有了支持各种不同类型的动态分配对象的基础设施。我们利用这一点在clox中加入了字符串，这是大多数编程语言中最常用的类型之一。字符串反过来又使我们能够构建另一种基本的数据类型，尤其是在动态语言中：古老的哈希表。但这是下一章的内容了……</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>

@@ -12,6 +12,7 @@ variables and blocks][statements], we had scoping nice and tight. But when we
 interpreter. Most real programs are unlikely to slip through this hole, but as
 language implementers, we take a sacred vow to care about correctness even in
 the deepest, dampest corners of the semantics.
+哦，不! 我们的语言实现正在进水! 在我们刚[添加变量和代码块时][statements]，我们把作用域控制的很好很严密。但是当我们后来[添加闭包之后][functions]，我们以前防水的解释器上就出现了一个洞。大多数真正的程序都不可能从这个洞里溜走，但是作为语言实现者，我们要立下神圣的誓言，即使在语义的最深处、最潮湿的角落里也要关心正确性。
 
 [statements]: statements-and-state.html
 [functions]: functions.html
@@ -227,7 +228,6 @@ block.
 
 Now we call `showA()`.
 现在我们调用`showA()`。
-![An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment.](11.解析和绑定/environment-3.png)
 
 <img src="image/resolving-and-binding/environment-3.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
 
@@ -252,7 +252,6 @@ It's in the same block -- the same scope -- as `showA()`, so it goes into the
 same environment, which is also the same environment `showA()`'s closure refers
 to. This is where it gets interesting. We call `showA()` again.
 它和`showA()`在同一个代码块中——同一个作用域，所以它进入了同一个环境，也就是`showA()`的闭包所指向的环境。这就是有趣的地方了。我们再次调用`showA()`。
-![An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment.](11.解析和绑定/environment-5.png)
 
 <img src="image/resolving-and-binding/environment-5.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
 
@@ -389,7 +388,6 @@ Instead, we'll store the resolution in a way that makes the most out of our
 existing Environment class. Recall how the accesses of `a` are interpreted in
 the problematic example.
 相对地，我们将以最充分利用现有Environment类的方式来存储解析结果。回想一下，在有问题的例子中，`a`的访问是如何被解释的。
-![An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment.](http://craftinginterpreters.com/image/resolving-and-binding/environment-3.png)
 
 <img src="image/resolving-and-binding/environment-3.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
 
@@ -397,7 +395,6 @@ In the first (correct) evaluation, we look at three environments in the chain
 before finding the global declaration of `a`. Then, when the inner `a` is later
 declared in a block scope, it shadows the global one.
 在第一次（正确的）求值中，我们会检查链中的环境，并找到`a`的全局声明。然后，当内部的`a`在块作用域中声明时，它会遮蔽全局的变量`a`。
-![An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment.](http://craftinginterpreters.com/image/resolving-and-binding/environment-5.png)
 
 <img src="image/resolving-and-binding/environment-5.png" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
 
@@ -547,7 +544,6 @@ of local scopes, we assume it must be global.
 
 Since scopes are stored in an explicit stack, exiting one is straightforward.
 由于作用域被存储在一个显式的栈中，退出作用域很简单。
-<u>*lox/Resolver.java，在 beginScope()方法后添加：*</u>
 
 ^code end-scope
 
@@ -862,7 +858,6 @@ recalculating when they're hiding in the foliage of the syntax tree. A benefit
 of storing this data outside of the nodes is that it makes it easy to *discard*
 it -- simply clear the map.
 像IDE这种的交互式工具经常会增量地对用户的部分代码进行重新分析和解析。当这些状态隐藏在语法树的枝叶中时，可能很难找到所有需要重新计算的状态。将这些数据存储在节点之外的好处之一就是，可以很容易地丢弃这部分数据——只需要清除map即可。
-*lox/Interpreter.java*，在 *Interpreter*类中添加
 
 ^code locals-field (1 before, 2 after)
 
@@ -1152,11 +1147,13 @@ surprising that it took this much work to do it.
     it's still looked up by name in that map. A more efficient environment
     representation would store local variables in an array and look them up by
     index.
+    我们的解析器会计算出变量是在哪个环境中找到的，但是它仍然需要根据名称在对应的map中查找。一个更有效的环境表示形式是将局部变量保存在一个数组中，并通过索引来查找它们。
 
     Extend the resolver to associate a unique index for each local variable
     declared in a scope. When resolving a variable access, look up both the
     scope the variable is in and its index and store that. In the interpreter,
     use that to quickly access a variable by its index instead of using a map.
+    扩展解析器，为作用域中声明的每个局部变量关联一个唯一的索引。当解析一个变量的访问时，查找变量所在的作用域及对应的索引，并保存起来。在解释器中，使用这个索引快速的访问一个变量。
 
 </div>
 

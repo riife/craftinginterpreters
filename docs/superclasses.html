@@ -187,11 +187,13 @@ in <em>classDeclaration</em>()</div>
 <p><span name="cycle">A</span> class cannot be its own superclass. Unless you have
 access to a deranged nuclear physicist and a very heavily modified DeLorean, you
 cannot inherit from yourself.
-一个类不能成为它自己的超类。除非你能接触到一个核物理学家和一辆改装过的DeLorean汽车【译者注：电影《回到未来》的梗】，否则你无法继承自己。</p>
+一个类不能成为它自己的超类。除非你能接触到一个核物理学家和一辆改装过的DeLorean汽车，否则你无法继承自己。
+<span name="DeLorean_zh"></span></p>
 <aside name="cycle">
 <p>Interestingly, with the way we implement method inheritance, I don&rsquo;t think
 allowing cycles would actually cause any problems in clox. It wouldn&rsquo;t do
 anything <em>useful</em>, but I don&rsquo;t think it would cause a crash or infinite loop.</p>
+<p>译者注：&ldquo;一个核物理学家和一辆改装过的DeLorean汽车&rdquo; 是电影《回到未来》的梗</p>
 </aside>
 <h3><a href="#执行继承" id="执行继承"><small>29&#8202;.&#8202;1&#8202;.&#8202;1</small>执行继承</a></h3>
 <p>Now onto the new instruction.
@@ -242,8 +244,7 @@ at each ancestor&rsquo;s method table until we found it.
 从栈顶往下，我们依次有子类，然后是超类。我们获取这两个类，然后进行继承。这就是clox与jlox不同的地方。在我们的第一个解释器中，每个子类都存储了一个对其超类的引用。在访问方法时，如果我们没有在子类方法表中找到它，就通过继承链递归遍历每个祖先的方法表，直到找到该方法。</p>
 <p>For example, calling <code>cook()</code> on an instance of Cruller sends jlox on this
 journey:
-例如，在Cruller的实例上调用<code>cook()</code>方法，jlox会这样做：
-<img src="29.超类/jlox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller means walking the superclass chain." /></p><img src="image/superclasses/jlox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller means walking the superclass chain." />
+例如，在Cruller的实例上调用<code>cook()</code>方法，jlox会这样做：</p><img src="image/superclasses/jlox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller means walking the superclass chain." />
 <p>That&rsquo;s a lot of work to perform during method <em>invocation</em> time. It&rsquo;s slow, and
 worse, the farther an inherited method is up the ancestor chain, the slower it
 gets. Not a great performance story.
@@ -254,8 +255,7 @@ when <em>calling</em> a method, any method inherited from a superclass will be f
 right in the subclass&rsquo;s own method table. There is no extra runtime work needed
 for inheritance at all. By the time the class is declared, the work is done.
 This means inherited method calls are exactly as fast as normal method calls<span class="em">&mdash;</span>a <span name="two">single</span> hash table lookup.
-新方法则要快得多。当子类被声明时，我们将继承类的所有方法复制到子类自己的方法表中。之后，当我们<em>调用</em>某个方法时，从超类继承的任何方法都可以在子类自己的方法表中找到。继承根本不需要做额外的运行时工作。当类被声明时，工作就完成了。这意味着继承的方法和普通方法调用一样快——只需要一次哈希表查询。
-<img src="29.超类/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." /></p><img src="image/superclasses/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." />
+新方法则要快得多。当子类被声明时，我们将继承类的所有方法复制到子类自己的方法表中。之后，当我们<em>调用</em>某个方法时，从超类继承的任何方法都可以在子类自己的方法表中找到。继承根本不需要做额外的运行时工作。当类被声明时，工作就完成了。这意味着继承的方法和普通方法调用一样快——只需要一次哈希表查询。</p><img src="image/superclasses/clox-resolve.png" alt="Resolving a call to cook() in an instance of Cruller which has the method in its own method table." />
 <aside name="two">
 <p>Well, two hash table lookups, I guess. Because first we have to make sure a
 field on the instance doesn&rsquo;t shadow the method.</p>
@@ -624,8 +624,7 @@ make it tangible, consider this example program:
 </pre></div>
 <p>The bytecode emitted for the <code>super.finish("icing")</code> expression looks and works
 like this:
-<code>super.finish("icing")</code>发出的字节码看起来像是这样的：
-<img src="29.超类/super-instructions.png" alt="The series of bytecode instructions for calling super.finish()." /></p><img src="image/superclasses/super-instructions.png" alt="The series of bytecode instructions for calling super.finish()." />
+<code>super.finish("icing")</code>发出的字节码看起来像是这样的：</p><img src="image/superclasses/super-instructions.png" alt="The series of bytecode instructions for calling super.finish()." />
 <p>The first three instructions give the runtime access to the three pieces of
 information it needs to perform the super access:
 前三条指令让运行时获得了执行超类访问时需要的三条信息：</p>
@@ -844,8 +843,7 @@ is executed, the bound method is <em>under</em> the argument list, where the run
 expects it to be for a closure call.
 这一小段代码基本上是<code>OP_INVOKE</code>的实现，其中混杂了一点<code>OP_GET_SUPER</code>。不过，在堆栈的组织方式上有些不同。在未优化的超类调用中，超类会被弹出，并在调用的<em>参数</em>被执行之前替换为被解析函数的ObjBoundMethod。这确保了在<code>OP_CALL</code>执行时，已绑定方法在参数列表<em>之下</em>，也就是运行时期望闭包调用所在的位置。</p>
 <p>With our optimized instructions, things are shuffled a bit:
-在我们优化的指令中，事情有点被打乱：
-<img src="29.超类/super-invoke.png" alt="The series of bytecode instructions for calling super.finish() using OP_SUPER_INVOKE." /></p><img src="image/superclasses/super-invoke.png" class="wide" alt="The series of bytecode instructions for calling super.finish() using OP_SUPER_INVOKE." />
+在我们优化的指令中，事情有点被打乱：</p><img src="image/superclasses/super-invoke.png" class="wide" alt="The series of bytecode instructions for calling super.finish() using OP_SUPER_INVOKE." />
 <p>Now resolving the superclass method is part of the <em>invocation</em>, so the
 arguments need to already be on the stack at the point that we look up the
 method. This means the superclass object is on top of the arguments.

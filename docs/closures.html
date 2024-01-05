@@ -942,8 +942,7 @@ existing upvalue</em> in the immediately enclosing function. If a deeply nested
 function references a local variable declared several hops away, we&rsquo;ll thread it
 through all of the intermediate functions by having each function capture an
 upvalue for the next function to grab.
-解决方案是允许闭包捕获局部变量或紧邻函数中<em>已有的上值</em>。如果一个深度嵌套的函数引用了几跳之外声明的局部变量，我们让每个函数捕获一个上值，供下一个函数抓取，从而穿透所有的中间函数。
-<img src="25.闭包/linked-upvalues.png" alt="An upvalue in inner() points to an upvalue in middle(), which points to a local variable in outer()." /></p><img src="image/closures/linked-upvalues.png" alt="An upvalue in inner() points to an upvalue in middle(), which points to a local variable in outer()."/>
+解决方案是允许闭包捕获局部变量或紧邻函数中<em>已有的上值</em>。如果一个深度嵌套的函数引用了几跳之外声明的局部变量，我们让每个函数捕获一个上值，供下一个函数抓取，从而穿透所有的中间函数。</p><img src="image/closures/linked-upvalues.png" alt="An upvalue in inner() points to an upvalue in middle(), which points to a local variable in outer()."/>
 <p>In the above example, <code>middle()</code> captures the local variable <code>x</code> in the
 immediately enclosing function <code>outer()</code> and stores it in its own upvalue. It
 does this even though <code>middle()</code> itself doesn&rsquo;t reference <code>x</code>. Then, when the
@@ -1010,8 +1009,7 @@ will be for the <em>outermost</em> function, just inside the enclosing function 
 that variable is actually declared.</p>
 </aside>
 <p>It might help to walk through the original example when resolving <code>x</code>:
-在解析<code>x</code>的时候，走一遍原始的例子可能会有帮助：
-<img src="25.闭包/recursion.png" alt="Tracing through a recursive call to resolveUpvalue()." /></p><img src="image/closures/recursion.png" alt="Tracing through a recursive call to resolveUpvalue()."/>
+在解析<code>x</code>的时候，走一遍原始的例子可能会有帮助：</p><img src="image/closures/recursion.png" alt="Tracing through a recursive call to resolveUpvalue()."/>
 <p>Note that the new call to <code>addUpvalue()</code> passes <code>false</code> for the <code>isLocal</code>
 parameter. Now you see that that flag controls whether the closure captures a
 local variable or an upvalue from the surrounding function.

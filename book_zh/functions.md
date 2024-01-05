@@ -199,6 +199,7 @@ Our Java interpreter for Lox doesn't really need a limit, but having a maximum
 number of arguments will simplify our bytecode interpreter in [Part III][]. We
 want our two interpreters to be compatible with each other, even in weird corner
 cases like this, so we'll add the same limit to jlox.
+Lox的Java解释器实际上并不需要限制，但是设置一个最大的参数数量限制可以简化[第三部分][Part III]中的字节码解释器。即使是在这样奇怪的地方里，我们也希望两个解释器能够相互兼容，所以我们为jlox添加同样的限制。
 
 [part iii]: a-bytecode-virtual-machine.html
 
@@ -218,7 +219,6 @@ We don't have any functions we can call, so it seems weird to start implementing
 calls first, but we'll worry about that when we get there. First, our
 interpreter needs a new import.
 我们还没有任何可以调用的函数，所以先实现函数调用似乎有点奇怪，但是这个问题我们后面再考虑。首先，我们的解释器需要引入一个新依赖。
-<u>lox/Interpreter.java</u>
 
 ^code import-array-list (1 after)
 
@@ -289,14 +289,12 @@ Java string, so when we cast that to LoxCallable, the JVM will throw a
 ClassCastException. We don't want our interpreter to vomit out some nasty Java
 stack trace and die. Instead, we need to check the type ourselves first.
 在Lox中，字符串不是可调用的数据类型。Lox字符串在运行时中的本质其实是java字符串，所以当我们把它当作`LoxCallable` 处理的时候，JVM就会抛出`ClassCastException`。我们并不想让我们的解释器吐出一坨java堆栈信息然后挂掉。所以，我们自己必须先做一次类型检查。
-*
-We still throw an exception, but now we’re throwing our own exception type, one that the interpreter knows to catch and report gracefully.
-我们的实现同样也是抛出错误，但它们能够被解释器捕获并优雅地展示出来。
 
 ^code check-is-callable (2 before, 1 after)
 
 We still throw an exception, but now we're throwing our own exception type, one
 that the interpreter knows to catch and report gracefully.
+我们的实现同样也是抛出错误，但它们能够被解释器捕获并优雅地展示出来。
 
 ### Checking arity  检查元数
 
@@ -1089,7 +1087,6 @@ undefined variable error in the call to `counter()` when the body of `count()`
 tries to look up `i`. That's because the environment chain in effect looks like
 this:
 如果你以前从未遇到过带有嵌套函数的语言，那么这可能看起来很疯狂，但用户确实希望它能工作。唉，如果你现在运行它，当`count()`的函数体试图查找`i`时，会在对`counter()`的调用中得到一个未定义的变量错误，这是因为当前的环境链看起来像是这样的：
-![The environment chain from count()'s body to the global scope.](10.函数/global.png)
 
 <img src="image/functions/global.png" alt="The environment chain from count()'s body to the global scope." />
 
@@ -1102,7 +1099,6 @@ bound.
 Let's go back in time a bit. Here's what the environment chain looked like right
 when we declared `count()` inside the body of `makeCounter()`:
 我们把时间往回拨一点。我们在`makeCounter()`的函数体中声明`count()`时，环境链的样子是下面这样：
-![The environment chain inside the body of makeCounter().](10.函数/body.png)
 
 <img src="image/functions/body.png" alt="The environment chain inside the body of makeCounter()." />
 
@@ -1167,6 +1163,7 @@ powerful than the rudimentary arithmetic calculator it used to be. Alas, in our
 rush to cram closures in, we have let a tiny bit of dynamic scoping leak into
 the interpreter. In the [next chapter][], we will explore deeper into lexical
 scope and close that hole.
+函数让我们对代码进行抽象、重用和编排。Lox比之前的初级算术计算器要强大得多。唉，在我们匆匆忙忙支持闭包时，已经让一小部分动态作用域泄露到解释器中了。在[下一章][next chapter]中，我们将深入探索词法作用域，堵住这个漏洞。
 
 [next chapter]: resolving-and-binding.html
 

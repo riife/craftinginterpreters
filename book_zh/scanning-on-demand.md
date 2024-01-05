@@ -12,7 +12,6 @@ compiler, and chunks of bytecode from compiler to VM. We began our
 implementation near the end with [chunks][] and the [VM][]. Now, we're going to
 hop back to the beginning and build a scanner that makes tokens. In the
 [next chapter][], we'll tie the two ends together with our bytecode compiler.
-
 我们的第二个解释器clox分为三个阶段——扫描器、编译器和虚拟机。每两个阶段之间有一个数据结构进行衔接。词法标识从扫描器流入编译器，字节码块从编译器流向虚拟机。我们是从尾部开始先实现了字节码块和虚拟机。现在，我们要回到起点，构建一个生成词法标识的扫描器。在下一章中，我们将用字节码编译器将这两部分连接起来。
 
 [chunks]: chunks-of-bytecode.html
@@ -748,6 +747,7 @@ name="trie">[**trie**][trie]</span>. A trie stores a set of strings. Most other
 data structures for storing strings contain the raw character arrays and then
 wrap them inside some larger construct that helps you search faster. A trie is
 different. Nowhere in the trie will you find a whole string.
+这个树状图是[**字典树(trie)**][trie]的一个例子。字典树会存储一组字符串。大多数其它用于存储字符串的数据结构都包含原始字符数组，然后将它们封装在一些更大的结果中，以帮助你更快地搜索。字典树则不同，在其中你找不到一个完整的字符串。
 
 [trie]: https://en.wikipedia.org/wiki/Trie
 
@@ -832,8 +832,6 @@ description of your lexical grammar -- a bunch of regular expressions -- and it
 automatically generates a DFA for you and produces a pile of C code that
 implements it.
 然而，手工完成这种巨型DFA是一个巨大的挑战。这就是[Lex](https://en.wikipedia.org/wiki/Lex_(software))诞生的原因。你给它一个关于语法的简单文本描述——一堆正则表达式——它就会自动为你生成一个DFA，并生成一堆实现它的C代码。
-This is also how most regular expression engines in programming languages and text editors work under the hood. They take your regex string and convert it to a DFA, which they then use to match strings.
-If you want to learn the algorithm to convert a regular expression into a DFA, [the dragon book](https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools) has you covered.
 
 [lex]: https://en.wikipedia.org/wiki/Lex_(software)
 
@@ -946,6 +944,7 @@ writing the simplest code I can is sufficient to accomplish that.
     expression can appear. When the string literal is executed, the inner
     expression is evaluated, converted to a string, and then merged with the
     surrounding string literal.
+    许多较新的语言都支持[字符串插值][interp]。在字符串字面量中，有一些特殊的分隔符——最常见的是以`${`开头以`}`结尾。在这些分隔符之间，可以出现任何表达式。当字符串字面量被执行时，内部表达式也会求值，转换为字符串，然后与周围的字符串字面量合并。
 
     For example, if Lox supported string interpolation, then this...
     举例来说，如果Lox支持字符串插值，那么下面的代码……

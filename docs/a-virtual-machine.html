@@ -305,7 +305,8 @@ by index.
 它的类型是一个字节指针。我们使用一个真正的C指针指向字节码数组的中间，而不是使用类似整数索引这种方式，这是因为对指针的引用比通过索引查找数组中的一个元素要更快。</p>
 <p>The name &ldquo;IP&rdquo; is traditional, and<span class="em">&mdash;</span>unlike many traditional names in CS<span class="em">&mdash;</span>actually makes sense: it&rsquo;s an <strong><a href="https://en.wikipedia.org/wiki/Program_counter">instruction pointer</a></strong>. Almost every
 instruction set in the <span name="ip">world</span>, real and virtual, has a
-register or variable like this.</p>
+register or variable like this.
+“IP”这个名字很传统，而且与CS中的很多传统名称不同的是，它是有实际意义的：它是一个<a href="https://en.wikipedia.org/wiki/Program_counter"><strong>指令指针</strong></a>。几乎世界上所有的指令集，不管是真实的还是虚拟的，都有一个类似的寄存器或变量。</p>
 <aside name="ip">
 <p>x86, x64, and the CLR call it &ldquo;IP&rdquo;. 68k, PowerPC, ARM, p-code, and the JVM call
 it &ldquo;PC&rdquo;, for <strong>program counter</strong>.
@@ -413,8 +414,7 @@ add to top of file</div>
 <div class="source-file-narrow"><em>vm.c</em>, add to top of file</div>
 
 <p>We also have a new macro to define.
-我们还需要定义一个新的宏。
-<u><em>vm.c，在 run()方法中添加代码：</em></u></p>
+我们还需要定义一个新的宏。</p>
 <div class="codehilite"><pre class="insert-before">#define READ_BYTE() (*vm.ip++)
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -429,13 +429,12 @@ in <em>run</em>()</div>
 number as an index, and looks up the corresponding Value in the chunk&rsquo;s constant
 table. In later chapters, we&rsquo;ll add a few more instructions with operands that
 refer to constants, so we&rsquo;re setting up this helper macro now.
-<code>READ_CONTANT()</code>从字节码中读取下一个字节，将得到的数字作为索引，并在代码块的常量表中查找相应的Value。在后面的章节中，我们将添加一些操作数指向常量的指令，所以我们现在要设置这个辅助宏。
-Like the previous <code>READ_BYTE</code> macro, <code>READ_CONSTANT</code> is only used inside <code>run()</code>. To make that scoping more explicit, the macro definitions themselves are confined to that function. We define them at the beginning and—because we care—undefine them at the end.
-与之前的<code>READ_BYTE</code>宏类似，<code>READ_CONSTANT</code>只会在<code>run()</code>方法中使用。为了使作用域更明确，宏定义本身要被限制在该函数中。我们在开始时定义了它们，然后因为我们比较关心，在结束时取消它们的定义。</p>
+<code>READ_CONTANT()</code>从字节码中读取下一个字节，将得到的数字作为索引，并在代码块的常量表中查找相应的Value。在后面的章节中，我们将添加一些操作数指向常量的指令，所以我们现在要设置这个辅助宏。</p>
 <p>Like the previous <code>READ_BYTE</code> macro, <code>READ_CONSTANT</code> is only used inside
 <code>run()</code>. To make that scoping more explicit, the macro definitions themselves
 are confined to that function. We <span name="macro">define</span> them at the
-beginning and<span class="em">&mdash;</span>because we care<span class="em">&mdash;</span>undefine them at the end.</p>
+beginning and<span class="em">&mdash;</span>because we care<span class="em">&mdash;</span>undefine them at the end.
+与之前的<code>READ_BYTE</code>宏类似，<code>READ_CONSTANT</code>只会在<code>run()</code>方法中使用。为了使作用域更明确，宏定义本身要被限制在该函数中。我们在开始时定义了它们，然后因为我们比较关心，在结束时取消它们的定义。</p>
 <div class="codehilite"><pre class="insert-before">#undef READ_BYTE
 </pre><div class="source-file"><em>vm.c</em><br>
 in <em>run</em>()</div>
@@ -884,10 +883,9 @@ executes instructions. The stack grows and shrinks as values flow through it.
 The two halves work, but it&rsquo;s hard to get a feel for how cleverly they interact
 with only the two rudimentary instructions we have so far. So let&rsquo;s teach our
 interpreter to do arithmetic.
-我们的虚拟机的核心和灵魂现在都已经就位了。字节码循环分派和执行指令。栈堆随着数值的流动而增长和收缩。这两部分都在工作，但仅凭我们目前的两条基本指令，很难感受到它们如何巧妙地互动。所以让我们教解释器如何做算术。
-We’ll start with the simplest arithmetic operation, unary negation.
+我们的虚拟机的核心和灵魂现在都已经就位了。字节码循环分派和执行指令。栈堆随着数值的流动而增长和收缩。这两部分都在工作，但仅凭我们目前的两条基本指令，很难感受到它们如何巧妙地互动。所以让我们教解释器如何做算术。</p>
+<p>We&rsquo;ll start with the simplest arithmetic operation, unary negation.
 我们从最简单的算术运算开始，即一元取负。</p>
-<p>We&rsquo;ll start with the simplest arithmetic operation, unary negation.</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">a</span> = <span class="n">1.2</span>;
 <span class="k">print</span> -<span class="i">a</span>; <span class="c">// -1.2.</span>
 </pre></div>
@@ -1101,8 +1099,7 @@ arithmetic <em>bytecode instructions</em> do not.
 算术指令的格式很简单，类似于<code>OP_RETURN</code>。即使算术运算符需要操作数（从堆栈中获取），算术的<em>字节码指令</em>也不需要。</p>
 <p>Let&rsquo;s put some of our new instructions through their paces by evaluating a
 larger expression:
-我们通过计算一个更大的表达式来检验一些新指令。
-<img src="15.虚拟机/chunk.png" alt="The expression being evaluated: -((1.2 + 3.4) / 5.6)" /></p>
+我们通过计算一个更大的表达式来检验一些新指令。</p>
 <p><img src="image/a-virtual-machine/chunk.png" alt="The expression being
 evaluated: -((1.2 + 3.4) / 5.6)" /></p>
 <p>Building on our existing example chunk, here&rsquo;s the additional instructions we
@@ -1159,7 +1156,8 @@ generate it for us.
 <ol>
 <li>
 <p>What bytecode instruction sequences would you generate for the following
-expressions:</p>
+expressions:
+你会为以下表达式生成什么样的<em>字节码</em>指令序列：</p>
 <div class="codehilite"><pre><span class="n">1</span> * <span class="n">2</span> + <span class="n">3</span>
 <span class="n">1</span> + <span class="n">2</span> * <span class="n">3</span>
 <span class="n">3</span> - <span class="n">2</span> - <span class="n">1</span>
@@ -1176,11 +1174,11 @@ would generate for:
 如果我们真的想要一个最小指令集，我们可以取消<code>OP_NEGATE</code>或<code>OP_SUBTRACT</code>。请写出你为下面的表达式生成的字节码指令序列：</p>
 <div class="codehilite"><pre><span class="n">4</span> - <span class="n">3</span> * -<span class="n">2</span>
 </pre></div>
-<p>First, without using <code>OP_NEGATE</code>. Then, without using <code>OP_SUBTRACT</code>.</p>
+<p>First, without using <code>OP_NEGATE</code>. Then, without using <code>OP_SUBTRACT</code>.
+首先是不能使用 <code>OP_NEGATE</code>。然后，试一下不使用<code>OP_SUBTRACT</code>。</p>
 <p>Given the above, do you think it makes sense to have both instructions? Why
 or why not? Are there any other redundant instructions you would consider
 including?
-首先是不能使用 <code>OP_NEGATE</code>。然后，试一下不使用<code>OP_SUBTRACT</code>。
 综上所述，你认为同时拥有这两条指令有意义吗？为什么呢？还有没有其它指令可以考虑加入？</p>
 </li>
 <li>

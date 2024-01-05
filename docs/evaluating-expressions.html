@@ -159,14 +159,7 @@ java.lang.Object.
 <p>In places in the interpreter where we need to store a Lox value, we can use
 Object as the type. Java has boxed versions of its primitive types that all
 subclass Object, so we can use those for Lox&rsquo;s built-in types:
-在解释器中需要存储Lox值的地方，我们可以使用Object作为类型。Java已经将其基本类型的所有子类对象装箱了，因此我们可以将它们用作Lox的内置类型：
-| Lox type Lox类 | Java representation Java表示 |
-| | |
-| Any Lox value | Object |
-| <code>nil</code> | <code>null</code> |
-| Boolean | Boolean |
-| number | Double |
-| string | String |</p><table>
+在解释器中需要存储Lox值的地方，我们可以使用Object作为类型。Java已经将其基本类型的所有子类对象装箱了，因此我们可以将它们用作Lox的内置类型：</p><table>
 <thead>
 <tr>
   <td>Lox type</td>
@@ -216,12 +209,14 @@ expression we can parse. We could stuff that code into the syntax tree classes
 in something like an <code>interpret()</code> method. In effect, we could tell each syntax
 tree node, &ldquo;Interpret thyself&rdquo;. This is the Gang of Four&rsquo;s
 <a href="https://en.wikipedia.org/wiki/Interpreter_pattern">Interpreter design pattern</a>. It&rsquo;s a neat pattern, but like I mentioned
-earlier, it gets messy if we jam all sorts of logic into the tree classes.</p>
+earlier, it gets messy if we jam all sorts of logic into the tree classes.
+接下来，我们需要大量的代码实现我们可解析的每种表达式对应的求值逻辑。我们可以把这些代码放在语法树的类中，比如添加一个<code>interpret()</code>方法。然后，我们可以告诉每一个语法树节点“解释你自己”，这就是四人组的<a href="https://en.wikipedia.org/wiki/Interpreter_pattern">解释器模式</a>。这是一个整洁的模式，但正如我前面提到的，如果我们将各种逻辑都塞进语法树类中，就会变得很混乱。</p>
 <p>Instead, we&rsquo;re going to reuse our groovy <a href="representing-code.html#the-visitor-pattern">Visitor pattern</a>. In the previous
 chapter, we created an AstPrinter class. It took in a syntax tree and
 recursively traversed it, building up a string which it ultimately returned.
 That&rsquo;s almost exactly what a real interpreter does, except instead of
-concatenating strings, it computes values.</p>
+concatenating strings, it computes values.
+相反，我们将重用我们的<a href="representing-code.html#the-visitor-pattern">访问者模式</a>。在前面的章节中，我们创建了一个AstPrinter类。它接受一个语法树，并递归地遍历它，构建一个最终返回的字符串。这几乎就是一个真正的解释器所做的事情，只不过解释器不是连接字符串，而是计算值。</p>
 <p>We start with a new class.
 我们先创建一个新类。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Interpreter.java</em><br>
@@ -792,7 +787,8 @@ replace 1 line</div>
 <p>That gets us detecting runtime errors deep in the innards of the evaluator. The
 errors are getting thrown. The next step is to write the code that catches them.
 For that, we need to wire up the Interpreter class into the main Lox class that
-drives it.</p>
+drives it.
+这样我们就可以在计算器的内部检测运行时错误。错误已经被抛出了。下一步就是编写能捕获这些错误的代码。为此，我们需要将Interpreter类连接到驱动它的Lox主类中。</p>
 <h2><a href="#连接解释器" id="连接解释器"><small>7&#8202;.&#8202;4</small>连接解释器</a></h2>
 <p>The visit methods are sort of the guts of the Interpreter class, where the real
 work happens. We need to wrap a skin around them to interface with the rest of
@@ -880,8 +876,7 @@ user an entire call stack to show how they <em>got</em> to be executing that cod
 we don&rsquo;t have function calls yet, so I guess we don&rsquo;t have to worry about it.
 我们使用与RuntimeError关联的标记来告诉用户错误发生时正在执行哪一行代码。更好的做法是给用户一个完整的调用堆栈，来显示他们是如何执行该代码的。但我们目前还没有函数调用，所以我想我们不必担心这个问题。</p>
 <p>After showing the error, <code>runtimeError()</code> sets this field:
-展示错误之后，<code>runtimeError()</code>会设置以下字段：
-<u><em>lox/Lox.java，在 Lox类中添加：</em></u></p>
+展示错误之后，<code>runtimeError()</code>会设置以下字段：</p>
 <div class="codehilite"><pre class="insert-before">  static boolean hadError = false;
 </pre><div class="source-file"><em>lox/Lox.java</em><br>
 in class <em>Lox</em></div>
@@ -961,27 +956,28 @@ operators might have a reasonable interpretation for strings. Even
 comparisons among mixed types, like <code>3 &lt; "pancake"</code> could be handy to enable
 things like ordered collections of heterogeneous types. Or it could simply
 lead to bugs and confusion.
-1、允许对数字之外的类型进行比较可能是个有用的特性。操作符可能对字符串有合理的解释。即使是混合类型之间的比较，如<code>3&lt;"pancake"</code>，也可以方便地支持异构类型的有序集合。否则可能导致错误和混乱。
+允许对数字之外的类型进行比较可能是个有用的特性。操作符可能对字符串有合理的解释。即使是混合类型之间的比较，如<code>3&lt;"pancake"</code>，也可以方便地支持异构类型的有序集合。否则可能导致错误和混乱。
 你是否会扩展Lox以支持对其他类型的比较？如果是，您允许哪些类型间的比较，以及如何定义它们的顺序？证明你的选择并与其他语言进行比较。</p>
 <p>Would you extend Lox to support comparing other types? If so, which pairs of
 types do you allow and how do you define their ordering? Justify your
-choices and compare them to other languages.</p>
+choices and compare them to other languages.
+你是否会扩展Lox以支持对其他类型的比较？如果是，您允许哪些类型间的比较，以及如何定义它们的顺序？证明你的选择并与其他语言进行比较。</p>
 </li>
 <li>
 <p>Many languages define <code>+</code> such that if <em>either</em> operand is a string, the
 other is converted to a string and the results are then concatenated. For
 example, <code>"scone" + 4</code> would yield <code>scone4</code>. Extend the code in
 <code>visitBinaryExpr()</code> to support that.
-2、许多语言对<code>+</code>的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，<code>"scone" + 4</code>的结果应该是<code>scone4</code>。扩展<code>visitBinaryExpr()</code>中的代码以支持该特性。</p>
+许多语言对<code>+</code>的定义是，如果其中一个操作数是字符串，另一个操作数就会被转换成字符串，然后将两个结果拼接起来。例如，<code>"scone" + 4</code>的结果应该是<code>scone4</code>。扩展<code>visitBinaryExpr()</code>中的代码以支持该特性。</p>
 </li>
 <li>
 <p>What happens right now if you divide a number by zero? What do you think
 should happen? Justify your choice. How do other languages you know handle
 division by zero, and why do they make the choices they do?
-3、如果你用一个数除以0会发生什么？你认为应该发生什么？证明你的选择。你知道的其他语言是如何处理除零的，为什么他们会做出这样的选择？
-更改<code>visitBinaryExpr()</code>中的实现代码，以检测并报告运行时错误。</p>
+如果你用一个数除以0会发生什么？你认为应该发生什么？证明你的选择。你知道的其他语言是如何处理除零的，为什么他们会做出这样的选择？</p>
 <p>Change the implementation in <code>visitBinaryExpr()</code> to detect and report a
-runtime error for this case.</p>
+runtime error for this case.
+更改<code>visitBinaryExpr()</code>中的实现代码，以检测并报告运行时错误。</p>
 </li>
 </ol>
 </div>

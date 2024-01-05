@@ -131,22 +131,16 @@ branches for each of their operands.
 its subtrees, so you have to evaluate those first. That means working your way
 from the leaves up to the root<span class="em">&mdash;</span>a <em>post-order</em> traversal:
 要想计算一个算术节点，你需要知道它的子树的数值，所以你必须先计算子树的结果。这意味着要从叶节点一直计算到根节点——<em>后序</em>遍历：</p>
-<ul>
-<li>A.从完整的树开始，先计算最下面的操作<code>2*3</code>；</li>
-<li>B.现在计算<code>+</code>；</li>
-<li>C.接下来，计算<code>-</code>；</li>
-<li>D.最终得到答案。</li>
-</ul>
 <p><span name="tree-steps"></span></p><img src="image/representing-code/tree-evaluate.png" alt="Evaluating the tree from the bottom up." />
 <aside name="tree-steps">
 <p>A. Starting with the full tree, evaluate the bottom-most operation, <code>2 * 3</code>.
-从整棵树开始，评估最底层的运算，即 <code>2 * 3</code>。</p>
+从完整的树开始，先计算最下面的操作2*3；</p>
 <p>B. Now we can evaluate the <code>+</code>.
-现在我们可以评估 <code>+</code>。</p>
+现在计算+；</p>
 <p>C. Next, the <code>-</code>.
-下一个是 <code>-</code>。</p>
+接下来，计算-；</p>
 <p>D. The final answer.
-最后是结果。</p>
+最终得到答案。</p>
 </aside>
 <p>If I gave you an arithmetic expression, you could draw one of these trees pretty
 easily. Given a tree, you can evaluate it without breaking a sweat. So it
@@ -176,20 +170,15 @@ nest arbitrarily deeply.
 (<strong>CFG</strong>). It&rsquo;s the next heaviest tool in the toolbox of
 <strong><a href="https://en.wikipedia.org/wiki/Formal_grammar">formal grammars</a></strong>. A formal grammar takes a set of atomic pieces it calls
 its &ldquo;alphabet&rdquo;. Then it defines a (usually infinite) set of &ldquo;strings&rdquo; that are
-&ldquo;in&rdquo; the grammar. Each string is a sequence of &ldquo;letters&rdquo; in the alphabet.</p>
+&ldquo;in&rdquo; the grammar. Each string is a sequence of &ldquo;letters&rdquo; in the alphabet.
+我们需要一把更大的锤子，这把锤子就是 <strong>上下文无关文法(context-free grammar)</strong>（CFG）。它是形式语法工具箱中最重要的工具。形式语法将一组原子片段称为 &ldquo;<strong><a href="https://en.wikipedia.org/wiki/Formal_grammar">字母表</a></strong>&ldquo;。然后，它定义了一组（通常是无限的）&ldquo;字符串&ldquo;，这些字符串是语法中的 &ldquo;字符串&ldquo;。每个字符串都是字母表中的一个 &ldquo;字母&rdquo; 序列。</p>
 <p>I&rsquo;m using all those quotes because the terms get a little confusing as you move
 from lexical to syntactic grammars. In our scanner&rsquo;s grammar, the alphabet
 consists of individual characters and the strings are the valid lexemes<span class="em">&mdash;</span>roughly &ldquo;words&rdquo;. In the syntactic grammar we&rsquo;re talking about now, we&rsquo;re at a
 different level of granularity. Now each &ldquo;letter&rdquo; in the alphabet is an entire
 token and a &ldquo;string&rdquo; is a sequence of <em>tokens</em><span class="em">&mdash;</span>an entire expression.
 我这里使用引号是因为当你从词法转到文法语法时，这些术语会让你有点困惑。在我们的扫描器词法中，alphabet（字母表）由单个字符组成，strings（字符串）是有效的词素（粗略的说，就是“单词”）。在现在讨论的句法语法中，我们处于一个不同的粒度水平。现在，字母表中的一个“letters（字符）”是一个完整的词法标记，而“strings（字符串）”是一个词法标记系列——一个完整的表达式。</p>
-<p>Oof. Maybe a table will help:
-嗯，使用表格可能更有助于理解：
-| Terminology&lt;br/>术语 | | Lexical grammar 词法 | Syntactic grammar 语法 |
-| | | | |
-| The “alphabet” is . . . <br />字母表 | → | Characters<br />字符 | Tokens<br />词法标记 |
-| A “string” is . . . <br />字符串 | → | Lexeme or token<br />词素或词法标记 | Expression<br />表达式 |
-| It&rsquo;s implemented by the . . . <br />实现 | → | Scanner<br />扫描器 | Parser<br />解析器 |</p><table>
+<p>Oof. Maybe a table will help:</p><table>
 <thead>
 <tr>
   <td>Terminology</td>
@@ -216,6 +205,36 @@ token and a &ldquo;string&rdquo; is a sequence of <em>tokens</em><span class="em
   <td>&rarr;&ensp;</td>
   <td>Scanner</td>
   <td>Parser</td>
+</tr>
+</tbody>
+</table>
+<p>嗯，使用表格可能更有助于理解：</p><table>
+<thead>
+<tr>
+  <td>术语</td>
+  <td></td>
+  <td>词法</td>
+  <td>语法</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>字母表</td>
+  <td>&rarr;&ensp;</td>
+  <td>字符</td>
+  <td>词法标记</td>
+</tr>
+<tr>
+  <td>字符串</td>
+  <td>&rarr;&ensp;</td>
+  <td>词素或词法标记</td>
+  <td>表达式</td>
+</tr>
+<tr>
+  <td>实现</span></td>
+  <td>&rarr;&ensp;</td>
+  <td>扫描器</td>
+  <td>解析器</td>
 </tr>
 </tbody>
 </table>
@@ -254,14 +273,23 @@ sequence of symbols in the head as well as in the body.
 like a literal value. In the syntactic grammar we&rsquo;re defining, the terminals
 are individual lexemes<span class="em">&mdash;</span>tokens coming from the scanner like <code>if</code> or
 <code>1234</code>.</p>
+</li>
+<li>
+<p><strong>终止符</strong>是语法字母表中的一个字母。你可以把它想象成一个字面值。在我们定义的语法中，终止符是独立的词素——来自扫描器的词法标记，比如 <code>if</code> 或 <code>1234</code>。</p>
 <p>These are called &ldquo;terminals&rdquo;, in the sense of an &ldquo;end point&rdquo; because they
 don&rsquo;t lead to any further &ldquo;moves&rdquo; in the game. You simply produce that one
 symbol.</p>
+<p>这些词素被称为“终止符”，表示“终点”，因为它们不会导致游戏中任何进一步的 &ldquo;动作&ldquo;。你只是简单地产生了那一个符号。</p>
 </li>
+</ul>
+<ul>
 <li>
 <p>A <strong>nonterminal</strong> is a named reference to another rule in the grammar. It
 means &ldquo;play that rule and insert whatever it produces here&rdquo;. In this way,
 the grammar composes.</p>
+</li>
+<li>
+<p>非终止符是对语法中另一条规则的命名引用。它的意思是 &ldquo;执行那条规则，然后将它产生的任何内容插入这里&ldquo;。这样，语法就构成了。</p>
 </li>
 </ul>
 <p>There is one last refinement: you may have multiple rules with the same name.
@@ -352,7 +380,7 @@ yielding all manner of breakfasts like &ldquo;bacon with sausage with scrambled 
 with bacon<span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>&rdquo; We won&rsquo;t though. This time we&rsquo;ll pick <code>bread</code>. There are three
 rules for that, each of which contains only a terminal. We&rsquo;ll pick &ldquo;English
 muffin&rdquo;.
-我们可以不断选择<code>breakfast</code> 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon <span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>”，【存疑，按照规则设置，这里应该不会出现以bacon开头的字符串，原文可能有误】但我们不会这样做。这一次我们选择<code>bread</code>。有三个对应的规则，每个规则只包含一个终止符。我们选 &ldquo;English muffin&rdquo;。</p>
+我们可以不断选择<code>breakfast</code> 的第一个生成式，以做出各种各样的早餐：“bacon with sausage with scrambled eggs with bacon <span class="ellipse">&thinsp;.&thinsp;.&thinsp;.&nbsp;</span>”，但我们不会这样做。这一次我们选择<code>bread</code>。有三个对应的规则，每个规则只包含一个终止符。我们选 &ldquo;English muffin&rdquo;。</p>
 <p>With that, every nonterminal in the string has been expanded until it finally
 contains only terminals and we&rsquo;re left with:
 这样一来，字符串中的每一个非终止符都被展开了，直到最后只包含终止符，我们就剩下：</p><img src="image/representing-code/breakfast.png" alt='"Playing" the grammar to generate a string.' />
@@ -434,7 +462,8 @@ zero or one time, but not more.
 <p>Not too bad, I hope. If you&rsquo;re used to grep or using <a href="https://en.wikipedia.org/wiki/Regular_expression#Standards">regular
 expressions</a> in your text editor, most of the punctuation should be
 familiar. The main difference is that symbols here represent entire tokens, not
-single characters.</p>
+single characters.
+我希望还不算太坏。如果你习惯使用grep或在你的文本编辑器中使用<a href="https://en.wikipedia.org/wiki/Regular_expression#Standards">正则表达式</a>，大多数的标点符号应该是熟悉的。主要区别在于，这里的符号代表整个标记，而不是单个字符。</p>
 <p>We&rsquo;ll use this notation throughout the rest of the book to precisely describe
 Lox&rsquo;s grammar. As you work on programming languages, you&rsquo;ll find that
 context-free grammars (using this or <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a> or some other notation) help you
@@ -816,7 +845,8 @@ type checking pass.
 这对于小型项目来说还行，但它的扩展性很差。就像我之前提到的，这些树类跨越了几个领域。至少，解析器和解释器都会对它们进行干扰。稍后您将看到，我们需要对它们进行名称解析。如果我们的语言是静态类型的，我们还需要做类型检查。</p>
 <p>If we added instance methods to the expression classes for every one of those
 operations, that would smush a bunch of different domains together. That
-violates <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a> and leads to hard-to-maintain code.</p>
+violates <a href="https://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a> and leads to hard-to-maintain code.
+如果我们为每一个操作的表达式类中添加实例方法，就会将一堆不同的领域混在一起。这违反了<a href="https://en.wikipedia.org/wiki/Separation_of_concerns">关注点分离原则</a>，并会产生难以维护的代码。</p>
 <h3><a href="#表达式问题" id="表达式问题"><small>5&#8202;.&#8202;3&#8202;.&#8202;1</small>表达式问题</a></h3>
 <p>This problem is more fundamental than it may seem at first. We have a handful of
 types, and a handful of high-level operations like &ldquo;interpret&rdquo;. For each pair of
@@ -1236,14 +1266,17 @@ maintain AstPrinter, feel free to delete it. We won&rsquo;t need it again.
 <ol>
 <li>
 <p>Earlier, I said that the <code>|</code>, <code>*</code>, and <code>+</code> forms we added to our grammar
-metasyntax were just syntactic sugar. Take this grammar:</p>
+metasyntax were just syntactic sugar. Take this grammar:
+之前我说过，我们在语法元语法中添加的<code>|</code>、<code>*</code>、<code>+</code>等形式只是语法糖。以这个语法为例:</p>
 <div class="codehilite"><pre><span class="i">expr</span> → <span class="i">expr</span> ( <span class="s">&quot;(&quot;</span> ( <span class="i">expr</span> ( <span class="s">&quot;,&quot;</span> <span class="i">expr</span> )* )? <span class="s">&quot;)&quot;</span> | <span class="s">&quot;.&quot;</span> <span class="t">IDENTIFIER</span> )+
      | <span class="t">IDENTIFIER</span>
      | <span class="t">NUMBER</span>
 </pre></div>
 <p>Produce a grammar that matches the same language but does not use any of
-that notational sugar.</p>
-<p><em>Bonus:</em> What kind of expression does this bit of grammar encode?</p>
+that notational sugar.
+生成一个与同一语言相匹配的语法，但不要使用任何语法糖。</p>
+<p><em>Bonus:</em> What kind of expression does this bit of grammar encode?
+附加题：这一点语法表示了什么样的表达式？</p>
 </li>
 <li>
 <p>The Visitor pattern lets you emulate the functional style in an

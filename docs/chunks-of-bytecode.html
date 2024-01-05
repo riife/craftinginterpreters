@@ -662,13 +662,7 @@ keep track of how much memory is in use.
 这个<code>reallocate()</code>函数是我们将在clox中用于所有动态内存管理的唯一函数——分配内存，释放内存以及改变现有分配的大小。当我们稍后添加一个需要跟踪内存使用情况的垃圾收集器时，通过单个函数路由所有这些操作是很重要的。</p>
 <p>The two size arguments passed to <code>reallocate()</code> control which operation to
 perform:
-传递给<code>reallocate()</code> 函数的两个大小参数控制了要执行的操作：
-| oldSize | newSize | Operation |
-| | | |
-| 0 | Non‑zero | Allocate new block. 分配新块 |
-| Non‑zero | 0 | Free allocation. 释放已分配内存 |
-| Non‑zero | Smaller than <code>oldSize</code> | Shrink existing allocation. 收缩已分配内存 |
-| Non‑zero | Larger than <code>oldSize</code> | Grow existing allocation. 增加已分配内存 |</p><table>
+传递给<code>reallocate()</code> 函数的两个大小参数控制了要执行的操作：</p><table>
   <thead>
     <tr>
       <td>oldSize</td>
@@ -680,22 +674,22 @@ perform:
     <tr>
       <td>0</td>
       <td>Non&#8209;zero</td>
-      <td>Allocate new block.</td>
+      <td>Allocate new block. 分配新块</td>
     </tr>
     <tr>
       <td>Non&#8209;zero</td>
       <td>0</td>
-      <td>Free allocation.</td>
+      <td>Free allocation. 释放已分配内存</td>
     </tr>
     <tr>
       <td>Non&#8209;zero</td>
       <td>Smaller&nbsp;than&nbsp;<code>oldSize</code></td>
-      <td>Shrink existing allocation.</td>
+      <td>Shrink existing allocation. 收缩已分配内存</td>
     </tr>
     <tr>
       <td>Non&#8209;zero</td>
       <td>Larger&nbsp;than&nbsp;<code>oldSize</code></td>
-      <td>Grow existing allocation.</td>
+      <td>Grow existing allocation.  增加已分配内存</td>
     </tr>
   </tbody>
 </table>
@@ -772,10 +766,6 @@ this size metadata that <code>realloc()</code> updates.
 We&rsquo;re in C now, remember, we have to manage memory ourselves, like in Ye Olden
 Times, and that means <em>freeing</em> it too.
 好了，我们可以创建新的块并向其中写入指令。我们完成了吗？不！要记住，我们现在是在C语言中，我们必须自己管理内存，就像在《Ye Olden Times》中那样，这意味着我们也要<em>释放</em>内存。</p>
-<ul>
-<li></li>
-</ul>
-<p>实现为:</p>
 <div class="codehilite"><pre class="insert-before">void initChunk(Chunk* chunk);
 </pre><div class="source-file"><em>chunk.h</em><br>
 add after <em>initChunk</em>()</div>
@@ -1052,7 +1042,8 @@ Machine <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#
 That sounds good enough for clox to me. Each chunk will carry with it a list of
 the values that appear as literals in the program. To keep things <span
 name="immediate">simpler</span>, we&rsquo;ll put <em>all</em> constants in there, even simple
-integers.</p>
+integers.
+大多数虚拟机都会做类似的事。例如，Java虚拟机将<a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4"><strong>常量池</strong></a>与每个编译后的类关联起来。我认为，这对于clox来说已经足够了。每个字节码块都会携带一个在程序中以字面量形式出现的值的列表。为简单起见，我们会把所有的常量都放进去，甚至包括简单的整数。</p>
 <aside name="immediate">
 <p>In addition to needing two kinds of constant instructions<span class="em">&mdash;</span>one for immediate
 values and one for constants in the constant table<span class="em">&mdash;</span>immediates also force us
@@ -1571,19 +1562,7 @@ You can think of bytecode as a sort of compact serialization of the AST, highly
 optimized for how the interpreter will deserialize it in the order it needs as
 it executes. In the <a href="a-virtual-machine.html">next chapter</a>, we will see how the virtual machine does
 exactly that.
-这种减少是我们的新解释器比jlox更快的一个关键原因。你可以把字节码看作是AST的一种紧凑的序列化，并且解释器在执行时按照需要对其反序列化的方式进行了高度优化。在下一章中，我们将会看到虚拟机是如何做到这一点的。
-:当然，我们的第二个解释器会依赖C标准库来实现内存分配等基本功能，而C编译器将我们从运行它的底层机器码的细节中解放出来。糟糕的是，该机器码可能是通过芯片上的微码来实现的。而C语言的运行时依赖于操作系统来分配内存页。但是，如果要想在你的书架放得下这本书，我们必须在某个地方停下来。
-:这种计算斐波那契数列的方式效率低得可笑。我们的目的是查看解释器的运行速度，而不是看我们编写的程序有多快。一个做了大量工作的程序，无论是否有意义，都是一个很好的测试用例。
-:“（header）”部分是Java虚拟机用来支持内存管理和存储对象类型的记录信息，这些也会占用空间。
-:情况也没有那么可怕。一个架构良好的编译器，可以让你跨不同的架构共享前端和大部分中间层的优化通道。每次都需要重新编写的主要是代码生成和指令选择的一些细节。<a href="https://llvm.org/">LLVM</a>项目提供了一些开箱即用的功能。如果你的编译器输出LLVM自己特定的中间语言，LLVM可以反过来将其编译为各种架构的本地代码。
-:最早的字节码格式之一是p-code，是为Niklaus Wirth的Pascal语言开发的。你可能会认为一个运行在15MHz的PDP-11无法承担模拟虚拟机的开销。但在当时，计算机正处于寒武纪大爆发时期，每天都有新的架构出现。跟上最新的芯片要比从某个芯片中压榨出最大性能更有价值。这就是为什么p-code中的“p”指的不是“Pascal”而是“可移植性Portable”。
-:增长数组时会复制现有元素，使得追加元素的复杂度看起来像是O(n)，而不是O(1)。但是，你只需要在某些追加操作中执行这个操作步骤。大多数时候，已有多余的容量，所以不需要复制。要理解这一点，我们需要进行<a href="https://en.wikipedia.org/wiki/Amortized_analysis">摊销分析</a>。这表明，只要我们把数组大小增加到当前大小的倍数，当我们把一系列追加操作的成本平均化时，每次追加都是O(1)。
-:我在这本书中选择了数字8，有些随意。大多数动态数组实现都有一个这样的最小阈值。挑选这个值的正确方法是根据实际使用情况进行分析，看看那个常数能在额外增长和浪费的空间之间做出最佳的性能权衡。
-:既然我们传入的只是一个指向内存第一个字节的裸指针，那么“更新”块的大小意味着什么呢？在内部，内存分配器为堆分配的每个内存块都维护了额外的簿记信息，包括它的大小。给定一个指向先前分配的内存的指针，它就可以找到这个簿记信息，为了能干净地释放内存，这是必需的。<code>realloc()</code>所更新的正是这个表示大小的元数据。许多<code>malloc()</code>的实现将分配的大小存储在返回地址之前的内存中。
-:除了需要两种常量指令（一种用于即时值，一种用于常量表中的常量）之外，即时指令还要求我们考虑对齐、填充和字节顺序的问题。如果你尝试在一个奇数地址填充一个4字节的整数，有些架构中会出错。
-:我这里对于“加载”或“产生”一个常量的含义含糊其辞，因为我们还没有学到虚拟机在运行时是如何执行的代码的。关于这一点，你必须等到（或者直接跳到）下一章。
-:字节码指令的操作数与传递给算术操作符的操作数不同。当我们讲到表达式时，你会看到算术操作数的值是被单独跟踪的。指令操作数是一个较低层次的概念，它可以修改字节码指令本身的行为方式。
-: 这种脑残的编码至少做对了一件事：它将行信息保存一个单独的数组中，而不是将其编入字节码本身中。由于行信息只在运行时出现错误时才使用，我们不希望它在指令之间占用CPU缓存中的宝贵空间，而且解释器在跳过行数获取它所关心的操作码和操作数时，会造成更多的缓存丢失。</p>
+这种减少是我们的新解释器比jlox更快的一个关键原因。你可以把字节码看作是AST的一种紧凑的序列化，并且解释器在执行时按照需要对其反序列化的方式进行了高度优化。在<a href="a-virtual-machine.html">下一章</a>中，我们将会看到虚拟机是如何做到这一点的。</p>
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
@@ -1591,7 +1570,8 @@ exactly that.
 <p>Our encoding of line information is hilariously wasteful of memory. Given
 that a series of instructions often correspond to the same source line, a
 natural solution is something akin to <a href="https://en.wikipedia.org/wiki/Run-length_encoding">run-length encoding</a> of the line
-numbers.</p>
+numbers.
+我们对行信息的编码非常浪费内存。鉴于一系列指令通常对应于同一源代码行，一个自然的解决方案是对行号进行类似<a href="https://en.wikipedia.org/wiki/Run-length_encoding">游程编码</a>的操作。</p>
 <p>Devise an encoding that compresses the line information for a
 series of instructions on the same line. Change <code>writeChunk()</code> to write this
 compressed form, and implement a <code>getLine()</code> function that, given the index

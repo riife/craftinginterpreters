@@ -496,7 +496,6 @@ var eggs = brunch.eggs;
 Here is what happens when the VM executes the `bindMethod()` call for the
 `brunch.eggs` expression:
 下面是虚拟机执行`brunch.eggs`表达式的`bindMethod()`调用时发生的情况：
-![The stack changes caused by bindMethod().](28.方法和初始化器/bind-method.png)
 
 <img src="image/methods-and-initializers/bind-method.png" alt="The stack changes caused by bindMethod()." />
 
@@ -827,7 +826,6 @@ Brunch("eggs", "coffee");
 
 When the VM executes the call to `Brunch()`, it goes like this:
 当VM执行对`Brunch()`的调用时，情况是这样的：
-![The aligned stack windows for the Brunch() call and the corresponding init() method it forwards to.](28.方法和初始化器/init-call-frame.png)
 
 <img src="image/methods-and-initializers/init-call-frame.png" alt="The aligned stack windows for the Brunch() call and the corresponding init() method it forwards to." />
 

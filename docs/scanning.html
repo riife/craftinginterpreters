@@ -361,8 +361,8 @@ Once we have a Scanner class with a <code>scanTokens()</code> method, we can sta
 it. Before we get to that, let&rsquo;s get more precise about what tokens are.
 有了一些基本的错误处理，我们的应用程序外壳已经准备好了。一旦我们有了一个带有 <code>scanTokens()</code> 方法的 Scanner 类，我们就可以开始运行它了。在我们开始之前，让我们更精确地了解什么是标记（tokens）。</p>
 <h2><a href="#词素和标记（词法单元）" id="词素和标记（词法单元）"><small>4&#8202;.&#8202;2</small>词素和标记（词法单元）</a></h2>
-<p>下面是一行lox代码：</p>
-<p>Here&rsquo;s a line of Lox code:</p>
+<p>Here&rsquo;s a line of Lox code:
+下面是一行lox代码：</p>
 <div class="codehilite"><pre><span class="k">var</span> <span class="i">language</span> = <span class="s">&quot;lox&quot;</span>;
 </pre></div>
 <p>Here, <code>var</code> is the keyword for declaring a variable. That three-character
@@ -520,7 +520,8 @@ are. But the honest truth is other books cover this better than I could.
 regexes if you want to, and there&rsquo;s a pile of interesting theory underlying why
 that is and what it means. Tools like <a href="http://dinosaur.compilertools.net/lex/">Lex</a> or
 <a href="https://github.com/westes/flex">Flex</a> are designed expressly to let you do this<span class="em">&mdash;</span>throw a handful of regexes
-at them, and they give you a complete scanner <span name="lex">back</span>.</p>
+at them, and they give you a complete scanner <span name="lex">back</span>.
+如果你愿意，你可以非常精确地使用正则表达式来识别Lox的所有不同词组，而且还有一堆有趣的理论来支撑着为什么会这样以及它的意义。像<a href="http://dinosaur.compilertools.net/lex/">Lex</a>或<a href="https://github.com/westes/flex">Flex</a>这样的工具就是专门为实现这一功能而设计的——向其中传入一些正则表达式，它可以为您提供完整的扫描器。</p>
 <aside name="lex">
 <p>Lex was created by Mike Lesk and Eric Schmidt. Yes, the same Eric Schmidt who
 was executive chairman of Google. I&rsquo;m not saying programming languages are a
@@ -532,8 +533,8 @@ Lex是由Mike Lesk和Eric Schmidt创建的。是的，就是那个曾任谷歌�
 delegating that task. We&rsquo;re about handcrafted goods.
 由于我们的目标是了解扫描器是如何工作的，所以我们不会把这个任务交给正则表达式。我们要亲自动手实现。</p>
 <h2><a href="#scanner类" id="scanner类"><small>4&#8202;.&#8202;4</small>Scanner类</a></h2>
-<p>事不宜迟，我们先来建一个扫描器吧。</p>
-<p>Without further ado, let&rsquo;s make ourselves a scanner.</p>
+<p>Without further ado, let&rsquo;s make ourselves a scanner.
+事不宜迟，我们先来建一个扫描器吧。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Scanner.java</em><br>
 create new file</div>
 <pre><span class="k">package</span> <span class="i">com.craftinginterpreters.lox</span>;
@@ -876,8 +877,7 @@ in <em>scanToken</em>()</div>
 <div class="source-file-narrow"><em>lox/Scanner.java</em>, in <em>scanToken</em>()</div>
 
 <p>That calls:
-这里会调用：
-<em>lox/Scanner.java</em>，在 <em>scanToken</em>()方法之后添加：</p>
+这里会调用：</p>
 <div class="codehilite"><div class="source-file"><em>lox/Scanner.java</em><br>
 add after <em>scanToken</em>()</div>
 <pre>  <span class="k">private</span> <span class="t">void</span> <span class="i">string</span>() {
@@ -943,7 +943,8 @@ what you do, some case ends up weird.
 <div class="codehilite"><pre><span class="n">1234</span>
 <span class="n">12.34</span>
 </pre></div>
-<p>We don&rsquo;t allow a leading or trailing decimal point, so these are both invalid:</p>
+<p>We don&rsquo;t allow a leading or trailing decimal point, so these are both invalid:
+我们不允许使用小数点前或小数点后的数字，因此这两个数字都是无效的：</p>
 <div class="codehilite"><pre>.<span class="n">1234</span>
 <span class="n">1234</span>.
 </pre></div>
@@ -1134,8 +1135,7 @@ add after <em>peekNext</em>()</div>
 <p>That gets identifiers working. To handle keywords, we see if the identifier&rsquo;s
 lexeme is one of the reserved words. If so, we use a token type specific to that
 keyword. We define the set of reserved words in a map.
-这样标识符就开始工作了。为了处理关键字，我们要查看标识符的词素是否是保留字之一。如果是，我们就使用该关键字特有的标记类型。我们在map中定义保留字的集合。
-<u>*lox/Scanner.java，在 Scanner类中添加：</u></p>
+这样标识符就开始工作了。为了处理关键字，我们要查看标识符的词素是否是保留字之一。如果是，我们就使用该关键字特有的标记类型。我们在map中定义保留字的集合。</p>
 <div class="codehilite"><div class="source-file"><em>lox/Scanner.java</em><br>
 in class <em>Scanner</em></div>
 <pre>  <span class="k">private</span> <span class="k">static</span> <span class="k">final</span> <span class="t">Map</span>&lt;<span class="t">String</span>, <span class="t">TokenType</span>&gt; <span class="i">keywords</span>;
@@ -1189,14 +1189,11 @@ and see if it handles them as it should.
 <div class="challenges">
 <h2><a href="#challenges" id="challenges">Challenges</a></h2>
 <ol>
-<li>The lexical grammars of Python and Haskell are not <em>regular</em>. What does that
+<li>
+<p>The lexical grammars of Python and Haskell are not <em>regular</em>. What does that
 mean, and why aren&rsquo;t they?
-Python和Haskell的语法不是<em>常规的</em>。 这是什么意思，为什么不是呢？</li>
-</ol>
-<ul>
-<li>Python和Haskell都采用了对缩进敏感的语法，所以它们必须将缩进级别的变动识别为词法标记。这样做需要比较连续行的开头空格数量，这是使用常规语法无法做到的。</li>
-</ul>
-<ol>
+Python和Haskell的语法不是<em>常规的</em>。 这是什么意思，为什么不是呢？</p>
+</li>
 <li>
 <p>Aside from separating tokens<span class="em">&mdash;</span>distinguishing <code>print foo</code> from <code>printfoo</code><span class="em">&mdash;</span>spaces aren&rsquo;t used for much in most languages. However, in a couple of
 dark corners, a space <em>does</em> affect how code is parsed in CoffeeScript,
